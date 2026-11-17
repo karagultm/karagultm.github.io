@@ -1,0 +1,308 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Stack frame, heap, değer ve referans, == ile equals farkı, StackOverflowError ve OutOfMemoryError, garbage collector'ın çalışma şekli ve Java'da memory leak: mülakatta sorulan bellek konuları, Java ve Python örnekleriyle."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Bellek: Stack ve Heap, Garbage Collector ve Memory Leak · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="tr" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Bellek: Stack ve Heap, Garbage Collector ve Memory Leak</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 Kasım 2026</time> · bellek, java, mulakat, programlama-101 · Bölüm 5</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/memory-stack-heap-garbage-collector/" hreflang="en" lang="en" data-astro-cid-7jjqptxk>Read in English</a></p> <img src="/_astro/mem-kapak.CRgiWZPa_Z2w2mv7.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak">  <article class="yazi" data-astro-cid-7jjqptxk><h1 id="bellek-stack-ve-heap-garbage-collector-ve-memory-leak">Bellek: Stack ve Heap, Garbage Collector ve Memory Leak</h1>
+<p><em>Programlama 101, Bölüm 5</em></p>
+<ol start="4">
+<li>bölümde <code>new</code> çağrıldığında nesnenin heap’te oluşturulduğunu söyleyip geçmiştik. Bu yazı o cümleyi açıyor: heap nedir, onun yanındaki stack ne işe yarar, nesneler işleri bitince nereye gider?</li>
+</ol>
+<p>Bellek soruları mülakatta genelde OOP sorularının devamı olarak gelir. Stack ile heap farkı, <code>==</code> ile <code>equals</code> arasındaki fark, garbage collector’ın bir nesneyi ne zaman sildiği ve garbage collector varken memory leak olup olamayacağı en sık sorulanlar. Örneklerin çoğu Java’da, sonda Python’un ve C/C++‘ın aynı işi nasıl yaptığına kısaca bakıyorum.</p>
+<p>Sıra şöyle: önce stack ve heap, sonra değer ve referans ayrımı, <code>==</code> ile <code>equals</code>, iki bellek hatası, garbage collector, Java’da memory leak, Python ve C/C++. Sonda mülakatta sık gelen sorular ve kısa cevapları var.</p>
+<hr>
+<h2 id="1-stack-ve-heap">1. Stack ve heap</h2>
+<p>Çalışan bir Java programı belleği farklı amaçlar için ayrılmış bölgelere böler. Mülakatta sorulan ikisi stack ve heap. Türkçede ikisine de zaman zaman “yığın” dendiği için burada İngilizce adlarıyla kullanıyorum.</p>
+<p><strong>Stack</strong>, her thread’e ait, metot çağrılarının kaydını tutan bellek bölgesidir. Bir metot çağrıldığında stack’in üstüne o çağrı için bir <strong>Stack Frame (Çağrı Çerçevesi)</strong> eklenir. Frame’in içinde metodun parametreleri, yerel değişkenleri ve metot bitince nereye dönüleceği bilgisi durur. Metot dönünce frame stack’ten atılır ve içindeki her şey onunla birlikte gider.</p>
+<p>Bu düzen bir tabak yığınına benzer. Yeni tabak en üste konur, alınırken de en üstteki alınır. Ortadaki bir tabağı çekip almak mümkün değil. Bu yüzden stack’te yer ayırmak ve geri vermek çok ucuzdur, yalnızca bir işaretçi yukarı ya da aşağı kayar.</p>
+<p><strong>Heap</strong>, <code>new</code> ile oluşturulan bütün nesnelerin durduğu, programın bütün thread’lerinin paylaştığı bellek bölgesidir. Heap’teki bir nesnenin ömrü onu oluşturan metoda bağlı değildir. Metot biter, nesne kalır. Nesne, kendisine erişen hiçbir yol kalmayana kadar yaşar ve sonra garbage collector tarafından temizlenir.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">void</span><span style="color:#B392F0"> siparisOlustur</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#E1E4E8"> adet </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">;                        </span><span style="color:#6A737D">// stack: frame içinde, değerin kendisi</span></span>
+<span class="line"><span style="color:#E1E4E8">    Siparis s </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Siparis</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"kalem"</span><span style="color:#E1E4E8">);    </span><span style="color:#6A737D">// s stack'te, Siparis nesnesi heap'te</span></span>
+<span class="line"><span style="color:#E1E4E8">    s.</span><span style="color:#B392F0">adetBelirle</span><span style="color:#E1E4E8">(adet);</span></span>
+<span class="line"><span style="color:#E1E4E8">}   </span><span style="color:#6A737D">// metot bitti: adet ve s gider, Siparis nesnesi heap'te kalır</span></span></code></pre>
+<p><code>s</code> değişkeni nesnenin kendisi değil, ona giden bir referanstır. Referans frame’le birlikte silinir. Nesneye başka bir yerden referans yoksa artık erişilemez durumdadır ve bir sonraki temizlikte gider.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Stack</th>
+<th>Heap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kime ait</td>
+<td>Her thread’in kendi stack’i var</td>
+<td>Bütün thread’ler paylaşır</td>
+</tr>
+<tr>
+<td>Ne durur</td>
+<td>Frame’ler: parametreler, yerel değişkenler</td>
+<td><code>new</code> ile oluşturulan nesneler, diziler</td>
+</tr>
+<tr>
+<td>Ömür</td>
+<td>Metot dönünce biter</td>
+<td>Erişilemez olana kadar sürer</td>
+</tr>
+<tr>
+<td>Temizleyen</td>
+<td>Frame atılırken kendiliğinden</td>
+<td>Garbage collector</td>
+</tr>
+<tr>
+<td>Boyut</td>
+<td>Küçük, sabit (çoğu 64 bit sistemde 1 MB, <code>-Xss</code> ile değişir)</td>
+<td>Büyük, <code>-Xmx</code> ile sınırlanır</td>
+</tr>
+<tr>
+<td>Taşarsa</td>
+<td><code>StackOverflowError</code></td>
+<td><code>OutOfMemoryError</code></td>
+</tr>
+</tbody>
+</table>
+<p>Stack’in thread’e ait olması bir sonuç doğurur: yerel değişkenler thread’ler arasında paylaşılmaz, bu yüzden onlar için race condition oluşmaz. Heap’teki bir nesneye iki thread aynı anda erişebiliyorsa senkronizasyon gerekir.</p>
+<p><img alt="Stack ve heap: solda her metot çağrısı için üst üste eklenen stack frame&amp;#x27;ler ve içlerindeki yerel değişkenler, sağda heap&amp;#x27;teki nesneler, frame&amp;#x27;lerdeki referanslardan heap&amp;#x27;teki nesnelere giden oklar" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/mem-stack-heap.Cge7BjQ-_Z1QPkmM.webp" ></p>
+<hr>
+<h2 id="2-değer-ve-referans">2. Değer ve referans</h2>
+<p>Java’da değişkenler iki türdür. <strong>Primitive (İlkel) Tip</strong> değişkenler değerin kendisini tutar: <code>int</code>, <code>long</code>, <code>double</code>, <code>boolean</code>, <code>char</code>, <code>byte</code>, <code>short</code>, <code>float</code>. <strong>Reference (Referans) Tip</strong> değişkenler ise bir nesnenin heap’teki yerini gösterir. Sınıflar, diziler, <code>String</code> ve <code>Integer</code> gibi sarmalayıcı (wrapper) sınıflar bu gruptadır.</p>
+<p>Atama yapıldığında ikisinde de değişkenin içindeki değer kopyalanır. Primitive’de bu değer sayının kendisidir. Referansta ise kopyalanan şey adrestir, nesne kopyalanmaz. İki değişken aynı nesneyi gösterir.</p>
+<p>Bu, metot çağrılarında da aynı şekilde işler. Java her zaman <strong>Pass-by-Value (Değerle Aktarım)</strong> kullanır. Referans tipte aktarılan değer referansın bir kopyasıdır.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">static</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> degistir</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> sayi, Nokta n) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    sayi </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 99</span><span style="color:#E1E4E8">;     </span><span style="color:#6A737D">// yalnızca yerel kopya değişir</span></span>
+<span class="line"><span style="color:#E1E4E8">    n.x </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 99</span><span style="color:#E1E4E8">;      </span><span style="color:#6A737D">// kopya referans aynı nesneyi gösteriyor, nesne değişir</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">static</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> yenisiniAta</span><span style="color:#E1E4E8">(Nokta n) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    n </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Nokta</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);   </span><span style="color:#6A737D">// yerel referans başka nesneye döndü, çağıranınki değil</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">int</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 5</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">Nokta p </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Nokta</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">degistir</span><span style="color:#E1E4E8">(a, p);        </span><span style="color:#6A737D">// a hâlâ 5, p.x artık 99</span></span>
+<span class="line"><span style="color:#B392F0">yenisiniAta</span><span style="color:#E1E4E8">(p);        </span><span style="color:#6A737D">// p.x hâlâ 99</span></span></code></pre>
+<p>Metodun içinde nesnenin alanı değişince bu dışarıdan görülür, çünkü iki referans aynı nesneyi gösteriyor. Ama metodun içinde referansın kendisine yeni bir nesne atanınca dışarıdaki değişken etkilenmez. “Java nesneleri referansla aktarır” cümlesi bu yüzden yanlış. Gerçek pass-by-reference olsaydı <code>yenisiniAta</code> çağıranın değişkenini de değiştirirdi.</p>
+<h3 id="primitiveler-her-zaman-stackte-değildir">Primitive’ler her zaman stack’te değildir</h3>
+<p>Notlarda sık geçen “nesneler heap’te, primitive’ler stack’te durur” özeti eksik. Bir primitive’in nerede durduğunu tipi değil, nerede tanımlandığı belirler.</p>
+<ul>
+<li>Bir metodun yerel değişkeni ya da parametresi olan primitive stack’te, o metodun frame’inde durur.</li>
+<li>Bir nesnenin alanı olan primitive, nesnenin bir parçasıdır ve onunla birlikte heap’te durur.</li>
+<li>Bir dizinin elemanları da heap’te durur. <code>new int[1000]</code> bin tane <code>int</code>’i heap’te tek bir nesne olarak ayırır.</li>
+<li><code>static</code> alanlar sınıfa aittir, hiçbir frame’e değil. Bunlar da stack’te durmaz.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Hesap</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> double</span><span style="color:#E1E4E8"> bakiye;    </span><span style="color:#6A737D">// primitive, ama Hesap nesnesinin içinde: heap</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">void</span><span style="color:#B392F0"> hesapla</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#E1E4E8"> faiz </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0.02</span><span style="color:#E1E4E8">;       </span><span style="color:#6A737D">// yerel primitive: stack</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#E1E4E8">[] gunler </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">30</span><span style="color:#E1E4E8">];   </span><span style="color:#6A737D">// referans stack'te, 30 int heap'te</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Tersi de geçerli: yerel bir referans değişkeni stack’tedir, gösterdiği nesne heap’tedir. Bir de JIT derleyicisinin yaptığı bir iyileştirme var. <strong>Escape Analysis</strong> ile bir nesnenin metodun dışına hiç çıkmadığını anlarsa, nesneyi hiç oluşturmadan alanlarını yerel değişken gibi tutabilir. Bu bir çalışma zamanı ayrıntısıdır, dilin anlamını değiştirmez. Mülakatta “nesneler heap’te durur” demek doğru cevaptır.</p>
+<hr>
+<h2 id="3--ile-equals-farkı">3. <code>==</code> ile <code>equals</code> farkı</h2>
+<p><code>==</code> operatörü primitive’lerde değerleri karşılaştırır. Referanslarda ise iki referansın aynı nesneyi gösterip göstermediğine bakar, yani adresleri karşılaştırır. <code>equals</code> metodu ise iki nesnenin içeriğinin eşit sayılıp sayılmadığını söyler, eşitliğin ne demek olduğunu sınıf kendisi tanımlar.</p>
+<p><code>Object</code>’ten gelen varsayılan <code>equals</code>, <code>==</code> ile aynı işi yapar. <code>String</code>, <code>Integer</code> ve koleksiyonlar gibi sınıflar onu override ederek içeriği karşılaştırır. Kendi sınıfında <code>equals</code> override eden biri <code>hashCode</code>’u da override etmek zorundadır. Aksi halde eşit sayılan iki nesne <code>HashMap</code> içinde farklı yerlere düşer.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#E1E4E8">String s1 </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "java"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">String s2 </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "java"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">String s3 </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> String</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"java"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(s1 </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> s2);        </span><span style="color:#6A737D">// true: ikisi de havuzdaki aynı nesne</span></span>
+<span class="line"><span style="color:#E1E4E8">System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(s1 </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> s3);        </span><span style="color:#6A737D">// false: new ayrı bir nesne oluşturdu</span></span>
+<span class="line"><span style="color:#E1E4E8">System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(s1.</span><span style="color:#B392F0">equals</span><span style="color:#E1E4E8">(s3));   </span><span style="color:#6A737D">// true: içerik aynı</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Integer i1 </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 127</span><span style="color:#E1E4E8">, i2 </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 127</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">Integer i3 </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 128</span><span style="color:#E1E4E8">, i4 </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 128</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(i1 </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> i2);        </span><span style="color:#6A737D">// true</span></span>
+<span class="line"><span style="color:#E1E4E8">System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(i3 </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> i4);        </span><span style="color:#6A737D">// false</span></span>
+<span class="line"><span style="color:#E1E4E8">System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(i3.</span><span style="color:#B392F0">equals</span><span style="color:#E1E4E8">(i4));   </span><span style="color:#6A737D">// true</span></span></code></pre>
+<p>İlk <code>true</code>’nun sebebi <strong>String Pool (String Havuzu)</strong>. Kaynak kodda yazılan string sabitleri heap’teki bir havuzda bir kez tutulur ve aynı metni yazan her yer aynı nesneyi alır. <code>new String(...)</code> ise havuzu atlayıp yeni bir nesne oluşturur.</p>
+<p><code>Integer</code> örneği daha sinsi. <code>Integer i = 127</code> yazınca derleyici bunu <code>Integer.valueOf(127)</code> çağrısına çevirir (<strong>Autoboxing</strong>). <code>valueOf</code> -128 ile 127 arasındaki değerler için önbellekteki hazır nesneyi döndürür, dışındaki değerler için yeni nesne oluşturur. Bu yüzden 127’de <code>==</code> tesadüfen doğru sonuç verir, 128’de vermez. Testler küçük sayılarla geçip gerçek veride bozulan kodun klasik sebebi budur. Nesneler her zaman <code>equals</code> ile karşılaştırılır.</p>
+<hr>
+<h2 id="4-stackoverflowerror-ve-outofmemoryerror">4. StackOverflowError ve OutOfMemoryError</h2>
+<p>İki bölgenin de bir sınırı var ve her birinin taşması ayrı bir hatayla sonuçlanır.</p>
+<p><strong>StackOverflowError</strong>, bir thread’in stack’i dolduğunda fırlatılır. Neredeyse her zaman sebebi bitmeyen ya da çok derin bir özyinelemedir. Her çağrı yeni bir frame ekler, hiçbiri dönmediği için hiçbiri atılmaz.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">static</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> faktoriyel</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> n) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> n </span><span style="color:#F97583">*</span><span style="color:#B392F0"> faktoriyel</span><span style="color:#E1E4E8">(n </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">);   </span><span style="color:#6A737D">// taban durum yok: her çağrı yeni frame</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Kendini koşulsuz çağıran basit bir metodu varsayılan ayarlarla denediğimde hata yaklaşık 19 bin çağrı sonra geldi. Bu sayı frame’in büyüklüğüne ve stack boyutuna göre değişir. Doğru yazılmış ama çok derin bir özyineleme de aynı hatayı verebilir. Bu durumda çözüm stack’i büyütmek değil, algoritmayı döngüyle ya da açık bir yığın veri yapısıyla yeniden yazmaktır.</p>
+<p><strong>OutOfMemoryError</strong>, heap’te yeni bir nesne için yer kalmadığında ve garbage collector yer açamadığında fırlatılır. Mesajı sebebi gösterir:</p>
+<ul>
+<li><code>Java heap space</code>: heap dolu, canlı nesneler sığmıyor. Ya heap gerçekten küçük ya da bir yerde memory leak var.</li>
+<li><code>GC overhead limit exceeded</code>: program zamanının neredeyse tamamını garbage collection’a harcıyor ve çok az yer geri kazanıyor.</li>
+<li><code>Metaspace</code>: sınıf bilgilerinin tutulduğu alan doldu. Çalışma sırasında çok sayıda sınıf üretilip yüklendiğinde görülür.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">static</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> List&#x3C;</span><span style="color:#F97583">byte</span><span style="color:#E1E4E8">[]> onbellek </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> ArrayList&#x3C;>();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> static</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> main</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">String</span><span style="color:#E1E4E8">[] args) {</span></span>
+<span class="line"><span style="color:#F97583">    while</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">) onbellek.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#F97583"> byte</span><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">1024</span><span style="color:#F97583"> *</span><span style="color:#79B8FF"> 1024</span><span style="color:#E1E4E8">]);   </span><span style="color:#6A737D">// her tur 1 MB</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">// java -Xmx32m ... -> OutOfMemoryError: Java heap space</span></span></code></pre>
+<p>İkisi de <code>Exception</code> değil, <code>Error</code> sınıfından türer. <code>Error</code>, programın normal akışında yakalanıp toparlanması beklenmeyen ciddi sorunlar içindir. Teknik olarak <code>catch</code> ile yakalanabilirler, ama <code>OutOfMemoryError</code> yakalayıp devam eden bir program genelde tutarsız bir durumda devam eder.</p>
+<hr>
+<h2 id="5-garbage-collector">5. Garbage collector</h2>
+<p><strong>Garbage Collector (Çöp Toplayıcı)</strong>, heap’te artık kullanılmayan nesneleri bulup yerlerini geri kazanan çalışma zamanı bileşenidir. Java’da bir nesneyi silmek için bir komut yoktur. Programcı nesneyi oluşturur, ne zaman silineceğine garbage collector karar verir.</p>
+<h3 id="erişilebilirlik">Erişilebilirlik</h3>
+<p>Garbage collector bir nesnenin kullanılıp kullanılmadığını <strong>Reachability (Erişilebilirlik)</strong> ile ölçer. Başlangıç noktaları <strong>GC Root</strong> denen referanslardır:</p>
+<ul>
+<li>Çalışan thread’lerin stack frame’lerindeki yerel değişkenler ve parametreler</li>
+<li>Yüklü sınıfların <code>static</code> alanları</li>
+<li>Çalışan thread nesnelerinin kendileri ve native koddan tutulan referanslar</li>
+</ul>
+<p>Bir kökten başlayıp referanslar takip edilerek ulaşılabilen her nesne canlıdır. Hiçbir kökten ulaşılamayan nesne çöptür, programda ona hâlâ referans veren başka nesneler olsa bile. İki nesne birbirini gösteriyor ama ikisine de dışarıdan yol yoksa, ikisi birlikte toplanır. Java bu yüzden referans sayma kullanmaz. Döngüsel referanslar onun için sorun değildir.</p>
+<h3 id="mark-and-sweep">Mark-and-sweep</h3>
+<p>Bu fikrin en temel uygulaması <strong>Mark-and-Sweep (İşaretle ve Süpür)</strong> algoritmasıdır. İki aşaması var. Mark aşamasında kökten başlanıp ulaşılan her nesne işaretlenir. Sweep aşamasında heap baştan sona taranır ve işaretsiz nesnelerin yeri boş olarak kaydedilir.</p>
+<p>Geriye boşluklarla dolu bir heap kalır. Toplam boş yer yeterli olsa bile büyük bir nesne için tek parça yer bulunamayabilir. Buna <strong>Fragmentation (Parçalanma)</strong> denir. Bunu önlemek için çoğu toplayıcı canlı nesneleri heap’in bir ucuna kaydırır (<strong>Compaction</strong>). Aralarından kitap alınmış bir rafta kalan kitapları sola doğru sıkıştırmak gibi, sağda tek parça boş yer kalır.</p>
+<h3 id="generational-gc">Generational GC</h3>
+<p>Her seferinde bütün heap’i taramak pahalıdır. Gerçek programlarda nesnelerin büyük çoğunluğu kısa ömürlüdür: bir döngü içinde oluşturulan geçici bir string, bir isteğin cevabını hazırlarken kullanılan bir liste. Bu gözleme <strong>Weak Generational Hypothesis</strong> denir ve Java’nın toplayıcıları heap’i buna göre böler.</p>
+<ul>
+<li><strong>Young Generation (Genç Nesil)</strong>: yeni nesneler buraya, Eden denen alana yerleşir. Eden dolunca yalnızca bu bölge taranır (<strong>Minor GC</strong>). Kısa ömürlü nesnelerin çoğu daha ilk taramada ölmüş olur. Hayatta kalanlar survivor alanlarına kopyalanır.</li>
+<li><strong>Old Generation (Yaşlı Nesil)</strong>: birkaç minor GC’den sağ çıkan nesneler buraya taşınır (<strong>Promotion</strong>). Bu bölge daha seyrek ve daha pahalı bir taramayla temizlenir (<strong>Major GC</strong> ya da <strong>Full GC</strong>).</li>
+</ul>
+<p>Young generation’da çöp oranı yüksek olduğu için taramanın maliyeti ölü nesnelere değil, az sayıdaki canlı nesneye bağlıdır. Bu yüzden minor GC sık çalışır ama kısa sürer.</p>
+<h3 id="stop-the-world">Stop-the-world</h3>
+<p>Toplayıcının işini yaparken nesne grafiğinin altından değişmemesi gerekir. Bunun en basit yolu bütün uygulama thread’lerini durdurmaktır. Bu duraklamaya <strong>Stop-the-World (STW)</strong> denir. Kullanıcı tarafında bu, cevap süresinde ani bir sıçrama olarak görülür.</p>
+<p>Modern toplayıcıların çoğu işin büyük kısmını uygulama çalışırken, eşzamanlı yapar ve STW süresini kısaltır. Java 9’dan beri varsayılan toplayıcı G1’dir. Duraklamanın milisaniye altında kalması gereken durumlar için ZGC gibi düşük gecikmeli toplayıcılar da var. Seçim, toplam iş miktarı (throughput) ile duraklama süresi arasında bir dengedir.</p>
+<p>İki ayrıntı daha sık soruluyor. <code>System.gc()</code> toplamayı zorlamaz, JVM’e yalnızca bir öneridir. <code>finalize()</code> metodu da nesne silinmeden önce temizlik için güvenilir bir yer değildir. Ne zaman ya da çalışıp çalışmayacağı belli değildir ve Java 9’dan beri deprecated’dır.</p>
+<hr>
+<h2 id="6-javada-memory-leak">6. Java’da memory leak</h2>
+<p><strong>Memory Leak (Bellek Sızıntısı)</strong>, artık kullanılmayan belleğin geri verilmemesidir. C’de bu genelde <code>free</code> çağrısının unutulmasıyla olur. Garbage collector olan bir dilde ise sızıntının tanımı biraz değişir: program bir nesneyi bir daha kullanmayacaktır, ama o nesneye bir kökten hâlâ yol vardır. Garbage collector programın niyetini bilemez. Erişilebilir olan her nesneyi canlı sayar.</p>
+<p>Sızıntı hemen fark edilmez. Heap yavaş yavaş dolar, garbage collector giderek daha sık çalışır, sonunda <code>OutOfMemoryError</code> gelir. Çoğu zaman bunu görmek için uygulamanın günlerce çalışması gerekir.</p>
+<h3 id="büyüyen-static-koleksiyon">Büyüyen static koleksiyon</h3>
+<p>En yaygın sebep, bir <code>static</code> koleksiyona sürekli eleman eklenip hiç çıkarılmamasıdır. <code>static</code> alan bir GC root’tur, içindeki her şey programın sonuna kadar yaşar.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">static</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> Map&#x3C;</span><span style="color:#F97583">String</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">Oturum</span><span style="color:#E1E4E8">> oturumlar </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> HashMap&#x3C;>();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">static</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> girisYapti</span><span style="color:#E1E4E8">(String kullaniciId) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    oturumlar.</span><span style="color:#B392F0">put</span><span style="color:#E1E4E8">(kullaniciId, </span><span style="color:#F97583">new</span><span style="color:#B392F0"> Oturum</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">// cikisYapti() içinde remove unutulursa her oturum sonsuza kadar kalır</span></span></code></pre>
+<p>Önbellek olarak kullanılan map’ler aynı sorunu taşır. Çözüm, bir boyut sınırı ya da süre aşımı olan bir önbellek kullanmak ya da elemanı işi bitince açıkça çıkarmaktır. <code>WeakHashMap</code> bazı durumlarda işe yarar. Anahtara başka yerden güçlü referans kalmayınca kayıt kendiliğinden düşer.</p>
+<h3 id="kapatılmayan-kaynak">Kapatılmayan kaynak</h3>
+<p>Dosya, veritabanı bağlantısı ve soket gibi kaynaklar heap dışında, işletim sistemi tarafında da yer tutar. Garbage collector yalnızca heap’i yönetir. Kapatılmayan bir dosya, onu temsil eden Java nesnesi toplanana kadar işletim sisteminin dosya tanıtıcısını tutar. Bu toplama ne zaman olacağı belli olmayan, belki hiç gelmeyen bir andır. Bağlantı havuzlarında ise kapatılmayan bağlantı havuza hiç geri dönmez, havuz tükenir.</p>
+<p>Java 7’den beri bunun için <strong>try-with-resources</strong> yapısı var. <code>AutoCloseable</code> arayüzünü implement eden her kaynak, parantez içinde açılırsa blok bitince otomatik kapatılır. Blok bir exception ile bitse de kapatma yapılır.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">static</span><span style="color:#E1E4E8"> String </span><span style="color:#B392F0">ilkSatir</span><span style="color:#E1E4E8">(Path yol) throws IOException {</span></span>
+<span class="line"><span style="color:#F97583">    try</span><span style="color:#E1E4E8"> (BufferedReader r </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Files.</span><span style="color:#B392F0">newBufferedReader</span><span style="color:#E1E4E8">(yol)) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> r.</span><span style="color:#B392F0">readLine</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }   </span><span style="color:#6A737D">// r.close() burada, hata olsa da olmasa da çağrılır</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Bu, eski <code>try</code>/<code>finally</code> kalıbından daha kısa ve daha güvenlidir. Birden fazla kaynak noktalı virgülle aynı paranteze yazılabilir ve açılış sırasının tersiyle kapatılır.</p>
+<h3 id="kayıtlı-kalan-listener">Kayıtlı kalan listener</h3>
+<p>Bir nesne bir olay kaynağına listener olarak kaydolur, sonra işi biter, ama kaydı silinmez. Olay kaynağının listesi listener’ı tutar, listener da çoğu zaman kendisini kaydeden nesneyi tutar. Böylece artık kapanmış bir ekran ya da bitmiş bir işlem, bütün alanlarıyla birlikte bellekte kalır.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Ekran</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#F97583"> byte</span><span style="color:#E1E4E8">[] tampon </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#F97583"> byte</span><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">10_000_000</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">    Ekran</span><span style="color:#E1E4E8">(OlayKaynagi </span><span style="color:#FFAB70">kaynak</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        kaynak.</span><span style="color:#B392F0">ekle</span><span style="color:#E1E4E8">(s </span><span style="color:#F97583">-></span><span style="color:#B392F0"> ciz</span><span style="color:#E1E4E8">(s));   </span><span style="color:#6A737D">// lambda this'i yakalar, Ekran kaynakta kalır</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> ciz</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">s</span><span style="color:#E1E4E8">) { }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Bunu denediğimde, 256 MB’lık bir heap ile bu ekrandan 50 tane oluşturmak <code>OutOfMemoryError</code> verdi, oysa hiçbir ekrana dışarıdan referans tutulmuyordu. Her lambda <code>ciz</code> metodunu çağırdığı için <code>this</code>’i yakalıyor, kaynağın listesi de lambdaları tutuyor. Çözüm, nesnenin ömrü bittiğinde <code>kaynak.cikar(...)</code> ile kaydı silmektir. Static olmayan iç sınıflar da aynı şekilde dış sınıfın nesnesine gizli bir referans taşır.</p>
+<hr>
+<h2 id="7-python-reference-counting-ve-döngüsel-çöp-toplayıcı">7. Python: reference counting ve döngüsel çöp toplayıcı</h2>
+<p>Python’da (standart uygulama olan CPython’da) her şey bir nesnedir ve bütün nesneler heap’te durur, <code>int</code> dahil. Yerel değişkenler yalnızca bu nesnelere giden isimlerdir.</p>
+<p>CPython’un ana mekanizması <strong>Reference Counting (Referans Sayma)</strong>. Her nesne kendisine kaç referans olduğunu sayar. Bir isim nesneye bağlanınca sayı artar, bağ kopunca azalır. Sayı sıfıra indiği anda nesne hemen silinir, bir tarama beklenmez.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> sys</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">a </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(sys.getrefcount(a))   </span><span style="color:#6A737D"># 2: a ve fonksiyonun kendi argümanı</span></span>
+<span class="line"><span style="color:#E1E4E8">b </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> a</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(sys.getrefcount(a))   </span><span style="color:#6A737D"># 3</span></span>
+<span class="line"><span style="color:#F97583">del</span><span style="color:#E1E4E8"> b                       </span><span style="color:#6A737D"># nesneyi değil, b ismini siler</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(sys.getrefcount(a))   </span><span style="color:#6A737D"># 2</span></span></code></pre>
+<p>Referans saymanın bilinen bir zayıflığı var: döngüler. İki nesne birbirini gösteriyorsa, dışarıdan hiçbir yol kalmasa bile sayıları sıfıra inmez. Bunun için CPython’da ikinci bir mekanizma, <code>gc</code> modülündeki döngüsel çöp toplayıcı çalışır. Bu toplayıcı yalnızca başka nesneleri tutabilen nesnelere (liste, sözlük, sınıf nesneleri) bakar, nesil temelli çalışır ve erişilemeyen döngüleri bulup siler.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> gc</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Dugum</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.diger </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> None</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">x, y </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Dugum(), Dugum()</span></span>
+<span class="line"><span style="color:#E1E4E8">x.diger, y.diger </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> y, x    </span><span style="color:#6A737D"># döngü</span></span>
+<span class="line"><span style="color:#F97583">del</span><span style="color:#E1E4E8"> x, y                   </span><span style="color:#6A737D"># sayılar sıfıra inmez</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(gc.collect())        </span><span style="color:#6A737D"># bulunan erişilemez nesne sayısı, sıfırdan büyük</span></span></code></pre>
+<p>Java ile farkı şu: Python’da nesnelerin çoğu son referans kaybolduğu anda silinir, bu yüzden silinme anı büyük ölçüde öngörülebilir. Buna rağmen dosyalar için <code>with</code> bloğu kullanılır. Bu, Java’daki try-with-resources’ın karşılığıdır ve kapanmayı referans sayısına bırakmaz.</p>
+<hr>
+<h2 id="8-c-ve-c-manuel-bellek-yönetimi">8. C ve C++: manuel bellek yönetimi</h2>
+<p>C’de garbage collector yoktur. Heap’ten yer <code>malloc</code> ile alınır, <code>free</code> ile geri verilir ve ikisini de programcı yazar. C++‘ta bunların karşılığı <code>new</code> ve <code>delete</code>’tir. Kullandığın tabağı yıkayıp dolaba kendin kaldırırsın, arkandan toplayan kimse yoktur.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="c"><code><span class="line"><span style="color:#F97583">int</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8">dizi </span><span style="color:#F97583">=</span><span style="color:#B392F0"> malloc</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">100</span><span style="color:#F97583"> *</span><span style="color:#F97583"> sizeof</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8">));</span><span style="color:#6A737D">   // heap'ten yer</span></span>
+<span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (dizi </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> NULL</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#F97583"> -</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">;</span><span style="color:#6A737D">             // yer alınamadı</span></span>
+<span class="line"><span style="color:#6A737D">/* ... kullanım ... */</span></span>
+<span class="line"><span style="color:#B392F0">free</span><span style="color:#E1E4E8">(dizi);</span><span style="color:#6A737D">                              // geri ver</span></span>
+<span class="line"><span style="color:#E1E4E8">dizi </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> NULL</span><span style="color:#E1E4E8">;</span><span style="color:#6A737D">                             // eski adresi tutmaya devam etmesin</span></span></code></pre>
+<p>Bu model hızlı ve öngörülebilirdir, garbage collector duraklaması yoktur. Bedeli, hataların programcıya kalmasıdır:</p>
+<ul>
+<li>Memory leak: <code>free</code> unutulur. Bellek, işlem bitene kadar dolu kalır.</li>
+<li><strong>Dangling Pointer (Sarkan İşaretçi)</strong> ve <strong>Use-after-free</strong>: serbest bırakılmış belleğe hâlâ erişilir. Program çökebilir ya da başka bir verinin üzerine yazabilir. Bu tür hatalar ciddi güvenlik açıklarının yaygın kaynağıdır.</li>
+<li><strong>Double Free</strong>: aynı bellek iki kez serbest bırakılır.</li>
+</ul>
+<p>Modern C++ bu yükü büyük ölçüde <strong>RAII</strong> ile azaltır. Kaynak bir nesnenin constructor’ında alınır, destructor’ında bırakılır. Nesne stack’te olduğu için kapsamdan çıkınca destructor kendiliğinden çalışır. <code>std::unique_ptr</code> ve <code>std::shared_ptr</code> gibi akıllı işaretçiler heap’teki belleği bu yolla yönetir. <code>shared_ptr</code> referans sayar, bu yüzden Python’daki döngü sorunu onda da vardır ve <code>weak_ptr</code> ile çözülür.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>C / C++</th>
+<th>Java</th>
+<th>Python (CPython)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Heap’ten yer alma</td>
+<td><code>malloc</code> / <code>new</code></td>
+<td><code>new</code></td>
+<td>Her nesne oluşturulduğunda</td>
+</tr>
+<tr>
+<td>Geri verme</td>
+<td>Programcı: <code>free</code> / <code>delete</code> (C++‘ta RAII)</td>
+<td>Garbage collector, tarama ile</td>
+<td>Referans sayısı sıfır olunca, döngüler için <code>gc</code></td>
+</tr>
+<tr>
+<td>Döngüsel referans</td>
+<td>Programcının sorunu</td>
+<td>Sorun değil</td>
+<td>Döngüsel toplayıcı çözer</td>
+</tr>
+<tr>
+<td>Kaynak kapatma</td>
+<td>Destructor (RAII)</td>
+<td>try-with-resources</td>
+<td><code>with</code> bloğu</td>
+</tr>
+<tr>
+<td>Tipik hata</td>
+<td>Leak, use-after-free</td>
+<td>Erişilebilir kalan gereksiz nesne</td>
+<td>Döngü ve global önbellek</td>
+</tr>
+</tbody>
+</table>
+<p>İşletim sistemi tarafında bir not: bir işlem sonlandığında işletim sistemi ona ait bütün belleği geri alır. Sızıntının zararı uzun süre çalışan programlarda, örneğin sunucularda görülür. Orada bellek kullanımı zamanla büyür ve işlem sonunda bellek yetersizliğinden sonlanır.</p>
+<hr>
+<h2 id="mülakatta-sorulanlar">Mülakatta sorulanlar</h2>
+<p><strong>1. Stack ile heap arasındaki fark nedir?</strong>
+Stack her thread’e aittir ve metot çağrılarının frame’lerini tutar, frame’ler metot dönünce kendiliğinden silinir. Heap bütün thread’lerin paylaştığı ve <code>new</code> ile oluşturulan nesnelerin durduğu bölgedir. Heap’teki nesneler erişilemez olunca garbage collector tarafından temizlenir.
+Sık yapılan hata: Stack ile heap’i veri yapılarındaki stack ve heap ile karıştırmak. Adları aynı, işleri farklı.</p>
+<p><strong>2. Primitive’ler her zaman stack’te mi durur?</strong>
+Hayır. Yerel değişken ya da parametre olan primitive stack’tedir. Bir nesnenin alanı ya da bir dizinin elemanı olan primitive, o nesneyle birlikte heap’tedir.
+Sık yapılan hata: Yeri tipe göre belirlemek. Belirleyici olan değişkenin nerede tanımlandığıdır.</p>
+<p><strong>3. Java pass-by-value mı, pass-by-reference mı?</strong>
+Her zaman pass-by-value. Referans tiplerde aktarılan değer referansın kopyasıdır, bu yüzden metot nesnenin alanlarını değiştirebilir. Ama parametreye yeni bir nesne atamak çağıranın değişkenini değiştirmez.
+Sık yapılan hata: Nesnenin alanının değiştiğini görüp “nesneler referansla aktarılır” demek.</p>
+<p><strong>4. <code>==</code> ile <code>equals</code> arasındaki fark nedir?</strong>
+<code>==</code> referanslarda iki değişkenin aynı nesneyi gösterip göstermediğine bakar. <code>equals</code> içeriği karşılaştırır ve eşitliğin anlamını sınıf tanımlar. <code>equals</code> override edilirse <code>hashCode</code> da override edilmelidir.
+Sık yapılan hata: <code>Integer</code> değerlerini <code>==</code> ile karşılaştırmak. -128 ile 127 arasında önbellek yüzünden doğru çalışır, 128’de bozulur.</p>
+<p><strong>5. StackOverflowError ile OutOfMemoryError arasındaki fark nedir?</strong>
+StackOverflowError bir thread’in stack’i dolunca gelir ve genelde bitmeyen ya da çok derin özyinelemeden kaynaklanır. OutOfMemoryError heap’te yer kalmadığında ve garbage collector yer açamadığında gelir. İkisi de <code>Error</code>’dır, normal akışta yakalanıp devam edilmesi beklenmez.
+Sık yapılan hata: StackOverflowError’ı “bellek doldu” diye açıklamak. Dolan heap değil, tek bir thread’in stack’idir.</p>
+<p><strong>6. Garbage collector bir nesnenin silinebileceğine nasıl karar verir?</strong>
+GC root’lardan (stack’teki yerel değişkenler, static alanlar, çalışan thread’ler) başlayıp referansları takip eder. Ulaşılamayan her nesne çöptür, birbirini gösteren nesneler de dahil. Heap genç ve yaşlı nesil olarak bölünür, kısa ömürlü nesneler sık ve ucuz taramalarla temizlenir.
+Sık yapılan hata: Java’nın referans sayma kullandığını söylemek. Döngüsel referanslar Java’da sızıntıya yol açmaz.</p>
+<p><strong>7. Garbage collector olan bir dilde memory leak olur mu?</strong>
+Olur. Program artık kullanmayacağı bir nesneye referans tutmaya devam ederse nesne erişilebilir kalır ve toplanmaz. Büyüyen static koleksiyonlar, silinmeyen listener kayıtları ve kapatılmayan kaynaklar en yaygın sebeplerdir.
+Sık yapılan hata: Kaynak kapatmayı garbage collector’a bırakmak. Dosya ve bağlantılar için try-with-resources kullanılır.</p>
+<p><strong>8. Python’un bellek yönetimi Java’dan nasıl ayrılır?</strong>
+CPython önce referans sayar ve sayı sıfıra indiği anda nesneyi siler. Referans saymanın yakalayamadığı döngüler için ayrıca bir döngüsel çöp toplayıcı çalışır. Java ise referans saymaz, erişilebilirliğe bakan izleyici bir toplayıcı kullanır.
+Sık yapılan hata: <code>del x</code> komutunun nesneyi sildiğini sanmak. Yalnızca ismi siler, nesne son referansı gidince silinir.</p>
+<p><img alt="Özet kart: stack ile heap karşılaştırması, değer ve referans farkı, == ile equals, garbage collector&amp;#x27;ın erişilebilirlik ve nesil yapısı, Java&amp;#x27;daki üç yaygın memory leak sebebi" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/mem-ozet-kart.Aolh_uPo_Z1asdH4.webp" ></p>
+<p><em>6. bölümde: SOLID ilkeleri, coupling ve cohesion.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

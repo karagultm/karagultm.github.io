@@ -1,0 +1,298 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Testin amacı, verification ve validation farkı, test piramidi, kara kutu ve beyaz kutu test, Arrange-Act-Assert, test double'lar, TDD, regression ve smoke test, code coverage: mülakatta sorulan test temelleri, Python örnekleriyle."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Yazılım Testi: Test Seviyeleri, Unit Test, Mock ve TDD · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="tr" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Yazılım Testi: Test Seviyeleri, Unit Test, Mock ve TDD</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 Kasım 2026</time> · test, mulakat, programlama-101 · Bölüm 14</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/software-testing-unit-mock-tdd/" hreflang="en" lang="en" data-astro-cid-7jjqptxk>Read in English</a></p> <img src="/_astro/test-kapak.B5Y6wrso_AXtb0.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak">  <article class="yazi" data-astro-cid-7jjqptxk><h1 id="yazılım-testi-test-seviyeleri-unit-test-mock-ve-tdd">Yazılım Testi: Test Seviyeleri, Unit Test, Mock ve TDD</h1>
+<p><em>Programlama 101, Bölüm 14</em></p>
+<p>Serinin önceki bölümleri kodun nasıl yazıldığını ve nasıl çalıştığını anlattı: veri yapıları, OOP, tasarım desenleri, eşzamanlılık, ağ. Bu bölümün sorusu farklı: yazılan kodun doğru çalıştığından nasıl emin olunur?</p>
+<p>Mülakatta test soruları genelde iki yerden gelir. Birincisi kavramlar: test seviyeleri, kara kutu ve beyaz kutu, regression ile smoke testin farkı. İkincisi pratik: bir unit test nasıl yazılır, mock ne zaman kullanılır, coverage neyi gösterir. Örnekler Python’un standart kütüphanesindeki <code>unittest</code> ile yazıldı, hepsi çalıştırılarak denendi. Aynı fikirler JUnit 5 ve pytest’te de geçerli.</p>
+<p>Aşağıda önce testin amacını ve verification ile validation farkını anlatıyorum. Sonra test seviyeleri, test tasarım teknikleri, unit test anatomisi, test double’lar ve TDD geliyor. Ardından regression, smoke ve sanity test, fonksiyonel olmayan testler ve coverage var. Sonda mülakatta sık gelen sorular yer alıyor.</p>
+<hr>
+<h2 id="1-testin-amacı">1. Testin amacı</h2>
+<p><strong>Software Testing (Yazılım Testi)</strong>, yazılımı belirli koşullarda çalıştırıp beklenen sonuçla gerçek sonucu karşılaştırarak hata bulma sürecidir. Amaç, yazılımın gereksinimleri karşıladığına dair güven kazanmak ve hataları kullanıcıdan önce görmektir.</p>
+<p>Testin temel ilkelerinden biri şudur: test hatanın varlığını gösterebilir, yokluğunu kanıtlayamaz. Yüz test geçti diye kodda hata olmadığı söylenemez, yalnızca o yüz durumda hata görülmediği söylenebilir. Bütün girdi kombinasyonlarını denemek de (exhaustive testing) basit fonksiyonlar dışında mümkün değildir. İki <code>int</code> alan bir fonksiyon için bile 2^64 olası girdi çifti var.</p>
+<p>Bu yüzden test bir seçim işidir. Hangi girdilerin denenmesi gerektiğine bilinçli karar verilir. Diğer iki ilke de buna yön verir. Hatalar birkaç modülde toplanma eğilimindedir (defect clustering), ve hata ne kadar geç bulunursa düzeltmesi o kadar pahalıdır. Gereksinim aşamasında fark edilen bir yanlışlık bir paragraf düzeltmesidir. Aynı yanlışlık canlı sistemde bulunursa kod, veri ve belki müşteri iletişimi değişir.</p>
+<p>Terimlerin sırası da sık sorulur. Geliştiricinin yaptığı yanlışlık <strong>Error (Mistake)</strong> olarak adlandırılır. Bu yanlışlığın koda yansıyan sonucu <strong>Defect (Kusur)</strong> ya da bug’dır. Kusurlu kod çalıştığında gözlenen yanlış davranış <strong>Failure (Arıza)</strong> olur. Her defect failure’a dönüşmez. Hiç çalışmayan bir kod yolundaki kusur yıllarca fark edilmeyebilir.</p>
+<hr>
+<h2 id="2-verification-ve-validation">2. Verification ve validation</h2>
+<p>İki terim birbirine çok yakın görünür, ama farklı soruları cevaplar.</p>
+<p><strong>Verification (Doğrulama)</strong>, ürünün şartnameye uygun yapılıp yapılmadığını kontrol eder: “Ürünü doğru mu yapıyoruz?” <strong>Validation (Geçerleme)</strong>, ürünün kullanıcının gerçek ihtiyacını karşılayıp karşılamadığını kontrol eder: “Doğru ürünü mü yapıyoruz?”</p>
+<p>Bir örnek farkı netleştirir. Şartnamede “rapor PDF olarak indirilsin” yazıyor ve sistem bunu kusursuz yapıyor. Verification geçer. Ama kullanıcılar raporu Excel’de işlemek istiyor ve PDF’i her seferinde elle kopyalıyor. Validation başarısız olur. Ürün şartnameye uyuyor, ama ihtiyacı karşılamıyor.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Verification</th>
+<th>Validation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Soru</td>
+<td>Ürünü doğru mu yapıyoruz?</td>
+<td>Doğru ürünü mü yapıyoruz?</td>
+</tr>
+<tr>
+<td>Neye göre</td>
+<td>Şartname, tasarım, gereksinim belgesi</td>
+<td>Kullanıcının gerçek ihtiyacı</td>
+</tr>
+<tr>
+<td>Tipik etkinlik</td>
+<td>Code review, gereksinim incelemesi, unit ve integration test</td>
+<td>Acceptance test, kullanıcı denemesi, beta</td>
+</tr>
+</tbody>
+</table>
+<p>Kaynak notlarda bir düzeltme gerekiyor. Notlarda verification “yazılımı çalıştırmadan yapılan statik test”, validation ise “çalıştırarak yapılan dinamik test” olarak eşleştirilmiş. Bu eşleştirme eksik. Code review gibi statik etkinlikler verification’dır, ama bir unit test de kodu çalıştırdığı halde şartnameye uygunluğu kontrol ettiği için verification’a girer. Ayrım tekniğe göre değil, neye göre ölçüldüğüne göre yapılır.</p>
+<hr>
+<h2 id="3-test-seviyeleri-ve-test-piramidi">3. Test seviyeleri ve test piramidi</h2>
+<p>Testler, sistemin ne kadar büyük bir parçasını kapsadıklarına göre dört seviyeye ayrılır.</p>
+<p><strong>Unit Test (Birim Testi)</strong>, test edilebilen en küçük parçayı, genelde bir fonksiyonu ya da sınıfı, diğer parçalardan ayrı olarak test eder. Milisaniyeler içinde çalışır ve hata çıktığında yeri hemen bellidir.</p>
+<p><strong>Integration Test (Entegrasyon Testi)</strong>, birimlerin birbiriyle konuşmasını test eder. Servisin veritabanına doğru sorgu gönderip sonucu doğru okuması bir integration test konusudur. Birimler tek tek doğru çalışıp birlikte hata verebilir: biri tarihi <code>gün/ay/yıl</code>, diğeri <code>ay/gün/yıl</code> bekliyor olabilir.</p>
+<p><strong>System Test (Sistem Testi)</strong>, kurulmuş sistemin bütününü gereksinimlere göre test eder. Fonksiyonel davranışın yanında performans ve güvenlik gibi fonksiyonel olmayan özellikler de bu seviyede ele alınır.</p>
+<p><strong>Acceptance Test (Kabul Testi)</strong>, sistemin kullanıcı ya da müşteri ihtiyacını karşılayıp karşılamadığını kontrol eder ve yayın kararına temel olur. <strong>User Acceptance Testing (UAT)</strong> bu seviyenin en bilinen biçimidir. Alpha test geliştiricinin ortamında, beta test kullanıcının ortamında yapılır.</p>
+<p>Integration test için iki yaklaşım var. Big bang yaklaşımında bütün modüller bir kerede birleştirilip test edilir. Hazırlık az olur, ama hata çıktığında hangi arayüzden geldiğini bulmak zordur. Incremental yaklaşımda modüller tek tek eklenir. Henüz yazılmamış alt modülün yerine <strong>Stub</strong>, henüz yazılmamış üst modülün, yani çağıranın yerine <strong>Driver</strong> kullanılır.</p>
+<p><img alt="Test piramidi: tabanda çok sayıda hızlı unit test, ortada daha az integration test, tepede az sayıda yavaş uçtan uca ve kabul testi" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/test-piramit.iUsYP066_w0Maw.webp" ></p>
+<p><strong>Test Pyramid (Test Piramidi)</strong>, bu seviyelerin sayıca nasıl dağılması gerektiğini anlatan bir modeldir. Tabanda çok sayıda unit test, ortada daha az integration test, tepede az sayıda uçtan uca (end-to-end) test bulunur. Gerekçe maliyettir. Yukarı çıktıkça testler yavaşlar, kurulumları zorlaşır ve kırıldıklarında sebebi bulmak uzar. Bir unit test bir saniyenin binde birinde biter, tarayıcı açıp formu dolduran bir uçtan uca test saniyeler sürer ve ağ gecikmesi yüzünden ara sıra sebepsiz kırılabilir.</p>
+<p>Piramidin tersi, yani çoğu testin uçtan uca, az kısmının unit olduğu dağılım, “dondurma külahı” olarak anılır. Böyle bir test takımı yavaş çalışır ve geliştirici her değişiklikten sonra çalıştırmaktan kaçınmaya başlar.</p>
+<hr>
+<h2 id="4-kara-kutu-ve-beyaz-kutu-test">4. Kara kutu ve beyaz kutu test</h2>
+<p>Test tasarımında iki bakış açısı var. Fark, testi yazanın kodun içini bilip bilmemesinde.</p>
+<p><strong>Black Box Testing (Kara Kutu Test)</strong>, sistemi yalnızca girdi ve çıktı üzerinden test eder. Kodun nasıl yazıldığına bakılmaz, şartnamede ne yazdığına bakılır. Test, yazılımın ne yaptığını sorar.</p>
+<p><strong>White Box Testing (Beyaz Kutu Test)</strong>, testleri kodun iç yapısına göre tasarlar. Her <code>if</code> dalının, her döngünün en az bir kez çalıştırılması hedeflenir. Test, yazılımın bunu nasıl yaptığını sorar. İkisinin karışımı, iç yapı hakkında kısmi bilgiyle yapılan teste <strong>Gray Box Testing</strong> denir.</p>
+<p>Kara kutu testin en çok sorulan iki tekniği şunlardır.</p>
+<p><strong>Equivalence Partitioning (Denklik Sınıflarına Ayırma)</strong>, girdileri sistemin aynı şekilde davrandığı gruplara böler ve her gruptan bir temsilci seçer. Bir gruptaki bir değer doğru çalışıyorsa, aynı gruptaki diğerlerinin de doğru çalışacağı varsayılır.</p>
+<p><strong>Boundary Value Analysis (Sınır Değer Analizi)</strong>, hataların gruplar arasındaki sınırlarda toplandığı gözlemine dayanır. Her sınırın iki yanındaki değerler test edilir. <code>&#x3C;</code> yerine <code>&#x3C;=</code> yazmak gibi hatalar tam burada yakalanır.</p>
+<p>Örnek bir kural: bilet indirimi yaşa göre belirleniyor. 0–17 yaş %50, 18–64 yaş indirimsiz, 65–120 yaş %30 indirim alıyor, bu aralığın dışı geçersiz.</p>
+<table>
+<thead>
+<tr>
+<th>Sınıf</th>
+<th>Aralık</th>
+<th>Temsilci</th>
+<th>Sınır değerleri</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Geçersiz (alt)</td>
+<td>yaş &#x3C; 0</td>
+<td>−5</td>
+<td>−1</td>
+</tr>
+<tr>
+<td>Çocuk</td>
+<td>0–17</td>
+<td>10</td>
+<td>0, 17</td>
+</tr>
+<tr>
+<td>Yetişkin</td>
+<td>18–64</td>
+<td>30</td>
+<td>18, 64</td>
+</tr>
+<tr>
+<td>Yaşlı</td>
+<td>65–120</td>
+<td>80</td>
+<td>65, 120</td>
+</tr>
+<tr>
+<td>Geçersiz (üst)</td>
+<td>yaş > 120</td>
+<td>150</td>
+<td>121</td>
+</tr>
+</tbody>
+</table>
+<p>Beş sınıftan beş temsilci ve sekiz sınır değeri, yüz yirmi küsur olası yaşın yerine geçer.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> IndirimOraniTesti</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">unittest</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">TestCase</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> test_sinir_degerleri</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#E1E4E8">        beklenen </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0.5</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">17</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0.5</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">18</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0.0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">64</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0.0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">65</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0.3</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">120</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0.3</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> yas, oran </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> beklenen.items():</span></span>
+<span class="line"><span style="color:#F97583">            with</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.subTest(</span><span style="color:#FFAB70">yas</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">yas):</span></span>
+<span class="line"><span style="color:#79B8FF">                self</span><span style="color:#E1E4E8">.assertEqual(indirim_orani(yas), oran)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> test_aralik_disi_yaslar</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> yas </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">-</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">121</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#F97583">            with</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.subTest(</span><span style="color:#FFAB70">yas</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">yas):</span></span>
+<span class="line"><span style="color:#F97583">                with</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.assertRaises(</span><span style="color:#79B8FF">ValueError</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#E1E4E8">                    indirim_orani(yas)</span></span></code></pre>
+<p><code>subTest</code>, döngüdeki her değeri ayrı bir durum olarak raporlar. 17 başarısız olursa test diğer değerleri denemeye devam eder ve raporda hangi yaşın kırıldığı görünür. pytest’te aynı iş <code>@pytest.mark.parametrize</code> ile, JUnit 5’te <code>@ParameterizedTest</code> ile yapılır.</p>
+<hr>
+<h2 id="5-unit-test-anatomisi-arrange-act-assert">5. Unit test anatomisi: Arrange-Act-Assert</h2>
+<p>İyi bir unit test üç bölümden oluşur. Bu yapıya <strong>Arrange-Act-Assert (AAA)</strong> denir.</p>
+<ul>
+<li>Arrange: testin ihtiyaç duyduğu nesneler ve veriler hazırlanır.</li>
+<li>Act: test edilen davranış tek bir çağrıyla tetiklenir.</li>
+<li>Assert: sonucun beklenenle aynı olup olmadığı kontrol edilir.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> unittest</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> sepet_toplami</span><span style="color:#E1E4E8">(fiyatlar, indirim</span><span style="color:#F97583">=</span><span style="color:#79B8FF">0.0</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#F97583"> not</span><span style="color:#79B8FF"> 0</span><span style="color:#F97583"> &#x3C;=</span><span style="color:#E1E4E8"> indirim </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">        raise</span><span style="color:#79B8FF"> ValueError</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"indirim 0 ile 1 arasında olmalı"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> round</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">sum</span><span style="color:#E1E4E8">(fiyatlar) </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">1</span><span style="color:#F97583"> -</span><span style="color:#E1E4E8"> indirim), </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> SepetToplamiTesti</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">unittest</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">TestCase</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> test_indirim_uygulaninca_toplam_duser</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#E1E4E8">        fiyatlar </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">50</span><span style="color:#E1E4E8">]                               </span><span style="color:#6A737D"># Arrange</span></span>
+<span class="line"><span style="color:#E1E4E8">        toplam </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> sepet_toplami(fiyatlar, </span><span style="color:#FFAB70">indirim</span><span style="color:#F97583">=</span><span style="color:#79B8FF">0.1</span><span style="color:#E1E4E8">)      </span><span style="color:#6A737D"># Act</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.assertEqual(toplam, </span><span style="color:#79B8FF">135.0</span><span style="color:#E1E4E8">)                    </span><span style="color:#6A737D"># Assert</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> test_gecersiz_indirim_hata_verir</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#F97583">        with</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.assertRaises(</span><span style="color:#79B8FF">ValueError</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#E1E4E8">            sepet_toplami([</span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">], </span><span style="color:#FFAB70">indirim</span><span style="color:#F97583">=</span><span style="color:#79B8FF">1.5</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<p>Test adı ne test edildiğini ve beklenen sonucu söyler. Rapor ekranında <code>test_indirim_uygulaninca_toplam_duser</code> başarısız göründüğünde koda bakmadan sorun anlaşılır. <code>test1</code>, <code>test_sepet</code> gibi adlar bu bilgiyi vermez.</p>
+<p>Testler birbirinden bağımsız olmalı. Bir testin ürettiği veriye diğer testin güvenmesi, testlerin sırası değiştiğinde ya da biri tek başına çalıştırıldığında açıklanamayan kırılmalara yol açar. <code>unittest</code>’te her testten önce çalışan <code>setUp</code>, JUnit 5’te <code>@BeforeEach</code>, pytest’te fixture’lar her teste temiz bir başlangıç hazırlamak için var.</p>
+<p>Bir test tek bir davranışı kontrol etmeli. Aynı davranışın birkaç özelliğini kontrol eden birden fazla assert sorun değildir. Sorun, tek testte sipariş oluşturma, iptal ve iade gibi birbirinden bağımsız üç senaryonun denenmesidir. İlk assert kırıldığında diğer ikisinin durumu bilinmez.</p>
+<p>Testin kendisi de deterministik olmalı. Saate, rastgele sayıya ya da ağa bağlı bir test bazen geçer, bazen kırılır. Bu tür testlere <strong>Flaky Test</strong> denir ve ekip bir süre sonra kırmızı sonuçları ciddiye almamaya başlar.</p>
+<hr>
+<h2 id="6-test-doublelar-stub-mock-fake-spy">6. Test double’lar: stub, mock, fake, spy</h2>
+<p>Test edilen sınıf genelde başka nesnelere bağımlıdır: veritabanı, ödeme servisi, e-posta gönderici. Unit testte bunların gerçeğini kullanmak testi yavaşlatır ve dış sistemlere bağlar. Gerçek bir ödeme servisine her test çalıştığında istek gitmesi istenmez. Bağımlılığın yerine test için konan nesnenin genel adı <strong>Test Double</strong>’dır. Ad, film çekiminde oyuncunun yerine geçen dublörden gelir.</p>
+<p>Dört türü sık sorulur.</p>
+<ul>
+<li><strong>Stub</strong>: Önceden belirlenmiş cevabı döndürür. Testin ihtiyacı olan veriyi sağlar, nasıl çağrıldığı kontrol edilmez.</li>
+<li><strong>Mock</strong>: Hangi metodun, hangi parametrelerle, kaç kez çağrıldığı test sonunda doğrulanır. Test, nesnenin bir etkileşimi gerçekleştirip gerçekleştirmediğine bakar.</li>
+<li><strong>Fake</strong>: Çalışan ama üretimde kullanılamayacak kadar basit bir gerçeklemedir. Veritabanı yerine bellekte duran bir sözlük tipik örnektir.</li>
+<li><strong>Spy</strong>: Gerçek nesneyi sarar. Gerçek metot çalışır, ama yapılan çağrılar kaydedilir ve sonradan kontrol edilebilir.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> unittest.mock </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Mock</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> SiparisServisi</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(self, odeme, eposta):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.odeme, </span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.eposta </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> odeme, eposta</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> siparis_ver</span><span style="color:#E1E4E8">(self, musteri, tutar):</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#F97583"> not</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.odeme.cek(musteri, tutar):</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#79B8FF"> False</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.eposta.gonder(musteri, </span><span style="color:#9ECBFF">"Siparişiniz alındı"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> True</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> SiparisServisiTesti</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">unittest</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">TestCase</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> test_odeme_basariliysa_eposta_gider</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#E1E4E8">        odeme </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Mock()</span></span>
+<span class="line"><span style="color:#E1E4E8">        odeme.cek.return_value </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> True</span><span style="color:#6A737D">      # stub: hazır cevap</span></span>
+<span class="line"><span style="color:#E1E4E8">        eposta </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Mock()                    </span><span style="color:#6A737D"># mock: çağrı doğrulanacak</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        sonuc </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> SiparisServisi(odeme, eposta).siparis_ver(</span><span style="color:#9ECBFF">"musteri-42"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">250</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.assertTrue(sonuc)</span></span>
+<span class="line"><span style="color:#E1E4E8">        eposta.gonder.assert_called_once_with(</span><span style="color:#9ECBFF">"musteri-42"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"Siparişiniz alındı"</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<p>Python’da aynı <code>Mock</code> sınıfı hem stub hem mock olarak kullanılabiliyor. Ayrımı nesnenin türü değil, testteki rolü belirler: <code>odeme</code> yalnızca cevap verdiği için stub, <code>eposta</code> üzerinde çağrı doğrulandığı için mock’tur. Java’da Mockito’nun <code>when(...).thenReturn(...)</code> ve <code>verify(...)</code> çağrıları aynı iki rolü karşılar.</p>
+<p>Fake ve spy için kısa örnekler:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> SahteKullaniciDeposu</span><span style="color:#E1E4E8">:                  </span><span style="color:#6A737D"># fake: bellekte çalışan depo</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">._kayitlar </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> kaydet</span><span style="color:#E1E4E8">(self, id, ad):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">._kayitlar[</span><span style="color:#79B8FF">id</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ad</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> bul</span><span style="color:#E1E4E8">(self, id):</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">._kayitlar.get(</span><span style="color:#79B8FF">id</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> GercekHesap</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> kdv_ekle</span><span style="color:#E1E4E8">(self, tutar):</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> tutar </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 1.2</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">casus </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Mock(</span><span style="color:#FFAB70">wraps</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">GercekHesap())            </span><span style="color:#6A737D"># spy: gerçek metot çalışır</span></span>
+<span class="line"><span style="color:#E1E4E8">casus.kdv_ekle(</span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">)                          </span><span style="color:#6A737D"># 120.0 döner</span></span>
+<span class="line"><span style="color:#E1E4E8">casus.kdv_ekle.assert_called_once_with(</span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">)  </span><span style="color:#6A737D"># çağrı da kaydedildi</span></span></code></pre>
+<h3 id="mock-ne-zaman-zarar-verir">Mock ne zaman zarar verir</h3>
+<p>Mock güçlü bir araç, ama fazla kullanıldığında test, kodun ne yaptığını değil nasıl yaptığını kontrol etmeye başlar. Bir metodun içinde hangi yardımcı metodun hangi sırayla çağrıldığını doğrulayan testler, davranış hiç değişmeden yapılan her refactor’da kırılır. Test takımı bir güvenlik ağı olmaktan çıkıp değişikliğin önünde engel olur.</p>
+<p>İkinci sorun, mock’un gerçek nesneden farklı davranabilmesidir. Bir mock <code>None</code> dönebilir, oysa gerçek servis o durumda istisna fırlatıyordur. Testler geçer, sistem canlıda kırılır. Bağımlılığın arayüzü değiştiğinde de mock eski davranışı taklit etmeye devam eder ve hiçbir test bunu fark etmez. Python’da <code>Mock(spec=GercekSinif)</code> ya da <code>create_autospec</code> kullanmak, en azından var olmayan bir metodun çağrılmasını yakalar.</p>
+<p>Pratikte birkaç kural işe yarar. Sonuç bir dönüş değeriyle kontrol edilebiliyorsa mock yerine bu değer kontrol edilir. Yalnızca dış dünyaya giden sınırlar mock’lanır: ağ, dosya sistemi, saat, ödeme, e-posta. Sahip olunmayan bir kütüphanenin sınıfı doğrudan mock’lanmaz, önce onun etrafına küçük bir sarmalayıcı yazılır ve o sarmalayıcı mock’lanır. Basit bir veri nesnesi ya da hesap yapan bir sınıf mock’lanmaz, gerçeği kullanılır.</p>
+<hr>
+<h2 id="7-tdd-red-green-refactor">7. TDD: red-green-refactor</h2>
+<p><strong>Test-Driven Development (TDD)</strong>, testin koddan önce yazıldığı bir geliştirme yöntemidir. Kısa bir döngünün sürekli tekrarından oluşur.</p>
+<ul>
+<li>Red: Henüz yazılmamış davranış için bir test yazılır ve çalıştırılır. Test başarısız olmalı. Başarısız olmuyorsa ya davranış zaten var ya da test bir şey kontrol etmiyordur.</li>
+<li>Green: Testi geçirecek en basit kod yazılır. Bu aşamada güzel kod hedeflenmez.</li>
+<li>Refactor: Testler yeşilken kod temizlenir: tekrar kaldırılır, adlar düzeltilir. Testler her adımda tekrar çalıştırılır.</li>
+</ul>
+<p>Örneğin sepet toplamı için ilk test “boş sepetin toplamı 0’dır” olabilir. <code>return 0</code> yazmak testi geçirir. İkinci test “iki ürünün toplamı fiyatlarının toplamıdır” olur ve <code>return 0</code> artık yetmez, <code>sum</code> gelir. İndirim testi geldiğinde indirim hesabı eklenir. Kod her adımda yalnızca bir testin istediği kadar büyür.</p>
+<p>TDD’nin asıl getirisi tasarım tarafında. Test önce yazıldığı için kod, test edilebilir olacak şekilde, yani bağımlılıkları dışarıdan alınan küçük parçalar halinde tasarlanır. Bedeli de var: gereksinimin henüz belli olmadığı keşif aşamasında testleri sürekli yeniden yazmak gerekebilir. TDD bir test türü değil, bir yazma sırasıdır.</p>
+<hr>
+<h2 id="8-regression-smoke-ve-sanity-test">8. Regression, smoke ve sanity test</h2>
+<p>Bu üç terim test seviyesi değil, testin ne zaman ve hangi amaçla çalıştırıldığını anlatır.</p>
+<p><strong>Regression Test (Gerileme Testi)</strong>, bir değişiklikten sonra daha önce çalışan özelliklerin hâlâ çalıştığını kontrol eder. Bir hatayı düzeltmek ya da yeni özellik eklemek başka bir yeri bozabilir. Otomatik test takımının her commit’te çalıştırılması pratikte regression testtir. Bir hata düzeltildiğinde o hatayı yeniden üreten bir test eklemek, aynı hatanın geri dönmesini engeller.</p>
+<p>Regression ile karıştırılan bir terim <strong>Retesting (Confirmation Testing)</strong>. Retesting, düzeltilen hatanın gerçekten düzeldiğini görmek için o hatayı bulan testin yeniden çalıştırılmasıdır. Regression ise düzeltmenin çevresinde başka bir şeyi bozup bozmadığına bakar.</p>
+<p><strong>Smoke Test (Duman Testi)</strong>, yeni bir build’in daha ayrıntılı test edilmeye değer olup olmadığını anlamak için yapılan kısa ve yüzeysel bir kontroldür. Uygulama açılıyor mu, giriş yapılabiliyor mu, ana sayfa yükleniyor mu gibi kritik akışlara bakılır. Ad donanımdan gelir: yeni bir devreye ilk kez güç verildiğinde duman çıkmıyorsa daha ayrıntılı ölçüme geçilir.</p>
+<p><strong>Sanity Test</strong>, küçük bir değişiklik ya da hata düzeltmesinden sonra yalnızca ilgili bölgenin mantıklı çalıştığını kontrol eden dar kapsamlı bir testtir. Smoke test geniş ve sığdır, sistemin her yerine kısaca dokunur. Sanity test dar ve biraz daha derindir, tek bir bölgeye odaklanır. İki terimin sınırı kaynaktan kaynağa değişir, mülakatta bu genişlik ve derinlik farkını söylemek yeterli olur.</p>
+<hr>
+<h2 id="9-fonksiyonel-olmayan-testler">9. Fonksiyonel olmayan testler</h2>
+<p>Fonksiyonel test sistemin ne yaptığını, <strong>Non-functional Testing (Fonksiyonel Olmayan Test)</strong> ise bunu ne kadar iyi yaptığını ölçer: hız, kapasite, güvenlik, kullanılabilirlik. Mülakatta genelde performans ailesi sorulur.</p>
+<table>
+<thead>
+<tr>
+<th>Tür</th>
+<th>Soru</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Performance test</td>
+<td>Belirli bir yükte cevap süresi ve kaynak kullanımı ne?</td>
+</tr>
+<tr>
+<td>Load test</td>
+<td>Beklenen en yüksek kullanıcı sayısında sistem hedeflenen sürede cevap veriyor mu?</td>
+</tr>
+<tr>
+<td>Stress test</td>
+<td>Beklenenin üstündeki yükte sistem nerede ve nasıl çöküyor, sonra toparlanıyor mu?</td>
+</tr>
+<tr>
+<td>Spike test</td>
+<td>Yük birden on katına çıktığında ne oluyor?</td>
+</tr>
+<tr>
+<td>Soak (endurance) test</td>
+<td>Saatlerce süren normal yükte bellek sızıntısı ya da yavaşlama var mı?</td>
+</tr>
+</tbody>
+</table>
+<p>Load ile stress arasındaki fark sık sorulur. Load test beklenen yükte sistemin hedefleri tutturduğunu doğrular. Stress test yükü kasıtlı olarak sınırın ötesine taşır ve sistemin nasıl başarısız olduğuna bakar. Bağlantıları reddedip toparlanan bir sistem ile veriyi bozarak çöken bir sistem arasında büyük fark var. Bu testler için JMeter, k6 ve Gatling gibi araçlar kullanılır.</p>
+<hr>
+<h2 id="10-code-coverage-ve-sınırları">10. Code coverage ve sınırları</h2>
+<p><strong>Code Coverage (Kod Kapsamı)</strong>, testler çalışırken kodun ne kadarının çalıştırıldığını gösteren bir ölçüdür. Python’da coverage.py, Java’da JaCoCo bu ölçümü yapar. En sık kullanılan iki tür şunlardır:</p>
+<ul>
+<li>Line (statement) coverage: çalıştırılan satırların oranı.</li>
+<li>Branch coverage: her <code>if</code>’in hem doğru hem yanlış dalının çalıştırılıp çalıştırılmadığı.</li>
+</ul>
+<p>Branch coverage daha sıkıdır. <code>if x > 0: y = 1</code> satırı <code>x = 5</code> ile çalıştırıldığında line coverage %100 olur, ama <code>x &#x3C;= 0</code> durumu hiç denenmemiştir.</p>
+<p>%100 coverage hatasız kod demek değildir. Coverage yalnızca bir satırın çalıştığını söyler, sonucunun kontrol edildiğini söylemez. Hiç assert içermeyen bir test de coverage’ı artırır. Ayrıca yazılmamış kodun coverage’ı ölçülemez. Eksik bir kontrol coverage raporunda görünmez.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> ortalama</span><span style="color:#E1E4E8">(sayilar):</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> sum</span><span style="color:#E1E4E8">(sayilar) </span><span style="color:#F97583">/</span><span style="color:#79B8FF"> len</span><span style="color:#E1E4E8">(sayilar)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> OrtalamaTesti</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">unittest</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">TestCase</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> test_ortalama</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.assertEqual(ortalama([</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">]), </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">)   </span><span style="color:#6A737D"># coverage %100</span></span></code></pre>
+<p>Bu test fonksiyonun tek satırını çalıştırır ve coverage %100 görünür. Ama <code>ortalama([])</code> çağrısı <code>ZeroDivisionError</code> fırlatır. Boş liste için ne olması gerektiği kararlaştırılmamış ve hiçbir test bunu sormamış. Coverage raporu bunu göstermez, sınır değer analizi gösterir.</p>
+<p>Coverage’ın asıl faydası tersinden okunduğunda ortaya çıkar. Düşük coverage, test edilmemiş bölgeleri gösterir. Yüksek coverage ise yalnızca o bölgelerin çalıştırıldığını gösterir. Coverage’ı bir hedef olarak dayatmak, %80 eşiğini geçmek için anlamsız testler yazılmasına yol açabilir. Testlerin gerçekten hata yakalayıp yakalamadığını ölçmek için <strong>Mutation Testing</strong> kullanılır. Araç koda küçük hatalar ekler, örneğin <code>&#x3C;</code> yerine <code>&#x3C;=</code> yazar, ve testlerin bu değişikliği yakalayıp yakalamadığına bakar.</p>
+<hr>
+<h2 id="mülakatta-sorulanlar">Mülakatta sorulanlar</h2>
+<p><strong>1. Verification ile validation arasındaki fark nedir?</strong>
+Verification ürünün şartnameye uygun yapılıp yapılmadığını kontrol eder, “ürünü doğru mu yapıyoruz” sorusunu cevaplar. Validation ürünün kullanıcının gerçek ihtiyacını karşılayıp karşılamadığını kontrol eder, “doğru ürünü mü yapıyoruz” sorusunu cevaplar.
+Sık yapılan hata: Verification’ı yalnızca statik test, validation’ı yalnızca dinamik test saymak. Unit test kodu çalıştırır, ama şartnameye göre ölçtüğü için verification’dır.</p>
+<p><strong>2. Test piramidi nedir, neden piramit şeklindedir?</strong>
+Tabanda çok sayıda unit test, ortada daha az integration test, tepede az sayıda uçtan uca test olması gerektiğini anlatan modeldir. Yukarı çıktıkça testler yavaşlar, pahalılaşır ve kırıldıklarında sebebi bulmak zorlaşır.
+Sık yapılan hata: Piramidi “uçtan uca test yazılmaz” diye anlamak. O testler az sayıda ama kritik akışlar için gereklidir.</p>
+<p><strong>3. Equivalence partitioning ve boundary value analysis nedir?</strong>
+Equivalence partitioning girdileri sistemin aynı davrandığı sınıflara böler ve her sınıftan bir değer test eder. Boundary value analysis bu sınıfların sınırlarındaki ve hemen dışındaki değerleri test eder, çünkü <code>&#x3C;</code> ile <code>&#x3C;=</code> karışıklığı gibi hatalar orada çıkar.
+Sık yapılan hata: Yalnızca geçerli sınıfları test edip geçersiz girdileri (−1, 121 gibi) atlamak.</p>
+<p><strong>4. Mock ile stub arasındaki fark nedir?</strong>
+Stub önceden belirlenmiş bir cevap döndürür ve test, sonucun durumuna bakar. Mock üzerinde hangi metodun hangi parametrelerle çağrıldığı doğrulanır ve test, etkileşime bakar.
+Sık yapılan hata: Her bağımlılığı mock’layıp iç çağrı sırasını doğrulamak. Bu testler davranış değişmeden yapılan refactor’da kırılır.</p>
+<p><strong>5. TDD nedir?</strong>
+Testin koddan önce yazıldığı yöntemdir. Önce başarısız bir test yazılır (red), sonra onu geçiren en basit kod yazılır (green), ardından testler yeşilken kod temizlenir (refactor).
+Sık yapılan hata: Red adımını atlamak. Hiç başarısız olduğu görülmemiş bir testin doğru şeyi kontrol ettiği bilinmez.</p>
+<p><strong>6. Regression, retesting ve smoke test arasındaki fark nedir?</strong>
+Retesting düzeltilen hatanın gerçekten düzeldiğini o hatanın testiyle kontrol eder. Regression test değişikliğin daha önce çalışan başka özellikleri bozmadığını kontrol eder. Smoke test yeni build’in ayrıntılı teste değer olup olmadığına bakan kısa ve yüzeysel bir kontroldür.
+Sık yapılan hata: Retesting ile regression’ı aynı şey saymak.</p>
+<p><strong>7. %100 code coverage hatasız kod anlamına gelir mi?</strong>
+Gelmez. Coverage bir satırın çalıştırıldığını gösterir, sonucun doğru kontrol edildiğini göstermez. Yazılmamış bir kontrol, örneğin boş liste durumu, coverage raporunda hiç görünmez.
+Sık yapılan hata: Line coverage ile branch coverage’ı aynı saymak. Tek dalı çalıştırılmış bir <code>if</code> satırı line coverage’da tam görünür.</p>
+<p><strong>8. Load test ile stress test arasındaki fark nedir?</strong>
+Load test sistemin beklenen en yüksek yükte hedeflenen cevap süresini tutturup tutturmadığını kontrol eder. Stress test yükü bilerek kapasitenin üstüne çıkarır ve sistemin nasıl başarısız olduğuna, sonra toparlanıp toparlanmadığına bakar.
+Sık yapılan hata: Stress testin amacını “sistemin çökmediğini göstermek” sanmak. Amaç nasıl çöktüğünü görmektir.</p>
+<p><img alt="Özet kart: verification ve validation farkı, test piramidi, sınır değer tablosu, dört test double türü, red-green-refactor döngüsü ve coverage&amp;#x27;ın sınırları" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/test-ozet-kart.C9Xaejfm_Z29mP0K.webp" ></p>
+<p>Programlama 101 serisi bu bölümle bitiyor. Bölümler 1’den 14’e sırayla okunabilir, her biri bir öncekinde anlatılan kavramlara dayanıyor.</p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

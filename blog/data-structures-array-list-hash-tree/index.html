@@ -1,0 +1,261 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Arrays, linked lists, stacks, queues, hash maps and trees: the data structures interviewers ask about, with analogies, code and Big O."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Data Structures: Arrays, Linked Lists, Stacks, Queues, Hash Maps and Trees · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="en" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Data Structures: Arrays, Linked Lists, Stacks, Queues, Hash Maps and Trees</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-16T00:00:00.000Z" data-astro-cid-7jjqptxk>16 November 2026</time> · data-structures, algorithms, interview, programming-101 · Part 2</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/veri-yapilari-dizi-liste-hash-agac/" hreflang="tr" lang="tr" data-astro-cid-7jjqptxk>Türkçe oku</a></p> <img src="/_astro/vy-kapak.dxUNufYP_Z1NHvyU.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak">  <article class="yazi" data-astro-cid-7jjqptxk><h1 id="data-structures-arrays-linked-lists-stacks-queues-hash-maps-and-trees">Data Structures: Arrays, Linked Lists, Stacks, Queues, Hash Maps and Trees</h1>
+<p><em>Programming 101, Part 2</em></p>
+<p>This post is about keeping the same data in memory in different shapes, and what that does to the cost of each operation. Searching a million records can take a microsecond in one layout and seconds in another. The language and the machine stay the same. The difference comes from how the data is laid out.</p>
+<p>In an interview, “which data structure would you use?” really means: which operation will run most often, and what does it cost in this structure? Big O from part 1 is the measuring stick here. Below I go through arrays, linked lists, stacks, queues, hash maps and trees in order. At the end there is a comparison table and the questions that come up most in interviews.</p>
+<hr>
+<h2 id="1-what-is-a-data-structure">1. What is a data structure?</h2>
+<p>A <strong>Data Structure</strong> is a way of organizing data in memory so that certain operations are fast. No structure is best at everything. One makes reads cheap and inserts expensive, another does the reverse.</p>
+<p>The same books can be shelved in order, packed into boxes, or arranged with a catalog. Which one fits depends on how a book will be looked up later.</p>
+<hr>
+<h2 id="2-arrays">2. Arrays</h2>
+<p>An <strong>Array</strong> stores elements of the same type <strong>contiguously</strong> in memory. That is why the address of element i takes a single calculation: <code>start + i × element_size</code>. Access by index is O(1).</p>
+<p>Numbered houses on a street work the same way. Nobody knocks on doors 1 to 6 to reach number 7. They go straight there.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="c"><code><span class="line"><span style="color:#F97583">#include</span><span style="color:#9ECBFF"> &#x3C;stdio.h></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">int</span><span style="color:#B392F0"> main</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">void</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#FFAB70"> a</span><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span><span style="color:#79B8FF">10</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">20</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">30</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">40</span><span style="color:#E1E4E8">};</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#B392F0">        printf</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"a[</span><span style="color:#79B8FF">%d</span><span style="color:#9ECBFF">] = </span><span style="color:#79B8FF">%d</span><span style="color:#9ECBFF">  address: </span><span style="color:#79B8FF">%p\n</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">, i, </span><span style="color:#FFAB70">a</span><span style="color:#E1E4E8">[i], (</span><span style="color:#F97583">void*</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">&#x26;</span><span style="color:#FFAB70">a</span><span style="color:#E1E4E8">[i]);</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>An <code>int</code> is usually 4 bytes, so the addresses go up by 4. The output shows that the elements really sit next to each other.</p>
+<p>The cost shows up in inserts and deletes. Adding or removing an element in the middle means shifting every element behind it by one, which is O(n). Searching an unsorted array is O(n) as well. If the array is sorted, binary search brings it down to O(log n).</p>
+<h3 id="dynamic-arrays">Dynamic arrays</h3>
+<p>A C array has a fixed size. Python’s <code>list</code>, Java’s <code>ArrayList</code> and C++‘s <code>vector</code> are <strong>Dynamic Arrays</strong>. They keep an array inside, and when it fills up they allocate a larger one and copy everything over.</p>
+<p>The copy takes O(n), but since capacity grows by a constant factor each time, it happens rarely. Over n appends the total number of copies stays proportional to n. That is why appending counts as <strong>amortized O(1)</strong>.</p>
+<p>A growing family that moves from a 4-person house to an 8-person house, then to a 16-person one, is a fair picture. Moving day is tiring, but the family does not move for every new child.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">items </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#E1E4E8">items.append(</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">)      </span><span style="color:#6A737D"># append: amortized O(1)</span></span>
+<span class="line"><span style="color:#E1E4E8">items.insert(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)   </span><span style="color:#6A737D"># insert at front: O(n), everyone shifts</span></span>
+<span class="line"><span style="color:#E1E4E8">x </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> items[</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">]         </span><span style="color:#6A737D"># read by index: O(1)</span></span></code></pre>
+<hr>
+<h2 id="3-linked-lists">3. Linked lists</h2>
+<p>In a <strong>Linked List</strong>, each element, called a <strong>node</strong>, holds a value and the address of the next node (a <strong>pointer</strong>). Nodes can be scattered across memory.</p>
+<ul>
+<li><strong>Singly linked:</strong> each node knows only the next one.</li>
+<li><strong>Doubly linked:</strong> each node knows both the previous and the next. The list can be walked backwards, and a known node can be deleted in O(1).</li>
+</ul>
+<p>It works like a treasure hunt. Each clue gives the location of the next one. Reaching clue 5 means following the first four, but adding a new clue in between only takes changing one note.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Node</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(self, value, next</span><span style="color:#F97583">=</span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.value </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> value</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.next </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> next</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">head </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Node(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, Node(</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, Node(</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">)))     </span><span style="color:#6A737D"># 1 -> 2 -> 3</span></span>
+<span class="line"><span style="color:#E1E4E8">head.next </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Node(</span><span style="color:#79B8FF">9</span><span style="color:#E1E4E8">, head.next)       </span><span style="color:#6A737D"># 1 -> 9 -> 2 -> 3, O(1)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">n </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> head</span></span>
+<span class="line"><span style="color:#F97583">while</span><span style="color:#E1E4E8"> n:                             </span><span style="color:#6A737D"># reaching element i: O(n)</span></span>
+<span class="line"><span style="color:#79B8FF">    print</span><span style="color:#E1E4E8">(n.value); n </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> n.next</span></span></code></pre>
+<p>Inserting at the head, or after a node already in hand, is O(1). Finding that node, indexing and searching are O(n).</p>
+<p>There is one more cost that Big O does not show: <strong>Cache Locality</strong>. The CPU pulls memory into its cache in small blocks. Reading one array element brings its neighbours into the cache too. Linked-list nodes each live somewhere else, so the cache misses often. For that reason arrays are usually faster in practice, even for operations with the same Big O.</p>
+<hr>
+<h2 id="4-stacks">4. Stacks</h2>
+<p>A <strong>Stack</strong> works as <strong>LIFO</strong> (Last In, First Out): the last element in is the first one out. Its operations are <strong>push</strong> (put on top), <strong>pop</strong> (take from the top) and <strong>peek</strong> (look at the top). All are O(1).</p>
+<p>A pile of plates behaves the same way. The one on top is always taken first.</p>
+<p>Where stacks are used:</p>
+<ul>
+<li><strong>Call stack:</strong> when a function is called, its frame is pushed onto the stack, and it is popped when the function returns. This is why infinite recursion ends in a “stack overflow” error.</li>
+<li><strong>Undo:</strong> the last action is the first one undone.</li>
+<li><strong>Bracket matching:</strong> a problem that comes up often in interviews.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> is_balanced</span><span style="color:#E1E4E8">(s):</span></span>
+<span class="line"><span style="color:#E1E4E8">    pairs </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">")"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"("</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"]"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"["</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"}"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"{"</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">    stack </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> c </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> s:</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> c </span><span style="color:#F97583">in</span><span style="color:#9ECBFF"> "([{"</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">            stack.append(c)                      </span><span style="color:#6A737D"># push</span></span>
+<span class="line"><span style="color:#F97583">        elif</span><span style="color:#E1E4E8"> c </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> pairs:</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#F97583"> not</span><span style="color:#E1E4E8"> stack </span><span style="color:#F97583">or</span><span style="color:#E1E4E8"> stack.pop() </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> pairs[c]:</span></span>
+<span class="line"><span style="color:#F97583">                return</span><span style="color:#79B8FF"> False</span><span style="color:#6A737D">                     # wrong or extra closer</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#F97583"> not</span><span style="color:#E1E4E8"> stack                             </span><span style="color:#6A737D"># nothing left open</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(is_balanced(</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">{[()]}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">))  </span><span style="color:#6A737D"># True</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(is_balanced(</span><span style="color:#9ECBFF">"([)]"</span><span style="color:#E1E4E8">))    </span><span style="color:#6A737D"># False</span></span></code></pre>
+<p>In Python the end of a <code>list</code> is used as a stack. <code>append</code> and <code>pop()</code> are O(1).</p>
+<hr>
+<h2 id="5-queues-and-deques">5. Queues and deques</h2>
+<p>A <strong>Queue</strong> works as <strong>FIFO</strong> (First In, First Out): the first element in is the first one out. <strong>Enqueue</strong> adds at the back, <strong>dequeue</strong> removes from the front. Both are O(1).</p>
+<p>A printer queue is an example. The document sent first is printed first.</p>
+<p>Printer and job queues, message queues and the operating system’s ready queue all run on queues. <strong>BFS (Breadth-First Search)</strong>, which walks a graph or tree level by level, uses one as well.</p>
+<p>In Python, <code>list.pop(0)</code> is O(n), because every remaining element shifts one step left. For a queue, <code>collections.deque</code> is used:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> collections </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> deque</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">graph </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">"A"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"B"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"C"</span><span style="color:#E1E4E8">], </span><span style="color:#9ECBFF">"B"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"D"</span><span style="color:#E1E4E8">], </span><span style="color:#9ECBFF">"C"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"D"</span><span style="color:#E1E4E8">], </span><span style="color:#9ECBFF">"D"</span><span style="color:#E1E4E8">: []}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> bfs</span><span style="color:#E1E4E8">(start):</span></span>
+<span class="line"><span style="color:#E1E4E8">    seen, queue </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {start}, deque([start])</span></span>
+<span class="line"><span style="color:#F97583">    while</span><span style="color:#E1E4E8"> queue:</span></span>
+<span class="line"><span style="color:#E1E4E8">        node </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> queue.popleft()            </span><span style="color:#6A737D"># dequeue: O(1)</span></span>
+<span class="line"><span style="color:#79B8FF">        print</span><span style="color:#E1E4E8">(node)</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> nb </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> graph[node]:</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> nb </span><span style="color:#F97583">not</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> seen:</span></span>
+<span class="line"><span style="color:#E1E4E8">                seen.add(nb)</span></span>
+<span class="line"><span style="color:#E1E4E8">                queue.append(nb)          </span><span style="color:#6A737D"># enqueue: O(1)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">bfs(</span><span style="color:#9ECBFF">"A"</span><span style="color:#E1E4E8">)  </span><span style="color:#6A737D"># A B C D</span></span></code></pre>
+<p>A <strong>Deque (Double-Ended Queue)</strong> adds and removes at both ends in O(1). It can be used as a stack or as a queue.</p>
+<hr>
+<h2 id="6-hash-maps">6. Hash maps</h2>
+<p>A <strong>Hash Map</strong> stores key -> value pairs. Python’s <code>dict</code> and Java’s <code>HashMap</code> are hash maps. Insert, lookup and delete are O(1) on average.</p>
+<p>A <strong>Hash Function</strong> turns the key into a number. Taking that number modulo the array size gives a <strong>bucket</strong> index. So a hash map is a structure with an array inside. It converts the key into an index and uses the array’s O(1) access.</p>
+<p>A coat check works the same way. A coat is handed over and ticket 42 comes back. To return it, nobody searches every hanger. They go straight to 42.</p>
+<h3 id="collisions">Collisions</h3>
+<p>Two different keys can land in the same bucket. This is called a <strong>Collision</strong>. There are two common fixes:</p>
+<ul>
+<li><strong>Chaining:</strong> each bucket holds a small list, and colliding entries are added to it. Java’s <code>HashMap</code> uses this method.</li>
+<li><strong>Open addressing:</strong> if the bucket is taken, the next free slot is found by a fixed rule. Python’s <code>dict</code> uses this method.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">buckets </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [[] </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> _ </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">8</span><span style="color:#E1E4E8">)]          </span><span style="color:#6A737D"># chaining</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> put</span><span style="color:#E1E4E8">(key, value):</span></span>
+<span class="line"><span style="color:#E1E4E8">    i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> hash</span><span style="color:#E1E4E8">(key) </span><span style="color:#F97583">%</span><span style="color:#79B8FF"> len</span><span style="color:#E1E4E8">(buckets)          </span><span style="color:#6A737D"># key -> bucket index</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> pair </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> buckets[i]:</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> pair[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> key:</span></span>
+<span class="line"><span style="color:#E1E4E8">            pair[</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> value; </span><span style="color:#F97583">return</span><span style="color:#6A737D">       # update if present</span></span>
+<span class="line"><span style="color:#E1E4E8">    buckets[i].append([key, value])       </span><span style="color:#6A737D"># otherwise add to bucket</span></span></code></pre>
+<h3 id="load-factor-and-resizing">Load factor and resizing</h3>
+<p><strong>Load Factor</strong> = number of entries / number of buckets. When this ratio crosses a threshold, the table roughly doubles and every entry is rehashed. In Java the default threshold is 0.75. A single resize takes O(n), but as with dynamic arrays the amortized cost is O(1).</p>
+<h3 id="worst-case">Worst case</h3>
+<p>With a bad hash function, or when someone sends deliberately colliding keys, every entry piles into the same bucket. Lookup then becomes a scan of that list from start to end, which is O(n). Java 8 and later turn crowded buckets into trees (treeify), bringing this down to O(log n).</p>
+<p>Keys have one more requirement: they must be <strong>immutable</strong>. A Python <code>list</code> cannot be a key. If a key’s hash changed later, the entry would be left in the wrong bucket.</p>
+<hr>
+<h2 id="7-trees-binary-trees-bsts-heaps">7. Trees: binary trees, BSTs, heaps</h2>
+<p>A <strong>Tree</strong> is made of nodes branching out from a root, with no cycles. In a <strong>Binary Tree</strong> each node has at most two children. A family tree and the folders on a computer have the same shape.</p>
+<h3 id="binary-search-tree-bst">Binary Search Tree (BST)</h3>
+<p>A <strong>BST (Binary Search Tree)</strong> has one rule for every node: values in the left subtree are smaller than the node, values in the right subtree are larger. Each step of a search discards half of what is left.</p>
+<p>It resembles guessing a number between 1 and 100 from “higher” and “lower” answers. Each guess halves the range, and the number is found in at most 7 guesses.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> TreeNode</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(self, v):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.v, </span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.left, </span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.right </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> v, </span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">None</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> insert</span><span style="color:#E1E4E8">(root, v):</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> root </span><span style="color:#F97583">is</span><span style="color:#79B8FF"> None</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> TreeNode(v)</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> v </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> root.v: root.left </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> insert(root.left, v)</span></span>
+<span class="line"><span style="color:#F97583">    else</span><span style="color:#E1E4E8">:          root.right </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> insert(root.right, v)</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> root</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> search</span><span style="color:#E1E4E8">(root, v):</span></span>
+<span class="line"><span style="color:#F97583">    while</span><span style="color:#E1E4E8"> root </span><span style="color:#F97583">and</span><span style="color:#E1E4E8"> root.v </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> v:</span></span>
+<span class="line"><span style="color:#E1E4E8">        root </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> root.left </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> v </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> root.v </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> root.right</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> root </span><span style="color:#F97583">is</span><span style="color:#F97583"> not</span><span style="color:#79B8FF"> None</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">root </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> None</span></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> x </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">50</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">30</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">70</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">20</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">40</span><span style="color:#E1E4E8">]: root </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> insert(root, x)</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(search(root, </span><span style="color:#79B8FF">40</span><span style="color:#E1E4E8">))  </span><span style="color:#6A737D"># True</span></span></code></pre>
+<p>Search, insert and delete take time proportional to the tree’s height, so O(h). In a balanced tree h ≈ log n and the cost is O(log n). If elements are inserted in sorted order (1, 2, 3, 4…), every node goes to the right and the tree <strong>degenerates</strong> into a linked list. The cost rises to O(n).</p>
+<p>The fix is a balanced tree. <strong>AVL</strong> and <strong>Red-Black Trees</strong> perform rotations on each insert to keep the height at O(log n). Java’s <code>TreeMap</code> and C++‘s <code>std::map</code> are implemented as red-black trees. Also, walking a BST <strong>in-order</strong> (left, root, right) yields its elements sorted.</p>
+<h3 id="heaps-and-priority-queues">Heaps and priority queues</h3>
+<p>A <strong>Heap</strong> is a complete binary tree, usually stored inside an array. In a <strong>Min-heap</strong> every parent is smaller than its children, so the smallest element is always at the root. Looking at the root is O(1), while inserting and removing the minimum are O(log n). A <strong>Priority Queue</strong> is usually implemented with a heap.</p>
+<p>The order in an emergency room is an example. The patient seen first is not the one who arrived first but the one whose condition is most urgent.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> heapq</span></span>
+<span class="line"><span style="color:#E1E4E8">h </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> priority </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">]:</span></span>
+<span class="line"><span style="color:#E1E4E8">    heapq.heappush(h, priority)  </span><span style="color:#6A737D"># O(log n)</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(heapq.heappop(h))          </span><span style="color:#6A737D"># 1, the smallest: O(log n)</span></span></code></pre>
+<p>A heap is not sorted the way a BST is. It only guarantees that the smallest element is on top. Searching a heap for an arbitrary value is therefore O(n).</p>
+<hr>
+<h2 id="8-which-one-when">8. Which one when?</h2>
+<p><img alt="Array, linked list, stack, queue, hash map and BST side by side" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/vy-yapilar.ByP97RZd_1lTISJ.webp" ></p>
+<table>
+<thead>
+<tr>
+<th>Structure</th>
+<th>Access by index</th>
+<th>Search</th>
+<th>Insert</th>
+<th>Delete</th>
+<th>Use it for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Array / dynamic array</td>
+<td>O(1)</td>
+<td>O(n)</td>
+<td>O(n), append amortized O(1)</td>
+<td>O(n), from end O(1)</td>
+<td>Frequent index reads, sequential scans</td>
+</tr>
+<tr>
+<td>Linked list</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(1)*</td>
+<td>O(1)*</td>
+<td>Frequent inserts and deletes at known spots</td>
+</tr>
+<tr>
+<td>Stack</td>
+<td>none</td>
+<td>O(n)</td>
+<td>push O(1)</td>
+<td>pop O(1)</td>
+<td>Undo, call stack, brackets, DFS</td>
+</tr>
+<tr>
+<td>Queue / deque</td>
+<td>none</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>Job queues, BFS</td>
+</tr>
+<tr>
+<td>Hash map</td>
+<td>none</td>
+<td>O(1) avg, O(n) worst</td>
+<td>O(1) avg</td>
+<td>O(1) avg</td>
+<td>Fast lookup by key, counting</td>
+</tr>
+<tr>
+<td>BST (balanced)</td>
+<td>none</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+<td>Ordered data, range queries</td>
+</tr>
+<tr>
+<td>Heap</td>
+<td>min/max O(1)</td>
+<td>O(n)</td>
+<td>O(log n)</td>
+<td>min/max O(log n)</td>
+<td>Priority queues, top k</td>
+</tr>
+</tbody>
+</table>
+<p>* When the position (node) is already in hand. Deleting in a singly linked list needs the previous node. In an unbalanced BST every operation degrades to O(n).</p>
+<p>The choice comes down to the most frequent operation. Arrays fit access by index, hash maps fit lookup by key, and balanced trees fit ordered data. If the last element in should come out first, a stack is used. If the first element in should come out first, a queue is used.</p>
+<hr>
+<h2 id="interview-questions">Interview questions</h2>
+<p><strong>1. What is the difference between an array and a linked list?</strong>
+An array sits in contiguous memory. Index access is O(1), inserting in the middle is O(n). In a linked list, inserting after a known node is O(1), while access and search are O(n). The pointers take extra memory and the structure is not cache-friendly.
+Common mistake: saying “linked list insertion is always O(1)”. Finding the spot first takes O(n).</p>
+<p><strong>2. Why is appending to a dynamic array counted as O(1)?</strong>
+When capacity runs out, the array grows by a constant factor and is copied. That expensive step is rare, so the total cost of n appends stays O(n). The cost per append is amortized O(1).
+Common mistake: reading amortized O(1) as “every single append is O(1)”.</p>
+<p><strong>3. How does a hash map work, and why is its worst case O(n)?</strong>
+A hash function maps the key to a bucket index. Collisions are handled by chaining or open addressing, and the table grows when the load factor crosses its threshold. If every key lands in one bucket, lookup turns into a linear scan.
+Common mistake: saying “hash maps are always O(1)”, or not mentioning collisions at all.</p>
+<p><strong>4. What is the difference between a stack and a queue? Give an example of each.</strong>
+A stack is LIFO (undo, call stack, DFS). A queue is FIFO (printer queue, BFS). Both have O(1) core operations.
+Common mistake: writing a Python queue with <code>list.pop(0)</code>. That is O(n), and <code>deque</code> should be used.</p>
+<p><strong>5. How do you check whether the brackets in an expression are balanced?</strong>
+Opening brackets are pushed onto a stack. On each closer, the expression is unbalanced if the stack is empty or the top does not match. At the end the stack must be empty. Time is O(n).
+Common mistake: only comparing the number of openers and closers. <code>([)]</code> passes that test but is not balanced.</p>
+<p><strong>6. Is BST search always O(log n)?</strong>
+No, it is O(h). In a balanced tree h ≈ log n. A BST built from sorted input turns into a linked list and costs O(n). AVL and red-black trees keep the height at O(log n).
+Common mistake: saying “BST = O(log n)” without mentioning balance.</p>
+<p><strong>7. Hash map or balanced tree (<code>dict</code> or <code>TreeMap</code>)?</strong>
+If only lookup by key is needed, a hash map (O(1) average). If ordered iteration, the minimum or maximum, or range queries such as “between 10 and 20” are needed, a balanced tree (O(log n)).
+Common mistake: assuming a hash map keeps its keys sorted.</p>
+<p><strong>8. How do you find the 10 largest numbers among a million?</strong>
+Keep a min-heap of size 10. If a new number is larger than the top, the top is removed and the new number is pushed. The cost is O(n log k) with k = 10. Sorting the whole list would be O(n log n).
+Common mistake: using a max-heap, or sorting the whole list without thinking.</p>
+<p><img alt="Summary card: array, linked list, stack/queue, hash map, tree" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/vy-ozet-kart.KyRrNkSq_Zen44e.webp" ></p>
+<p><em>Part 3: programming paradigms. Procedural, object-oriented and functional programming.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

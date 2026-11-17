@@ -1,0 +1,338 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Düşük coupling ve yüksek cohesion, ardından SOLID'in beş ilkesi: her biri için ihlal örneği ve düzeltilmiş hali, Java koduyla. LSP'de kare-dikdörtgen sorunu, DIP ile dependency injection farkı ve mülakat soruları."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>SOLID İlkeleri, Coupling ve Cohesion · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="tr" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>SOLID İlkeleri, Coupling ve Cohesion</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 Kasım 2026</time> · solid, oop, mulakat, programlama-101 · Bölüm 6</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/solid-principles-coupling-cohesion/" hreflang="en" lang="en" data-astro-cid-7jjqptxk>Read in English</a></p> <img src="/_astro/solid-kapak.ZgdBD4ge_1YRgfp.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak">  <article class="yazi" data-astro-cid-7jjqptxk><h1 id="solid-i̇lkeleri-coupling-ve-cohesion">SOLID İlkeleri, Coupling ve Cohesion</h1>
+<p><em>Programlama 101, Bölüm 6</em></p>
+<ol start="4">
+<li>bölümde OOP’nin dört ilkesini, abstract class ile interface farkını ve composition’ı anlatmıştım. O yazı bir sınıfın nasıl yazıldığını anlatıyordu. Bu yazının sorusu bir adım yukarıda: sınıflar birbirine nasıl bağlanmalı ki kod büyüdükçe değiştirmesi zorlaşmasın?</li>
+</ol>
+<p>Bu sorunun iki ölçüsü var: coupling ve cohesion. SOLID, bu iki ölçüyü iyi tutmak için yazılmış beş somut kural olarak okunabilir. Aşağıda önce iki kavramı, sonra beş ilkeyi tek tek anlatıyorum. Her ilke için kuralı bozan bir Java örneği ve düzeltilmiş hali var. Sonda ilkelerin aşırı uygulanmasına kısaca değinip mülakat sorularına geçiyorum.</p>
+<hr>
+<h2 id="1-coupling-ve-cohesion">1. Coupling ve cohesion</h2>
+<p><strong>Coupling (Bağlaşım)</strong>, iki modülün birbirine ne kadar bağımlı olduğunu anlatır. Modül burada bir sınıf, bir paket ya da bir servis olabilir. Bir sınıfı değiştirdiğinde başka sınıfları da değiştirmek zorunda kalıyorsan, aralarındaki coupling yüksektir.</p>
+<p><strong>Cohesion (Bağdaşıklık)</strong>, bir modülün içindeki parçaların aynı amaca ne kadar hizmet ettiğini anlatır. Bir sınıfın bütün alanları ve metotları tek bir işin etrafında toplanıyorsa cohesion yüksektir. Aynı sınıfta fatura hesabı, e-posta gönderimi ve dosyaya log yazma bir aradaysa düşüktür.</p>
+<p>Hedef düşük coupling ve yüksek cohesion. İkisi aynı yöne çeker. Birbiriyle ilgili kod aynı yerde toplanınca, modüller arasında gidip gelmesi gereken bilgi de azalır.</p>
+<p>Benzetme olarak yapıştırılmış parçalarla takılıp çıkarılabilen parçalar düşünülebilir. Yapıştırılmış iki parçadan birini sökmeye çalışınca diğeri de kırılır, yüksek coupling buna benzer. Takılıp çıkarılan parçalar ise birbirine yalnızca bağlantı noktalarından tutunur. Cohesion tarafında çok amaçlı bir çakıyla tek iş için yapılmış bir neşter karşılaştırılabilir. Çakı her şeyi biraz yapar, neşter tek bir işi iyi yapar.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Cohesion</th>
+<th>Coupling</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nereye bakar</td>
+<td>Modülün içine</td>
+<td>Modüllerin arasına</td>
+</tr>
+<tr>
+<td>Sorduğu soru</td>
+<td>Bu modülün parçaları aynı işe mi hizmet ediyor?</td>
+<td>Bu modül diğerlerinin ne kadarını biliyor?</td>
+</tr>
+<tr>
+<td>Hedef</td>
+<td>Yüksek</td>
+<td>Düşük</td>
+</tr>
+<tr>
+<td>Kötü durum</td>
+<td>Alakasız işlerin aynı sınıfa doldurulması</td>
+<td>Bir sınıftaki değişikliğin başka sınıfları bozması</td>
+</tr>
+</tbody>
+</table>
+<p>Coupling sıfıra indirilemez. Birbirini hiç tanımayan modüllerden bir program çıkmaz. Amaç bağımlılığı yok etmek değil, onu dar ve kararlı bir noktaya toplamak. Bir sınıfın başka bir sınıfın <code>public</code> metodunu çağırması normaldir. Onun iç alanlarına erişmesi, hangi sırayla çağrılacağını bilmek zorunda olması ya da bir bayrak parametresiyle onun içindeki akışı yönetmesi ise bağı sıkılaştırır.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#6A737D">// sıkı bağ: Siparis, Musteri'nin iç yapısını biliyor</span></span>
+<span class="line"><span style="color:#F97583">double</span><span style="color:#E1E4E8"> indirim </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> siparis.</span><span style="color:#B392F0">getMusteri</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">getUyelik</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">getSeviye</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">getIndirimOrani</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// gevşek bağ: yalnızca ihtiyaç duyulan soru soruluyor</span></span>
+<span class="line"><span style="color:#F97583">double</span><span style="color:#E1E4E8"> indirim </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> siparis.</span><span style="color:#B392F0">getMusteri</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">indirimOrani</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<p>İlk satırdaki zincir, üyelik yapısındaki her değişikliğin bu satırı bozabileceği anlamına geliyor. İkincisinde müşteri sınıfı oranı nasıl hesapladığını kendi içinde tutuyor.</p>
+<p><img alt="SOLID&amp;#x27;in beş ilkesi: SRP tek değişme sebebi, OCP var olan kodu değiştirmeden genişletme, LSP alt tipin üst tipin yerine sorunsuz geçmesi, ISP küçük ve amaca özel interface&amp;#x27;ler, DIP üst seviye kodun somut sınıflara değil soyutlamalara bağlanması" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/solid-ilkeler.DAm5HFkl_Z3qEv7.webp" ></p>
+<hr>
+<h2 id="2-solid-nereden-çıktı">2. SOLID nereden çıktı?</h2>
+<p>SOLID beş tasarım ilkesinin baş harflerinden oluşur. İlkelerin bir kısmı 1980’lerden beri biliniyordu. 2000 civarında bir yazar bunları nesne yönelimli tasarım üzerine bir makalede bir araya getirdi, kısaltma da birkaç yıl sonra yerleşti.</p>
+<table>
+<thead>
+<tr>
+<th>Harf</th>
+<th>İlke</th>
+<th>Bir cümlede</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S</td>
+<td>Single Responsibility</td>
+<td>Bir sınıfın değişmek için tek bir sebebi olmalı</td>
+</tr>
+<tr>
+<td>O</td>
+<td>Open/Closed</td>
+<td>Yeni davranış, var olan kodu değiştirmeden eklenebilmeli</td>
+</tr>
+<tr>
+<td>L</td>
+<td>Liskov Substitution</td>
+<td>Alt tip, üst tipin beklendiği her yerde sorunsuz çalışmalı</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Interface Segregation</td>
+<td>Bir sınıf kullanmadığı metotlara bağımlı olmaya zorlanmamalı</td>
+</tr>
+<tr>
+<td>D</td>
+<td>Dependency Inversion</td>
+<td>Üst seviye kod somut sınıflara değil soyutlamalara bağlanmalı</td>
+</tr>
+</tbody>
+</table>
+<p>Bu beşi bağımsız kurallar değil. SRP ve ISP cohesion’ı artırır, DIP ve OCP coupling’i azaltır, LSP ise kalıtımın bu düzeni bozmamasını sağlar.</p>
+<hr>
+<h2 id="3-single-responsibility-principle-srp">3. Single Responsibility Principle (SRP)</h2>
+<p><strong>Single Responsibility Principle (Tek Sorumluluk İlkesi)</strong>, bir sınıfın değişmek için yalnızca bir sebebi olması gerektiğini söyler.</p>
+<p>Bu ilke sık sık “bir sınıf tek bir iş yapar” diye özetlenir. Bu özet eksik ve yanıltıcı. “Tek iş” ne kadar dar tanımlanırsa her metot ayrı bir sınıfa dönüşür. Ölçü işin büyüklüğü değil, değişikliğin nereden geldiği. Muhasebenin istediği bir değişiklikle raporlamanın istediği bir değişiklik aynı sınıfı açtırıyorsa, o sınıfın iki sorumluluğu vardır.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Fatura</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#E1E4E8"> List&#x3C;</span><span style="color:#F97583">Kalem</span><span style="color:#E1E4E8">> kalemler;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#B392F0"> toplamHesapla</span><span style="color:#E1E4E8">() { </span><span style="color:#6A737D">/* vergi, indirim kuralları */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> veritabaninaKaydet</span><span style="color:#E1E4E8">() { </span><span style="color:#6A737D">/* SQL sorgusu */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    String </span><span style="color:#B392F0">pdfOlustur</span><span style="color:#E1E4E8">() { </span><span style="color:#6A737D">/* sayfa düzeni, yazı tipi */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Bu sınıf üç ayrı sebeple değişir: vergi kuralı değişince, tablo yapısı değişince ve PDF şablonu değişince. Üçü farklı kişilerden, farklı zamanlarda gelir. Biri PDF düzenini değiştirirken vergi hesabını bozarsa, bu hata hiç beklenmeyen bir yerden çıkar. Testi de zordur, çünkü toplam hesabını test etmek için veritabanı bağlantısı olan bir sınıf ayağa kaldırılır.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Fatura</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#E1E4E8"> List&#x3C;</span><span style="color:#F97583">Kalem</span><span style="color:#E1E4E8">> kalemler;</span></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#B392F0"> toplamHesapla</span><span style="color:#E1E4E8">() { </span><span style="color:#6A737D">/* yalnızca iş kuralları */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> FaturaDeposu</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> kaydet</span><span style="color:#E1E4E8">(Fatura </span><span style="color:#FFAB70">f</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* SQL */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> FaturaPdfYazici</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    String </span><span style="color:#B392F0">olustur</span><span style="color:#E1E4E8">(Fatura </span><span style="color:#FFAB70">f</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* sayfa düzeni */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Artık vergi kuralı değişince yalnızca <code>Fatura</code> açılır. <code>FaturaDeposu</code> ve <code>FaturaPdfYazici</code>, <code>Fatura</code>’ya bağımlı, ama <code>Fatura</code> onların hiçbirini bilmiyor.</p>
+<p>SRP’nin pratik bir işareti sınıfın adıdır. Adını “ve” bağlacı olmadan koymakta zorlanılan ya da <code>Yonetici</code>, <code>Islemci</code>, <code>Helper</code> gibi her şeyi kapsayan bir ada sığınılan sınıfın sorumluluğu genelde dağılmıştır.</p>
+<hr>
+<h2 id="4-openclosed-principle-ocp">4. Open/Closed Principle (OCP)</h2>
+<p><strong>Open/Closed Principle (Açık/Kapalı İlkesi)</strong>, bir modülün genişletmeye açık, değiştirmeye kapalı olması gerektiğini söyler. Yeni bir davranış eklemek için var olan, test edilmiş kodu açıp düzenlemek yerine yeni kod eklenebilmelidir.</p>
+<p>Bir uzatma kablosu buna benzer. Yeni bir cihaz eklemek için duvardaki tesisat sökülmez, boş bir prize takılır.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> IndirimHesaplayici</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#B392F0"> hesapla</span><span style="color:#E1E4E8">(Musteri </span><span style="color:#FFAB70">m</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">double</span><span style="color:#FFAB70"> tutar</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (m.</span><span style="color:#B392F0">getTip</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">equals</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"STANDART"</span><span style="color:#E1E4E8">)) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> tutar;</span></span>
+<span class="line"><span style="color:#F97583">        else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (m.</span><span style="color:#B392F0">getTip</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">equals</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"UYE"</span><span style="color:#E1E4E8">))  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> tutar </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 0.95</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (m.</span><span style="color:#B392F0">getTip</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">equals</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"VIP"</span><span style="color:#E1E4E8">))  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> tutar </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 0.85</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> tutar;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Yeni bir müşteri tipi eklendiğinde bu metodun açılması gerekiyor. Aynı <code>if</code> zinciri kodun başka yerlerinde de varsa, örneğin kargo ücretinde ve puan hesabında, her biri ayrı ayrı bulunup güncellenmeli. Birinin unutulması sessiz bir hataya yol açar.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> IndirimPolitikasi</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#B392F0"> uygula</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> tutar</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> StandartIndirim</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> IndirimPolitikasi</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> double</span><span style="color:#B392F0"> uygula</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> tutar</span><span style="color:#E1E4E8">) { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> tutar; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> VipIndirim</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> IndirimPolitikasi</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> double</span><span style="color:#B392F0"> uygula</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> tutar</span><span style="color:#E1E4E8">) { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> tutar </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 0.85</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> IndirimHesaplayici</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#B392F0"> hesapla</span><span style="color:#E1E4E8">(IndirimPolitikasi </span><span style="color:#FFAB70">politika</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">double</span><span style="color:#FFAB70"> tutar</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> politika.</span><span style="color:#B392F0">uygula</span><span style="color:#E1E4E8">(tutar);   </span><span style="color:#6A737D">// yeni tip gelince bu satır değişmez</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Yeni bir tip için yeni bir sınıf yazılır. <code>IndirimHesaplayici</code> değişmez. 4. bölümdeki ödeme yöntemi örneği de aynı fikre dayanıyordu: genişleme noktası bir interface ve polymorphism.</p>
+<p>İki yanlış anlamaya dikkat etmek gerekiyor. Birincisi, “değiştirmeye kapalı” var olan kodun hiç değişmeyeceği anlamına gelmiyor. Hata düzeltmek ya da gereksinim değiştiğinde kodu güncellemek gayet normal. Kapalı olması istenen, aynı türden bir ekleme için her seferinde aynı yerin açılmasıdır. İkincisi, her <code>if</code> bir OCP ihlali değil. İki dalı olan ve yıllardır değişmeyen bir koşul için bir interface ve iki sınıf yazmak kazanç getirmez. İlke, aynı eksende tekrar tekrar değişen yerler için anlamlıdır.</p>
+<hr>
+<h2 id="5-liskov-substitution-principle-lsp">5. Liskov Substitution Principle (LSP)</h2>
+<p><strong>Liskov Substitution Principle (Yerine Geçme İlkesi)</strong>, bir alt tipin nesnesinin, üst tipin beklendiği her yerde programın doğruluğunu bozmadan kullanılabilmesi gerektiğini söyler. Üst tipi kullanan kod, elindeki nesnenin hangi alt sınıftan geldiğini bilmek zorunda kalmamalıdır.</p>
+<p>Derleyici bunun yalnızca imza kısmını kontrol eder. <code>Kare extends Dikdortgen</code> yazılınca Java bir kareyi dikdörtgen yerine kabul eder. LSP ise davranışla ilgilidir: kare, dikdörtgen gibi davranıyor mu?</p>
+<h3 id="kare-ve-dikdörtgen">Kare ve dikdörtgen</h3>
+<p>Matematikte her kare bir dikdörtgendir. Bu yüzden şu tasarım ilk bakışta doğru görünür.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Dikdortgen</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    protected</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> en, boy;</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> setEn</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> en</span><span style="color:#E1E4E8">)   { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.en </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> en; }</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> setBoy</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> boy</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.boy </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> boy; }</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#B392F0"> alan</span><span style="color:#E1E4E8">()           { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> en </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> boy; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Kare</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> Dikdortgen</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> setEn</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> en</span><span style="color:#E1E4E8">)   { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.en </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> en; </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.boy </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> en; }</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> setBoy</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> boy</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.en </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> boy; </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.boy </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> boy; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Kare kendi kuralını korumak için iki setter’ı da birbirine bağlıyor. Sorun, dikdörtgeni kullanan kodda çıkıyor.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">void</span><span style="color:#B392F0"> boyutlandir</span><span style="color:#E1E4E8">(Dikdortgen d) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    d.</span><span style="color:#B392F0">setEn</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    d.</span><span style="color:#B392F0">setBoy</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    assert</span><span style="color:#E1E4E8"> d.</span><span style="color:#B392F0">alan</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 20</span><span style="color:#E1E4E8">;   </span><span style="color:#6A737D">// Kare verilirse alan 16, beklenti bozuluyor</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><code>boyutlandir</code> dikdörtgen hakkında makul bir varsayım yapıyor: eni değiştirmek boyu etkilemez. Bu varsayım <code>Dikdortgen</code>’in sözleşmesinin bir parçası. <code>Kare</code> bu sözleşmeyi bozuyor, bu yüzden kod derlense de kare, dikdörtgenin yerine geçemiyor. Matematikteki “is-a” ilişkisi, değiştirilebilir nesneler söz konusu olduğunda yazılımda aynen geçerli olmuyor.</p>
+<h3 id="sözleşme">Sözleşme</h3>
+<p>LSP’yi sözleşme üzerinden düşünmek işi kolaylaştırır. Bir metodun sözleşmesi üç parçadan oluşur:</p>
+<ul>
+<li><strong>Precondition (Ön koşul):</strong> Metot çağrılmadan önce çağıranın sağlaması gerekenler. Alt sınıf bunu sıkılaştıramaz. Üst sınıf her pozitif tutarı kabul ediyorsa, alt sınıf “yalnızca 1000’in altındaki tutarlar” diyemez.</li>
+<li><strong>Postcondition (Son koşul):</strong> Metot bittiğinde garanti edilenler. Alt sınıf bunu gevşetemez. Üst sınıf sıralı bir liste döndürmeyi vaat ediyorsa, alt sınıf sırasız döndüremez.</li>
+<li><strong>Invariant (Değişmez):</strong> Nesnenin her zaman doğru kalması gereken özellikleri. Alt sınıf bunları korumalıdır.</li>
+</ul>
+<p>Kare örneğinde ihlal edilen, <code>setEn</code>’in son koşulu: “en değişir, boy aynı kalır”. Kare bu garantiyi veremiyor.</p>
+<p>Bir alt sınıfın üst sınıftaki bir metodu <code>UnsupportedOperationException</code> fırlatarak ezmesi de çoğu zaman aynı sorunun işaretidir. Kuşları uçuran bir kod, penguen nesnesi gelince hata fırlatıyorsa penguen, <code>Kus</code> sözleşmesini yerine getiremiyor demektir. Java kütüphanesinde bu konuda bir istisna var. <code>List.of(...)</code> ile oluşturulan liste <code>add</code> çağrısında bu hatayı fırlatır, ama <code>List</code> belgeleri bu metotları baştan “isteğe bağlı” olarak tanımlar. Sözleşme bunu açıkça söylediği için ihlal sayılmaz, yine de çağıran kodun dikkat etmesi gereken bir tasarım tercihidir.</p>
+<h3 id="düzeltme">Düzeltme</h3>
+<p>Çözüm, kareyi dikdörtgenden türetmemek. İkisi ortak bir üst tipi paylaşabilir, ama birbirinin yerine geçmek zorunda kalmaz.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> Sekil</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#B392F0"> alan</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">record</span><span style="color:#B392F0"> Dikdortgen</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> en, </span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> boy) </span><span style="color:#F97583">implements</span><span style="color:#B392F0"> Sekil</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> alan</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> en </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> boy; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">record</span><span style="color:#B392F0"> Kare</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> kenar) </span><span style="color:#F97583">implements</span><span style="color:#B392F0"> Sekil</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> alan</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> kenar </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> kenar; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Sorunun kaynağı setter’lardı. Nesneler değiştirilemez (immutable) olunca “eni değiştir, boy aynı kalsın” diye bir beklenti de kalmaz. Kuş örneğinde de çözüm aynı yönde: uçma bir yetenekse <code>Kus</code> sınıfına değil, yalnızca uçabilen kuşların implement ettiği ayrı bir <code>Ucabilen</code> interface’ine konur.</p>
+<hr>
+<h2 id="6-interface-segregation-principle-isp">6. Interface Segregation Principle (ISP)</h2>
+<p><strong>Interface Segregation Principle (Arayüz Ayrımı İlkesi)</strong>, hiçbir sınıfın kullanmadığı metotlara bağımlı olmaya zorlanmaması gerektiğini söyler. Büyük ve her şeyi kapsayan bir interface yerine, kullananların ihtiyacına göre bölünmüş küçük interface’ler tercih edilir.</p>
+<p>Restoran menüsü buna benzer. Vejetaryen bir müşteriye etli karışık menü verip “yalnızca salatayı ye” denmez, ayrı bir menü hazırlanır.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> CokFonksiyonluYazici</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> yazdir</span><span style="color:#E1E4E8">(Belge </span><span style="color:#FFAB70">b</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> tara</span><span style="color:#E1E4E8">(Belge </span><span style="color:#FFAB70">b</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> faksGonder</span><span style="color:#E1E4E8">(Belge </span><span style="color:#FFAB70">b</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> BasitYazici</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> CokFonksiyonluYazici</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> yazdir</span><span style="color:#E1E4E8">(Belge </span><span style="color:#FFAB70">b</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* yazdırır */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> tara</span><span style="color:#E1E4E8">(Belge </span><span style="color:#FFAB70">b</span><span style="color:#E1E4E8">)       { </span><span style="color:#F97583">throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> UnsupportedOperationException</span><span style="color:#E1E4E8">(); }</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> faksGonder</span><span style="color:#E1E4E8">(Belge </span><span style="color:#FFAB70">b</span><span style="color:#E1E4E8">) { </span><span style="color:#F97583">throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> UnsupportedOperationException</span><span style="color:#E1E4E8">(); }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><code>BasitYazici</code> yalnızca yazdırabiliyor, ama interface onu tarama ve faks metotlarını da yazmaya zorluyor. Bu iki boş metot, bir önceki bölümdeki LSP sorununu da beraberinde getiriyor. Ayrıca yalnızca yazdırma yapan bir istemci, faks metodunun imzası değiştiğinde yeniden derlenmek zorunda kalıyor.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> Yazici</span><span style="color:#E1E4E8">  { </span><span style="color:#F97583">void</span><span style="color:#B392F0"> yazdir</span><span style="color:#E1E4E8">(Belge </span><span style="color:#FFAB70">b</span><span style="color:#E1E4E8">); }</span></span>
+<span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> Tarayici</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">void</span><span style="color:#B392F0"> tara</span><span style="color:#E1E4E8">(Belge </span><span style="color:#FFAB70">b</span><span style="color:#E1E4E8">); }</span></span>
+<span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> Faks</span><span style="color:#E1E4E8">    { </span><span style="color:#F97583">void</span><span style="color:#B392F0"> faksGonder</span><span style="color:#E1E4E8">(Belge </span><span style="color:#FFAB70">b</span><span style="color:#E1E4E8">); }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> BasitYazici</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> Yazici</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> yazdir</span><span style="color:#E1E4E8">(Belge </span><span style="color:#FFAB70">b</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* yazdırır */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> OfisMakinesi</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> Yazici</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">Tarayici</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">Faks</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    /* üç metodu da gerçekten doldurur */</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Bir sınıfın birden fazla interface’i implement edebilmesi bu ilkeyi Java’da kolay uygulanır hale getiriyor. Bölme ölçüsü de istemcidir: interface’ler implement eden sınıfa göre değil, onları kullanan koda göre ayrılır. Yalnızca yazdırma yapan bir rapor modülü <code>Yazici</code>’yı görür, makinenin başka ne yapabildiğini bilmez.</p>
+<p>SRP ile ISP benzer görünür. SRP bir sınıfın değişme sebeplerine bakar, ISP bir interface’in istemcilerine. Biri sınıfın içini, diğeri sınıfın dışarıya gösterdiği yüzü düzenler.</p>
+<hr>
+<h2 id="7-dependency-inversion-principle-dip">7. Dependency Inversion Principle (DIP)</h2>
+<p><strong>Dependency Inversion Principle (Bağımlılığın Tersine Çevrilmesi İlkesi)</strong> iki şey söyler. Üst seviye modüller alt seviye modüllere bağımlı olmamalı, ikisi de soyutlamalara bağımlı olmalı. Soyutlamalar ayrıntılara bağımlı olmamalı, ayrıntılar soyutlamalara bağımlı olmalı.</p>
+<p>Üst seviye, uygulamanın asıl iş kuralları demek: bir siparişin nasıl onaylandığı, bir bildirimin ne zaman gönderildiği. Alt seviye ise bu kuralların kullandığı ayrıntılar: hangi veritabanı, hangi e-posta kütüphanesi.</p>
+<p>Evdeki elektrik tesisatı bir lambaya doğrudan lehimlenmez, araya bir priz konur. Tesisat prizin standardını bilir, lamba da fişin standardını. Lamba değişince duvar kırılmaz.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> EpostaGonderici</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> gonder</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">alici</span><span style="color:#E1E4E8">, String </span><span style="color:#FFAB70">mesaj</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* SMTP */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> SiparisServisi</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> EpostaGonderici gonderici </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> EpostaGonderici</span><span style="color:#E1E4E8">();   </span><span style="color:#6A737D">// somut sınıfa sabit bağ</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> onayla</span><span style="color:#E1E4E8">(Siparis </span><span style="color:#FFAB70">s</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">        // ... iş kuralları</span></span>
+<span class="line"><span style="color:#E1E4E8">        gonderici.</span><span style="color:#B392F0">gonder</span><span style="color:#E1E4E8">(s.</span><span style="color:#B392F0">musteriEposta</span><span style="color:#E1E4E8">(), </span><span style="color:#9ECBFF">"Siparişiniz onaylandı"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><code>SiparisServisi</code> iş kuralını taşıyor, ama doğrudan bir e-posta sınıfına bağlı. Bildirim SMS’e döndüğünde ya da test sırasında gerçek e-posta gönderilmesi istenmediğinde bu sınıfın açılması gerekiyor.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> Bildirici</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> bildir</span><span style="color:#E1E4E8">(Siparis </span><span style="color:#FFAB70">s</span><span style="color:#E1E4E8">, String </span><span style="color:#FFAB70">mesaj</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> SiparisServisi</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> Bildirici bildirici;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">    SiparisServisi</span><span style="color:#E1E4E8">(Bildirici </span><span style="color:#FFAB70">bildirici</span><span style="color:#E1E4E8">) {   </span><span style="color:#6A737D">// bağımlılık dışarıdan veriliyor</span></span>
+<span class="line"><span style="color:#79B8FF">        this</span><span style="color:#E1E4E8">.bildirici </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> bildirici;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> onayla</span><span style="color:#E1E4E8">(Siparis </span><span style="color:#FFAB70">s</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">        // ... iş kuralları</span></span>
+<span class="line"><span style="color:#E1E4E8">        bildirici.</span><span style="color:#B392F0">bildir</span><span style="color:#E1E4E8">(s, </span><span style="color:#9ECBFF">"Siparişiniz onaylandı"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> EpostaBildirici</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> Bildirici</span><span style="color:#E1E4E8"> { </span><span style="color:#6A737D">/* SMTP */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> SmsBildirici</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> Bildirici</span><span style="color:#E1E4E8"> { </span><span style="color:#6A737D">/* SMS sağlayıcısı */</span><span style="color:#E1E4E8"> }</span></span></code></pre>
+<h3 id="tersine-çevirme-neyi-çeviriyor">“Tersine çevirme” neyi çeviriyor?</h3>
+<p>İlk tasarımda bağımlılık oku yukarıdan aşağıya iniyor: <code>SiparisServisi -> EpostaGonderici</code>. İkincisinde iki ok da ortadaki interface’e bakıyor: <code>SiparisServisi -> Bildirici &#x3C;- EpostaBildirici</code>. Alt seviye sınıf artık üst seviyenin tanımladığı bir sözleşmeye uyuyor.</p>
+<p>Burada sık atlanan bir ayrıntı var. <code>Bildirici</code> interface’i, onu kullanan iş kuralı tarafına aittir, e-posta tarafına değil. Interface’i e-posta paketine koyup adını <code>EpostaArayuzu</code> yapmak, bağımlılığı yine alt seviyeye yöneltir, yalnızca araya bir katman eklemiş olur. Tersine çevrilen şey kaynak kodundaki bağımlılığın yönüdür, çalışma sırasındaki çağrının yönü aynı kalır.</p>
+<h3 id="dip-ile-dependency-injection-farkı">DIP ile dependency injection farkı</h3>
+<p><strong>Dependency Injection (Bağımlılık Enjeksiyonu)</strong>, bir nesnenin ihtiyaç duyduğu nesneleri kendisi <code>new</code> ile oluşturmak yerine dışarıdan, genelde constructor üzerinden almasıdır. Yukarıdaki <code>SiparisServisi(Bildirici bildirici)</code> bir constructor injection örneği.</p>
+<p>İkisi sık karıştırılır, ama farklı seviyelerdedir:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>DIP</th>
+<th>Dependency injection</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ne</td>
+<td>Bir tasarım ilkesi</td>
+<td>Bir teknik</td>
+</tr>
+<tr>
+<td>Sorduğu soru</td>
+<td>Kod neye bağımlı olmalı?</td>
+<td>Bağımlılık nesneye nasıl ulaşır?</td>
+</tr>
+<tr>
+<td>Cevap</td>
+<td>Somut sınıfa değil, soyutlamaya</td>
+<td>Dışarıdan: constructor, setter ya da bir framework ile</td>
+</tr>
+</tbody>
+</table>
+<p>DI, DIP’i uygulamanın en yaygın yoludur ama birbirlerinin aynısı değildir. Constructor’dan somut bir <code>EpostaGonderici</code> almak DI’dır, ama sınıf hâlâ somut bir sınıfa bağlı olduğu için DIP’e uymaz. Tersi de mümkün: bir factory ya da service locator ile soyutlamaya bağlanmak DI kullanmadan DIP’e uyar. DI framework’leri ise bu nesneleri oluşturup birbirine bağlama işini otomatikleştiren araçlardır. <strong>Inversion of Control (Kontrolün Tersine Çevrilmesi)</strong> daha geniş bir fikirdir: nesnelerin oluşturulması ve akışın yönetimi, kodun kendisinden alınıp bir dış yapıya verilir. DI bunun bir biçimidir.</p>
+<p>Notlarda bazen “kodun içinde <code>new</code> yazıyorsan DIP’i ihlal ediyorsun” denir. Bu fazla geniş. <code>new ArrayList&#x3C;>()</code>, <code>new BigDecimal("10")</code> ya da bir değer nesnesi oluşturmak sorun değildir, bunlar kararlı ve değişmesi beklenmeyen şeylerdir. DIP’in hedefi değişken ayrıntılardır: veritabanı, ağ, dosya sistemi, üçüncü parti servisler. Testte yerine sahte bir nesne konmak istenen bağımlılıklar da genelde bunlardır.</p>
+<hr>
+<h2 id="8-aşırı-uygulamanın-zararı">8. Aşırı uygulamanın zararı</h2>
+<p>SOLID’in her ilkesi bir maliyet getirir: daha fazla sınıf, daha fazla interface, kodu okurken daha fazla dosya arasında gezinme. Bu maliyet, ilkenin önlediği sorun gerçekten varsa ödemeye değer.</p>
+<p>Sık görülen aşırılıklar şunlar:</p>
+<ul>
+<li>Tek bir implementasyonu olan ve başka bir implementasyonu hiç beklenmeyen her sınıfa bir interface yazmak. Test için sahte nesne gerekmiyorsa, bu interface yalnızca bir dolaylılık katmanıdır.</li>
+<li>SRP’yi “her sınıf bir metot” diye okuyup mantığı onlarca küçük sınıfa bölmek. Cohesion bu durumda artmaz, düşer, çünkü birbirine ait kod dağılır.</li>
+<li>Gelecekte belki gelir diye her <code>if</code>’i bir strateji hiyerarşisine çevirmek.</li>
+</ul>
+<p>İyi bir ölçü değişikliğin kendisidir. Aynı yer ikinci ya da üçüncü kez aynı sebeple açılıyorsa, oraya bir soyutlama koymanın zamanı gelmiştir. Daha önce koyulan soyutlama çoğu zaman yanlış eksende olur, çünkü hangi yönde değişeceği henüz bilinmiyordur.</p>
+<hr>
+<h2 id="mülakatta-sorulanlar">Mülakatta sorulanlar</h2>
+<p><strong>1. Coupling ve cohesion nedir, hangisi yüksek olmalı?</strong>
+Coupling modüllerin birbirine ne kadar bağımlı olduğunu, cohesion bir modülün içindeki parçaların aynı amaca ne kadar hizmet ettiğini ölçer. Hedef düşük coupling ve yüksek cohesion. Böylece bir değişiklik tek bir yerde kalır ve başka modülleri bozmaz.
+Sık yapılan hata: Coupling’in sıfır olması gerektiğini söylemek. Amaç bağımlılığı yok etmek değil, dar ve kararlı bir noktaya toplamak.</p>
+<p><strong>2. SOLID’in harfleri neyi ifade ediyor?</strong>
+Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation ve Dependency Inversion. Sırasıyla tek değişme sebebi, değiştirmeden genişletme, alt tipin üst tipin yerine geçebilmesi, küçük ve istemciye özel interface’ler ve soyutlamalara bağımlılık.
+Sık yapılan hata: İlkeleri ezbere sayıp her biri için bir örnek verememek.</p>
+<p><strong>3. Single Responsibility ne demek?</strong>
+Bir sınıfın değişmek için tek bir sebebi olmasıdır. Ölçü sınıfın kaç metodu olduğu değil, değişiklik isteklerinin kaç farklı kaynaktan geldiğidir.
+Sık yapılan hata: SRP’yi “her sınıf tek bir metot içerir” diye anlamak.</p>
+<p><strong>4. Kare, dikdörtgenden türetilmeli mi?</strong>
+Değiştirilebilir bir dikdörtgen sınıfı için hayır. Dikdörtgenin sözleşmesi eni değiştirmenin boyu etkilemeyeceğini söyler, kare bu garantiyi veremez ve onu bekleyen kodu bozar. Değiştirilemez nesnelerde ya da ortak bir <code>Sekil</code> interface’iyle bu sorun ortadan kalkar.
+Sık yapılan hata: Kod derlendiği için LSP’nin sağlandığını sanmak. Derleyici imzayı kontrol eder, davranışı değil.</p>
+<p><strong>5. LSP’de alt sınıf ön koşulları ve son koşulları nasıl değiştirebilir?</strong>
+Ön koşulları sıkılaştıramaz, ancak gevşetebilir. Son koşulları gevşetemez, ancak güçlendirebilir. Üst sınıfın invariant’larını da korumak zorundadır.
+Sık yapılan hata: Tersini söylemek, yani alt sınıfın daha katı girdi isteyebileceğini düşünmek.</p>
+<p><strong>6. Open/Closed ilkesi var olan kodun hiç değiştirilmeyeceği anlamına mı gelir?</strong>
+Hayır. Hatalar düzeltilir, gereksinim değişince kod güncellenir. İlke, aynı türden yeni bir ekleme için her seferinde aynı kodun açılmamasını, yeni davranışın yeni bir sınıfla eklenebilmesini ister.
+Sık yapılan hata: Her <code>if</code> bloğunu OCP ihlali saymak.</p>
+<p><strong>7. Interface segregation neden önemli?</strong>
+Büyük bir interface, implement eden sınıfları kullanmadıkları metotları boş ya da hata fırlatarak yazmaya zorlar. Kullanan kod da hiç çağırmadığı metotlardaki değişikliklerden etkilenir. Interface’ler onları kullanan koda göre bölünür.
+Sık yapılan hata: Interface’i implement eden sınıfa göre bölmek.</p>
+<p><strong>8. Dependency inversion ile dependency injection arasındaki fark nedir?</strong>
+DIP, kodun somut sınıflara değil soyutlamalara bağımlı olması gerektiğini söyleyen bir tasarım ilkesidir. DI ise bağımlılıkların nesneye dışarıdan, örneğin constructor ile verilmesi tekniğidir. DI, DIP’i uygulamanın yaygın bir yoludur, ama somut bir sınıfı enjekte etmek DI olup DIP olmaz.
+Sık yapılan hata: İkisini aynı şey saymak ya da “DI framework’ü kullanıyorsam DIP’e uyuyorum” demek.</p>
+<p><img alt="Özet kart: düşük coupling ve yüksek cohesion karşılaştırması, SOLID&amp;#x27;in beş ilkesi için birer cümlelik tanım ve ihlal işareti, DIP ile dependency injection farkı" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/solid-ozet-kart.DYmD7T6D_Z27F2UR.webp" ></p>
+<p><em>7. bölümde: tasarım desenleri (design patterns).</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

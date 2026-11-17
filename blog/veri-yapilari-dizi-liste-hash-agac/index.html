@@ -1,0 +1,261 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Dizi, bağlı liste, stack, queue, hash map ve ağaç: mülakatta sorulan veri yapıları, benzetmeleri, kodları ve Big O karşılaştırmasıyla."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Veri Yapıları: Dizi, Bağlı Liste, Stack, Queue, Hash Map ve Ağaç · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="tr" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Veri Yapıları: Dizi, Bağlı Liste, Stack, Queue, Hash Map ve Ağaç</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-16T00:00:00.000Z" data-astro-cid-7jjqptxk>16 Kasım 2026</time> · veri-yapilari, algoritma, mulakat, programlama-101 · Bölüm 2</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/data-structures-array-list-hash-tree/" hreflang="en" lang="en" data-astro-cid-7jjqptxk>Read in English</a></p> <img src="/_astro/vy-kapak.dxUNufYP_Z1NHvyU.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak">  <article class="yazi" data-astro-cid-7jjqptxk><h1 id="veri-yapıları-dizi-bağlı-liste-stack-queue-hash-map-ve-ağaç">Veri Yapıları: Dizi, Bağlı Liste, Stack, Queue, Hash Map ve Ağaç</h1>
+<p><em>Programlama 101, Bölüm 2</em></p>
+<p>Bu yazının konusu, aynı verinin bellekte farklı biçimlerde tutulması ve bunun işlem maliyetine etkisi. Bir milyon kayıt içinde arama bir düzende mikrosaniye, başka bir düzende saniyeler sürebilir. Dil ve makine aynı kalsa da fark verinin nasıl dizildiğinden gelir.</p>
+<p>Mülakatta “hangi veri yapısını kullanırdın?” sorusunun asıl anlamı şu: en sık hangi işlem yapılacak ve o işlem bu yapıda kaça mal olur? 1. bölümde anlatılan Big O bu yazıda ölçü olarak kullanılıyor. Aşağıda dizi, bağlı liste, stack, queue, hash map ve ağaçları sırayla anlatıyorum. Sonda bir karşılaştırma tablosu ve mülakatta sık gelen sorular var.</p>
+<hr>
+<h2 id="1-veri-yapısı-nedir">1. Veri yapısı nedir?</h2>
+<p><strong>Veri Yapısı (Data Structure)</strong>, veriyi bellekte belli işlemleri hızlı yapacak şekilde düzenleme biçimidir. Hiçbir yapı her işte en iyi değildir. Birinde okuma ucuz, ekleme pahalıdır, ötekinde tersi.</p>
+<p>Aynı kitaplar rafta sırayla dizilebilir, kutulara konabilir ya da bir katalogla düzenlenebilir. Hangisinin uygun olduğu, kitabın sonradan nasıl aranacağına bağlıdır.</p>
+<hr>
+<h2 id="2-dizi-array">2. Dizi (array)</h2>
+<p><strong>Array (Dizi)</strong>, aynı tipteki elemanları bellekte <strong>contiguous (bitişik)</strong> olarak tutar. Bu yüzden i’inci elemanın adresi tek bir hesapla bulunur: <code>başlangıç + i × eleman_boyutu</code>. Index ile erişim O(1)‘dir.</p>
+<p>Sokaktaki numaralı evlere benzer. 7 numarayı bulmak için 1’den 6’ya kadar kapı çalınmaz, doğrudan oraya gidilir.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="c"><code><span class="line"><span style="color:#F97583">#include</span><span style="color:#9ECBFF"> &#x3C;stdio.h></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">int</span><span style="color:#B392F0"> main</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">void</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#FFAB70"> a</span><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span><span style="color:#79B8FF">10</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">20</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">30</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">40</span><span style="color:#E1E4E8">};</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#B392F0">        printf</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"a[</span><span style="color:#79B8FF">%d</span><span style="color:#9ECBFF">] = </span><span style="color:#79B8FF">%d</span><span style="color:#9ECBFF">  adres: </span><span style="color:#79B8FF">%p\n</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">, i, </span><span style="color:#FFAB70">a</span><span style="color:#E1E4E8">[i], (</span><span style="color:#F97583">void*</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">&#x26;</span><span style="color:#FFAB70">a</span><span style="color:#E1E4E8">[i]);</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><code>int</code> genelde 4 bayt olduğu için adresler 4’er 4’er artar. Elemanların gerçekten bitişik durduğu çıktıda görülüyor.</p>
+<p>Bedeli ekleme ve silmede ortaya çıkar. Ortaya bir eleman eklemek ya da silmek için arkadaki bütün elemanları bir kaydırmak gerekir, bu da O(n) demek. Sırasız dizide arama da O(n)‘dir. Dizi sıralıysa binary search ile O(log n)‘e iner.</p>
+<h3 id="dinamik-dizi">Dinamik dizi</h3>
+<p>C dizisinin boyutu sabittir. Python’un <code>list</code>’i, Java’nın <code>ArrayList</code>’i ve C++‘ın <code>vector</code>’ü ise <strong>Dynamic Array (Dinamik Dizi)</strong> yapısındadır. İçeride bir dizi tutarlar, dizi dolunca daha büyük bir dizi ayırıp her şeyi oraya kopyalarlar.</p>
+<p>Kopyalama O(n) sürer, ama kapasite her seferinde sabit bir çarpanla büyüdüğü için seyrek yapılır. n ekleme boyunca toplam kopya sayısı n ile orantılı kalır. Bu yüzden sona ekleme <strong>amortize O(1)</strong> sayılır.</p>
+<p>Kalabalıklaşan bir ailenin 4 kişilik evden 8 kişilik eve, sonra 16 kişilik eve taşınması gibi düşünülebilir. Taşınma günü yorucudur, ama her yeni çocukta taşınılmaz.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">liste </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#E1E4E8">liste.append(</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">)      </span><span style="color:#6A737D"># sona ekleme: amortize O(1)</span></span>
+<span class="line"><span style="color:#E1E4E8">liste.insert(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)   </span><span style="color:#6A737D"># başa ekleme: O(n), herkes bir kayar</span></span>
+<span class="line"><span style="color:#E1E4E8">x </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> liste[</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">]         </span><span style="color:#6A737D"># index ile okuma: O(1)</span></span></code></pre>
+<hr>
+<h2 id="3-bağlı-liste-linked-list">3. Bağlı liste (linked list)</h2>
+<p><strong>Linked List (Bağlı Liste)</strong> yapısında her eleman, yani <strong>node</strong>, bir değer ve bir sonraki node’un adresini (<strong>pointer</strong>) tutar. Elemanlar bellekte dağınık durabilir.</p>
+<ul>
+<li><strong>Singly linked:</strong> Her node yalnızca sonrakini bilir.</li>
+<li><strong>Doubly linked:</strong> Hem öncekini hem sonrakini bilir. Geriye doğru yürünebilir ve bilinen bir node O(1)‘de silinebilir.</li>
+</ul>
+<p>Hazine avına benzer. Her ipucu bir sonrakinin yerini söyler. 5. ipucuna ulaşmak için ilk dördünü takip etmek gerekir, ama araya yeni bir ipucu eklemek için tek bir kâğıdı değiştirmek yeter.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Node</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(self, deger, sonraki</span><span style="color:#F97583">=</span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.deger </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> deger</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.sonraki </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> sonraki</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">bas </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Node(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, Node(</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, Node(</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">)))     </span><span style="color:#6A737D"># 1 -> 2 -> 3</span></span>
+<span class="line"><span style="color:#E1E4E8">bas.sonraki </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Node(</span><span style="color:#79B8FF">9</span><span style="color:#E1E4E8">, bas.sonraki)  </span><span style="color:#6A737D"># 1 -> 9 -> 2 -> 3, O(1)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">n </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> bas</span></span>
+<span class="line"><span style="color:#F97583">while</span><span style="color:#E1E4E8"> n:                            </span><span style="color:#6A737D"># i'inci elemana erişim: O(n)</span></span>
+<span class="line"><span style="color:#79B8FF">    print</span><span style="color:#E1E4E8">(n.deger); n </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> n.sonraki</span></span></code></pre>
+<p>Başa ekleme ve zaten elde tutulan bir node’un arkasına ekleme O(1)‘dir. O node’u bulmak, index ile erişim ve arama ise O(n)‘dir.</p>
+<p>Big O’da görünmeyen bir maliyet daha var: <strong>Cache Locality (Önbellek Yerelliği)</strong>. CPU belleği küçük bloklar halinde önbelleğe çeker. Dizide bir eleman okununca komşuları da önbelleğe gelir. Bağlı listede her node başka bir yerde durduğu için önbellek sık sık ıskalanır. Bu yüzden aynı Big O’ya sahip işlemlerde bile dizi pratikte genelde daha hızlıdır.</p>
+<hr>
+<h2 id="4-stack-yığın">4. Stack (yığın)</h2>
+<p><strong>Stack (Yığın)</strong>, <strong>LIFO</strong> (Last In, First Out) çalışır: son giren ilk çıkar. İşlemleri <strong>push</strong> (üste koy), <strong>pop</strong> (üstten al) ve <strong>peek</strong> (üste bak). Hepsi O(1).</p>
+<p>Üst üste konmuş tabaklar gibi. Her seferinde en üstteki alınır.</p>
+<p>Kullanıldığı yerler:</p>
+<ul>
+<li><strong>Call stack:</strong> Bir fonksiyon çağrıldığında çerçevesi stack’e itilir, fonksiyon dönünce çıkarılır. Sonsuz özyinelemenin “stack overflow” hatası vermesinin sebebi bu.</li>
+<li><strong>Geri alma (undo):</strong> Son yapılan işlem ilk geri alınır.</li>
+<li><strong>Parantez denetimi:</strong> Mülakatta sık sorulan bir problem.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> dengeli_mi</span><span style="color:#E1E4E8">(s):</span></span>
+<span class="line"><span style="color:#E1E4E8">    eslesme </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">")"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"("</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"]"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"["</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"}"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"{"</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">    stack </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> c </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> s:</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> c </span><span style="color:#F97583">in</span><span style="color:#9ECBFF"> "([{"</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">            stack.append(c)                      </span><span style="color:#6A737D"># push</span></span>
+<span class="line"><span style="color:#F97583">        elif</span><span style="color:#E1E4E8"> c </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> eslesme:</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#F97583"> not</span><span style="color:#E1E4E8"> stack </span><span style="color:#F97583">or</span><span style="color:#E1E4E8"> stack.pop() </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> eslesme[c]:</span></span>
+<span class="line"><span style="color:#F97583">                return</span><span style="color:#79B8FF"> False</span><span style="color:#6A737D">                     # kapanış yanlış ya da fazla</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#F97583"> not</span><span style="color:#E1E4E8"> stack                             </span><span style="color:#6A737D"># açıkta parantez kalmamalı</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(dengeli_mi(</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">{[()]}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">))  </span><span style="color:#6A737D"># True</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(dengeli_mi(</span><span style="color:#9ECBFF">"([)]"</span><span style="color:#E1E4E8">))    </span><span style="color:#6A737D"># False</span></span></code></pre>
+<p>Python’da <code>list</code>’in sonu stack olarak kullanılır. <code>append</code> ve <code>pop()</code> O(1)‘dir.</p>
+<hr>
+<h2 id="5-queue-kuyruk-ve-deque">5. Queue (kuyruk) ve deque</h2>
+<p><strong>Queue (Kuyruk)</strong>, <strong>FIFO</strong> (First In, First Out) çalışır: ilk giren ilk çıkar. <strong>Enqueue</strong> arkaya ekler, <strong>dequeue</strong> önden alır. İkisi de O(1).</p>
+<p>Yazıcı kuyruğu buna örnek. Önce gönderilen belge önce basılır.</p>
+<p>Yazıcı ve görev kuyrukları, mesaj kuyrukları ve işletim sisteminin ready kuyruğu queue ile çalışır. Bir graf ya da ağacı katman katman gezen <strong>BFS (Breadth-First Search, Genişlik Öncelikli Arama)</strong> da queue kullanır.</p>
+<p>Python’da <code>list.pop(0)</code> O(n)‘dir, çünkü kalan bütün elemanlar bir sola kayar. Queue için <code>collections.deque</code> kullanılır:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> collections </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> deque</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">graf </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">"A"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"B"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"C"</span><span style="color:#E1E4E8">], </span><span style="color:#9ECBFF">"B"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"D"</span><span style="color:#E1E4E8">], </span><span style="color:#9ECBFF">"C"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"D"</span><span style="color:#E1E4E8">], </span><span style="color:#9ECBFF">"D"</span><span style="color:#E1E4E8">: []}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> bfs</span><span style="color:#E1E4E8">(baslangic):</span></span>
+<span class="line"><span style="color:#E1E4E8">    gorulen, kuyruk </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {baslangic}, deque([baslangic])</span></span>
+<span class="line"><span style="color:#F97583">    while</span><span style="color:#E1E4E8"> kuyruk:</span></span>
+<span class="line"><span style="color:#E1E4E8">        dugum </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> kuyruk.popleft()          </span><span style="color:#6A737D"># dequeue: O(1)</span></span>
+<span class="line"><span style="color:#79B8FF">        print</span><span style="color:#E1E4E8">(dugum)</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> komsu </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> graf[dugum]:</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> komsu </span><span style="color:#F97583">not</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> gorulen:</span></span>
+<span class="line"><span style="color:#E1E4E8">                gorulen.add(komsu)</span></span>
+<span class="line"><span style="color:#E1E4E8">                kuyruk.append(komsu)      </span><span style="color:#6A737D"># enqueue: O(1)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">bfs(</span><span style="color:#9ECBFF">"A"</span><span style="color:#E1E4E8">)  </span><span style="color:#6A737D"># A B C D</span></span></code></pre>
+<p><strong>Deque (Double-Ended Queue)</strong> iki uçtan da O(1) ekleme ve çıkarma yapar. Hem stack hem queue olarak kullanılabilir.</p>
+<hr>
+<h2 id="6-hash-map-hash-tablosu">6. Hash map (hash tablosu)</h2>
+<p><strong>Hash Map (Hash Tablosu)</strong>, anahtar -> değer eşlemesi tutar. Python’da <code>dict</code>, Java’da <code>HashMap</code> bu yapıdadır. Ekleme, arama ve silme ortalamada O(1)‘dir.</p>
+<p>Bir <strong>Hash Function (Hash Fonksiyonu)</strong> anahtarı bir sayıya çevirir. Bu sayının dizi boyutuna göre kalanı alınır ve bir <strong>bucket (kova)</strong> index’i elde edilir. Yani hash map içinde dizi olan bir yapıdır. Anahtarı index’e çevirip dizinin O(1) erişimini kullanır.</p>
+<p>Vestiyere benzer. Palto verilir, karşılığında 42 numaralı fiş alınır. Geri alırken bütün askılar aranmaz, doğrudan 42’ye gidilir.</p>
+<h3 id="çakışma-collision">Çakışma (collision)</h3>
+<p>İki farklı anahtar aynı kovaya düşebilir. Buna <strong>Collision (Çakışma)</strong> denir. İki yaygın çözüm var:</p>
+<ul>
+<li><strong>Chaining:</strong> Her kova küçük bir liste tutar, çakışan elemanlar o listeye eklenir. Java <code>HashMap</code> bu yöntemi kullanır.</li>
+<li><strong>Open addressing:</strong> Kova doluysa belli bir kurala göre sıradaki boş yere bakılır. Python <code>dict</code> bu yöntemi kullanır.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">kovalar </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [[] </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> _ </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">8</span><span style="color:#E1E4E8">)]          </span><span style="color:#6A737D"># chaining</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> ekle</span><span style="color:#E1E4E8">(anahtar, deger):</span></span>
+<span class="line"><span style="color:#E1E4E8">    i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> hash</span><span style="color:#E1E4E8">(anahtar) </span><span style="color:#F97583">%</span><span style="color:#79B8FF"> len</span><span style="color:#E1E4E8">(kovalar)      </span><span style="color:#6A737D"># anahtar -> kova index'i</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> cift </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> kovalar[i]:</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> cift[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> anahtar:</span></span>
+<span class="line"><span style="color:#E1E4E8">            cift[</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> deger; </span><span style="color:#F97583">return</span><span style="color:#6A737D">       # varsa güncelle</span></span>
+<span class="line"><span style="color:#E1E4E8">    kovalar[i].append([anahtar, deger])   </span><span style="color:#6A737D"># yoksa kovaya ekle</span></span></code></pre>
+<h3 id="load-factor-ve-yeniden-boyutlandırma">Load factor ve yeniden boyutlandırma</h3>
+<p><strong>Load Factor (Doluluk Oranı)</strong> = eleman sayısı / kova sayısı. Bu oran belli bir eşiği geçince tablo yaklaşık iki katına büyütülür ve tüm elemanlar yeniden hash’lenir. Java’da varsayılan eşik 0,75. Tek bir büyütme O(n) sürer, ama dinamik dizide olduğu gibi amortize maliyet O(1)‘dir.</p>
+<h3 id="en-kötü-durum">En kötü durum</h3>
+<p>Hash fonksiyonu kötüyse ya da biri bilerek çakışan anahtarlar gönderirse bütün elemanlar aynı kovaya yığılır. Arama bu durumda listeyi baştan sona taramaya döner ve O(n) olur. Java 8 ve sonrası, kalabalık kovaları ağaca çevirerek (treeify) bunu O(log n)‘e indirir.</p>
+<p>Anahtarın bir şartı daha var: <strong>immutable (değişmez)</strong> olmalı. Python’da <code>list</code> anahtar olamaz. Anahtarın hash’i sonradan değişirse eleman yanlış kovada kalır.</p>
+<hr>
+<h2 id="7-ağaçlar-binary-tree-bst-heap">7. Ağaçlar: binary tree, BST, heap</h2>
+<p><strong>Tree (Ağaç)</strong>, bir kökten (root) dallanan node’lardan oluşur ve içinde döngü yoktur. <strong>Binary Tree (İkili Ağaç)</strong> yapısında her node’un en fazla iki çocuğu vardır. Soy ağacı ve bilgisayardaki klasör yapısı aynı şekle sahiptir.</p>
+<h3 id="binary-search-tree-bst">Binary Search Tree (BST)</h3>
+<p><strong>BST (Binary Search Tree, İkili Arama Ağacı)</strong> yapısında her node için tek kural var: sol alt ağaçtaki değerler node’dan küçük, sağdakiler büyük. Aramanın her adımında kalan ağacın yarısı elenir.</p>
+<p>1 ile 100 arasında tutulan bir sayıyı “daha büyük” ve “daha küçük” cevaplarıyla bulma oyununa benzer. Her tahmin aralığı yarıya indirir ve sayı en fazla 7 tahminde bulunur.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> TreeNode</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(self, v):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.v, </span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.sol, </span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.sag </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> v, </span><span style="color:#79B8FF">None</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">None</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> ekle</span><span style="color:#E1E4E8">(kok, v):</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> kok </span><span style="color:#F97583">is</span><span style="color:#79B8FF"> None</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> TreeNode(v)</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> v </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> kok.v: kok.sol </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ekle(kok.sol, v)</span></span>
+<span class="line"><span style="color:#F97583">    else</span><span style="color:#E1E4E8">:         kok.sag </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ekle(kok.sag, v)</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> kok</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> ara</span><span style="color:#E1E4E8">(kok, v):</span></span>
+<span class="line"><span style="color:#F97583">    while</span><span style="color:#E1E4E8"> kok </span><span style="color:#F97583">and</span><span style="color:#E1E4E8"> kok.v </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> v:</span></span>
+<span class="line"><span style="color:#E1E4E8">        kok </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> kok.sol </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> v </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> kok.v </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> kok.sag</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> kok </span><span style="color:#F97583">is</span><span style="color:#F97583"> not</span><span style="color:#79B8FF"> None</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">kok </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> None</span></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> x </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">50</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">30</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">70</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">20</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">40</span><span style="color:#E1E4E8">]: kok </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ekle(kok, x)</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(ara(kok, </span><span style="color:#79B8FF">40</span><span style="color:#E1E4E8">))  </span><span style="color:#6A737D"># True</span></span></code></pre>
+<p>Arama, ekleme ve silme ağacın yüksekliği kadar sürer, yani O(h). Ağaç dengeliyse h ≈ log n olur ve maliyet O(log n)‘dir. Elemanlar sıralı eklenirse (1, 2, 3, 4…) her node sağa eklenir ve ağaç bir bağlı listeye <strong>dejenere</strong> olur. Maliyet O(n)‘e çıkar.</p>
+<p>Bunun çözümü dengeli ağaçlar. <strong>AVL</strong> ve <strong>Red-Black Tree</strong>, her eklemede dönmeler (rotation) yaparak yüksekliği O(log n)‘de tutar. Java’nın <code>TreeMap</code>’i ve C++‘ın <code>std::map</code>’i red-black tree ile gerçeklenir. Ayrıca BST <strong>in-order</strong> (sol, kök, sağ) sırasıyla gezildiğinde elemanlar sıralı çıkar.</p>
+<h3 id="heap-ve-priority-queue">Heap ve priority queue</h3>
+<p><strong>Heap (Yığın Ağacı)</strong>, tam (complete) bir binary tree’dir ve genelde bir dizi içinde tutulur. <strong>Min-heap</strong> yapısında her ebeveyn çocuklarından küçüktür, bu yüzden en küçük eleman her zaman köktedir. Köke bakmak O(1), ekleme ve en küçüğü çıkarma O(log n) sürer. <strong>Priority Queue (Öncelik Kuyruğu)</strong> genelde heap ile gerçeklenir.</p>
+<p>Acil servisteki sıra buna örnek. Önce gelen değil, durumu en acil olan önce muayene edilir.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> heapq</span></span>
+<span class="line"><span style="color:#E1E4E8">h </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> oncelik </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">]:</span></span>
+<span class="line"><span style="color:#E1E4E8">    heapq.heappush(h, oncelik)   </span><span style="color:#6A737D"># O(log n)</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(heapq.heappop(h))          </span><span style="color:#6A737D"># 1, en küçük: O(log n)</span></span></code></pre>
+<p>Heap, BST gibi sıralı değildir. Yalnızca en küçük elemanın üstte olduğunu garanti eder. Bu yüzden heap’te keyfi bir değeri aramak O(n)‘dir.</p>
+<hr>
+<h2 id="8-hangisi-ne-zaman">8. Hangisi ne zaman?</h2>
+<p><img alt="Dizi, bağlı liste, stack, queue, hash map ve BST yan yana" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/vy-yapilar.ByP97RZd_1lTISJ.webp" ></p>
+<table>
+<thead>
+<tr>
+<th>Yapı</th>
+<th>Index ile erişim</th>
+<th>Arama</th>
+<th>Ekleme</th>
+<th>Silme</th>
+<th>Ne zaman?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dizi / dinamik dizi</td>
+<td>O(1)</td>
+<td>O(n)</td>
+<td>O(n), sona amortize O(1)</td>
+<td>O(n), sondan O(1)</td>
+<td>Index ile sık okuma, sırayla gezme</td>
+</tr>
+<tr>
+<td>Bağlı liste</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(1)*</td>
+<td>O(1)*</td>
+<td>Bilinen yerlere sık ekleme ve silme</td>
+</tr>
+<tr>
+<td>Stack</td>
+<td>yok</td>
+<td>O(n)</td>
+<td>push O(1)</td>
+<td>pop O(1)</td>
+<td>Geri alma, call stack, parantez, DFS</td>
+</tr>
+<tr>
+<td>Queue / deque</td>
+<td>yok</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>Görev kuyruğu, BFS</td>
+</tr>
+<tr>
+<td>Hash map</td>
+<td>yok</td>
+<td>O(1) ort., O(n) en kötü</td>
+<td>O(1) ort.</td>
+<td>O(1) ort.</td>
+<td>Anahtarla hızlı bulma, tekrar sayma</td>
+</tr>
+<tr>
+<td>BST (dengeli)</td>
+<td>yok</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+<td>Sıralı veri, aralık sorguları</td>
+</tr>
+<tr>
+<td>Heap</td>
+<td>min/max O(1)</td>
+<td>O(n)</td>
+<td>O(log n)</td>
+<td>min/max O(log n)</td>
+<td>Öncelik kuyruğu, en büyük k eleman</td>
+</tr>
+</tbody>
+</table>
+<p>* Yer (node) zaten elde tutuluyorsa. Singly linked listede silmek için bir önceki node gerekir. Dengesiz BST’de bütün işlemler O(n)‘e düşer.</p>
+<p>Seçimi belirleyen, en sık yapılacak işlem. Index ile erişim için dizi, anahtarla bulma için hash map, sıralı veri için dengeli ağaç uygundur. Son giren önce çıkacaksa stack, ilk giren önce çıkacaksa queue kullanılır.</p>
+<hr>
+<h2 id="mülakatta-sorulanlar">Mülakatta sorulanlar</h2>
+<p><strong>1. Dizi ile bağlı liste arasındaki fark nedir?</strong>
+Dizi bitişik bellekte durur. Index ile erişim O(1), ortaya ekleme O(n)‘dir. Bağlı listede bilinen bir node’dan sonra ekleme O(1), erişim ve arama O(n)‘dir. Pointer’lar ek bellek tutar ve yapı cache dostu değildir.
+Sık yapılan hata: “Bağlı listede ekleme her zaman O(1)” demek. Önce o yeri bulmak O(n) sürer.</p>
+<p><strong>2. Dinamik dizide sona ekleme neden O(1) sayılır?</strong>
+Kapasite dolunca dizi sabit bir çarpanla büyütülür ve kopyalanır. Bu pahalı adım seyrek olduğu için n eklemenin toplam maliyeti O(n) kalır. Ekleme başına düşen maliyet amortize O(1)‘dir.
+Sık yapılan hata: Amortize O(1)‘i “her ekleme kesin O(1)” diye anlamak.</p>
+<p><strong>3. Hash map nasıl çalışır, neden en kötü durumda O(n)‘dir?</strong>
+Hash fonksiyonu anahtarı bir kova index’ine çevirir. Çakışmalar chaining ya da open addressing ile çözülür, load factor eşiği aşılınca tablo büyütülür. Bütün anahtarlar aynı kovaya düşerse arama doğrusal taramaya döner.
+Sık yapılan hata: “Hash map her zaman O(1)” demek ya da çakışmadan hiç söz etmemek.</p>
+<p><strong>4. Stack ile queue farkı nedir? Birer örnek ver.</strong>
+Stack LIFO çalışır (undo, call stack, DFS). Queue FIFO çalışır (yazıcı kuyruğu, BFS). İkisinde de temel işlemler O(1)‘dir.
+Sık yapılan hata: Python’da kuyruğu <code>list.pop(0)</code> ile yazmak. Bu O(n)‘dir, <code>deque</code> kullanılmalı.</p>
+<p><strong>5. Bir ifadedeki parantezlerin dengeli olup olmadığını nasıl kontrol edersin?</strong>
+Açılış parantezleri stack’e itilir. Her kapanışta stack boşsa ya da tepedeki eşleşmiyorsa ifade dengesizdir. Sonunda stack boş kalmalıdır, süre O(n).
+Sık yapılan hata: Yalnızca açılış ve kapanış sayısını karşılaştırmak. <code>([)]</code> bu testi geçer ama dengesizdir.</p>
+<p><strong>6. BST’de arama her zaman O(log n) müdür?</strong>
+Hayır, O(h)‘dir. Dengeli ağaçta h ≈ log n olur. Sıralı eklenen bir BST bağlı listeye dönüşür ve O(n) olur. AVL ve red-black tree yüksekliği O(log n)‘de tutar.
+Sık yapılan hata: Dengelemeden söz etmeden “BST = O(log n)” demek.</p>
+<p><strong>7. Hash map mi, dengeli ağaç mı (<code>dict</code> mi, <code>TreeMap</code> mi)?</strong>
+Yalnızca anahtarla bulma gerekiyorsa hash map (ortalama O(1)). Sıralı gezme, en küçük ya da en büyük eleman veya “10 ile 20 arası” gibi aralık sorguları gerekiyorsa dengeli ağaç (O(log n)).
+Sık yapılan hata: Hash map’in elemanları sıralı tuttuğunu varsaymak.</p>
+<p><strong>8. Bir milyon sayıdan en büyük 10’unu nasıl bulursun?</strong>
+Boyutu 10 olan bir min-heap tutulur. Yeni sayı tepedekinden büyükse tepe çıkarılır ve yeni sayı eklenir. Maliyet O(n log k), burada k = 10. Bütün listeyi sıralamak O(n log n) olurdu.
+Sık yapılan hata: Max-heap kullanmak ya da düşünmeden bütün listeyi sıralamak.</p>
+<p><img alt="Özet kart: dizi, bağlı liste, stack/queue, hash map, ağaç" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/vy-ozet-kart.KyRrNkSq_Zen44e.webp" ></p>
+<p><em>3. bölümde: programlama paradigmaları. Prosedürel, nesne yönelimli ve fonksiyonel programlama.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

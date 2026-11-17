@@ -1,0 +1,510 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Tarayıcıya adres yazınca olanlar, DNS çözümleme, HTTP metotları ve durum kodları, REST ilkeleri, cookie ve session, JWT'nin yapısı ve sınırları, CORS: mülakatta sorulan web temelleri, çalıştırılmış örneklerle."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Ağ 2: HTTP, DNS, REST, JWT, Cookie ve Session · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="tr" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Ağ 2: HTTP, DNS, REST, JWT, Cookie ve Session</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 Kasım 2026</time> · ag, http, mulakat, programlama-101 · Bölüm 12</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/networking-2-http-dns-rest-jwt/" hreflang="en" lang="en" data-astro-cid-7jjqptxk>Read in English</a></p> <img src="/_astro/net2-kapak.CSQ_QaG7_1ey3Cd.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak">  <article class="yazi" data-astro-cid-7jjqptxk><h1 id="ağ-2-http-dns-rest-jwt-cookie-ve-session">Ağ 2: HTTP, DNS, REST, JWT, Cookie ve Session</h1>
+<p><em>Programlama 101, Bölüm 12</em></p>
+<ol start="11">
+<li>bölümde verinin TCP, UDP ve QUIC ile bir makineden diğerine nasıl taşındığını anlattım. Bu yazı bir kat yukarıda, uygulama katmanında duruyor. Konu, tarayıcıya bir adres yazıldığında ekrana sayfa gelene kadar olanlar.</li>
+</ol>
+<p>Önce DNS ve bağlantının kurulması, ardından HTTP’nin metotları, durum kodları, başlıkları ve REST ilkeleri geliyor. Son kısımda kimlik doğrulama var: cookie, session, JWT ve CORS. Sonda mülakat soruları ve kısa cevapları bulunuyor.</p>
+<hr>
+<h2 id="1-adres-çubuğundan-sayfaya">1. Adres çubuğundan sayfaya</h2>
+<p>Tarayıcıya <code>https://example.com/urunler</code> yazılıp Enter’a basıldığında kabaca şu sırayla işler yürür:</p>
+<ol>
+<li>Adres parçalanır: şema <code>https</code>, alan adı <code>example.com</code>, yol <code>/urunler</code>. Port yazılmadığı için 443 kullanılır.</li>
+<li>Alan adının IP adresi DNS ile bulunur, önce önbelleklere bakılır.</li>
+<li>Bu adresin 443 portuna TCP bağlantısı açılır (bir RTT).</li>
+<li>Üstünde TLS el sıkışması yapılır (TLS 1.3’te bir RTT daha).</li>
+<li>Şifreli kanaldan HTTP isteği gider: <code>GET /urunler</code>.</li>
+<li>Sunucu durum kodu, başlıklar ve gövdeden oluşan cevabı döner.</li>
+<li>Tarayıcı HTML’deki CSS, JavaScript ve resimler için yeni istekler yapar, çoğu aynı bağlantıyı kullanır.</li>
+</ol>
+<p>HTTP/3’te 3. ve 4. adımlar QUIC içinde tek gidiş-dönüşte birleşir.</p>
+<p><img alt="Tarayıcıdan sunucuya istek akışı: önbellek kontrolü, DNS çözümleme zinciri, TCP el sıkışması, TLS el sıkışması, HTTP isteği ve cevabı" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/net2-istek-akisi.dnfXOKDR_Zuj9Yt.webp" ></p>
+<hr>
+<h2 id="2-dns-alan-adından-ip-adresine">2. DNS: alan adından IP adresine</h2>
+<p><strong>DNS (Domain Name System)</strong>, alan adlarını IP adreslerine çeviren, dünyaya dağıtılmış hiyerarşik bir veritabanıdır. Telefon rehberine benzer, ama tek bir rehber yoktur. Her seviye yalnızca bir alt seviyenin kimde olduğunu bilir.</p>
+<h3 id="çözümleme-zinciri">Çözümleme zinciri</h3>
+<p>Tarayıcı önce kendi önbelleğine, sonra işletim sisteminin önbelleğine bakar. Orada yoksa soruyu bir <strong>Recursive Resolver (Özyinelemeli Çözümleyici)</strong> sunucusuna gönderir. Bu genelde internet servis sağlayıcısının ya da elle ayarlanmış genel bir DNS sunucusudur. Resolver cevabı bulmak için gereken bütün soruları istemci adına sorar:</p>
+<ol>
+<li><strong>Root Server (Kök Sunucu):</strong> Resolver <code>example.com</code>’u sorar. Kök sunucu cevabı bilmez, <code>.com</code> uzantısından sorumlu sunucuların adresini verir. Dünyada 13 kök sunucu adı vardır, her biri anycast ile yüzlerce fiziksel makineye dağılmıştır.</li>
+<li><strong>TLD Server (Üst Seviye Alan Sunucusu):</strong> <code>.com</code> sunucusu da cevabı bilmez, <code>example.com</code> alanının hangi ad sunucularında tutulduğunu söyler.</li>
+<li><strong>Authoritative Server (Yetkili Sunucu):</strong> Alanın kayıtlarını gerçekten tutan sunucudur. IP adresini o verir.</li>
+</ol>
+<p>Resolver cevabı istemciye döner ve önbelleğine yazar. Resolver’ın diğer sunuculara sorduğu sorular iterative’dir: her adımda “şuna sor” cevabı alır ve bir sonrakine kendisi gider.</p>
+<h3 id="önbellek-ve-ttl">Önbellek ve TTL</h3>
+<p>Her DNS kaydının saniye cinsinden bir <strong>TTL (Time To Live)</strong> değeri vardır ve kaydın önbellekte ne kadar tutulabileceğini söyler. TTL 3600 ise resolver bir saat boyunca aynı soruyu tekrar sormaz. Zincirdeki adımların çoğu bu yüzden gerçekte çalışmaz, <code>.com</code> sunucularının adresi neredeyse her zaman önbellektedir.</p>
+<p>Yan etkisi de var. IP adresi değiştirildiğinde eski kayıt TTL dolana kadar bazı önbelleklerde yaşar. “DNS değişikliğinin yayılması” denen şey aslında eski önbelleklerin süresinin dolmasıdır. Taşıma öncesinde TTL’i birkaç dakikaya düşürmek bu yüzden yaygındır.</p>
+<p>Python’da işletim sisteminin çözümleyicisi şöyle çağrılır:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> socket</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> info </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> socket.getaddrinfo(</span><span style="color:#9ECBFF">"example.com"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">443</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">proto</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">socket.</span><span style="color:#79B8FF">IPPROTO_TCP</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#79B8FF">    print</span><span style="color:#E1E4E8">(info[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">].name, info[</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">][</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">])</span></span>
+<span class="line"><span style="color:#6A737D"># AF_INET 203.0.113.10</span></span>
+<span class="line"><span style="color:#6A737D"># AF_INET 203.0.113.11</span></span></code></pre>
+<p>Birden fazla adres dönmesi normaldir, biri cevap vermezse istemci diğerini dener. Çıktıdaki adresler belgeleme aralığından seçildi, gerçek çıktı farklıdır.</p>
+<hr>
+<h2 id="3-tcp-tls-ve-https">3. TCP, TLS ve HTTPS</h2>
+<p>IP adresi bulunduktan sonra 11. bölümdeki TCP el sıkışması yapılır. HTTPS kullanılıyorsa ardından TLS gelir.</p>
+<p><strong>TLS (Transport Layer Security)</strong>, iki uç arasındaki trafiği şifreleyen ve sunucunun kimliğini doğrulayan protokoldür. <strong>HTTPS</strong> ayrı bir protokol değil, TLS bağlantısı üzerinden konuşulan HTTP’dir. El sıkışmada üç şey olur:</p>
+<ul>
+<li>İstemci desteklediği şifreleme yöntemlerini ve bağlanmak istediği alan adını (<strong>SNI</strong>) gönderir.</li>
+<li>Sunucu, alan adını bir açık anahtarla eşleyen ve bir sertifika otoritesince imzalanmış sertifikasını gönderir. Tarayıcı imza zincirini ve alan adını kontrol eder.</li>
+<li>İki taraf asimetrik anahtar değişimiyle ortak bir oturum anahtarı türetir. Sonraki trafik bu anahtarla, çok daha hızlı olan simetrik şifrelemeyle korunur.</li>
+</ul>
+<p>HTTPS’te yol, sorgu parametreleri, başlıklar ve gövde şifrelidir. Bağlanılan IP adresi ve çoğu durumda SNI’daki alan adı ise ağdaki biri tarafından görülebilir.</p>
+<hr>
+<h2 id="4-http-mesajının-yapısı">4. HTTP mesajının yapısı</h2>
+<p><strong>HTTP (Hypertext Transfer Protocol)</strong>, istemcinin istek gönderip sunucunun cevap verdiği bir uygulama protokolüdür. HTTP/1.1’de mesajlar düz metindir:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="http"><code><span class="line"><span style="color:#F97583">GET</span><span style="color:#E1E4E8"> /urunler?sayfa=2 </span><span style="color:#F97583">HTTP</span><span style="color:#E1E4E8">/</span><span style="color:#79B8FF">1.1</span></span>
+<span class="line"><span style="color:#85E89D">Host</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> example.com</span></span>
+<span class="line"><span style="color:#85E89D">Accept</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> application/json</span></span>
+<span class="line"><span style="color:#85E89D">Authorization</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> Bearer eyJhbGciOi...</span></span>
+<span class="line"></span></code></pre>
+<p>İstek satırı metot, yol ve sürümden oluşur. Başlıklardan sonra boş bir satır gelir, ardından varsa gövde. Cevap da aynı biçimdedir, ilk satırı <code>HTTP/1.1 200 OK</code> gibi bir durum satırıdır. HTTP/2 ve HTTP/3’te aynı bilgiler ikili çerçevelerle taşınır.</p>
+<hr>
+<h2 id="5-metotlar-safe-ve-idempotent">5. Metotlar, safe ve idempotent</h2>
+<p>Metot, istemcinin kaynak üzerinde ne yapmak istediğini söyler.</p>
+<table>
+<thead>
+<tr>
+<th>Metot</th>
+<th>Ne yapar</th>
+<th>Safe</th>
+<th>Idempotent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>Kaynağı okur</td>
+<td>Evet</td>
+<td>Evet</td>
+</tr>
+<tr>
+<td>HEAD</td>
+<td>GET ile aynı, gövdesiz</td>
+<td>Evet</td>
+<td>Evet</td>
+</tr>
+<tr>
+<td>OPTIONS</td>
+<td>Desteklenen seçenekleri sorar</td>
+<td>Evet</td>
+<td>Evet</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>Yeni kaynak oluşturur ya da bir işlem tetikler</td>
+<td>Hayır</td>
+<td>Hayır</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>Kaynağı verilen hâliyle tamamen değiştirir, yoksa oluşturabilir</td>
+<td>Hayır</td>
+<td>Evet</td>
+</tr>
+<tr>
+<td>PATCH</td>
+<td>Kaynağın bir kısmını değiştirir</td>
+<td>Hayır</td>
+<td>Garanti değil</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>Kaynağı siler</td>
+<td>Hayır</td>
+<td>Evet</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Safe (Güvenli)</strong> metot sunucudaki durumu değiştirmez. Tarayıcılar ve önbellekler GET isteklerini serbestçe tekrarlar ve önceden çeker, GET ile sipariş silen bir uç nokta bu yüzden tehlikelidir.</p>
+<p><strong>Idempotent</strong> metot ise bir kez ya da on kez gönderilmesi sunucuda aynı son durumu bırakan metottur. <code>PUT /kullanicilar/42</code> aynı gövdeyle on kez gönderilirse kullanıcı yine aynı hâldedir. <code>DELETE /siparisler/7</code> ikinci kez gönderildiğinde 404 dönebilir, ama sunucunun durumu aynıdır: sipariş yoktur. Idempotency cevabın aynı olmasıyla değil, durumun aynı olmasıyla ilgilidir.</p>
+<p>Bunun pratik önemi ağ hatalarında çıkar. Cevap gelmeden bağlantı koparsa istemci isteğin işlenip işlenmediğini bilemez. Idempotent bir isteği tekrar göndermek risksizdir, POST’u değil: aynı ödeme isteği iki kez giderse iki ödeme oluşur. Ödeme API’leri bu yüzden benzersiz bir <code>Idempotency-Key</code> başlığı ister ve aynı anahtarla gelen ikinci isteği işlemez.</p>
+<p>Sık anlatılan “REST’te dört metot var: GET, POST, PUT, DELETE” listesi PATCH’i atlar. PUT da “güncelle” değil, “kaynağı tamamen bununla değiştir” demektir. Gönderilmeyen alanlar silinmiş sayılır.</p>
+<hr>
+<h2 id="6-durum-kodları">6. Durum kodları</h2>
+<p>Durum kodunun ilk rakamı sınıfı belirler:</p>
+<table>
+<thead>
+<tr>
+<th>Sınıf</th>
+<th>Anlamı</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1xx</td>
+<td>Bilgi</td>
+</tr>
+<tr>
+<td>2xx</td>
+<td>Başarılı</td>
+</tr>
+<tr>
+<td>3xx</td>
+<td>Yönlendirme</td>
+</tr>
+<tr>
+<td>4xx</td>
+<td>İstemci hatası</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Sunucu hatası</td>
+</tr>
+</tbody>
+</table>
+<p>Sık görülenler:</p>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Ne zaman</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200 OK</td>
+<td>Başarılı, gövdede sonuç var</td>
+</tr>
+<tr>
+<td>201 Created</td>
+<td>POST ile kaynak oluştu, <code>Location</code> başlığı yeni adresi gösterir</td>
+</tr>
+<tr>
+<td>204 No Content</td>
+<td>Başarılı, dönecek gövde yok (çoğu DELETE)</td>
+</tr>
+<tr>
+<td>301 / 308</td>
+<td>Kalıcı yönlendirme</td>
+</tr>
+<tr>
+<td>302 / 307</td>
+<td>Geçici yönlendirme</td>
+</tr>
+<tr>
+<td>304 Not Modified</td>
+<td>Önbellekteki kopya hâlâ geçerli</td>
+</tr>
+<tr>
+<td>400 Bad Request</td>
+<td>İstek bozuk, doğrulama hatası</td>
+</tr>
+<tr>
+<td>401 Unauthorized</td>
+<td>Kimlik doğrulanmadı, token yok ya da geçersiz</td>
+</tr>
+<tr>
+<td>403 Forbidden</td>
+<td>Kimlik belli ama bu işe yetkisi yok</td>
+</tr>
+<tr>
+<td>404 Not Found</td>
+<td>Kaynak yok</td>
+</tr>
+<tr>
+<td>429 Too Many Requests</td>
+<td>İstek sınırı aşıldı</td>
+</tr>
+<tr>
+<td>500 Internal Server Error</td>
+<td>Sunucuda beklenmeyen hata</td>
+</tr>
+<tr>
+<td>502 / 504</td>
+<td>Aradaki proxy arkadaki sunucudan geçersiz cevap aldı / zamanında cevap alamadı</td>
+</tr>
+<tr>
+<td>503 Service Unavailable</td>
+<td>Sunucu geçici olarak hizmet veremiyor</td>
+</tr>
+</tbody>
+</table>
+<p>401’in adı “Unauthorized” olsa da anlamı “kim olduğunu bilmiyorum”dur. 403 ise “kim olduğunu biliyorum, iznin yok” demektir. 307 ve 308 yönlendirmede metodu korur, 301 ve 302’de istemci POST’u GET’e çevirebilir.</p>
+<hr>
+<h2 id="7-başlıklar-ve-python-ile-bir-istek">7. Başlıklar ve Python ile bir istek</h2>
+<p>Başlıklar istek ve cevap hakkında üst bilgi taşır. Sık kullanılanlar:</p>
+<ul>
+<li><code>Host</code>: İstenen alan adı. HTTP/1.1’de zorunludur, aynı IP’de birden fazla site barındırmayı sağlar.</li>
+<li><code>Content-Type</code> ve <code>Accept</code>: Gövdenin biçimi ve istemcinin kabul ettiği biçimler.</li>
+<li><code>Authorization</code>: Kimlik bilgisi, örneğin <code>Bearer &#x3C;token></code>.</li>
+<li><code>Cache-Control</code>: Önbellek kuralları, örneğin <code>no-store</code> ya da <code>max-age=60</code>.</li>
+<li><code>ETag</code> ve <code>If-None-Match</code>: İstemci elindeki sürümü gönderir, kaynak değişmediyse sunucu gövdesiz 304 döner.</li>
+<li><code>Set-Cookie</code> ve <code>Cookie</code>: Cookie’yi ayarlar ve geri gönderir.</li>
+</ul>
+<p>Python’un standart kütüphanesiyle bir HTTPS isteği:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> http.client</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">conn </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> http.client.HTTPSConnection(</span><span style="color:#9ECBFF">"example.com"</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">timeout</span><span style="color:#F97583">=</span><span style="color:#79B8FF">10</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">conn.request(</span><span style="color:#9ECBFF">"GET"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"/"</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">headers</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#9ECBFF">"Accept"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"text/html"</span><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#E1E4E8">resp </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> conn.getresponse()</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(resp.status, resp.reason, resp.version)  </span><span style="color:#6A737D"># 200 OK 11</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(resp.getheader(</span><span style="color:#9ECBFF">"Content-Type"</span><span style="color:#E1E4E8">))          </span><span style="color:#6A737D"># text/html; charset=utf-8</span></span>
+<span class="line"><span style="color:#E1E4E8">body </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> resp.read()</span></span>
+<span class="line"><span style="color:#E1E4E8">conn.close()</span></span></code></pre>
+<p><code>HTTPSConnection</code> DNS çözümlemesini, TCP bağlantısını ve TLS el sıkışmasını kendi içinde yapar. <code>resp.version</code> değeri 11, sürümün HTTP/1.1 olduğunu gösterir. <code>urllib.request.urlopen</code> ise 4xx ve 5xx kodlarını <code>HTTPError</code> olarak fırlatır.</p>
+<hr>
+<h2 id="8-http11-http2-ve-http3">8. HTTP/1.1, HTTP/2 ve HTTP/3</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>HTTP/1.1</th>
+<th>HTTP/2</th>
+<th>HTTP/3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Taşıma</td>
+<td>TCP</td>
+<td>TCP</td>
+<td>QUIC (UDP üstünde)</td>
+</tr>
+<tr>
+<td>Mesaj biçimi</td>
+<td>Metin</td>
+<td>İkili çerçeve</td>
+<td>İkili çerçeve</td>
+</tr>
+<tr>
+<td>Bir bağlantıda eşzamanlı istek</td>
+<td>Yok, sırayla</td>
+<td>Var, stream’lerle</td>
+<td>Var, stream’lerle</td>
+</tr>
+<tr>
+<td>Başlık sıkıştırma</td>
+<td>Yok</td>
+<td>HPACK</td>
+<td>QPACK</td>
+</tr>
+<tr>
+<td>Head-of-line blocking</td>
+<td>Uygulama katmanında</td>
+<td>TCP katmanında</td>
+<td>Yalnız kaybın olduğu stream’de</td>
+</tr>
+<tr>
+<td>TLS</td>
+<td>İsteğe bağlı</td>
+<td>Tarayıcılarda pratikte zorunlu</td>
+<td>Protokolün parçası</td>
+</tr>
+</tbody>
+</table>
+<p>HTTP/2’nin getirdiği <strong>multiplexing</strong>, birçok isteği tek bağlantıda iç içe taşımaktır. HTTP/3 ise 11. bölümde anlatıldığı gibi taşıma katmanını QUIC ile değiştirir.</p>
+<hr>
+<h2 id="9-rest-ilkeleri">9. REST ilkeleri</h2>
+<p><strong>REST (Representational State Transfer)</strong>, ağ üzerindeki kaynaklara erişimi tarif eden bir mimari stildir. 2000 yılında bir doktora tezinde tanımlandı. Bir protokol değildir ve HTTP’ye bağlı da değildir, ama pratikte neredeyse hep HTTP ile uygulanır.</p>
+<p>Mülakatta beklenen ilkeler şunlar:</p>
+<ul>
+<li><strong>Kaynak odaklı URL:</strong> URL bir eylemi değil, bir kaynağı gösterir. Eylemi metot söyler.</li>
+<li><strong>Stateless (Durumsuz):</strong> Her istek, kimlik bilgisi dahil, işlenmesi için gereken her şeyi kendisi taşır. Sunucu istekler arasında istemci bağlamı hatırlamaz.</li>
+<li><strong>Doğru metot ve doğru kod:</strong> Hata olduğunda 200 içinde <code>{"hata": true}</code> dönmek yerine uygun 4xx ya da 5xx kodu kullanılır.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Eylem odaklı (kaçınılan)</th>
+<th>Kaynak odaklı</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET /getAllOrders</code></td>
+<td><code>GET /siparisler</code></td>
+</tr>
+<tr>
+<td><code>POST /createOrder</code></td>
+<td><code>POST /siparisler</code></td>
+</tr>
+<tr>
+<td><code>GET /deleteOrder?id=7</code></td>
+<td><code>DELETE /siparisler/7</code></td>
+</tr>
+<tr>
+<td><code>GET /getUserOrders?userId=42</code></td>
+<td><code>GET /kullanicilar/42/siparisler</code></td>
+</tr>
+</tbody>
+</table>
+<p>Stateless ilkesinin faydası ölçeklemede görülür: ardışık istekler farklı sunuculara gidebilir. Bu, veritabanı olmaması demek değildir. Yasak olan, oturum bağlamını sunucu belleğinde tutup sonraki isteklerin buna dayanmasıdır.</p>
+<hr>
+<h2 id="10-cookie-ve-session">10. Cookie ve session</h2>
+<p>HTTP durumsuzdur, sunucu iki isteğin aynı kullanıcıdan geldiğini protokolden öğrenemez. Giriş yapmış kullanıcıyı tanımanın iki yaygın yolu var: sunucu tarafı session ve token.</p>
+<p><strong>Cookie</strong>, sunucunun <code>Set-Cookie</code> başlığıyla tarayıcıya verdiği ve tarayıcının aynı siteye yaptığı sonraki isteklerde <code>Cookie</code> başlığıyla geri gönderdiği küçük bir anahtar-değer verisidir. Cookie bir taşıma mekanizmasıdır. İçine session kimliği de konabilir, JWT de.</p>
+<p><strong>Session (Oturum)</strong> yaklaşımında sunucu giriş başarılı olunca rastgele, tahmin edilemez bir kimlik üretir ve kullanıcı bilgisini bu kimlikle kendi tarafında saklar. Tarayıcıya yalnızca kimliği verir:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="http"><code><span class="line"><span style="color:#F97583">HTTP</span><span style="color:#E1E4E8">/</span><span style="color:#79B8FF">1.1</span><span style="color:#79B8FF"> 200</span><span style="color:#9ECBFF"> OK</span></span>
+<span class="line"><span style="color:#85E89D">Set-Cookie</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> session_id=Xk29fQa7Lm; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=3600</span></span></code></pre>
+<p>Sonraki her istekte tarayıcı <code>Cookie: session_id=Xk29fQa7Lm</code> gönderir, sunucu kimliği depoda arar ve kullanıcıyı bulur. Vestiyer fişine benzer. Fişin üstünde yalnızca bir numara yazar, paltonun kendisi görevlide durur.</p>
+<p>Birden fazla sunucu varsa session deposu hepsinin erişebileceği ortak bir yerde tutulur.</p>
+<h3 id="cookie-bayrakları">Cookie bayrakları</h3>
+<table>
+<thead>
+<tr>
+<th>Bayrak</th>
+<th>Ne yapar</th>
+<th>Neye karşı</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HttpOnly</td>
+<td>JavaScript <code>document.cookie</code> ile cookie’yi okuyamaz</td>
+<td>XSS ile cookie çalınması</td>
+</tr>
+<tr>
+<td>Secure</td>
+<td>Cookie yalnızca HTTPS üzerinden gönderilir</td>
+<td>Şifresiz bağlantıda dinlenme</td>
+</tr>
+<tr>
+<td>SameSite=Strict</td>
+<td>Başka siteden başlayan hiçbir istekte gönderilmez</td>
+<td>CSRF</td>
+</tr>
+<tr>
+<td>SameSite=Lax</td>
+<td>Başka siteden gelen üst seviye GET gezinmelerinde gönderilir, diğer çapraz isteklerde gönderilmez</td>
+<td>CSRF, kullanılabilirliği bozmadan</td>
+</tr>
+<tr>
+<td>SameSite=None</td>
+<td>Her istekte gönderilir, Secure ile birlikte kullanılmak zorunda</td>
+<td>Koruma yok, çapraz site kullanımı için</td>
+</tr>
+</tbody>
+</table>
+<p><strong>CSRF (Cross-Site Request Forgery)</strong>, başka bir sitenin kullanıcının tarayıcısı üzerinden hedef siteye istek göndermesidir. Tarayıcı cookie’yi otomatik eklediği için istek giriş yapmış kullanıcıdan geliyormuş gibi görünür, SameSite bunu sınırlar. <strong>XSS (Cross-Site Scripting)</strong> ise saldırganın sayfaya kendi JavaScript’ini sokmasıdır, HttpOnly bu betiğin cookie’yi okumasını engeller.</p>
+<hr>
+<h2 id="11-session-ve-token-farkı">11. Session ve token farkı</h2>
+<p>Token yaklaşımında sunucu kullanıcı bilgisini saklamaz, imzalayıp istemciye verir. İstemci her istekte geri getirir, sunucu imzadan bilginin değiştirilmediğini anlar.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Sunucu tarafı session</th>
+<th>İmzalı token (JWT)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kullanıcı bilgisi nerede</td>
+<td>Sunucunun deposunda</td>
+<td>Token’ın içinde</td>
+</tr>
+<tr>
+<td>İstemcide ne var</td>
+<td>Anlamsız bir kimlik</td>
+<td>Okunabilir ama imzalı veri</td>
+</tr>
+<tr>
+<td>Her istekte</td>
+<td>Depoda arama</td>
+<td>İmza kontrolü, depo gerekmez</td>
+</tr>
+<tr>
+<td>Çıkış ve iptal</td>
+<td>Kaydı silmek yeterli</td>
+<td>Zor, token süresi dolana kadar geçerli</td>
+</tr>
+<tr>
+<td>Birden fazla sunucu ve servis</td>
+<td>Ortak depo gerekir</td>
+<td>Anahtarı bilen her servis doğrulayabilir</td>
+</tr>
+</tbody>
+</table>
+<p>Tek bir web uygulamasında session basit ve güvenlidir, token ise birçok servisin kullanıcıyı bağımsız doğrulaması gerektiğinde öne çıkar.</p>
+<hr>
+<h2 id="12-jwt">12. JWT</h2>
+<p><strong>JWT (JSON Web Token)</strong>, noktalarla ayrılmış üç parçadan oluşan bir token biçimidir: <code>header.payload.signature</code>.</p>
+<ul>
+<li><strong>Header:</strong> İmza algoritması ve tür, örneğin <code>{"alg": "HS256", "typ": "JWT"}</code>.</li>
+<li><strong>Payload:</strong> <strong>Claim</strong> denen alanlar. Standart olanlar <code>sub</code> (kullanıcı kimliği), <code>iat</code> (üretilme zamanı), <code>exp</code> (son geçerlilik zamanı), <code>iss</code> (üreten), <code>aud</code> (hedef servis).</li>
+<li><strong>Signature:</strong> İlk iki parçanın bir anahtarla imzalanmış hâli.</li>
+</ul>
+<p>Header ve payload şifrelenmez, yalnızca <strong>Base64URL</strong> ile kodlanır. Base64URL bir şifreleme değil, ikili veriyi URL’de güvenle taşınabilecek karakterlere çeviren bir kodlamadır. JWT’yi “şifreli token” diye anlatmak yanlış. JWT imzalıdır, şifreli değildir. Token’ı ele geçiren herkes içeriği okuyabilir, ama imzayı bozmadan değiştiremez. İçeriğin gizli kalması gerekiyorsa JWE adlı ayrı bir şifreli biçim vardır.</p>
+<p>Aşağıdaki kod bir JWT’yi elle üretiyor, anahtar olmadan çözüyor ve değiştirilmiş bir kopyayı doğrulamaya çalışıyor:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> base64, hmac, hashlib, json</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> b64url</span><span style="color:#E1E4E8">(data):</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> base64.urlsafe_b64encode(data).rstrip(</span><span style="color:#F97583">b</span><span style="color:#9ECBFF">"="</span><span style="color:#E1E4E8">).decode()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> b64url_decode</span><span style="color:#E1E4E8">(s):</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> base64.urlsafe_b64decode(s </span><span style="color:#F97583">+</span><span style="color:#9ECBFF"> "="</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">-</span><span style="color:#79B8FF">len</span><span style="color:#E1E4E8">(s) </span><span style="color:#F97583">%</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">secret </span><span style="color:#F97583">=</span><span style="color:#F97583"> b</span><span style="color:#9ECBFF">"gizli-anahtar"</span></span>
+<span class="line"><span style="color:#E1E4E8">header </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">"alg"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"HS256"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"typ"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"JWT"</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">payload </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">"sub"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"42"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"role"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"user"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"iat"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1794873600</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"exp"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1794874500</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">h </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> b64url(json.dumps(header, </span><span style="color:#FFAB70">separators</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">","</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">":"</span><span style="color:#E1E4E8">)).encode())</span></span>
+<span class="line"><span style="color:#E1E4E8">p </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> b64url(json.dumps(payload, </span><span style="color:#FFAB70">separators</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">","</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">":"</span><span style="color:#E1E4E8">)).encode())</span></span>
+<span class="line"><span style="color:#E1E4E8">sig </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> b64url(hmac.new(secret, </span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">h</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">.</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">p</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">.encode(), hashlib.sha256).digest())</span></span>
+<span class="line"><span style="color:#E1E4E8">token </span><span style="color:#F97583">=</span><span style="color:#F97583"> f</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">h</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">.</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">p</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">.</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">sig</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># anahtar olmadan payload okunabiliyor</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(json.loads(b64url_decode(token.split(</span><span style="color:#9ECBFF">"."</span><span style="color:#E1E4E8">)[</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">])))</span></span>
+<span class="line"><span style="color:#6A737D"># {'sub': '42', 'role': 'user', 'iat': 1794873600, 'exp': 1794874500}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> verify</span><span style="color:#E1E4E8">(tok):</span></span>
+<span class="line"><span style="color:#E1E4E8">    h, p, s </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tok.split(</span><span style="color:#9ECBFF">"."</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    beklenen </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> b64url(hmac.new(secret, </span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">h</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">.</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">p</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">.encode(), hashlib.sha256).digest())</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> hmac.compare_digest(s, beklenen)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">sahte </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> b64url(json.dumps({</span><span style="color:#F97583">**</span><span style="color:#E1E4E8">payload, </span><span style="color:#9ECBFF">"role"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"admin"</span><span style="color:#E1E4E8">}, </span><span style="color:#FFAB70">separators</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">","</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">":"</span><span style="color:#E1E4E8">)).encode())</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(verify(token), verify(</span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">h</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">.</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">sahte</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">.</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">sig</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">))  </span><span style="color:#6A737D"># True False</span></span></code></pre>
+<p>Rolü <code>admin</code> yapılan payload eski imzayla doğrulamadan geçemiyor, doğru imza için anahtar gerekiyor. Payload ise herkesçe okunabildiği için içine gizli veri konmaz. Gerçek projede bu iş elle değil, <code>exp</code> ve algoritma kontrolünü de yapan hazır bir kütüphaneyle yapılır.</p>
+<p><strong>HS256</strong> tek bir gizli anahtarla imzalar ve doğrular. <strong>RS256</strong> özel anahtarla imzalar, açık anahtarla doğrular, böylece diğer servisler token’ı doğrulayabilir ama üretemez. Doğrulayan taraf algoritmayı token’ın header’ından değil kendi ayarından almalıdır. Aksi halde <code>"alg": "none"</code> yazılmış imzasız bir token kabul edilebilir, bu geçmişte gerçekten görülmüş bir açıktır.</p>
+<h3 id="süre-ve-refresh-token">Süre ve refresh token</h3>
+<p>JWT’nin en büyük zayıflığı iptal edilememesi. Sunucu token’ı bir yerde tutmadığı için imza doğru ve <code>exp</code> geçmemişse token kabul edilir. Kullanıcı çıkış yapsa ya da token çalınsa bile bu böyledir.</p>
+<p>Yaygın çözüm iki token kullanmaktır:</p>
+<ul>
+<li><strong>Access Token:</strong> Kısa ömürlü JWT, örneğin 15 dakika. Her API isteğinde gönderilir, çalınırsa zarar süresi kısadır.</li>
+<li><strong>Refresh Token:</strong> Uzun ömürlü, yalnızca yeni access token almak için kullanılır. Sunucu bunları kaydeder, bu yüzden iptal edilebilirler.</li>
+</ul>
+<p>Çıkışta refresh token silinir ve kullanıcı en geç bir access token ömrü sonra sistemden düşer. Refresh token her kullanımda yenisiyle değiştirilirse (<strong>rotation</strong>), eskisinin tekrar kullanılması çalındığına işaret eder.</p>
+<p>İptal edilen token’lar için kara liste de tutulabilir, ama bu her istekte bir depo sorgusu demektir ve JWT’nin “sunucuda durum tutmaz” avantajını kısmen geri alır.</p>
+<h3 id="token-nerede-saklanır">Token nerede saklanır?</h3>
+<p><code>localStorage</code>’daki token’ı sayfadaki her JavaScript okuyabilir, bir XSS açığı onu doğrudan çaldırır. HttpOnly cookie’deki token JavaScript’ten okunamaz, ama otomatik gönderildiği için CSRF önlemi gerekir. Mobil uygulamalar token’ı işletim sisteminin güvenli deposunda tutar ve <code>Authorization: Bearer</code> başlığıyla gönderir.</p>
+<hr>
+<h2 id="13-cors">13. CORS</h2>
+<p>Tarayıcılar <strong>Same-Origin Policy (Aynı Köken Politikası)</strong> uygular. Bir sayfadaki JavaScript, başka bir kökene istek gönderebilir ama cevabı okuyamaz. <strong>Origin (köken)</strong> şema, alan adı ve port üçlüsüdür. <code>https://example.com</code> ile <code>https://api.example.com</code> farklı kökendir, <code>http://example.com</code> ile <code>https://example.com</code> de.</p>
+<p><strong>CORS (Cross-Origin Resource Sharing)</strong>, sunucunun hangi kökenlerin kendi cevaplarını okuyabileceğini başlıklarla bildirmesidir:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="http"><code><span class="line"><span style="color:#85E89D">Access-Control-Allow-Origin</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> https://app.example.com</span></span>
+<span class="line"><span style="color:#85E89D">Access-Control-Allow-Methods</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> GET, POST, DELETE</span></span>
+<span class="line"><span style="color:#85E89D">Access-Control-Allow-Headers</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> Authorization, Content-Type</span></span>
+<span class="line"><span style="color:#85E89D">Access-Control-Allow-Credentials</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> true</span></span></code></pre>
+<p>DELETE ya da <code>Authorization</code> başlığı taşıyan isteklerde tarayıcı önce bir <code>OPTIONS</code> isteği (<strong>preflight</strong>) gönderir, cevap izin veriyorsa asıl isteği yollar.</p>
+<p>CORS bir güvenlik duvarı değildir, kuralı uygulayan tarayıcıdır. Aynı isteği <code>curl</code> ya da bir Python betiğiyle gönderen biri CORS’a takılmaz. CORS yalnızca başka bir sitenin, kullanıcının tarayıcısı üzerinden onun oturumuyla veri okumasını engeller. API’nin asıl koruması yine kimlik doğrulama ve yetkilendirmedir. Cookie’li isteklerde <code>*</code> kullanılamaz, köken açıkça yazılmalıdır.</p>
+<hr>
+<h2 id="mülakatta-sorulanlar">Mülakatta sorulanlar</h2>
+<p><strong>1. Tarayıcıya bir adres yazınca ne olur?</strong>
+Tarayıcı DNS ile IP adresini bulur, önce önbelleklere bakar. TCP bağlantısı açar, HTTPS ise TLS el sıkışmasını yapar ve HTTP isteğini gönderir. HTML işlenirken alt kaynaklar için yeni istekler yapılır.
+Sık yapılan hata: DNS önbelleklerini ve TLS adımını atlayıp doğrudan “sunucuya istek gider” demek.</p>
+<p><strong>2. DNS çözümleme nasıl çalışır?</strong>
+İstemci soruyu recursive resolver’a gönderir. Resolver önbelleğinde yoksa kök sunucudan TLD sunucusunun, TLD sunucusundan yetkili sunucunun adresini öğrenir ve cevabı yetkili sunucudan alır. Cevap TTL süresince önbellekte tutulur.
+Sık yapılan hata: Her sorguda kök sunucuya gidildiğini sanmak.</p>
+<p><strong>3. Idempotent ve safe ne demek? POST ile PUT farkı nedir?</strong>
+Safe metot sunucu durumunu değiştirmez, idempotent metot kaç kez gönderilirse gönderilsin aynı son durumu bırakır. PUT kaynağı belirli bir adreste tamamen değiştirir ve idempotenttir. POST yeni kaynak oluşturur, iki kez gönderilirse iki kaynak oluşabilir.
+Sık yapılan hata: Idempotency’yi aynı cevabı dönmekle karıştırmak. Önemli olan sunucudaki son durumdur.</p>
+<p><strong>4. 401 ile 403 farkı nedir?</strong>
+401 kimliğin doğrulanmadığını, token’ın olmadığını ya da geçersiz olduğunu söyler. 403 kimliğin bilindiğini ama yetkinin olmadığını söyler.
+Sık yapılan hata: “Unauthorized” adına bakıp 401’i yetki hatası saymak.</p>
+<p><strong>5. REST’in stateless olması ne anlama gelir?</strong>
+Her istek işlenmesi için gereken her şeyi, kimlik bilgisi dahil, kendisi taşır. Sunucu istekler arasında istemciye ait oturum bağlamı tutmaz. Bu sayede istekler herhangi bir sunucuya yönlendirilebilir.
+Sık yapılan hata: Stateless’ı uygulamanın hiç veri saklamaması olarak anlatmak.</p>
+<p><strong>6. Session ile JWT arasındaki fark nedir?</strong>
+Session’da bilgi sunucunun deposunda durur, istemci yalnızca bir kimlik taşır ve iptal kaydı silmek kadar kolaydır. JWT’de bilgi imzalı olarak token’ın içindedir, depo gerekmez ama süresi dolana kadar iptal edilemez. Bu yüzden kısa ömürlü tutulur ve refresh token ile yenilenir.
+Sık yapılan hata: JWT’nin her durumda session’dan daha güvenli olduğunu söylemek.</p>
+<p><strong>7. JWT şifreli midir? Payload’a ne konmamalı?</strong>
+Hayır, header ve payload yalnızca Base64URL ile kodlanır ve herkes okuyabilir. İmza yalnızca değiştirilmeyi engeller. Payload’a parola ya da gizli kişisel veri konmaz.
+Sık yapılan hata: Base64’ü şifreleme sanmak.</p>
+<p><strong>8. HttpOnly, Secure ve SameSite ne işe yarar? CORS neyi korur?</strong>
+HttpOnly cookie’yi JavaScript’ten gizler, Secure yalnızca HTTPS’te gönderir, SameSite çapraz site isteklerinde gönderilmesini sınırlayarak CSRF’i zorlaştırır. CORS ise tarayıcının, başka kökenden bir sayfanın API cevabını okumasına izin verip vermeyeceğini belirler.
+Sık yapılan hata: CORS’u sunucuyu koruyan bir erişim kontrolü sanmak. Tarayıcı dışından gelen isteklere etkisi yoktur.</p>
+<p><img alt="Özet kart: DNS çözümleme zinciri, HTTP metotlarının safe ve idempotent tablosu, durum kodu sınıfları, REST ilkeleri, session ve JWT farkı, cookie bayrakları" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/net2-ozet-kart.BGf1XYAe_MS7yE.webp" ></p>
+<p><em>13. bölümde: veritabanı ve SQL.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

@@ -1,0 +1,502 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="SQL sorgusunun mantıksal çalışma sırası, JOIN türleri, index ve B-tree, ACID, transaction ve izolasyon seviyeleri, normalizasyon, view, stored procedure, trigger ve SQL injection: mülakatta sorulan veritabanı temelleri, SQLite'ta çalıştırılmış örneklerle."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Veritabanı ve SQL: Sorgu Sırası, JOIN, Index, ACID ve Normalizasyon · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="tr" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Veritabanı ve SQL: Sorgu Sırası, JOIN, Index, ACID ve Normalizasyon</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 Kasım 2026</time> · sql, veritabani, mulakat, programlama-101 · Bölüm 13</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/databases-sql-join-index-acid/" hreflang="en" lang="en" data-astro-cid-7jjqptxk>Read in English</a></p> <img src="/_astro/sql-kapak.ChKD5YMe_2lx67H.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak"> <section class="ders" aria-labelledby="ders-baslik" data-astro-cid-7jjqptxk> <div class="ders-ust" data-astro-cid-7jjqptxk> <h2 id="ders-baslik" data-astro-cid-7jjqptxk>Kendin dene</h2> <a class="dugme" href="/etkilesim/join.html#lang=tr" target="_blank" rel="noopener" data-astro-cid-7jjqptxk>Tam ekranda aç</a> </div> <iframe src="/etkilesim/join.html#lang=tr" title="Etkileşimli ders" loading="lazy" data-astro-cid-7jjqptxk></iframe> </section> <article class="yazi" data-astro-cid-7jjqptxk><h1 id="veritabanı-ve-sql-sorgu-sırası-join-index-acid-ve-normalizasyon">Veritabanı ve SQL: Sorgu Sırası, JOIN, Index, ACID ve Normalizasyon</h1>
+<p><em>Programlama 101, Bölüm 13</em></p>
+<ol start="12">
+<li>bölümde bir HTTP isteğinin sunucuya nasıl ulaştığını, REST, JWT ve session tarafını konuşmuştuk. İsteğin vardığı yerde çoğu zaman bir veritabanı sorgusu çalışır. Bu yazı o sorguyu anlatıyor: nasıl çalıştırılır, nasıl hızlanır, aynı anda gelen yazmalar birbirini nasıl bozmaz?</li>
+</ol>
+<p>Örneklerin hepsini Python’un <code>sqlite3</code> modülüyle (SQLite 3.45) çalıştırdım ve tablolardaki çıktılar o çalıştırmadan geliyor. SQLite’ta olmayan özellikler için bunu yerinde belirttim.</p>
+<hr>
+<h2 id="1-örnek-tablolar">1. Örnek tablolar</h2>
+<p>Yazı boyunca iki küçük tablo kullanılıyor: müşteriler ve siparişler.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> musteri</span><span style="color:#E1E4E8"> (id </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> PRIMARY KEY</span><span style="color:#E1E4E8">, ad </span><span style="color:#F97583">TEXT</span><span style="color:#E1E4E8">, sehir </span><span style="color:#F97583">TEXT</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> siparis</span><span style="color:#E1E4E8"> (id </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> PRIMARY KEY</span><span style="color:#E1E4E8">, musteri_id </span><span style="color:#F97583">INTEGER</span><span style="color:#E1E4E8">, tutar </span><span style="color:#F97583">INTEGER</span><span style="color:#E1E4E8">, tarih </span><span style="color:#F97583">TEXT</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">INSERT INTO</span><span style="color:#E1E4E8"> musteri </span><span style="color:#F97583">VALUES</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'A'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'Ankara'</span><span style="color:#E1E4E8">), (</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'B'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'İzmir'</span><span style="color:#E1E4E8">), (</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'C'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'Ankara'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">INSERT INTO</span><span style="color:#E1E4E8"> siparis </span><span style="color:#F97583">VALUES</span></span>
+<span class="line"><span style="color:#E1E4E8">  (</span><span style="color:#79B8FF">101</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">250</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'2026-01-05'</span><span style="color:#E1E4E8">), (</span><span style="color:#79B8FF">102</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'2026-02-10'</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">  (</span><span style="color:#79B8FF">103</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">400</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'2026-02-11'</span><span style="color:#E1E4E8">), (</span><span style="color:#79B8FF">104</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">,  </span><span style="color:#79B8FF">80</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'2026-03-01'</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>C müşterisinin hiç siparişi yok. 104 numaralı sipariş ise var olmayan 4 numaralı müşteriye ait. Gerçek bir şemada <strong>Foreign Key (Yabancı Anahtar)</strong> bunu engellerdi, burada JOIN farklarını göstermek için bilerek bırakıldı.</p>
+<hr>
+<h2 id="2-sorgunun-mantıksal-çalışma-sırası">2. Sorgunun mantıksal çalışma sırası</h2>
+<p>SQL’de sorgu <code>SELECT</code> ile başlar, ama veritabanı onu bu sırayla değerlendirmez. Mantıksal sıra şöyledir:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>FROM / JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> DISTINCT -> ORDER BY -> LIMIT</span></span></code></pre>
+<p>Her adım bir öncekinin ürettiği ara tabloyla çalışır.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">SELECT</span><span style="color:#E1E4E8"> musteri_id, </span><span style="color:#79B8FF">SUM</span><span style="color:#E1E4E8">(tutar) </span><span style="color:#F97583">AS</span><span style="color:#E1E4E8"> toplam</span></span>
+<span class="line"><span style="color:#F97583">FROM</span><span style="color:#E1E4E8"> siparis</span></span>
+<span class="line"><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> tutar </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 50</span></span>
+<span class="line"><span style="color:#F97583">GROUP BY</span><span style="color:#E1E4E8"> musteri_id</span></span>
+<span class="line"><span style="color:#F97583">HAVING</span><span style="color:#79B8FF"> SUM</span><span style="color:#E1E4E8">(tutar) </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 200</span></span>
+<span class="line"><span style="color:#F97583">ORDER BY</span><span style="color:#E1E4E8"> toplam </span><span style="color:#F97583">DESC</span></span>
+<span class="line"><span style="color:#F97583">LIMIT</span><span style="color:#79B8FF"> 10</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>musteri_id</th>
+<th>toplam</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>400</td>
+</tr>
+<tr>
+<td>1</td>
+<td>350</td>
+</tr>
+</tbody>
+</table>
+<p>4 numaralı müşterinin toplamı 80, <code>HAVING</code> onu eledi. <code>ORDER BY toplam</code> çalışıyor, çünkü sıralama <code>SELECT</code>’ten sonra gelir ve <code>toplam</code> adı o noktada vardır.</p>
+<p>Aynı sebeple alias <code>WHERE</code> içinde kullanılamaz. <code>SELECT tutar * 1.2 AS kdvli</code> yazıp ardından <code>WHERE kdvli > 200</code> denendiğinde, <code>WHERE</code> çalışırken <code>SELECT</code> henüz değerlendirilmemiştir ve <code>kdvli</code> diye bir sütun yoktur. Standart SQL’de ve çoğu veritabanında bu hata verir, ifade <code>WHERE tutar * 1.2 > 200</code> olarak tekrar yazılır. SQLite burada gevşek davranıp alias’ı kabul ediyor, bu yüzden SQLite’ta çalışan bir sorgunun başka bir veritabanında hata vermesi mümkün.</p>
+<p>Bu sıra mantıksaldır. Optimizer, sonucu değiştirmediği sürece işlemleri farklı sırada ya da birleştirerek yapabilir. Sorunun cevabı “veritabanı fiziksel olarak böyle çalışır” değil, “sorgunun anlamı bu sıraya göre belirlenir” olmalı.</p>
+<hr>
+<h2 id="3-where-ile-having-farkı">3. WHERE ile HAVING farkı</h2>
+<p><strong>WHERE</strong>, gruplamadan önce tek tek satırları eler. <strong>HAVING</strong>, gruplamadan sonra grupları eler. Bu yüzden <code>WHERE</code> içinde <code>SUM</code>, <code>COUNT</code> gibi aggregate fonksiyonlar kullanılamaz, o noktada henüz grup yoktur.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">SELECT</span><span style="color:#E1E4E8"> sehir, </span><span style="color:#79B8FF">COUNT</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">*</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">AS</span><span style="color:#E1E4E8"> adet</span></span>
+<span class="line"><span style="color:#F97583">FROM</span><span style="color:#E1E4E8"> musteri</span></span>
+<span class="line"><span style="color:#F97583">GROUP BY</span><span style="color:#E1E4E8"> sehir</span></span>
+<span class="line"><span style="color:#F97583">HAVING</span><span style="color:#79B8FF"> COUNT</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">*</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>sehir</th>
+<th>adet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ankara</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>Satır üzerinden yazılabilen bir koşul <code>WHERE</code>’e konur. <code>HAVING sehir = 'Ankara'</code> de aynı sonucu verir, ama gereksiz satırları önce gruplayıp sonra atar.</p>
+<hr>
+<h2 id="4-join-türleri">4. JOIN türleri</h2>
+<p><strong>JOIN</strong>, iki tablonun satırlarını bir koşula göre yan yana getirir. Aşağıdaki sorgularda yalnızca JOIN türü değişiyor:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">SELECT</span><span style="color:#79B8FF"> m</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">ad</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">s</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">id</span><span style="color:#F97583"> AS</span><span style="color:#E1E4E8"> siparis_id, </span><span style="color:#79B8FF">s</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">tutar</span></span>
+<span class="line"><span style="color:#F97583">FROM</span><span style="color:#E1E4E8"> musteri m</span></span>
+<span class="line"><span style="color:#F97583">INNER JOIN</span><span style="color:#E1E4E8"> siparis s </span><span style="color:#F97583">ON</span><span style="color:#79B8FF"> s</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">musteri_id</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> m</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">id</span><span style="color:#E1E4E8">;   </span><span style="color:#6A737D">-- LEFT, RIGHT, FULL OUTER</span></span></code></pre>
+<p><code>ORDER BY</code> yazılmadığı için satır sırası garanti değildir. Tabloları okunur bir sırayla verdim.</p>
+<p><strong>INNER JOIN</strong> yalnızca iki tarafta da eşleşen satırları getirir. C ve 104 düşer.</p>
+<table>
+<thead>
+<tr>
+<th>ad</th>
+<th>siparis_id</th>
+<th>tutar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>101</td>
+<td>250</td>
+</tr>
+<tr>
+<td>A</td>
+<td>102</td>
+<td>100</td>
+</tr>
+<tr>
+<td>B</td>
+<td>103</td>
+<td>400</td>
+</tr>
+</tbody>
+</table>
+<p><strong>LEFT JOIN</strong> soldaki tablonun bütün satırlarını getirir. Sağda eşleşme yoksa sağ sütunlar <code>NULL</code> olur.</p>
+<table>
+<thead>
+<tr>
+<th>ad</th>
+<th>siparis_id</th>
+<th>tutar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>101</td>
+<td>250</td>
+</tr>
+<tr>
+<td>A</td>
+<td>102</td>
+<td>100</td>
+</tr>
+<tr>
+<td>B</td>
+<td>103</td>
+<td>400</td>
+</tr>
+<tr>
+<td>C</td>
+<td>NULL</td>
+<td>NULL</td>
+</tr>
+</tbody>
+</table>
+<p><strong>RIGHT JOIN</strong> bunun aynası: sağdaki tablonun bütün satırları gelir. Sonuç INNER JOIN’in üç satırı ve <code>(NULL, 104, 80)</code> satırıdır.</p>
+<p><strong>FULL OUTER JOIN</strong> iki tarafın da bütün satırlarını getirir: INNER JOIN’in üç satırı, <code>C, NULL, NULL</code> ve <code>NULL, 104, 80</code>. SQLite RIGHT ve FULL JOIN’i 3.39 sürümünden beri destekliyor, daha eski sürümlerde ve MySQL’de FULL JOIN yoktur. Orada LEFT JOIN ile ters yöndeki LEFT JOIN’in <code>UNION</code> ile birleştirilmesi gerekir.</p>
+<p><strong>CROSS JOIN</strong> koşul almaz ve iki tablonun kartezyen çarpımını üretir. 3 müşteri ve 4 siparişten 12 satır çıkar.</p>
+<p><strong>Self Join</strong>, bir tablonun kendisiyle birleştirilmesidir. Ayrı bir anahtar kelime yoktur, aynı tabloya iki farklı alias verilir. Her çalışanın yöneticisini aynı tablodan bulmak tipik örnektir:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> calisan</span><span style="color:#E1E4E8"> (id </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> PRIMARY KEY</span><span style="color:#E1E4E8">, unvan </span><span style="color:#F97583">TEXT</span><span style="color:#E1E4E8">, yonetici_id </span><span style="color:#F97583">INTEGER</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">INSERT INTO</span><span style="color:#E1E4E8"> calisan </span><span style="color:#F97583">VALUES</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'Genel Müdür'</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">NULL</span><span style="color:#E1E4E8">), (</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'Takım Lideri'</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">), (</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'Geliştirici'</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#79B8FF"> c</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">unvan</span><span style="color:#F97583"> AS</span><span style="color:#E1E4E8"> calisan, </span><span style="color:#79B8FF">y</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">unvan</span><span style="color:#F97583"> AS</span><span style="color:#E1E4E8"> yonetici</span></span>
+<span class="line"><span style="color:#F97583">FROM</span><span style="color:#E1E4E8"> calisan c</span></span>
+<span class="line"><span style="color:#F97583">LEFT JOIN</span><span style="color:#E1E4E8"> calisan y </span><span style="color:#F97583">ON</span><span style="color:#79B8FF"> c</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">yonetici_id</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> y</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">id</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>calisan</th>
+<th>yonetici</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Genel Müdür</td>
+<td>NULL</td>
+</tr>
+<tr>
+<td>Takım Lideri</td>
+<td>Genel Müdür</td>
+</tr>
+<tr>
+<td>Geliştirici</td>
+<td>Takım Lideri</td>
+</tr>
+</tbody>
+</table>
+<h3 id="left-join-ve-where-tuzağı">LEFT JOIN ve WHERE tuzağı</h3>
+<p>LEFT JOIN’den sonra sağ tablodaki bir sütuna <code>WHERE</code> ile koşul konursa, <code>NULL</code> olan satırlar elenir ve sorgu INNER JOIN gibi davranır.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#6A737D">-- C kaybolur: NULL > 200 doğru değildir</span></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#79B8FF"> m</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">ad</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">s</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">tutar</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> musteri m</span></span>
+<span class="line"><span style="color:#F97583">LEFT JOIN</span><span style="color:#E1E4E8"> siparis s </span><span style="color:#F97583">ON</span><span style="color:#79B8FF"> s</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">musteri_id</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> m</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">id</span></span>
+<span class="line"><span style="color:#F97583">WHERE</span><span style="color:#79B8FF"> s</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">tutar</span><span style="color:#F97583"> ></span><span style="color:#79B8FF"> 200</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">-- C kalır: koşul eşleşmenin parçası</span></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#79B8FF"> m</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">ad</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">s</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">tutar</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> musteri m</span></span>
+<span class="line"><span style="color:#F97583">LEFT JOIN</span><span style="color:#E1E4E8"> siparis s </span><span style="color:#F97583">ON</span><span style="color:#79B8FF"> s</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">musteri_id</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> m</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">id</span><span style="color:#F97583"> AND</span><span style="color:#79B8FF"> s</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">tutar</span><span style="color:#F97583"> ></span><span style="color:#79B8FF"> 200</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<p>İlk sorgu <code>A 250</code> ve <code>B 400</code> döndürür. İkincisi bunlara <code>C NULL</code> satırını ekler. Aynı mantıkla, siparişi olmayan müşteriyi saymak için <code>COUNT(*)</code> değil <code>COUNT(s.id)</code> yazılır. <code>COUNT(*)</code> C için 1 verir, <code>COUNT(s.id)</code> ise <code>NULL</code>’ları saymadığı için 0.</p>
+<p><img alt="JOIN türleri: iki tablo üzerinde INNER, LEFT, RIGHT ve FULL OUTER JOIN&amp;#x27;in hangi satırları getirdiği, eşleşmeyen satırların NULL ile doldurulması" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/sql-join.BtZZ70AH_Z88RBY.webp" ></p>
+<hr>
+<h2 id="5-index">5. Index</h2>
+<p><strong>Index</strong>, bir tablodaki bir ya da birkaç sütunun değerlerini sıralı tutan ve her değerden ilgili satıra işaret eden ayrı bir veri yapısıdır. Kitabın sonundaki dizin gibi: bir terimin geçtiği sayfayı bulmak için kitap baştan sona okunmaz, dizinde alfabetik sıradan bakılır.</p>
+<h3 id="b-tree-mantığı">B-tree mantığı</h3>
+<p>İlişkisel veritabanlarında varsayılan index yapısı <strong>B-tree</strong>’dir (çoğunlukla B+ tree çeşidi). Dengeli bir ağaçtır ve her düğüm bir disk sayfasına denk gelir, yani tek düğümde yüzlerce anahtar bulunur. Bu yüzden ağaç çok sığ kalır. Milyonlarca satırlık bir tabloda bile kökten yaprağa üç dört adımda inilir. Arama <code>O(log n)</code>, index’siz tam tarama ise <code>O(n)</code> (1. bölümdeki Big O). Yapraklar sıralı olduğu için <code>BETWEEN</code> ve <code>></code> gibi aralık sorguları da index’ten yararlanır.</p>
+<p>SQLite’ta bir sorgunun index kullanıp kullanmadığı <code>EXPLAIN QUERY PLAN</code> ile görülür. Index yokken <code>WHERE musteri_id = 1</code> için plan <code>SCAN siparis</code> der, yani bütün tablo okunur. Index eklenince plan <code>SEARCH ... USING INDEX</code> olur.</p>
+<h3 id="okuma-hızlanır-yazma-yavaşlar">Okuma hızlanır, yazma yavaşlar</h3>
+<p>Index ücretsiz değildir. Her <code>INSERT</code>, <code>DELETE</code> ve index’li sütuna dokunan her <code>UPDATE</code>, tablonun yanında o tablonun bütün index’lerini de güncellemek zorundadır. Yeni anahtar sıralı yapıda doğru yere yerleştirilir, sayfa dolmuşsa bölünür (page split). Beş index’i olan bir tabloya bir satır eklemek, altı ayrı yapıya yazmak demektir.</p>
+<p>Bu yüzden her sütuna index konmaz. İyi aday, <code>WHERE</code>, <code>JOIN</code> ve <code>ORDER BY</code>’da sık geçen ve seçici olan sütunlardır. Yalnızca iki değer alan bir <code>aktif_mi</code> sütununda index çoğu zaman işe yaramaz, çünkü satırların yarısını getirmek için index’ten dolaşmak taramadan pahalıya gelir. Sütun bir fonksiyona sokulduğunda da index kullanılamaz: <code>WHERE UPPER(ad) = 'A'</code> sorgusu <code>ad</code> üzerindeki index’e rağmen tarama yapar.</p>
+<h3 id="composite-index-ve-sol-önek-kuralı">Composite index ve sol önek kuralı</h3>
+<p><strong>Composite Index (Bileşik Index)</strong> birden fazla sütun üzerine kurulur ve sütun sırası önemlidir. <code>(musteri_id, tarih)</code> index’i önce müşteriye, aynı müşteri içinde tarihe göre sıralıdır. Telefon rehberi gibi: soyadı ve ada göre sıralı bir rehberde soyadıyla arama hızlıdır, yalnızca adla arama değildir.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> INDEX</span><span style="color:#B392F0"> ix_siparis_musteri_tarih</span><span style="color:#F97583"> ON</span><span style="color:#E1E4E8"> siparis (musteri_id, tarih);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">EXPLAIN QUERY PLAN </span><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> siparis </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> musteri_id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">EXPLAIN QUERY PLAN </span><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> siparis </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> musteri_id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#F97583"> AND</span><span style="color:#E1E4E8"> tarih </span><span style="color:#F97583">>=</span><span style="color:#9ECBFF"> '2026-02-01'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">EXPLAIN QUERY PLAN </span><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> siparis </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> tarih </span><span style="color:#F97583">>=</span><span style="color:#9ECBFF"> '2026-02-01'</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>Koşul</th>
+<th>Plan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>musteri_id = 1</code></td>
+<td>SEARCH USING INDEX (musteri_id=?)</td>
+</tr>
+<tr>
+<td><code>musteri_id = 1 AND tarih >= ...</code></td>
+<td>SEARCH USING INDEX (musteri_id=? AND tarih>?)</td>
+</tr>
+<tr>
+<td><code>tarih >= ...</code></td>
+<td>SCAN siparis</td>
+</tr>
+</tbody>
+</table>
+<p>Bu <strong>Leftmost Prefix (Sol Önek)</strong> kuralıdır. Index, sütunlarının soldan başlayan bir önekiyle kullanılabilir: <code>(a)</code>, <code>(a, b)</code>, <code>(a, b, c)</code>. Yalnızca <code>b</code> ile arama index’in sırasından yararlanamaz. Eşitlik koşulları önce, aralık koşulu en sona konur.</p>
+<h3 id="clustered-ve-non-clustered">Clustered ve non-clustered</h3>
+<p><strong>Clustered Index</strong>, tablonun satırlarının fiziksel olarak o index’in sırasına göre saklanmasıdır. Satırlar zaten index’in yapraklarındadır, bu yüzden bir tabloda yalnızca bir tane olabilir. MySQL InnoDB’de tablo her zaman primary key’e göre saklanır, SQLite’ta ise <code>rowid</code>’e göre.</p>
+<p><strong>Non-clustered Index</strong> ayrı bir yapıdır. Yapraklarında anahtar ve satırın yerini gösteren bir işaretçi (ya da clustered anahtar) bulunur. İstenen sütunlar index’te yoksa ikinci bir arama ile tabloya gidilir. Sorgunun ihtiyaç duyduğu bütün sütunlar index’te varsa bu adım atlanır, böyle bir index’e <strong>Covering Index</strong> denir.</p>
+<hr>
+<h2 id="6-acid-ve-transaction">6. ACID ve transaction</h2>
+<p><strong>Transaction (İşlem)</strong>, birlikte başarılı olması ya da birlikte geri alınması gereken komutların grubudur. <code>BEGIN</code> ile başlar, <code>COMMIT</code> ile kalıcı olur, <code>ROLLBACK</code> ile geri alınır. Klasik örnek para transferidir: bir hesaptan düşüp diğerine eklemek iki ayrı <code>UPDATE</code>’tir ve yalnız biri olursa para ya yok olur ya da yoktan var olur.</p>
+<p>Bir transaction’ın garanti ettiği dört özellik <strong>ACID</strong> diye anılır:</p>
+<ul>
+<li><strong>Atomicity (Bölünmezlik):</strong> Transaction’daki komutların hepsi uygulanır ya da hiçbiri uygulanmaz.</li>
+<li><strong>Consistency (Tutarlılık):</strong> Transaction veritabanını bir geçerli durumdan başka bir geçerli duruma taşır. Primary key, foreign key ve <code>CHECK</code> gibi kısıtlar ihlal edilmez.</li>
+<li><strong>Isolation (Yalıtım):</strong> Aynı anda çalışan transaction’lar birbirinin yarım kalmış değişikliklerini, seçilen izolasyon seviyesinin izin verdiği ölçüde görür.</li>
+<li><strong>Durability (Kalıcılık):</strong> <code>COMMIT</code> dönen bir transaction, hemen ardından elektrik kesilse bile kaybolmaz. Veritabanı değişikliği önce diske bir log’a (write-ahead log) yazar, sonra commit’i onaylar.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> hesap</span><span style="color:#E1E4E8"> (id </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> PRIMARY KEY</span><span style="color:#E1E4E8">, bakiye </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> CHECK</span><span style="color:#E1E4E8"> (bakiye </span><span style="color:#F97583">>=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#F97583">INSERT INTO</span><span style="color:#E1E4E8"> hesap </span><span style="color:#F97583">VALUES</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">), (</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">50</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">BEGIN</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">UPDATE</span><span style="color:#E1E4E8"> hesap </span><span style="color:#F97583">SET</span><span style="color:#E1E4E8"> bakiye </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> bakiye </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 150</span><span style="color:#F97583"> WHERE</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;   </span><span style="color:#6A737D">-- başarılı</span></span>
+<span class="line"><span style="color:#F97583">UPDATE</span><span style="color:#E1E4E8"> hesap </span><span style="color:#F97583">SET</span><span style="color:#E1E4E8"> bakiye </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> bakiye </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 150</span><span style="color:#F97583"> WHERE</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;   </span><span style="color:#6A737D">-- CHECK ihlali, hata</span></span>
+<span class="line"><span style="color:#F97583">ROLLBACK</span><span style="color:#E1E4E8">;                                              </span><span style="color:#6A737D">-- uygulama hatayı yakalayıp çağırır</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>bakiye</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>100</td>
+</tr>
+<tr>
+<td>2</td>
+<td>50</td>
+</tr>
+</tbody>
+</table>
+<p>Burada gözden kaçan bir ayrıntı var. Hata, transaction’ı kendiliğinden geri almaz. SQLite’ta <code>CHECK</code> ihlali yalnızca o komutu geri alır, ilk <code>UPDATE</code> transaction içinde beklemeye devam eder. Hata yakalanıp <code>ROLLBACK</code> yerine <code>COMMIT</code> çağrılırsa 2 numaralı hesap 200 olur, 1 numaralı hesap 100 kalır ve yoktan 150 birim para oluşur. Bunu çalıştırarak doğruladım. Hata yolunda <code>ROLLBACK</code> her zaman açıkça yazılır.</p>
+<hr>
+<h2 id="7-i̇zolasyon-seviyeleri">7. İzolasyon seviyeleri</h2>
+<p><strong>Isolation Level (İzolasyon Seviyesi)</strong>, eşzamanlılık için ne kadar tutarlılıktan vazgeçildiğini belirler. Seviyeler, hangi okuma sorunlarına izin verdikleriyle tanımlanır:</p>
+<ul>
+<li><strong>Dirty Read:</strong> Başka bir transaction’ın henüz commit etmediği değişikliği okumak. O transaction rollback yaparsa, okunan değer hiç var olmamış olur.</li>
+<li><strong>Non-repeatable Read:</strong> Aynı satırı bir transaction içinde iki kez okumak ve arada başka bir transaction’ın commit ettiği <code>UPDATE</code> yüzünden farklı değer görmek.</li>
+<li><strong>Phantom Read:</strong> Aynı koşulla iki kez sorgu yapmak ve arada eklenen ya da silinen satırlar yüzünden farklı sayıda satır görmek. Örneğin <code>WHERE tutar > 100</code> önce 3, sonra 4 satır döndürür.</li>
+</ul>
+<p>Non-repeatable read var olan bir satırın değişmesidir, phantom read ise sonuç kümesine satır girip çıkmasıdır.</p>
+<table>
+<thead>
+<tr>
+<th>Seviye</th>
+<th>Dirty read</th>
+<th>Non-repeatable read</th>
+<th>Phantom read</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Read Uncommitted</td>
+<td>Olabilir</td>
+<td>Olabilir</td>
+<td>Olabilir</td>
+</tr>
+<tr>
+<td>Read Committed</td>
+<td>Olmaz</td>
+<td>Olabilir</td>
+<td>Olabilir</td>
+</tr>
+<tr>
+<td>Repeatable Read</td>
+<td>Olmaz</td>
+<td>Olmaz</td>
+<td>Olabilir</td>
+</tr>
+<tr>
+<td>Serializable</td>
+<td>Olmaz</td>
+<td>Olmaz</td>
+<td>Olmaz</td>
+</tr>
+</tbody>
+</table>
+<p>Tablo, SQL standardının her seviye için izin verdiği en kötü durumu gösterir. Veritabanları çoğu zaman daha sıkı davranır. PostgreSQL’de Read Uncommitted, Read Committed gibi çalışır ve Repeatable Read, snapshot kullandığı için phantom read’i de önler. Varsayılanlar da farklıdır: PostgreSQL ve SQL Server’da Read Committed, MySQL InnoDB’de Repeatable Read. SQLite’ta aynı anda tek bir yazan olabildiği için transaction’lar serializable davranır.</p>
+<hr>
+<h2 id="8-normalizasyon">8. Normalizasyon</h2>
+<p><strong>Normalization (Normalizasyon)</strong>, tabloları tekrar eden veriyi ve bundan doğan güncelleme hatalarını azaltacak şekilde bölmektir. Aynı bilgi iki yerde tutulursa, biri güncellenip diğeri unutulduğunda veritabanı kendisiyle çelişir.</p>
+<p>Başlangıç tablosu:</p>
+<table>
+<thead>
+<tr>
+<th>siparis_id</th>
+<th>musteri</th>
+<th>sehir</th>
+<th>urunler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>101</td>
+<td>A</td>
+<td>Ankara</td>
+<td>Kalem x3, Defter x1</td>
+</tr>
+<tr>
+<td>102</td>
+<td>B</td>
+<td>İzmir</td>
+<td>Kalem x2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>1NF (Birinci Normal Form):</strong> Her hücrede tek, bölünmez bir değer olur ve tekrar eden gruplar bulunmaz. <code>urunler</code> sütunu bu kuralı bozuyor. “Kalem siparişleri” sorgusu metin aramaya dönüşüyor. Her ürün ayrı satıra alınınca tablo 1NF olur, anahtar <code>(siparis_id, urun)</code> ikilisidir:</p>
+<table>
+<thead>
+<tr>
+<th>siparis_id</th>
+<th>urun</th>
+<th>adet</th>
+<th>fiyat</th>
+<th>musteri</th>
+<th>sehir</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>101</td>
+<td>Kalem</td>
+<td>3</td>
+<td>20</td>
+<td>A</td>
+<td>Ankara</td>
+</tr>
+<tr>
+<td>101</td>
+<td>Defter</td>
+<td>1</td>
+<td>45</td>
+<td>A</td>
+<td>Ankara</td>
+</tr>
+<tr>
+<td>102</td>
+<td>Kalem</td>
+<td>2</td>
+<td>20</td>
+<td>B</td>
+<td>İzmir</td>
+</tr>
+</tbody>
+</table>
+<p><strong>2NF:</strong> 1NF’ye ek olarak, anahtar olmayan her sütun anahtarın tamamına bağlı olmalıdır. <code>fiyat</code> yalnızca <code>urun</code>’e, <code>musteri</code> ve <code>sehir</code> yalnızca <code>siparis_id</code>’ye bağlı. Bu <strong>Partial Dependency (Kısmi Bağımlılık)</strong> yüzünden kalemin fiyatı her siparişte tekrar ediyor. Tablo üçe bölünür: <code>urun(id, ad, fiyat)</code>, <code>siparis(id, musteri, sehir)</code> ve <code>siparis_kalem(siparis_id, urun_id, adet)</code>.</p>
+<p><strong>3NF:</strong> 2NF’ye ek olarak, anahtar olmayan bir sütun başka bir anahtar olmayan sütuna bağlı olmamalıdır. <code>siparis</code> tablosunda <code>sehir</code>, siparişe değil müşteriye bağlı (<strong>Transitive Dependency</strong>, geçişli bağımlılık). Müşteri taşınırsa bütün siparişlerinin güncellenmesi gerekir. Müşteri ayrı tabloya alınır:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> musteri</span><span style="color:#E1E4E8"> (id </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> PRIMARY KEY</span><span style="color:#E1E4E8">, ad </span><span style="color:#F97583">TEXT</span><span style="color:#E1E4E8">, sehir </span><span style="color:#F97583">TEXT</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> urun</span><span style="color:#E1E4E8">    (id </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> PRIMARY KEY</span><span style="color:#E1E4E8">, ad </span><span style="color:#F97583">TEXT</span><span style="color:#E1E4E8">, fiyat </span><span style="color:#F97583">INTEGER</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> siparis</span><span style="color:#E1E4E8"> (id </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> PRIMARY KEY</span><span style="color:#E1E4E8">, musteri_id </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> REFERENCES</span><span style="color:#E1E4E8"> musteri(id));</span></span>
+<span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> siparis_kalem</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">  siparis_id </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> REFERENCES</span><span style="color:#E1E4E8"> siparis(id),</span></span>
+<span class="line"><span style="color:#E1E4E8">  urun_id    </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> REFERENCES</span><span style="color:#E1E4E8"> urun(id),</span></span>
+<span class="line"><span style="color:#E1E4E8">  adet       </span><span style="color:#F97583">INTEGER</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">  PRIMARY KEY</span><span style="color:#E1E4E8"> (siparis_id, urun_id)</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>Düz görünüm gerektiğinde JOIN ile geri kurulur. Dört tabloyu birleştiren sorgu şu sonucu verdi:</p>
+<table>
+<thead>
+<tr>
+<th>siparis_id</th>
+<th>ad</th>
+<th>sehir</th>
+<th>urun</th>
+<th>adet</th>
+<th>ara_toplam</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>101</td>
+<td>A</td>
+<td>Ankara</td>
+<td>Kalem</td>
+<td>3</td>
+<td>60</td>
+</tr>
+<tr>
+<td>101</td>
+<td>A</td>
+<td>Ankara</td>
+<td>Defter</td>
+<td>1</td>
+<td>45</td>
+</tr>
+<tr>
+<td>102</td>
+<td>B</td>
+<td>İzmir</td>
+<td>Kalem</td>
+<td>2</td>
+<td>40</td>
+</tr>
+</tbody>
+</table>
+<p>Gerçek bir sipariş sisteminde <code>siparis_kalem</code> tablosuna genelde bir <code>birim_fiyat</code> sütunu da eklenir. Bu 2NF ihlali değildir, çünkü saklanan bilgi farklıdır: ürünün bugünkü fiyatı değil, sipariş anındaki fiyatı. Ürünün fiyatı değiştiğinde eski siparişlerin toplamı değişmemelidir.</p>
+<h3 id="denormalizasyon-ne-zaman">Denormalizasyon ne zaman?</h3>
+<p><strong>Denormalization</strong>, okuma performansı için bilerek veri tekrarına geri dönmektir. Okumanın yazmadan çok daha sık olduğu ve aynı JOIN’in sürekli tekrarlandığı yerlerde düşünülür. Raporlama tabloları ya da müşteri satırında tutulan bir <code>siparis_sayisi</code> sayacı bunun örnekleri. Bedeli, kopyaları tutarlı tutma işinin trigger’a ya da uygulama koduna kalmasıdır. Önce normalize edilir, ölçülmüş bir performans sorunu varsa denormalize edilir.</p>
+<hr>
+<h2 id="9-view-stored-procedure-ve-trigger">9. View, stored procedure ve trigger</h2>
+<p><strong>View (Görünüm)</strong>, adı verilmiş, kaydedilmiş bir <code>SELECT</code> sorgusudur. Kendisi veri tutmaz, her kullanıldığında altındaki sorgu çalışır. Karmaşık bir JOIN’i tek isim arkasına saklamak ve tablo yerine view üzerinden yetki vermek için kullanılır.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> VIEW</span><span style="color:#B392F0"> musteri_ozet</span><span style="color:#F97583"> AS</span></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#79B8FF"> m</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">ad</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">COUNT</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">s</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">id</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">AS</span><span style="color:#E1E4E8"> siparis_sayisi, </span><span style="color:#79B8FF">COALESCE</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">SUM</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">s</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">tutar</span><span style="color:#E1E4E8">), </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">AS</span><span style="color:#E1E4E8"> toplam</span></span>
+<span class="line"><span style="color:#F97583">FROM</span><span style="color:#E1E4E8"> musteri m </span><span style="color:#F97583">LEFT JOIN</span><span style="color:#E1E4E8"> siparis s </span><span style="color:#F97583">ON</span><span style="color:#79B8FF"> s</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">musteri_id</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> m</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">id</span></span>
+<span class="line"><span style="color:#F97583">GROUP BY</span><span style="color:#79B8FF"> m</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">id</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">m</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">ad</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> musteri_ozet </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> toplam </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;   </span><span style="color:#6A737D">-- A 2 350, B 1 400</span></span></code></pre>
+<p><strong>Materialized View</strong> ise sonucu gerçekten saklar ve yenilenene kadar eski veriyi gösterir. PostgreSQL’de <code>REFRESH MATERIALIZED VIEW</code> ile yenilenir. SQL Server’da bu iş indexed view ile yapılır, SQLite’ta karşılığı yoktur. <code>CREATE MATERIALIZED VIEW</code> komutu PostgreSQL ve Oracle’da vardır, SQL Server’da yoktur.</p>
+<p><strong>Stored Procedure (Saklı Yordam)</strong>, veritabanında kayıtlı, parametre alan ve birden fazla komut çalıştırabilen bir koddur. SQLite’ta stored procedure yoktur. Aşağıdaki örnek SQL Server (T-SQL) sözdizimiyle yazılmıştır ve çalıştırılmamıştır:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> PROCEDURE</span><span style="color:#E1E4E8"> SiparisEkle @MusteriId </span><span style="color:#F97583">INT</span><span style="color:#E1E4E8">, @UrunId </span><span style="color:#F97583">INT</span><span style="color:#E1E4E8">, @Adet </span><span style="color:#F97583">INT</span></span>
+<span class="line"><span style="color:#F97583">AS</span></span>
+<span class="line"><span style="color:#F97583">BEGIN</span></span>
+<span class="line"><span style="color:#F97583">    SET</span><span style="color:#F97583"> XACT_ABORT</span><span style="color:#F97583"> ON</span><span style="color:#E1E4E8">;   </span><span style="color:#6A737D">-- hata olursa transaction'ı tamamen geri al</span></span>
+<span class="line"><span style="color:#F97583">    BEGIN</span><span style="color:#F97583"> TRANSACTION</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        UPDATE</span><span style="color:#E1E4E8"> urun </span><span style="color:#F97583">SET</span><span style="color:#E1E4E8"> stok </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> stok </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> @Adet </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> @UrunId </span><span style="color:#F97583">AND</span><span style="color:#E1E4E8"> stok </span><span style="color:#F97583">>=</span><span style="color:#E1E4E8"> @Adet;</span></span>
+<span class="line"><span style="color:#F97583">        IF</span><span style="color:#E1E4E8"> @@ROWCOUNT </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#F97583"> THROW</span><span style="color:#79B8FF"> 50001</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'Yetersiz stok'</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        INSERT INTO</span><span style="color:#E1E4E8"> siparis (musteri_id, urun_id, adet) </span><span style="color:#F97583">VALUES</span><span style="color:#E1E4E8"> (@MusteriId, @UrunId, @Adet);</span></span>
+<span class="line"><span style="color:#F97583">    COMMIT</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">END</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<p>Stok kontrolü <code>UPDATE</code>’in <code>WHERE</code> koşulunda yapılıyor. Kontrol önce ayrı bir <code>SELECT</code> ile yapılsaydı, iki komut arasında başka bir sipariş aynı stoğu düşebilirdi. Function’dan farkı şu: function her zaman değer döndürür ve <code>SELECT</code> içinde kullanılabilir, stored procedure <code>EXEC</code> ile çağrılır. Function’ın her zaman daha hafif olduğu sık söylenir, ama SQL Server’da scalar function her satır için ayrı çalıştığından büyük sorguları belirgin şekilde yavaşlatabilir.</p>
+<p><strong>Trigger (Tetikleyici)</strong>, bir tabloda <code>INSERT</code>, <code>UPDATE</code> ya da <code>DELETE</code> olduğunda kendiliğinden çalışan koddur. Denetim kaydı (audit log) için yaygındır. SQLite trigger’ı destekliyor:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> siparis_log</span><span style="color:#E1E4E8"> (siparis_id </span><span style="color:#F97583">INTEGER</span><span style="color:#E1E4E8">, islem </span><span style="color:#F97583">TEXT</span><span style="color:#E1E4E8">, zaman </span><span style="color:#F97583">TEXT</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TRIGGER</span><span style="color:#B392F0"> trg_siparis_sil</span><span style="color:#F97583"> AFTER</span><span style="color:#F97583"> DELETE</span><span style="color:#F97583"> ON</span><span style="color:#E1E4E8"> siparis</span></span>
+<span class="line"><span style="color:#F97583">BEGIN</span></span>
+<span class="line"><span style="color:#F97583">  INSERT INTO</span><span style="color:#E1E4E8"> siparis_log </span><span style="color:#F97583">VALUES</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">OLD</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">id</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'DELETE'</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">datetime</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'now'</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#F97583">END</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">DELETE</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> siparis </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 104</span><span style="color:#E1E4E8">;   </span><span style="color:#6A737D">-- siparis_log: (104, 'DELETE', ...)</span></span></code></pre>
+<p>SQLite ve PostgreSQL silinen ya da eklenen satıra <code>OLD</code> ve <code>NEW</code> ile erişir, SQL Server ise <code>deleted</code> ve <code>inserted</code> sanal tablolarını kullanır. Stokun eksiye düşmemesi gibi basit kurallar için <code>CHECK</code> kısıtı trigger’dan daha açıktır.</p>
+<hr>
+<h2 id="10-sql-injection-ve-parametreli-sorgu">10. SQL injection ve parametreli sorgu</h2>
+<p><strong>SQL Injection</strong>, kullanıcı girdisinin sorgu metnine doğrudan eklenmesiyle girdinin SQL kodu olarak çalıştırılmasıdır.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">girdi </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "' OR '1'='1"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># yanlış: girdi sorgu metninin parçası oluyor</span></span>
+<span class="line"><span style="color:#E1E4E8">db.execute(</span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"SELECT id, ad FROM musteri WHERE ad = '</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">girdi</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">'"</span><span style="color:#E1E4E8">).fetchall()</span></span>
+<span class="line"><span style="color:#6A737D"># [(1, 'A'), (2, 'B'), (3, 'C')]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># doğru: girdi ayrı bir parametre olarak gidiyor</span></span>
+<span class="line"><span style="color:#E1E4E8">db.execute(</span><span style="color:#9ECBFF">"SELECT id, ad FROM musteri WHERE ad = ?"</span><span style="color:#E1E4E8">, (girdi,)).fetchall()</span></span>
+<span class="line"><span style="color:#6A737D"># []</span></span></code></pre>
+<p>İlk sorgu <code>WHERE ad = '' OR '1'='1'</code> haline gelir ve koşul her satır için doğru olduğundan bütün müşteriler döner. <strong>Parameterized Query (Parametreli Sorgu)</strong> ile sorgu metni ve değer veritabanına ayrı gönderilir. Değer ne içerirse içersin yalnızca veri olarak karşılaştırılır, ikinci sorgu adı tam olarak <code>' OR '1'='1</code> olan müşteriyi arar ve bulamaz.</p>
+<p>Tırnakları elle kaçırmak yeterli değildir. Tablo ya da sütun adı parametre olamaz. Bunlar kullanıcıdan geliyorsa izin verilen değerlerden oluşan bir listeye göre kontrol edilir.</p>
+<hr>
+<h2 id="mülakatta-sorulanlar">Mülakatta sorulanlar</h2>
+<p><strong>1. Bir SQL sorgusu hangi sırayla çalışır? Alias neden WHERE’de kullanılamaz?</strong>
+Mantıksal sıra FROM ve JOIN, WHERE, GROUP BY, HAVING, SELECT, DISTINCT, ORDER BY, LIMIT şeklindedir. Alias SELECT’te tanımlanır ve WHERE ondan önce değerlendirildiği için o noktada yoktur. ORDER BY SELECT’ten sonra geldiği için alias’ı kullanabilir.
+Sık yapılan hata: Bu sırayı veritabanının fiziksel çalışma sırası sanmak. Optimizer sonucu değiştirmeden sırayı değiştirebilir.</p>
+<p><strong>2. WHERE ile HAVING arasındaki fark nedir?</strong>
+WHERE gruplamadan önce satırları, HAVING gruplamadan sonra grupları eler. Aggregate fonksiyonlar WHERE içinde kullanılamaz.
+Sık yapılan hata: Satır üzerinden yazılabilecek koşulları HAVING’e koymak. Sonuç aynı olur, ama gereksiz veri gruplanır.</p>
+<p><strong>3. INNER JOIN ile LEFT JOIN arasındaki fark nedir?</strong>
+INNER JOIN yalnızca iki tarafta da eşleşen satırları getirir. LEFT JOIN soldaki tablonun bütün satırlarını getirir, eşleşme yoksa sağ taraf NULL olur.
+Sık yapılan hata: LEFT JOIN’den sonra sağ tablonun sütununa WHERE koşulu koymak. NULL satırlar elenir ve sorgu INNER JOIN’e döner. Koşul ON içine yazılır.</p>
+<p><strong>4. Index okumayı neden hızlandırır, neden her sütuna index konmaz?</strong>
+B-tree index değerleri sıralı tutar ve aramayı tam taramanın O(n) maliyetinden O(log n)‘e indirir. Her INSERT, DELETE ve ilgili UPDATE bütün index’leri de güncellemek zorunda olduğu için yazma yavaşlar, index ayrıca yer kaplar.
+Sık yapılan hata: Düşük seçicilikteki sütunlara ya da fonksiyona sokulan sütunlara index’in yardım edeceğini düşünmek.</p>
+<p><strong>5. (musteri_id, tarih) üzerinde composite index varken WHERE tarih = … sorgusu index’i kullanır mı?</strong>
+Genelde hayır. Index önce musteri_id’ye göre sıralıdır ve soldan başlayan bir önekle kullanılır. SQLite bu sorgu için tam tarama planı çıkarıyor.
+Sık yapılan hata: Sütun sırasının önemsiz olduğunu sanmak. Eşitlik koşulu olan sütunlar öne, aralık koşulu olan sona konur.</p>
+<p><strong>6. ACID nedir?</strong>
+Atomicity, transaction’ın tamamen ya da hiç uygulanmamasıdır. Consistency kısıtların korunması, isolation eşzamanlı transaction’ların birbirinden yalıtılması, durability ise commit edilen verinin çökmede kaybolmamasıdır.
+Sık yapılan hata: Bir komut hata verince transaction’ın kendiliğinden geri alındığını varsaymak. Hata yolunda ROLLBACK açıkça çağrılır.</p>
+<p><strong>7. Dirty read, non-repeatable read ve phantom read arasındaki fark nedir?</strong>
+Dirty read commit edilmemiş veriyi okumaktır. Non-repeatable read aynı satırın iki okuma arasında değişmesi, phantom read ise aynı koşulla yapılan iki sorgu arasında satır eklenmesi ya da silinmesidir. Read Committed ilkini, Repeatable Read ikincisini, Serializable üçünü de önler.
+Sık yapılan hata: Non-repeatable read ile phantom read’i aynı şey sanmak. Biri var olan satırın değişmesi, diğeri sonuç kümesinin değişmesidir.</p>
+<p><strong>8. Normalizasyon nedir, denormalizasyon ne zaman yapılır?</strong>
+Normalizasyon veri tekrarını ve güncelleme hatalarını azaltmak için tabloları bölmektir. 1NF bölünmez değerler, 2NF kısmi bağımlılığın, 3NF geçişli bağımlılığın kaldırılmasıdır. Denormalizasyon, ölçülmüş bir okuma performansı sorunu olduğunda bilerek tekrar eklemektir.
+Sık yapılan hata: Sipariş anındaki fiyatı kalem tablosunda saklamayı normalizasyon hatası saymak. Bu farklı bir bilgidir.</p>
+<p><img alt="Özet kart: sorgunun mantıksal çalışma sırası, JOIN türleri, B-tree index ve sol önek kuralı, ACID, izolasyon seviyeleri tablosu ve 1NF, 2NF, 3NF" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/sql-ozet-kart.Cwdijqzs_2h8ooh.webp" ></p>
+<p><em>14. bölümde: yazılım testi.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

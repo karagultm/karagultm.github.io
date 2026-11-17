@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deadlock</title>
+<style>
+:root{
+  --krem:#F5F0E6; --kirmizi:#C8463D; --mavi:#3F6FB0; --gri:#A9A19A;
+  --koyu:#3A3A3A; --hardal:#E3B23C; --cizgi:#D9D1C3; --soluk:#6B645D;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--krem);color:var(--koyu);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;}
+body{overflow-x:hidden}
+.rr{max-width:1080px;margin:0 auto;padding:24px 16px 40px}
+.ust{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+h1{font-size:1.45rem;line-height:1.25;margin:0 0 4px;font-weight:800}
+.alt{margin:0;color:var(--soluk);font-size:.92rem}
+button{font:inherit;color:var(--koyu);background:transparent;border:2px solid var(--koyu);
+  border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer;min-height:40px}
+button:hover{background:#ECE5D8}
+button:focus-visible{outline:3px solid var(--mavi);outline-offset:2px}
+button:disabled{opacity:.35;cursor:default;background:transparent}
+button.dolu{background:var(--koyu);color:var(--krem)}
+button.dolu:hover{background:#2c2c2c}
+.dil{flex:none;padding:6px 12px;min-height:36px}
+.ana{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:28px;margin-top:22px;align-items:start}
+@media (max-width:860px){.ana{grid-template-columns:minmax(0,1fr)}}
+.sahne-kap{min-width:0}
+svg.sahne{width:100%;height:auto;display:block;overflow:visible}
+.kamyon{transition:opacity .5s}
+.sandik-govde{transition:fill .45s}
+.kilit-halka{transition:transform .35s}
+.kenar{transition:opacity .35s}
+.hale{opacity:0;transition:opacity .4s}
+.dongu .hale{opacity:.55;animation:nabiz 1.6s ease-in-out infinite}
+.rozet{opacity:0;transition:opacity .4s}
+.dongu .rozet{opacity:1}
+@keyframes nabiz{0%,100%{opacity:.55}50%{opacity:.25}}
+.gantt-kap{margin-top:14px}
+.gantt-baslik{font-size:.8rem;font-weight:700;color:var(--soluk);margin:0 0 6px;letter-spacing:.02em}
+.gantt{position:relative;height:42px;background:#ECE5D8;border-radius:8px;overflow:hidden}
+.seg{position:absolute;top:0;height:100%;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:.78rem;color:var(--krem);border-right:2px solid var(--krem);
+  transition:opacity .45s ease;white-space:nowrap;overflow:hidden}
+.seg.bekle{background:transparent !important;box-shadow:inset 0 0 0 2px currentColor}
+.seg.dongu-seg{color:var(--koyu)}
+.gantt.sik .seg{font-size:.62rem;letter-spacing:-.01em}
+.kontrol{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:18px}
+.kontrol .adim-btn{display:flex;gap:8px}
+.q-grup{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.q-grup .etiket{font-weight:700;font-size:.9rem;margin-right:2px}
+.q-grup button{min-width:40px;padding:6px 0;min-height:36px}
+.q-grup button.uzun{padding:6px 10px}
+.q-grup button[aria-pressed="true"]{background:var(--hardal);border-color:var(--koyu)}
+.ipucu{font-size:.8rem;color:var(--soluk);margin:10px 0 0}
+.yan{border-left:3px dashed var(--cizgi);padding-left:22px;min-width:0}
+@media (max-width:860px){.yan{border-left:none;padding-left:0;border-top:3px dashed var(--cizgi);padding-top:18px}}
+.sayac{font-size:.8rem;font-weight:700;color:var(--soluk);margin:0}
+.zaman{font-size:1.6rem;font-weight:800;margin:4px 0 10px;overflow-wrap:anywhere}
+.aciklama{font-size:1.02rem;line-height:1.55;margin:0;min-height:5.5em}
+.ozet{margin-top:16px}
+.ozet[hidden]{display:none}
+.kartlar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.kart{background:#ECE5D8;border-radius:10px;padding:10px 8px}
+.kart b{display:block;font-size:1.35rem;font-weight:800}
+.kart span{font-size:.72rem;color:var(--soluk);font-weight:700}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.85rem}
+th,td{text-align:right;padding:5px 4px;border-bottom:1px solid var(--cizgi);vertical-align:top}
+th:first-child,td:first-child{text-align:left}
+th{font-size:.72rem;color:var(--soluk)}
+td small{display:block;font-size:.75rem;color:var(--soluk);line-height:1.35;margin-top:2px}
+td.durum{white-space:nowrap;font-weight:700}
+td.durum.kirildi{color:var(--koyu)}
+td.durum.kirildi span{background:var(--hardal);border-radius:6px;padding:1px 6px}
+td.durum.olusmadi{color:var(--soluk)}
+.not{font-size:.92rem;line-height:1.5;margin:12px 0 0}
+.dogrulama{font-size:.8rem;color:var(--soluk);margin:8px 0 0}
+.gorunmez{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hareketsiz .kamyon,.hareketsiz .sandik-govde,.hareketsiz .kilit-halka,.hareketsiz .kenar,
+.hareketsiz .hale,.hareketsiz .rozet,.hareketsiz .seg{transition:none !important}
+@media (prefers-reduced-motion: reduce){
+  .kamyon,.sandik-govde,.kilit-halka,.kenar,.hale,.rozet,.seg{transition:none !important}
+  .dongu .hale{animation:none}
+}
+</style>
+</head>
+<body>
+<div class="rr" id="rr">
+  <div class="ust">
+    <div>
+      <h1 data-i18n="title"></h1>
+      <p class="alt" data-i18n="sub"></p>
+    </div>
+    <button class="dil" id="dilBtn" type="button"></button>
+  </div>
+
+  <div class="ana">
+    <div class="sahne-kap" id="sahneKap">
+      <svg class="sahne" id="sahne" role="img" aria-labelledby="sahneEtiket">
+        <title id="sahneEtiket"></title>
+        <g id="statik"></g>
+        <g id="kenarlar"></g>
+        <g id="nesneler"></g>
+      </svg>
+      <div class="gantt-kap">
+        <p class="gantt-baslik" data-i18n="strip"></p>
+        <div class="gantt" id="gantt"></div>
+      </div>
+      <div class="kontrol">
+        <div class="adim-btn">
+          <button type="button" id="geriBtn"></button>
+          <button type="button" id="oynatBtn" class="dolu"></button>
+          <button type="button" id="ileriBtn"></button>
+        </div>
+        <div class="q-grup" role="group" id="qGrup" aria-labelledby="qEtiket">
+          <span class="etiket" id="qEtiket" data-i18n="orderLbl"></span>
+        </div>
+      </div>
+      <p class="ipucu" data-i18n="hint"></p>
+    </div>
+
+    <aside class="yan">
+      <p class="sayac" id="sayac"></p>
+      <p class="zaman" id="zaman"></p>
+      <p class="aciklama" id="aciklama" aria-live="polite"></p>
+      <div class="ozet" id="ozet" hidden>
+        <div class="kartlar">
+          <div class="kart"><b id="oD"></b><span>Deadlock</span></div>
+          <div class="kart"><b id="oF"></b><span data-i18n="cardDone"></span></div>
+          <div class="kart"><b id="oW"></b><span data-i18n="cardWait"></span></div>
+        </div>
+        <table>
+          <thead><tr><th data-i18n="thCond"></th><th data-i18n="thState"></th></tr></thead>
+          <tbody id="tablo"></tbody>
+        </table>
+        <p class="not" id="not"></p>
+        <p class="dogrulama" id="dogrulama"></p>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+// SIM-START
+// Deadlock simülasyonu. threads: [{id, order: ['A','B']}], mode: 'block' (lock) ya da 'try' (tryLock).
+// Thread'ler sırayla birer işlem yapar. Her olaydan sonra wait-for grafı kurulur ve döngü aranır.
+function waitForEdges(threads, holder) {
+  return threads
+    .filter(t => t.status === 'waiting' && holder[t.want])
+    .map(t => ({ from: t.id, to: holder[t.want], lock: t.want }));
+}
+function findCycle(edges) {
+  const next = {};
+  edges.forEach(e => { next[e.from] = e.to; });   // her thread en fazla bir kilit bekler
+  for (const start of Object.keys(next)) {
+    const path = [];
+    let n = start;
+    while (n !== undefined && !path.includes(n)) { path.push(n); n = next[n]; }
+    if (n !== undefined) return path.slice(path.indexOf(n));
+  }
+  return null;
+}
+function simulateDeadlock(threadDefs, mode) {
+  const locks = [...new Set(threadDefs.flatMap(t => t.order))];
+  const holder = {};
+  locks.forEach(l => { holder[l] = null; });
+  const T = threadDefs.map(t => ({ id: t.id, order: t.order.slice(), pc: 0, held: [],
+                                   status: 'ready', want: null, backoff: 0 }));
+  const snapshot = () => ({
+    holder: Object.assign({}, holder),
+    threads: T.map(t => ({ id: t.id, held: t.held.slice(), status: t.status, want: t.want, pc: t.pc }))
+  });
+  const initial = snapshot();
+  const events = [];
+  const take = (t, l) => { holder[l] = t.id; t.held.push(l); t.pc++; t.status = 'ready'; t.want = null; };
+  const dropAll = t => { const d = t.held.slice(); d.forEach(l => { holder[l] = null; }); t.held = []; return d; };
+  let deadlock = false, cycle = null, turn = 0;
+  for (let guard = 0; guard < 500; guard++) {
+    if (T.every(t => t.status === 'done')) break;
+    const t = T[turn % T.length]; turn++;
+    let ev = null;
+    if (t.status === 'done') continue;
+    if (t.status === 'backoff') { if (--t.backoff <= 0) t.status = 'ready'; continue; }
+    if (t.status === 'waiting') {
+      if (holder[t.want] !== null) continue;          // hâlâ bloklu
+      const l = t.want; take(t, l);
+      ev = { type: 'acquire', thread: t.id, lock: l, afterWait: true };
+    } else if (t.pc < t.order.length) {
+      const l = t.order[t.pc];
+      if (holder[l] === null) { take(t, l); ev = { type: 'acquire', thread: t.id, lock: l }; }
+      else if (mode === 'try') {
+        const by = holder[l];
+        const dropped = dropAll(t);
+        t.pc = 0; t.status = 'backoff'; t.backoff = 1;
+        ev = { type: 'tryFail', thread: t.id, lock: l, by, dropped };
+      } else {
+        t.status = 'waiting'; t.want = l;
+        ev = { type: 'wait', thread: t.id, lock: l, by: holder[l], holding: t.held.slice() };
+      }
+    } else {
+      const released = dropAll(t);
+      t.status = 'done';
+      const wakes = T.filter(w => w.status === 'waiting' && released.includes(w.want)).map(w => w.id);
+      ev = { type: 'finish', thread: t.id, released, wakes };
+    }
+    ev.state = snapshot();
+    events.push(ev);
+    const edges = waitForEdges(T, holder);
+    const c = findCycle(edges);
+    if (c) {
+      deadlock = true; cycle = c;
+      events.push({ type: 'deadlock', cycle: c, edges, state: snapshot() });
+      break;
+    }
+  }
+  const finished = T.filter(t => t.status === 'done').map(t => t.id);
+  return { mode, initial, events, deadlock, cycle, finished,
+           stuck: !deadlock && finished.length < T.length,
+           requestsBlocked: events.filter(e => e.type === 'wait' || e.type === 'tryFail').length };
+}
+// Kilit sıraları tek bir genel sıraya uyuyor mu? (circular wait'i tasarımla kıran kural)
+function consistentOrder(threadDefs) {
+  const before = {};
+  threadDefs.forEach(t => t.order.forEach((l, i) => t.order.slice(i + 1).forEach(m => {
+    (before[l] = before[l] || new Set()).add(m);
+  })));
+  const reach = (from, to, seen) => {
+    if (from === to) return true;
+    if (seen.has(from)) return false;
+    seen.add(from);
+    return [...(before[from] || [])].some(n => reach(n, to, seen));
+  };
+  return !Object.keys(before).some(l => [...before[l]].some(m => reach(m, l, new Set())));
+}
+// Dört Coffman koşulunun bu senaryodaki durumu: 'held' (sağlandı), 'broken' (kırıldı), 'absent' (oluşmadı).
+function coffman(threadDefs, result) {
+  const ordered = consistentOrder(threadDefs);
+  return {
+    mutualExclusion: 'held',
+    holdAndWait: 'held',
+    noPreemption: result.mode === 'try' ? 'broken' : 'held',
+    circularWait: result.deadlock ? 'held' : (ordered ? 'broken' : 'absent')
+  };
+}
+// SIM-END
+</script>
+
+<script>
+(function () {
+  const SENARYO = {
+    a: { threads: [{ id: 'T1', order: ['A', 'B'] }, { id: 'T2', order: ['B', 'A'] }], mode: 'block' },
+    b: { threads: [{ id: 'T1', order: ['A', 'B'] }, { id: 'T2', order: ['A', 'B'] }], mode: 'block' },
+    c: { threads: [{ id: 'T1', order: ['A', 'B'] }, { id: 'T2', order: ['B', 'A'] }], mode: 'try' }
+  };
+  const S_SECENEK = ['a', 'b', 'c'];
+  const THREADS = ['T1', 'T2'], LOCKS = ['A', 'B'];
+  const RENK = { T1: '#3F6FB0', T2: '#C8463D' };
+  const KREM = '#F5F0E6', KOYU = '#3A3A3A', GRI = '#A9A19A', HARDAL = '#E3B23C';
+
+  const ord = o => o.join(' → ');
+  const DICT = {
+    tr: {
+      title: 'Deadlock, adım adım',
+      sub: 'Programlama 101, Bölüm 9 · İşletim Sistemi 2',
+      langBtn: 'EN', langAria: 'Switch to English',
+      prev: 'Geri', next: 'İleri', play: 'Oynat', pause: 'Durdur',
+      prevAria: 'Önceki adım', nextAria: 'Sonraki adım',
+      playAria: 'Adımları otomatik oynat', pauseAria: 'Otomatik oynatmayı durdur',
+      orderLbl: 'Kilit sırası',
+      opt: { a: 'Ters sıra', b: 'Aynı sıra', c: 'tryLock' },
+      optAria: {
+        a: 'Senaryo: T1 önce A sonra B, T2 önce B sonra A alır',
+        b: 'Senaryo: iki thread de önce A sonra B alır',
+        c: 'Senaryo: ters sıra, kilit alınamazsa zaman aşımıyla geri bırakılır'
+      },
+      step: (a, b) => `Adım ${a} / ${b}`,
+      start: 'Başlangıç',
+      strip: 'Olay şeridi',
+      hint: 'Klavyede ← ve → tuşları da adım değiştirir.',
+      scene: 'İki kamyon thread\'leri, iki kilitli sandık A ve B kilitlerini gösterir. Düz ok tutuyor, kesikli ok bekliyor demek.',
+      st: { idle: 'hazır', running: 'çalışıyor', waiting: 'bekliyor', backoff: 'geri çekildi', done: 'bitti' },
+      seg: { acquire: l => `lock ${l}`, wait: l => `wait ${l}`, tryFail: l => `try ${l}`, finish: () => 'unlock', deadlock: () => 'döngü' },
+      intro: (s) => `T1 kilitleri ${ord(s.threads[0].order)}, T2 ${ord(s.threads[1].order)} sırasıyla alacak.` +
+        (s.mode === 'try' ? ' İkisi de tryLock kullanıyor: kilit doluysa kısa süre bekler, alamazsa elindekini bırakıp sonra yeniden dener.' : '') +
+        ' Düz ok kilidin kimde olduğunu, kesikli ok kimin hangi kilidi beklediğini gösterir.',
+      acquire: e => `${e.thread}, ${e.lock} kilidini aldı.`,
+      acquireWait: e => `${e.lock} kilidi boşaldı. Onu bekleyen ${e.thread} kilidi aldı.`,
+      both: () => ' Gereken iki kilit de elinde.',
+      wait: e => `${e.thread}, ${e.lock} kilidini istedi. Kilit ${e.by}'de, ${e.thread} bekliyor.` +
+        (e.holding.length ? ` Elindeki ${e.holding.join(', ')} kilidini bırakmıyor.` : ' Elinde kilit yok.'),
+      tryFail: e => `${e.thread}, ${e.lock} kilidini denedi. Kilit ${e.by}'de ve zaman aşımı doldu.` +
+        (e.dropped.length ? ` ${e.thread} elindeki ${e.dropped.join(', ')} kilidini bıraktı, biraz bekleyip baştan deneyecek.` : ` ${e.thread} biraz bekleyip yeniden deneyecek.`),
+      finish: e => `${e.thread} işini bitirdi ve ${e.released.join(' ile ')} kilitlerini bıraktı.` +
+        (e.wakes.length ? ` Bekleyen ${e.wakes.join(', ')} artık ilerleyebilir.` : ''),
+      deadlock: c => `Wait-for grafında döngü bulundu: ${c}. Her thread, döngüdeki bir sonrakinin tuttuğu kilidi bekliyor. Hiçbiri ilerleyemez, deadlock oluştu.`,
+      finalDl: 'Program bu noktada kalır. Dört Coffman koşulu aynı anda sağlandı, durumları aşağıda.',
+      finalOk: 'İki thread de işini bitirdi. Dört Coffman koşulunun durumu aşağıda.',
+      noDl: 'Deadlock yok',
+      yes: 'Var', no: 'Yok',
+      cardDone: 'Biten thread', cardWait: 'Dolu kilit isteği',
+      thCond: 'Coffman koşulu', thState: 'Durum',
+      state: { held: 'sağlandı', broken: 'kırıldı', absent: 'oluşmadı' },
+      cond: {
+        mutualExclusion: 'Mutual Exclusion', holdAndWait: 'Hold and Wait (Tut ve Bekle)',
+        noPreemption: 'No Preemption (Zorla Alınamama)', circularWait: 'Circular Wait (Döngüsel Bekleme)'
+      },
+      why: {
+        mutualExclusion: { held: 'Bir kilidi aynı anda tek thread tutabilir.' },
+        holdAndWait: { held: 'Thread bir kilidi tutarken diğerini bekleyebiliyor.' },
+        noPreemption: {
+          held: 'Kilit, tutan thread\'den zorla alınmıyor.',
+          broken: 'İkinci kilidi alamayan thread elindekini kendisi bırakıyor.'
+        },
+        circularWait: {
+          held: c => `Bekleme döngüsü kapandı: ${c}.`,
+          broken: 'İki thread de önce A, sonra B alıyor. B\'yi tutup A\'yı bekleyen olamaz, döngü kapanamaz.',
+          absent: 'Sıra ters, döngü kurulabilirdi. Kilidini bırakan thread onu kapanmadan açtı.'
+        }
+      },
+      note: {
+        held: 'Dört koşul birlikte sağlandığı için deadlock oluştu. Birini kırmak yeter. Pratikte en yaygın yol kilit sırasını sabitlemek.',
+        broken: 'Circular wait kırıldı. Diğer üç koşul yerinde ama dördü birlikte sağlanmadığı için deadlock olamaz.',
+        np: 'No preemption kırıldı. Bedeli yeniden deneme: T1 işini geç bitirdi. İki thread aynı ritimde bırakıp yeniden denerse livelock\'a girebilir, bu yüzden bekleme süresi genelde rastgele seçilir.'
+      },
+      check: c => c ? `Deadlock sabit yazılmadı. Her adımdan sonra wait-for grafı kuruldu ve döngü bulundu: ${c}.`
+        : 'Deadlock sabit yazılmadı. Her adımdan sonra wait-for grafı kuruldu, döngü bulunmadı.'
+    },
+    en: {
+      title: 'Deadlock, step by step',
+      sub: 'Programming 101, Part 9 · Operating Systems 2',
+      langBtn: 'TR', langAria: 'Türkçeye geç',
+      prev: 'Back', next: 'Next', play: 'Play', pause: 'Pause',
+      prevAria: 'Previous step', nextAria: 'Next step',
+      playAria: 'Play the steps automatically', pauseAria: 'Pause autoplay',
+      orderLbl: 'Lock order',
+      opt: { a: 'Opposite', b: 'Same', c: 'tryLock' },
+      optAria: {
+        a: 'Scenario: T1 takes A then B, T2 takes B then A',
+        b: 'Scenario: both threads take A then B',
+        c: 'Scenario: opposite order, a thread that cannot get a lock releases what it holds after a timeout'
+      },
+      step: (a, b) => `Step ${a} / ${b}`,
+      start: 'Start',
+      strip: 'Event strip',
+      hint: 'The ← and → keys also change the step.',
+      scene: 'Two trucks are the threads, two locked crates are locks A and B. A solid arrow means holds, a dashed arrow means waits for.',
+      st: { idle: 'ready', running: 'running', waiting: 'waiting', backoff: 'backed off', done: 'done' },
+      seg: { acquire: l => `lock ${l}`, wait: l => `wait ${l}`, tryFail: l => `try ${l}`, finish: () => 'unlock', deadlock: () => 'cycle' },
+      intro: (s) => `T1 will take the locks in the order ${ord(s.threads[0].order)}, T2 in the order ${ord(s.threads[1].order)}.` +
+        (s.mode === 'try' ? ' Both use tryLock: if a lock is taken, the thread waits briefly, and if it still cannot get it, it releases what it holds and tries again later.' : '') +
+        ' A solid arrow shows who holds a lock, a dashed arrow shows who is waiting for which lock.',
+      acquire: e => `${e.thread} took lock ${e.lock}.`,
+      acquireWait: e => `Lock ${e.lock} is free again. ${e.thread}, which was waiting for it, took it.`,
+      both: () => ' It now holds both locks it needs.',
+      wait: e => `${e.thread} asked for lock ${e.lock}. ${e.by} holds it, so ${e.thread} waits.` +
+        (e.holding.length ? ` It keeps holding ${e.holding.join(', ')}.` : ' It holds no lock.'),
+      tryFail: e => `${e.thread} tried lock ${e.lock}. ${e.by} holds it and the timeout ran out.` +
+        (e.dropped.length ? ` ${e.thread} released ${e.dropped.join(', ')} and will start over after a short pause.` : ` ${e.thread} will try again after a short pause.`),
+      finish: e => `${e.thread} finished its work and released ${e.released.join(' and ')}.` +
+        (e.wakes.length ? ` ${e.wakes.join(', ')}, which was waiting, can move on now.` : ''),
+      deadlock: c => `The wait-for graph has a cycle: ${c}. Each thread waits for a lock held by the next one in the cycle. None of them can move on. This is a deadlock.`,
+      finalDl: 'The program stays stuck here. All four Coffman conditions hold at the same time. Their states are below.',
+      finalOk: 'Both threads finished their work. The state of the four Coffman conditions is below.',
+      noDl: 'No deadlock',
+      yes: 'Yes', no: 'No',
+      cardDone: 'Threads done', cardWait: 'Busy lock requests',
+      thCond: 'Coffman condition', thState: 'State',
+      state: { held: 'holds', broken: 'broken', absent: 'not formed' },
+      cond: {
+        mutualExclusion: 'Mutual exclusion', holdAndWait: 'Hold and wait',
+        noPreemption: 'No preemption', circularWait: 'Circular wait'
+      },
+      why: {
+        mutualExclusion: { held: 'Only one thread can hold a lock at a time.' },
+        holdAndWait: { held: 'A thread can wait for one lock while holding another.' },
+        noPreemption: {
+          held: 'A lock is never taken away from the thread holding it.',
+          broken: 'A thread that cannot get its second lock releases the one it holds.'
+        },
+        circularWait: {
+          held: c => `The wait cycle closed: ${c}.`,
+          broken: 'Both threads take A first, then B. No thread can hold B while waiting for A, so the cycle cannot close.',
+          absent: 'The order is opposite, so a cycle was possible. The thread that released its lock broke it before it closed.'
+        }
+      },
+      note: {
+        held: 'All four conditions held together, so a deadlock formed. Breaking one is enough. The most common fix in practice is a fixed lock order.',
+        broken: 'Circular wait is broken. The other three conditions are still there, but all four do not hold together, so no deadlock is possible.',
+        np: 'No preemption is broken. The cost is retrying: T1 finished later. If two threads release and retry in the same rhythm they can end up in a livelock, so the pause is usually random.'
+      },
+      check: c => c ? `The deadlock is not hard-coded. After every step the wait-for graph is built and searched, and it has a cycle: ${c}.`
+        : 'The deadlock is not hard-coded. After every step the wait-for graph is built and searched, and it has no cycle.'
+    }
+  };
+
+  // Yerleşimler. Kenar uçları: [kilit noktası, thread noktası]. Tutuyor: kilit → thread. Bekliyor: thread → kilit.
+  const LAYOUTS = {
+    wide: {
+      vb: [820, 372],
+      deck: [20, 318, 780, 14], pillars: [[120, 26, 30, 60], [680, 26, 30, 60]], shelf: [345, 104, 130, 10],
+      crate: { A: [365, 30, 90, 74], B: [365, 244, 90, 74] }, crateFont: 36,
+      truck: { T1: [40, 1], T2: [780, -1] }, ground: 318, ts: 1,
+      lbl: { T1: [96, 232], T2: [724, 232] }, lblFont: [15, 13],
+      edge: {
+        A: { T1: [[356, 100], [216, 202]], T2: [[464, 100], [604, 202]] },
+        B: { T1: [[354, 282], [242, 282]], T2: [[466, 282], [578, 282]] }
+      },
+      badge: [410, 174, 150, 38]
+    },
+    narrow: {
+      vb: [400, 424],
+      deck: [8, 380, 384, 12], pillars: [[46, 20, 24, 44], [334, 20, 24, 44]], shelf: [30, 118, 340, 10],
+      crate: { A: [50, 44, 90, 74], B: [260, 44, 90, 74] }, crateFont: 34,
+      truck: { T1: [16, 1], T2: [384, -1] }, ground: 380, ts: 0.7,
+      lbl: { T1: [54, 314], T2: [346, 314] }, lblFont: [13, 12],
+      edge: {
+        A: { T1: [[100, 138], [110, 292]], T2: [[134, 138], [262, 292]] },
+        B: { T1: [[266, 138], [138, 292]], T2: [[300, 138], [290, 292]] }
+      },
+      badge: [200, 214, 136, 34]
+    }
+  };
+
+  const NS = 'http://www.w3.org/2000/svg';
+  const $ = id => document.getElementById(id);
+  const el = (tag, attrs, parent) => {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  };
+  const reduceMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const reduced = () => reduceMQ.matches;
+
+  let lang = 'tr', scen = 'a', step = 0, timerId = null, layoutKey = null;
+  let sim = simulateDeadlock(SENARYO[scen].threads, SENARYO[scen].mode);
+  const T = () => DICT[lang];
+  const lastStep = () => sim.events.length + 1;
+  const cycleText = c => c ? c.concat(c[0]).join(' → ') : '';
+
+  // ----- durum -----
+  function stateAt(k) {
+    const n = sim.events.length;
+    if (k === 0) return { snap: sim.initial, ev: null };
+    if (k > n) return { snap: sim.events[n - 1].state, ev: sim.events[n - 1], final: true };
+    return { snap: sim.events[k - 1].state, ev: sim.events[k - 1] };
+  }
+
+  // ----- sahne çizimi -----
+  function markers(defs) {
+    [['okT1', RENK.T1], ['okT2', RENK.T2]].forEach(([id, c]) => {
+      const m = el('marker', { id, viewBox: '0 0 10 10', refX: '6', refY: '5',
+        markerWidth: '4.2', markerHeight: '4.2', orient: 'auto-start-reverse' }, defs);
+      el('path', { d: 'M 0 0 L 10 5 L 0 10 z', fill: c }, m);
+    });
+  }
+
+  function drawTruck(g, id) {
+    const L = LAYOUTS[layoutKey];
+    const [ox, dir] = L.truck[id], s = L.ts, gy = L.ground;
+    const k = el('g', { class: 'kamyon', id: 'kamyon-' + id }, g);
+    const body = el('g', { transform: `translate(${ox} ${gy}) scale(${dir * s} ${s})` }, k);
+    const c = RENK[id];
+    el('rect', { x: 0, y: -56, width: 124, height: 22, rx: 5, fill: c }, body);
+    el('path', { d: 'M 112 -34 V -96 Q 112 -108 124 -108 H 160 Q 168 -108 172 -100 L 186 -74 Q 190 -66 190 -58 V -34 Z', fill: c }, body);
+    el('rect', { x: 128, y: -98, width: 34, height: 24, rx: 5, fill: KREM }, body);
+    [32, 156].forEach(x => {
+      el('circle', { cx: x, cy: -18, r: 18, fill: KOYU }, body);
+      el('circle', { cx: x, cy: -18, r: 6.5, fill: KREM }, body);
+    });
+    const tx = ox + dir * s * 151;
+    const t = el('text', { x: tx, y: gy - s * 42, 'text-anchor': 'middle', 'font-size': 22 * s,
+      'font-weight': 800, fill: KREM }, k);
+    t.textContent = id;
+    const [lx, ly] = L.lbl[id];
+    el('text', { id: 'durum-' + id, x: lx, y: ly, 'text-anchor': 'middle', 'font-size': L.lblFont[0],
+      'font-weight': 800, fill: KOYU }, g);
+    const o = el('text', { id: 'sira-' + id, x: lx, y: ly + L.lblFont[0] + 4, 'text-anchor': 'middle',
+      'font-size': L.lblFont[1], 'font-weight': 700, fill: '#6B645D' }, g);
+    o.textContent = ord(SENARYO[scen].threads.find(x => x.id === id).order);
+  }
+
+  function drawCrate(g, id) {
+    const L = LAYOUTS[layoutKey];
+    const [x, y, w, h] = L.crate[id];
+    const c = el('g', { id: 'sandik-' + id }, g);
+    el('rect', { class: 'sandik-govde', x, y, width: w, height: h, rx: 9, fill: GRI }, c);
+    const t = el('text', { class: 'sandik-harf', x: x + w * 0.36, y: y + h * 0.5 + L.crateFont * 0.36,
+      'text-anchor': 'middle', 'font-size': L.crateFont, 'font-weight': 800, fill: KOYU }, c);
+    t.textContent = id;
+    // asma kilit
+    const bx = x + w - 30, by = y + h - 30;
+    el('path', { class: 'kilit-halka', d: `M ${bx + 5} ${by + 1} V ${by - 5} A 6 6 0 0 1 ${bx + 17} ${by - 5} V ${by + 1}`,
+      fill: 'none', stroke: KOYU, 'stroke-width': 3.5, 'stroke-linecap': 'round' }, c);
+    el('rect', { x: bx, y: by, width: 22, height: 18, rx: 3, fill: KOYU }, c);
+    el('circle', { cx: bx + 11, cy: by + 8, r: 2.6, fill: KREM }, c);
+  }
+
+  function drawStatic() {
+    const L = LAYOUTS[layoutKey];
+    const svg = $('sahne');
+    svg.setAttribute('viewBox', `0 0 ${L.vb[0]} ${L.vb[1]}`);
+    const g = $('statik');
+    g.innerHTML = '';
+    markers(el('defs', {}, g));
+    // köprü
+    const [dx, dy, dw, dh] = L.deck;
+    L.pillars.forEach(([px, pw, ph, fw]) => {
+      el('rect', { x: px - pw / 2, y: dy + dh - 2, width: pw, height: ph, fill: GRI }, g);
+      el('rect', { x: px - fw / 2, y: dy + dh + ph - 4, width: fw, height: 12, rx: 3, fill: GRI }, g);
+    });
+    el('rect', { x: dx, y: dy, width: dw, height: dh, rx: 6, fill: GRI }, g);
+    const [sx, sy, sw, sh] = L.shelf;
+    el('rect', { x: sx, y: sy, width: sw, height: sh, rx: 5, fill: GRI }, g);
+
+    // kenarlar: her kilit-thread çifti için hale + ok
+    const eg = $('kenarlar');
+    eg.innerHTML = '';
+    LOCKS.forEach(l => THREADS.forEach(t => {
+      el('path', { class: 'hale', id: `hale-${l}-${t}`, fill: 'none', stroke: HARDAL,
+        'stroke-width': 18, 'stroke-linecap': 'round' }, eg);
+    }));
+    LOCKS.forEach(l => THREADS.forEach(t => {
+      el('path', { class: 'kenar', id: `kenar-${l}-${t}`, fill: 'none', stroke: RENK[t],
+        'stroke-width': 5, 'stroke-linecap': 'round', 'marker-end': `url(#ok${t})`, opacity: 0 }, eg);
+    }));
+    const [bx, by, bw, bh] = L.badge;
+    const rz = el('g', { class: 'rozet', id: 'rozet' }, eg);
+    el('rect', { x: bx - bw / 2, y: by - bh / 2, width: bw, height: bh, rx: bh / 2, fill: HARDAL }, rz);
+    const rt = el('text', { x: bx, y: by + bh * 0.17, 'text-anchor': 'middle', 'font-size': bh * 0.47,
+      'font-weight': 800, fill: KOYU, 'letter-spacing': 1.5 }, rz);
+    rt.textContent = 'DEADLOCK';
+
+    const ng = $('nesneler');
+    ng.innerHTML = '';
+    LOCKS.forEach(l => drawCrate(ng, l));
+    THREADS.forEach(t => drawTruck(ng, t));
+  }
+
+  function threadLabel(th) {
+    if (th.status === 'ready') return th.held.length ? 'running' : 'idle';
+    return th.status;
+  }
+
+  function placeScene(st) {
+    const L = LAYOUTS[layoutKey];
+    const snap = st.snap;
+    // sandıklar
+    LOCKS.forEach(l => {
+      const h = snap.holder[l];
+      const c = $('sandik-' + l);
+      c.querySelector('.sandik-govde').setAttribute('fill', h ? RENK[h] : GRI);
+      c.querySelector('.sandik-harf').setAttribute('fill', h ? KREM : KOYU);
+      c.querySelector('.kilit-halka').style.transform = h ? 'translateY(0)' : 'translateY(-5px)';
+    });
+    // kamyonlar
+    snap.threads.forEach(th => {
+      $('kamyon-' + th.id).style.opacity = th.status === 'done' ? .35 : 1;
+      $('durum-' + th.id).textContent = T().st[threadLabel(th)];
+    });
+    // oklar
+    const cyc = sim.deadlock && st.ev && (st.ev.type === 'deadlock') ? sim.events[sim.events.length - 1].edges : null;
+    const inCycle = {};
+    if (cyc) cyc.forEach(e => { inCycle[`${e.lock}-${e.from}`] = true; inCycle[`${e.lock}-${e.to}`] = true; });
+    const tried = st.ev && st.ev.type === 'tryFail' ? st.ev : null;
+    LOCKS.forEach(l => THREADS.forEach(t => {
+      const [lp, tp] = L.edge[l][t];
+      const th = snap.threads.find(x => x.id === t);
+      const p = $(`kenar-${l}-${t}`), hl = $(`hale-${l}-${t}`);
+      let kind = null;
+      if (snap.holder[l] === t) kind = 'hold';
+      else if (th.status === 'waiting' && th.want === l) kind = 'wait';
+      else if (tried && tried.thread === t && tried.lock === l) kind = 'tried';
+      const d = kind === 'hold' ? `M ${lp[0]} ${lp[1]} L ${tp[0]} ${tp[1]}` : `M ${tp[0]} ${tp[1]} L ${lp[0]} ${lp[1]}`;
+      p.setAttribute('d', d);
+      hl.setAttribute('d', d);
+      p.setAttribute('stroke-dasharray', kind === 'hold' ? 'none' : '11 8');
+      p.setAttribute('opacity', kind === null ? 0 : kind === 'tried' ? .35 : 1);
+      hl.style.display = inCycle[`${l}-${t}`] ? '' : 'none';
+    }));
+    $('kenarlar').classList.toggle('dongu', !!cyc);
+  }
+
+  // ----- olay şeridi -----
+  function drawStrip(k, animate) {
+    const g = $('gantt');
+    g.innerHTML = '';
+    const E = sim.events, n = E.length, D = T();
+    g.classList.toggle('sik', layoutKey === 'narrow' && n > 6);
+    const upto = Math.min(k, n);
+    for (let i = 0; i < upto; i++) {
+      const e = E[i];
+      const d = document.createElement('div');
+      d.className = 'seg';
+      d.style.left = (i / n * 100) + '%';
+      d.style.width = (100 / n) + '%';
+      if (e.type === 'deadlock') { d.classList.add('dongu-seg'); d.style.background = HARDAL; }
+      else if (e.type === 'wait' || e.type === 'tryFail') { d.classList.add('bekle'); d.style.color = RENK[e.thread]; }
+      else d.style.background = RENK[e.thread];
+      d.textContent = D.seg[e.type](e.lock);
+      d.title = segTitle(e);
+      if (animate && !reduced() && i === upto - 1 && k <= n) {
+        d.style.opacity = 0;
+        requestAnimationFrame(() => requestAnimationFrame(() => { d.style.opacity = 1; }));
+      }
+      g.appendChild(d);
+    }
+    g.setAttribute('role', 'img');
+    g.setAttribute('aria-label', D.strip + ': ' + E.slice(0, upto).map(segTitle).join(', '));
+  }
+  function segTitle(e) {
+    const s = T().seg[e.type](e.lock);
+    return e.thread ? `${e.thread} ${s}` : s;
+  }
+
+  // ----- yan panel -----
+  function action(st) {
+    const e = st.ev;
+    if (st.final) return sim.deadlock ? 'DEADLOCK' : T().noDl;
+    if (!e) return T().start;
+    if (e.type === 'deadlock') return 'DEADLOCK';
+    if (e.type === 'acquire') return `${e.thread}: lock(${e.lock})`;
+    if (e.type === 'wait') return `${e.thread}: lock(${e.lock})`;
+    if (e.type === 'tryFail') return `${e.thread}: tryLock(${e.lock})`;
+    return `${e.thread}: unlock(${e.released.join(', ')})`;
+  }
+  function explain(st) {
+    const D = T(), e = st.ev;
+    if (st.final) return sim.deadlock ? D.finalDl : D.finalOk;
+    if (!e) return D.intro(SENARYO[scen]);
+    if (e.type === 'acquire') {
+      let t = e.afterWait ? D.acquireWait(e) : D.acquire(e);
+      const th = e.state.threads.find(x => x.id === e.thread);
+      if (th.held.length === LOCKS.length) t += D.both();
+      return t;
+    }
+    if (e.type === 'deadlock') return D.deadlock(cycleText(e.cycle));
+    return D[e.type](e);
+  }
+
+  function drawSummary(show) {
+    const box = $('ozet');
+    box.hidden = !show;
+    if (!show) return;
+    const D = T(), sc = SENARYO[scen];
+    $('oD').textContent = sim.deadlock ? D.yes : D.no;
+    $('oF').textContent = `${sim.finished.length} / ${sc.threads.length}`;
+    $('oW').textContent = sim.requestsBlocked;
+    const cf = coffman(sc.threads, sim);
+    const tb = $('tablo');
+    tb.innerHTML = '';
+    Object.keys(cf).forEach(key => {
+      const tr = document.createElement('tr');
+      const a = document.createElement('td');
+      a.textContent = D.cond[key];
+      const sm = document.createElement('small');
+      const w = D.why[key][cf[key]];
+      sm.textContent = typeof w === 'function' ? w(cycleText(sim.cycle)) : w;
+      a.appendChild(sm);
+      const b = document.createElement('td');
+      b.className = 'durum ' + ({ held: 'saglandi', broken: 'kirildi', absent: 'olusmadi' })[cf[key]];
+      const sp = document.createElement('span');
+      sp.textContent = D.state[cf[key]];
+      b.appendChild(sp);
+      tr.appendChild(a); tr.appendChild(b);
+      tb.appendChild(tr);
+    });
+    $('not').textContent = sim.deadlock ? D.note.held
+      : cf.circularWait === 'broken' ? D.note.broken : D.note.np;
+    $('dogrulama').textContent = D.check(cycleText(sim.cycle));
+  }
+
+  function render(animate) {
+    const st = stateAt(step);
+    placeScene(st);
+    drawStrip(step, animate);
+    const D = T();
+    $('sayac').textContent = D.step(step + 1, lastStep() + 1);
+    $('zaman').textContent = action(st);
+    $('aciklama').textContent = explain(st);
+    drawSummary(!!st.final);
+    $('geriBtn').disabled = step === 0;
+    $('ileriBtn').disabled = step === lastStep();
+  }
+
+  function still(fn) {
+    $('rr').classList.add('hareketsiz');
+    fn();
+    requestAnimationFrame(() => requestAnimationFrame(() => $('rr').classList.remove('hareketsiz')));
+  }
+
+  // ----- dil -----
+  function applyLang() {
+    const D = T();
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(n => { n.textContent = D[n.dataset.i18n]; });
+    $('dilBtn').textContent = D.langBtn;
+    $('dilBtn').setAttribute('aria-label', D.langAria);
+    $('geriBtn').textContent = D.prev; $('geriBtn').setAttribute('aria-label', D.prevAria);
+    $('ileriBtn').textContent = D.next; $('ileriBtn').setAttribute('aria-label', D.nextAria);
+    $('sahneEtiket').textContent = D.scene;
+    updatePlayBtn();
+    document.querySelectorAll('#qGrup button').forEach(b => {
+      b.textContent = D.opt[b.dataset.s];
+      b.setAttribute('aria-label', D.optAria[b.dataset.s]);
+    });
+    still(() => { drawStatic(); render(false); });
+  }
+
+  // ----- kontrol -----
+  function go(k, animate) {
+    const n = Math.max(0, Math.min(lastStep(), k));
+    if (n === step) return;
+    const back = n < step;
+    step = n;
+    if (back) still(() => render(false));
+    else render(animate);
+  }
+  function updatePlayBtn() {
+    const D = T(), b = $('oynatBtn');
+    b.textContent = timerId ? D.pause : D.play;
+    b.setAttribute('aria-label', timerId ? D.pauseAria : D.playAria);
+    b.setAttribute('aria-pressed', timerId ? 'true' : 'false');
+  }
+  function stop() { if (timerId) { clearInterval(timerId); timerId = null; updatePlayBtn(); } }
+  function play() {
+    if (step === lastStep()) go(0, false);
+    timerId = setInterval(() => {
+      if (step >= lastStep()) { stop(); return; }
+      go(step + 1, true);
+      if (step >= lastStep()) stop();
+    }, reduced() ? 1400 : 1700);
+    updatePlayBtn();
+  }
+  function pressScenario() {
+    document.querySelectorAll('#qGrup button').forEach(b =>
+      b.setAttribute('aria-pressed', b.dataset.s === scen ? 'true' : 'false'));
+  }
+  function setScenario(s) {
+    stop();
+    scen = s;
+    sim = simulateDeadlock(SENARYO[scen].threads, SENARYO[scen].mode);
+    pressScenario();
+    step = 0;
+    still(() => { drawStatic(); render(false); });
+    play();                                  // seçim değişince simülasyon baştan çalışır
+  }
+
+  S_SECENEK.forEach(s => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'uzun';
+    b.dataset.s = s;
+    b.addEventListener('click', () => setScenario(s));
+    $('qGrup').appendChild(b);
+  });
+  pressScenario();
+  $('geriBtn').addEventListener('click', () => { stop(); go(step - 1, false); });
+  $('ileriBtn').addEventListener('click', () => { stop(); go(step + 1, true); });
+  $('oynatBtn').addEventListener('click', () => { timerId ? stop() : play(); });
+  $('dilBtn').addEventListener('click', () => { lang = lang === 'tr' ? 'en' : 'tr'; applyLang(); });
+  document.addEventListener('keydown', e => {
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    const tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+    if (e.key === 'ArrowRight') { stop(); go(step + 1, true); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft') { stop(); go(step - 1, false); e.preventDefault(); }
+  });
+
+  function pickLayout() {
+    const w = $('sahneKap').clientWidth;
+    const k = w < 520 ? 'narrow' : 'wide';
+    if (k !== layoutKey) {
+      layoutKey = k;
+      still(() => { drawStatic(); render(false); });
+    }
+  }
+  reduceMQ.addEventListener && reduceMQ.addEventListener('change', () => render(false));
+
+  // Adres parametreleri (gömme ve test için): #lang=en&s=b&step=last
+  const params = new URLSearchParams(location.hash.slice(1));
+  if (params.get('lang') === 'en') lang = 'en';
+  const ps0 = params.get('s');
+  if (S_SECENEK.includes(ps0)) {
+    scen = ps0; sim = simulateDeadlock(SENARYO[scen].threads, SENARYO[scen].mode);
+    pressScenario();
+  }
+  layoutKey = $('sahneKap').clientWidth < 520 ? 'narrow' : 'wide';
+  const ps = params.get('step');
+  if (ps === 'last') step = lastStep();
+  else if (ps && !isNaN(ps)) step = Math.max(0, Math.min(lastStep(), Number(ps)));
+  $('rr').classList.add('hareketsiz');
+  applyLang();
+  if (window.ResizeObserver) new ResizeObserver(pickLayout).observe($('sahneKap'));
+  else window.addEventListener('resize', pickLayout);
+})();
+</script>
+</body>
+</html>

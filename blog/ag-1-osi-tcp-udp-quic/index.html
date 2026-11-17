@@ -1,0 +1,381 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="OSI'nin yedi katmanı, TCP/IP modeli, encapsulation, TCP'nin el sıkışması ve güvenilirlik mekanizmaları, UDP ve QUIC: mülakatta sorulan ağ temelleri, örnekleriyle."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Ağ 1: OSI ve TCP/IP Modeli, TCP ve UDP, QUIC · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="tr" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Ağ 1: OSI ve TCP/IP Modeli, TCP ve UDP, QUIC</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 Kasım 2026</time> · ag, tcp, mulakat, programlama-101 · Bölüm 11</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/networking-1-osi-tcp-udp-quic/" hreflang="en" lang="en" data-astro-cid-7jjqptxk>Read in English</a></p> <img src="/_astro/net1-kapak.BAPIm6Wb_itSAf.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak"> <section class="ders" aria-labelledby="ders-baslik" data-astro-cid-7jjqptxk> <div class="ders-ust" data-astro-cid-7jjqptxk> <h2 id="ders-baslik" data-astro-cid-7jjqptxk>Kendin dene</h2> <a class="dugme" href="/etkilesim/tcp-el-sikisma.html#lang=tr" target="_blank" rel="noopener" data-astro-cid-7jjqptxk>Tam ekranda aç</a> </div> <iframe src="/etkilesim/tcp-el-sikisma.html#lang=tr" title="Etkileşimli ders" loading="lazy" data-astro-cid-7jjqptxk></iframe> </section> <article class="yazi" data-astro-cid-7jjqptxk><h1 id="ağ-1-osi-ve-tcpip-modeli-tcp-ve-udp-quic">Ağ 1: OSI ve TCP/IP Modeli, TCP ve UDP, QUIC</h1>
+<p><em>Programlama 101, Bölüm 11</em></p>
+<p>Bu yazının konusu, bir bilgisayardaki programın gönderdiği verinin başka bir bilgisayardaki programa nasıl ulaştığı. Arada kablolar, kablosuz bağlantılar, yönlendiriciler ve kaybolabilen paketler var. Veri buna rağmen çoğu zaman eksiksiz ve doğru sırada varıyor.</p>
+<p>Bunu sağlayan iş, katmanlara bölünmüş bir protokol yığını. Her katman tek bir problemle uğraşır ve bir altındakinin hizmetine güvenir.</p>
+<p>Aşağıda önce OSI ve TCP/IP modellerini, verinin katmanlardan geçerken nasıl paketlendiğini anlatıyorum. Ardından TCP ile UDP’nin farkını, hangisinin nerede kullanıldığını ve QUIC’in neyi değiştirdiğini ele alıyorum. Sonda mülakatta sık gelen sorular ve kısa cevapları var.</p>
+<hr>
+<h2 id="1-neden-katman-var">1. Neden katman var?</h2>
+<p>Bir tarayıcı sayfa isterken kablonun bakır mı fiber mi olduğunu bilmez. Ethernet kartı da gönderdiği baytların bir HTTP isteği olduğunu bilmez. Her parça yalnızca kendi işini yapar.</p>
+<p>Bu ayrımın faydası değiştirilebilirlik. Kablolu bağlantıdan Wi-Fi’ye geçildiğinde tarayıcının kodu değişmez. Yeni bir uygulama protokolü yazıldığında yönlendiricilerin güncellenmesi gerekmez.</p>
+<p>Kargo sistemine benzer. Gönderen paketi hazırlar, kargo şirketi adrese göre şubeye, şube araca, araç yola teslim eder. Gönderen hangi kamyonun kullanıldığıyla ilgilenmez, şoför de kolinin içinde ne olduğuyla.</p>
+<hr>
+<h2 id="2-osi-modeli-yedi-katman">2. OSI modeli: yedi katman</h2>
+<p><strong>OSI (Open Systems Interconnection) Modeli</strong>, ağ iletişimini yedi katmanda tarif eden kavramsal bir modeldir. Bugün internet doğrudan OSI protokolleriyle çalışmaz, ama katmanları konuşmak için ortak dil olarak kullanılır. “Bu bir L4 load balancer” ya da “L7 firewall” gibi ifadeler bu numaralandırmadan gelir.</p>
+<p>Aşağıdan yukarıya:</p>
+<table>
+<thead>
+<tr>
+<th>No</th>
+<th>Katman</th>
+<th>Ne iş yapar</th>
+<th>Örnek protokol / cihaz</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Physical (Fiziksel)</td>
+<td>Bitleri elektrik, ışık ya da radyo sinyaline çevirir</td>
+<td>Bakır kablo, fiber, hub, Wi-Fi radyo kısmı</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Data Link (Veri Bağlantısı)</td>
+<td>Aynı yerel ağdaki cihazlar arasında frame taşır, MAC adresi kullanır</td>
+<td>Ethernet, Wi-Fi (802.11), switch</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Network (Ağ)</td>
+<td>Farklı ağlar arasında yol bulur, IP adresi kullanır</td>
+<td>IP, ICMP, router</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Transport (Taşıma)</td>
+<td>İki program arasında uçtan uca iletim, port numaraları</td>
+<td>TCP, UDP</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Session (Oturum)</td>
+<td>İletişim oturumunu açar, sürdürür, kapatır</td>
+<td>RPC mekanizmaları, oturum yönetimi</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Presentation (Sunum)</td>
+<td>Verinin biçimi: kodlama, sıkıştırma, şifreleme</td>
+<td>UTF-8, JPEG, TLS’nin şifreleme kısmı</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Application (Uygulama)</td>
+<td>Uygulamanın doğrudan kullandığı protokoller</td>
+<td>HTTP, DNS, SMTP, SSH</td>
+</tr>
+</tbody>
+</table>
+<p>Birkaç ayrıntı mülakatta işe yarar:</p>
+<ul>
+<li><strong>Switch</strong> 2. katmanda çalışır ve frame’leri MAC adresine göre yönlendirir. <strong>Router</strong> 3. katmanda çalışır ve paketleri IP adresine göre başka ağlara taşır. Hub ise gelen sinyali bütün portlara kopyalar, adres okumaz, 1. katmandır.</li>
+<li><strong>MAC Adresi</strong> yalnızca yerel ağda anlamlıdır. Paket her router’dan geçtiğinde frame yeniden kurulur ve MAC adresleri değişir. IP adresleri ise yol boyunca aynı kalır (NAT araya girmiyorsa).</li>
+<li>
+<ol start="5">
+<li>ve 6. katmanların gerçek hayatta temiz bir karşılığı yok. TLS gibi protokoller katman tartışmasına açıktır. Mülakatta bu belirsizliği söylemek yanlış değil, doğru bir cevaptır.</li>
+</ol>
+</li>
+</ul>
+<p>Katmanları sırayla ezberlemek için cümle kurmak yerine, her katmanın hangi adresi kullandığını hatırlamak daha kalıcı: 2’de MAC, 3’te IP, 4’te port.</p>
+<p><img alt="OSI&amp;#x27;nin yedi katmanı ve TCP/IP&amp;#x27;nin dört katmanı yan yana, her katmanda örnek protokol ve verinin o katmandaki adı" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/net1-katmanlar.Cy5cMVQ3_2lpvs9.webp" ></p>
+<hr>
+<h2 id="3-tcpip-modeli-ve-osi-ile-eşleşmesi">3. TCP/IP modeli ve OSI ile eşleşmesi</h2>
+<p>İnternetin gerçekte kullandığı model <strong>TCP/IP Modeli</strong>dir. Dört katmanı vardır:</p>
+<table>
+<thead>
+<tr>
+<th>TCP/IP katmanı</th>
+<th>Karşılık gelen OSI katmanları</th>
+<th>Örnek</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Link (Bağlantı)</td>
+<td>1 Physical, 2 Data Link</td>
+<td>Ethernet, Wi-Fi</td>
+</tr>
+<tr>
+<td>Internet</td>
+<td>3 Network</td>
+<td>IP, ICMP</td>
+</tr>
+<tr>
+<td>Transport (Taşıma)</td>
+<td>4 Transport</td>
+<td>TCP, UDP</td>
+</tr>
+<tr>
+<td>Application (Uygulama)</td>
+<td>5 Session, 6 Presentation, 7 Application</td>
+<td>HTTP, DNS, TLS</td>
+</tr>
+</tbody>
+</table>
+<p>Farkın özü şu: OSI önce model olarak tasarlandı, protokoller sonra gelecekti. TCP/IP’de ise protokoller önce vardı, model onları tarif etmek için yazıldı. OSI’nin üst üç katmanı TCP/IP’de tek bir uygulama katmanında toplanır, çünkü pratikte bu işleri uygulamanın kendisi ya da kullandığı kütüphane yapar.</p>
+<p>Bazı ders kitapları Link katmanını ikiye bölüp beş katmanlı bir model anlatır. Mülakatta hangi modelden bahsedildiğini belirtmek yeterli.</p>
+<hr>
+<h2 id="4-encapsulation-kapsülleme">4. Encapsulation (kapsülleme)</h2>
+<p>Veri aşağı doğru inerken her katman önüne kendi başlığını (<strong>header</strong>) ekler. Bu işleme <strong>Encapsulation (Kapsülleme)</strong> denir. Alıcı tarafta her katman kendi başlığını okuyup çıkarır ve kalanı bir üst katmana verir. Buna da <strong>Decapsulation</strong> denir.</p>
+<p>Zarfın içine zarf koymaya benzer. Mektup bir zarfa girer, üstüne alıcının adı yazılır. O zarf da şehirler arası taşınacak bir torbaya konur, torbanın üstünde yalnızca şehir yazar. Her aşamada yalnızca dıştaki etiket okunur.</p>
+<p>Her katmanda verinin bir adı var:</p>
+<table>
+<thead>
+<tr>
+<th>Katman</th>
+<th>Verinin adı</th>
+<th>Eklenen başlıkta ne var</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Application</td>
+<td>Data (mesaj)</td>
+<td>HTTP başlıkları gibi uygulama bilgisi</td>
+</tr>
+<tr>
+<td>Transport</td>
+<td>Segment (TCP) / Datagram (UDP)</td>
+<td>Kaynak ve hedef port, sıra numarası</td>
+</tr>
+<tr>
+<td>Network</td>
+<td>Packet</td>
+<td>Kaynak ve hedef IP, TTL</td>
+</tr>
+<tr>
+<td>Data Link</td>
+<td>Frame</td>
+<td>Kaynak ve hedef MAC, sonda hata kontrolü (FCS)</td>
+</tr>
+<tr>
+<td>Physical</td>
+<td>Bit</td>
+<td>Başlık yok, sinyal</td>
+</tr>
+</tbody>
+</table>
+<p>Başlıkların bir maliyeti var. Ethernet’te bir frame’in taşıyabileceği en büyük yük (<strong>MTU</strong>) tipik olarak 1500 bayttır. Bunun 20 baytı IPv4 başlığına, 20 baytı TCP başlığına gider. Seçenek alanı yoksa bir TCP segmentinde uygulama verisi için 1460 bayt kalır. Bu değere <strong>MSS (Maximum Segment Size)</strong> denir.</p>
+<hr>
+<h2 id="5-ip-adresi-ve-port">5. IP adresi ve port</h2>
+<p><strong>IP Adresi</strong> bir ağ arayüzünü internette tanımlar. IPv4 adresi 32 bittir (<code>192.168.1.10</code>), toplam 4,3 milyar civarında adres eder ve bu yetmediği için <strong>NAT</strong> ile ev ağlarındaki cihazlar tek bir dış adresi paylaşır. IPv6 adresi 128 bittir (<code>2001:db8::1</code>).</p>
+<p><strong>Port</strong> ise o makinedeki hangi programın veriyi alacağını belirler. 16 bitlik bir sayıdır, 0–65535 arasıdır. 0–1023 arası iyi bilinen portlardır: HTTP 80, HTTPS 443, DNS 53, SSH 22.</p>
+<p>Apartman benzetmesi burada oturuyor. IP adresi binanın adresi, port daire numarası. Postacı binayı IP ile bulur, mektubu hangi kapıya bırakacağını port söyler.</p>
+<p>Bir TCP bağlantısı dört değerle tanımlanır: kaynak IP, kaynak port, hedef IP, hedef port. Aynı sunucunun 443 portuna binlerce istemci aynı anda bağlanabilir, çünkü her birinin kaynak IP ya da kaynak port değeri farklıdır. Linux’ta açık bağlantıları görmek için:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">ss</span><span style="color:#79B8FF"> -tn</span></span>
+<span class="line"><span style="color:#6A737D"># State  Local Address:Port    Peer Address:Port</span></span>
+<span class="line"><span style="color:#6A737D"># ESTAB  192.168.1.10:52344    203.0.113.5:443</span></span></code></pre>
+<p><code>52344</code> istemci tarafında işletim sisteminin geçici olarak verdiği porttur (<strong>ephemeral port</strong>).</p>
+<hr>
+<h2 id="6-tcp-bağlantı-kurma">6. TCP: bağlantı kurma</h2>
+<p><strong>TCP (Transmission Control Protocol)</strong>, iki program arasında güvenilir ve sıralı bir bayt akışı sağlayan taşıma protokolüdür. Veri göndermeden önce bağlantı kurar. Bu kuruluma <strong>3-Way Handshake (Üçlü El Sıkışma)</strong> denir:</p>
+<ol>
+<li>İstemci <code>SYN</code> gönderir, kendi başlangıç sıra numarasını bildirir: <code>seq = x</code>.</li>
+<li>Sunucu <code>SYN-ACK</code> ile cevap verir: kendi başlangıç numarası <code>seq = y</code>, ve <code>ack = x + 1</code> ile istemcinin SYN’ini aldığını onaylar.</li>
+<li>İstemci <code>ACK</code> gönderir: <code>ack = y + 1</code>. Bağlantı kurulmuştur.</li>
+</ol>
+<p>Telefonla aramaya benzer. “Alo, duyuyor musun?”, “Duyuyorum, sen beni duyuyor musun?”, “Duyuyorum.” Üç mesajdan sonra iki taraf da karşısının hem duyduğunu hem konuşabildiğini bilir.</p>
+<p>Neden iki değil de üç? İki adımda sunucu, kendi gönderdiği numaranın istemciye ulaştığından emin olamaz. Üçüncü mesaj her iki yönün de çalıştığını kanıtlar. Bu adımlar ayrıca iki tarafın sıra numaralarını eşler.</p>
+<p>Başlangıç sıra numaraları rastgele seçilir. Sabit olsaydı dışarıdan biri numarayı tahmin edip araya sahte segment sokabilirdi.</p>
+<p>El sıkışmanın maliyeti bir <strong>RTT (Round-Trip Time, gidiş-dönüş süresi)</strong>. İstanbul’dan Frankfurt’taki bir sunucuya RTT 40 ms civarındaysa ilk HTTP isteği en erken 40 ms sonra yola çıkar. HTTPS’te üstüne TLS el sıkışması eklenir. TLS 1.3 ile bu bir RTT daha demektir, yani istek göndermeden önce toplam iki RTT.</p>
+<hr>
+<h2 id="7-tcp-güvenilirlik-nasıl-sağlanır">7. TCP: güvenilirlik nasıl sağlanır?</h2>
+<p>IP paket kaybedebilir, çoğaltabilir, sırasını bozabilir. TCP bunların üstüne güvenilir bir akış kurar. Bunu üç mekanizmayla yapar.</p>
+<h3 id="sıra-numarası-sequence-number">Sıra numarası (sequence number)</h3>
+<p>TCP gönderdiği her <strong>baytı</strong> numaralandırır. Sık duyulan “paketleri 1, 2, 3 diye numaralar” anlatımı yanlış. Bir segmentin sıra numarası, taşıdığı ilk baytın akıştaki konumudur. 1000 numarasıyla başlayan 500 baytlık bir segmentten sonraki segment 1500 ile başlar.</p>
+<p>Alıcı sırası bozuk gelen segmentleri arabellekte tutar ve uygulamaya yalnızca kesintisiz kısmı verir.</p>
+<h3 id="ack-onay">ACK (onay)</h3>
+<p>Alıcı, <code>ack</code> alanına bir sonraki beklediği baytın numarasını yazar. <code>ack = 1500</code> “1499’a kadar her şey elimde” demektir. Bu <strong>cumulative ACK (birikimli onay)</strong> olarak çalışır: tek bir ACK, öncesindeki her şeyi onaylar. Gönderen her segment için ACK beklemez, birçok segmenti arka arkaya gönderip onayları sonradan toplar.</p>
+<h3 id="yeniden-gönderim-retransmission">Yeniden gönderim (retransmission)</h3>
+<p>Kayıp iki yolla anlaşılır:</p>
+<ul>
+<li><strong>Timeout:</strong> Gönderen her segment için bir süre sayar (<strong>RTO, Retransmission Timeout</strong>). Süre dolduğunda ACK gelmemişse segmenti yeniden gönderir. RTO sabit değildir, ölçülen RTT’ye göre ayarlanır.</li>
+<li><strong>Fast Retransmit:</strong> Alıcı arada eksik bir segment olduğunu fark edince aynı ACK’i tekrar tekrar gönderir. Gönderen üç tane yinelenen ACK görünce timeout’u beklemeden eksik segmenti yeniden yollar.</li>
+</ul>
+<p>Ayrıca her segmentte bir <strong>checksum</strong> vardır. Yolda bozulan segment atılır ve kayıp gibi işlem görür.</p>
+<p>Bir sınırı belirtmek gerek: TCP “veri asla kaybolmaz” garantisi vermez. Kablo kopar ya da karşı taraf kapanırsa veri ulaşmaz. TCP’nin garantisi, ulaşan verinin eksiksiz ve sıralı olması, ulaşamadığında da bunun bir hata olarak bildirilmesidir.</p>
+<hr>
+<h2 id="8-flow-control-ve-congestion-control">8. Flow control ve congestion control</h2>
+<p>Bu iki kavram sık karıştırılır. İkisi de gönderenin hızını sınırlar, ama farklı bir şeyi korur.</p>
+<p><strong>Flow Control (Akış Kontrolü)</strong> alıcıyı korur. Alıcı her ACK’te ne kadar boş arabelleği olduğunu bildirir. Bu değere <strong>receive window (rwnd)</strong> denir. Gönderen, onaylanmamış veri miktarını bu pencerenin altında tutar. Yavaş okuyan bir uygulamanın arabelleği dolarsa pencere sıfıra iner ve gönderen bekler.</p>
+<p><strong>Congestion Control (Tıkanıklık Kontrolü)</strong> ağı korur. Aradaki bir router’ın kuyruğu dolup paket atmaya başladıysa sorun alıcıda değil yoldadır. Gönderen bunun için kendi içinde bir <strong>congestion window (cwnd)</strong> tutar:</p>
+<ul>
+<li><strong>Slow Start:</strong> Bağlantı küçük bir pencereyle başlar. Her RTT’de pencere yaklaşık iki katına çıkar. Adı yanıltıcı, büyüme üsteldir.</li>
+<li><strong>Congestion Avoidance:</strong> Bir eşiğe ulaşınca pencere her RTT’de yalnızca biraz büyür.</li>
+<li>Kayıp görüldüğünde pencere küçültülür. Klasik algoritmalarda yarıya iner.</li>
+</ul>
+<p>Gönderenin aynı anda yolda tutabileceği veri, iki pencerenin küçüğüdür: <code>min(rwnd, cwnd)</code>.</p>
+<p>Musluktan bardak doldurmaya benzer. Flow control bardağın ne kadar boş yeri kaldığına bakar. Congestion control ise borulardaki basınca.</p>
+<p>“TCP flow control sayesinde ağı tıkamaz” cümlesi sık kurulur ama iki kavramı karıştırır. Ağı koruyan mekanizma flow control değil, congestion control’dür.</p>
+<hr>
+<h2 id="9-tcp-bağlantı-kapatma">9. TCP: bağlantı kapatma</h2>
+<p>TCP bağlantısı iki yönlüdür ve her yön ayrı kapatılır:</p>
+<ol>
+<li>Kapatmak isteyen taraf <code>FIN</code> gönderir: “benim göndereceğim veri bitti”.</li>
+<li>Karşı taraf <code>ACK</code> ile onaylar. Bu noktada karşı taraf hâlâ veri gönderebilir.</li>
+<li>Karşı taraf da işini bitirince kendi <code>FIN</code>’ini gönderir.</li>
+<li>İlk taraf <code>ACK</code> ile onaylar.</li>
+</ol>
+<p>Bu yüzden kapanışa çoğu zaman 4-way handshake denir. Karşı taraf ACK ile FIN’i tek segmentte birleştirirse üç mesajda da bitebilir.</p>
+<p>Kapatmayı başlatan taraf son ACK’ten sonra bir süre <strong>TIME_WAIT</strong> durumunda bekler. Süre, segmentlerin ağda yaşayabileceği en uzun sürenin (MSL) iki katıdır. Bu bekleme, son ACK kaybolursa tekrar gönderebilmek ve eski bağlantıdan gecikmiş segmentlerin yeni bir bağlantıya karışmasını önlemek içindir. Çok sayıda kısa bağlantı açıp kapatan bir sunucuda binlerce TIME_WAIT satırı görmek normaldir.</p>
+<p>Bir de sert kapatma var: <code>RST</code> segmenti bağlantıyı el sıkışmadan anında keser. Kapalı bir porta bağlanmaya çalışıldığında dönen cevap da RST’dir.</p>
+<hr>
+<h2 id="10-udp">10. UDP</h2>
+<p><strong>UDP (User Datagram Protocol)</strong>, port numarası ve checksum eklemekten başka bir şey yapmayan taşıma protokolüdür. Bağlantı kurmaz, sıra tutmaz, kaybolanı yeniden göndermez. Başlığı 8 bayttır: kaynak port, hedef port, uzunluk, checksum.</p>
+<p>UDP’nin bir özelliği de mesaj sınırlarını korumasıdır. 100 baytlık bir datagram gönderilirse alıcı 100 baytlık bir datagram alır ya da hiçbir şey almaz. TCP’de ise mesaj kavramı yoktur, bir bayt akışı vardır. 100 ve 200 baytlık iki <code>send</code> çağrısı alıcıda tek seferde 300 bayt olarak okunabilir. TCP üstünde mesaj sınırlarını uygulamanın kendisi belirlemelidir.</p>
+<p>Farkı Python’daki soket kodunda görmek mümkün:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> socket</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># TCP: önce bağlantı, sonra bayt akışı</span></span>
+<span class="line"><span style="color:#E1E4E8">tcp </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> socket.socket(socket.</span><span style="color:#79B8FF">AF_INET</span><span style="color:#E1E4E8">, socket.</span><span style="color:#79B8FF">SOCK_STREAM</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">tcp.connect((</span><span style="color:#9ECBFF">"example.com"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">80</span><span style="color:#E1E4E8">))       </span><span style="color:#6A737D"># 3-way handshake burada</span></span>
+<span class="line"><span style="color:#E1E4E8">tcp.sendall(</span><span style="color:#F97583">b</span><span style="color:#9ECBFF">"GET / HTTP/1.1</span><span style="color:#79B8FF">\r\n</span><span style="color:#9ECBFF">Host: example.com</span><span style="color:#79B8FF">\r\n\r\n</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(tcp.recv(</span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">tcp.close()                            </span><span style="color:#6A737D"># FIN gönderilir</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># UDP: bağlantı yok, her sendto ayrı bir datagram</span></span>
+<span class="line"><span style="color:#E1E4E8">udp </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> socket.socket(socket.</span><span style="color:#79B8FF">AF_INET</span><span style="color:#E1E4E8">, socket.</span><span style="color:#79B8FF">SOCK_DGRAM</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">udp.sendto(</span><span style="color:#F97583">b</span><span style="color:#9ECBFF">"merhaba"</span><span style="color:#E1E4E8">, (</span><span style="color:#9ECBFF">"127.0.0.1"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">9999</span><span style="color:#E1E4E8">))  </span><span style="color:#6A737D"># ulaştı mı bilinmez</span></span>
+<span class="line"><span style="color:#E1E4E8">udp.close()</span></span></code></pre>
+<p><code>connect()</code> çağrısı TCP’de ağa üç segment gönderir. UDP’de <code>sendto()</code> karşıda dinleyen olmasa bile hatasız döner.</p>
+<h3 id="tcp-ve-udp-karşılaştırması">TCP ve UDP karşılaştırması</h3>
+<table>
+<thead>
+<tr>
+<th>Özellik</th>
+<th>TCP</th>
+<th>UDP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bağlantı</td>
+<td>Var, 3-way handshake</td>
+<td>Yok</td>
+</tr>
+<tr>
+<td>Güvenilirlik</td>
+<td>Kayıp tespit edilir, yeniden gönderilir</td>
+<td>Yeniden gönderim yok</td>
+</tr>
+<tr>
+<td>Sıralama</td>
+<td>Var</td>
+<td>Yok, geldiği sırayla</td>
+</tr>
+<tr>
+<td>Veri modeli</td>
+<td>Bayt akışı</td>
+<td>Ayrı mesajlar (datagram)</td>
+</tr>
+<tr>
+<td>Başlık</td>
+<td>20–60 bayt</td>
+<td>8 bayt</td>
+</tr>
+<tr>
+<td>Hata kontrolü</td>
+<td>Checksum</td>
+<td>Checksum (IPv4’te isteğe bağlı, IPv6’da zorunlu)</td>
+</tr>
+<tr>
+<td>Flow ve congestion control</td>
+<td>Var</td>
+<td>Yok, gerekiyorsa uygulama yapar</td>
+</tr>
+<tr>
+<td>Bağlantı başına durum</td>
+<td>Sunucu her bağlantı için durum tutar</td>
+<td>Tutmaz</td>
+</tr>
+</tbody>
+</table>
+<p>Bu tür tablolarda iki hata sık görülür. TCP başlığı sabit 20 bayt değildir, 20 bayttan başlar ve seçeneklerle 60 bayta kadar çıkar. UDP’de de hata kontrolü vardır, checksum alanı bunun için bulunur.</p>
+<p>“UDP hızlıdır” ifadesi de dikkatle kullanılmalı. UDP paketleri kabloda TCP’ninkilerden hızlı gitmez. Kazanç, el sıkışmanın, onay beklemenin ve kaybolan bir paket yüzünden arkadakilerin bekletilmesinin olmamasından gelir.</p>
+<hr>
+<h2 id="11-ne-zaman-hangisi">11. Ne zaman hangisi?</h2>
+<p>Seçimi belirleyen soru şu: geç gelen veri hâlâ işe yarıyor mu?</p>
+<h3 id="video-görüşme">Video görüşme</h3>
+<p>Görüşmede yarım saniye önceki bir ses parçası artık işe yaramaz. TCP onu yeniden göndermek için beklerken arkadaki bütün veriyi de bekletir ve görüntü donar. Bu yüzden gerçek zamanlı ses ve görüntü UDP üzerinden gider. Kaybolan kare atlanır, görüntü bir an bozulur ama akış sürer. Tarayıcılardaki gerçek zamanlı iletişim standardı <strong>WebRTC</strong> de medyayı UDP üzerinden taşır. UDP’nin engellendiği ağlarda TCP’ye geri düşebilir, ama bu durumda gecikme artar.</p>
+<p>Kayıtlı videoyu izlemek farklı bir durumdur. Oynatıcı birkaç saniyelik veriyi önceden arabelleğe alır, bir paket geç gelse bile yeniden gönderime vakit vardır. Burada eksiksizlik önemlidir ve video HTTP üzerinden gelir. “Kayıtlı video TCP kullanır” ifadesi artık her zaman doğru değil, HTTP/3 ile kayıtlı video da UDP üzerinde çalışan QUIC ile taşınabiliyor. Asıl fark taşıma protokolünde değil, verinin geç gelmesine tahammül edilip edilemeyeceğinde.</p>
+<h3 id="dns">DNS</h3>
+<p>Bir DNS sorgusu ve cevabı çoğu zaman tek bir pakete sığar. UDP ile tek gidiş-dönüşte iş biter, bağlantı kurmaya gerek kalmaz. Cevap gelmezse istemci sorguyu kendisi tekrarlar.</p>
+<p>DNS’i yalnızca UDP olarak anlatmak eksik kalır. DNS 53 numaralı portu hem UDP hem TCP için kullanır. Cevap bir UDP paketine sığmayacak kadar büyükse sunucu cevabı kırpılmış (TC bayrağı) olarak işaretler ve istemci aynı sorguyu TCP ile tekrarlar. Sunucular arası bölge aktarımı (zone transfer) da TCP ile yapılır. Şifreli DNS (DNS over TLS, DNS over HTTPS) ise TCP ya da QUIC üzerinde çalışır.</p>
+<h3 id="oyun">Oyun</h3>
+<p>Çok oyunculu bir oyunda oyuncuların konumu saniyede onlarca kez gönderilir. 50 ms önceki konum kaybolduysa onu yeniden göndermenin anlamı yok, zaten yenisi geliyor. Bu yüzden konum ve hareket bilgisi UDP ile gider.</p>
+<p>Ama oyundaki her veri böyle değildir. Bir eşya alımı ya da sohbet mesajı kaybolmamalıdır. Oyun motorları bu tür mesajlar için UDP üzerine kendi onay ve yeniden gönderim katmanlarını kurar ya da bu verileri ayrı bir TCP bağlantısından gönderir. UDP’yi seçmek güvenilirlikten vazgeçmek değil, hangi verinin güvenilir olacağına uygulamanın karar vermesi demektir.</p>
+<hr>
+<h2 id="12-quic-ve-http3">12. QUIC ve HTTP/3</h2>
+<p><strong>QUIC</strong>, UDP üzerinde çalışan, güvenilir ve şifreli bir taşıma protokolüdür. IETF tarafından 2021’de RFC 9000 olarak standartlaştırıldı. <strong>HTTP/3</strong> ise HTTP’nin QUIC üzerinde çalışan sürümüdür, 2022’de RFC 9114 olarak yayımlandı.</p>
+<h3 id="neden-udp-üzerinde">Neden UDP üzerinde?</h3>
+<p>QUIC, TCP’nin yaptığı işlerin çoğunu yapar: el sıkışma, sıra numarası, ACK, yeniden gönderim, congestion control. Bunları yeni bir taşıma protokolü olarak değil UDP’nin üstünde yapmasının iki sebebi var.</p>
+<p>Birincisi, internetteki firewall’lar, NAT cihazları ve diğer ara kutular yalnızca TCP ve UDP’yi tanır. Yeni bir taşıma protokolü numarasıyla gönderilen paketlerin büyük kısmı yolda düşer. İkincisi, TCP işletim sisteminin kernel’inde çalışır ve değiştirilmesi her cihazın işletim sisteminin güncellenmesini gerektirir. QUIC kullanıcı alanında, uygulamanın içinde bir kütüphane olarak çalışır ve uygulamayla birlikte güncellenir.</p>
+<h3 id="head-of-line-blocking">Head-of-line blocking</h3>
+<p><strong>Head-of-Line Blocking (Sıra Başı Tıkanması)</strong>, öndeki bir parçanın gecikmesi yüzünden arkadakilerin de beklemesidir. Market kasasında öndeki müşterinin barkodu okunmayınca bütün sıranın durması gibi.</p>
+<p>HTTP’nin sürümleri bu problemi farklı katmanlarda yaşar:</p>
+<ul>
+<li><strong>HTTP/1.1:</strong> Bir bağlantı üzerinde istekler sırayla cevaplanır. Yavaş bir cevap arkadakileri bekletir. Tarayıcılar bunu aşmak için aynı sunucuya altı civarında paralel bağlantı açar.</li>
+<li><strong>HTTP/2:</strong> Birçok isteği tek bir TCP bağlantısı içinde ayrı <strong>stream</strong>’ler olarak taşır. Uygulama katmanındaki tıkanma çözülür. Ama TCP hepsini tek bir bayt akışı olarak görür. Bir segment kaybolursa, o segment yeniden gelene kadar TCP arkasındaki hiçbir veriyi uygulamaya vermez. Kayıp tek bir resme aitse bile bütün stream’ler bekler.</li>
+<li><strong>HTTP/3:</strong> QUIC stream’leri taşıma katmanında tanır. Bir stream’e ait paket kaybolursa yalnızca o stream bekler, diğerleri devam eder.</li>
+</ul>
+<p>Fark, kayıp oranı yüksek ağlarda belirgin olur. Mobil bağlantı ve kalabalık Wi-Fi bunun tipik örnekleri.</p>
+<h3 id="daha-hızlı-bağlantı-kurma-ve-0-rtt">Daha hızlı bağlantı kurma ve 0-RTT</h3>
+<p>QUIC, TLS 1.3’ü kendi el sıkışmasının içine alır. Taşıma bağlantısı ve şifreleme anahtarları aynı gidiş-dönüşte kurulur:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>İlk istek gönderilmeden önce</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TCP + TLS 1.3</td>
+<td>2 RTT</td>
+</tr>
+<tr>
+<td>QUIC, ilk bağlantı</td>
+<td>1 RTT</td>
+</tr>
+<tr>
+<td>QUIC, daha önce bağlanılmış sunucu (0-RTT)</td>
+<td>0 RTT</td>
+</tr>
+</tbody>
+</table>
+<p><strong>0-RTT</strong>, istemcinin daha önceki bir bağlantıdan sakladığı bilgiyle ilk pakette doğrudan şifreli istek göndermesidir. Bedeli güvenlikte. 0-RTT verisi <strong>replay attack (tekrar saldırısı)</strong> ile kopyalanıp sunucuya yeniden gönderilebilir. Bu yüzden 0-RTT yalnızca tekrar edilmesi zararsız istekler için kullanılmalıdır, sayfa okuyan bir GET gibi. Para transferi yapan bir POST 0-RTT ile gönderilmez. 0-RTT TLS 1.3’te de vardır, QUIC’e özgü değildir. QUIC’in farkı bunu taşıma bağlantısıyla birleştirmesi.</p>
+<h3 id="connection-migration">Connection migration</h3>
+<p>TCP bağlantısı IP ve port dörtlüsüyle tanımlandığı için telefon Wi-Fi’den mobil veriye geçince IP değişir ve bağlantı kopar. QUIC bağlantıları bir <strong>Connection ID</strong> ile tanımlanır. IP adresi değişse de bağlantı aynı ID ile sürer, indirme kaldığı yerden devam eder.</p>
+<h3 id="güncel-durum">Güncel durum</h3>
+<p>QUIC ve HTTP/3 standart, yaygın tarayıcıların hepsi destekliyor. 2026 ölçümlerinde web sitelerinin yaklaşık yüzde 38–40’ı HTTP/3 desteği sunuyor. Gerçek isteklerdeki payı ise daha düşük. Ölçüme göre değişmekle birlikte web isteklerinin beşte biri civarı HTTP/3 ile taşınıyor. Kalan büyük kısım hâlâ TCP üzerinde HTTP/2 ve HTTP/1.1 ile gidiyor.</p>
+<p>Bunun birkaç sebebi var. Bazı kurumsal ağlar UDP’yi 53 dışındaki portlarda engelliyor ya da sınırlıyor. Tarayıcı bir sunucunun HTTP/3 desteklediğini çoğu zaman ilk cevaptaki <code>Alt-Svc</code> başlığından ya da DNS kaydından öğreniyor, ilk bağlantı yine TCP ile kuruluyor. QUIC kullanıcı alanında çalıştığı ve her paketi şifrelediği için sunucuda TCP’ye göre daha fazla CPU harcayabiliyor. Bu yüzden HTTP/3 kullanan her istemci, QUIC başarısız olursa TCP’ye geri düşebilmeli. TCP bir yere gitmiyor, QUIC onun yanına eklenen bir seçenek.</p>
+<hr>
+<h2 id="mülakatta-sorulanlar">Mülakatta sorulanlar</h2>
+<p><strong>1. OSI modelinin katmanları nelerdir? Switch ve router hangi katmanda çalışır?</strong>
+Aşağıdan yukarı: Physical, Data Link, Network, Transport, Session, Presentation, Application. Switch 2. katmanda MAC adresine göre, router 3. katmanda IP adresine göre yönlendirir. TCP/IP modelinde bunlar Link, Internet, Transport ve Application olmak üzere dört katmanda toplanır.
+Sık yapılan hata: MAC adresinin paket yol boyunca giderken değişmediğini sanmak.</p>
+<p><strong>2. TCP’nin 3-way handshake’i nasıl çalışır, neden üç adım?</strong>
+İstemci SYN, sunucu SYN-ACK, istemci ACK gönderir. Bu adımlarla iki taraf başlangıç sıra numaralarını değiş tokuş eder ve iki yönün de çalıştığını doğrular. İki adımda sunucu kendi SYN’inin ulaştığından emin olamazdı.
+Sık yapılan hata: El sıkışmayı yalnızca “bağlantı kontrolü” olarak anlatıp sıra numaralarının eşlenmesini atlamak.</p>
+<p><strong>3. TCP güvenilirliği nasıl sağlar?</strong>
+Her bayt numaralanır, alıcı bir sonraki beklediği baytı ACK ile bildirir. ACK zamanında gelmezse ya da üç yinelenen ACK görülürse segment yeniden gönderilir. Checksum bozuk segmenti yakalar, sıra numarası da sırayı ve tekrarları düzeltir.
+Sık yapılan hata: Sıra numarasının paket sayacı olduğunu söylemek. Bayt konumudur.</p>
+<p><strong>4. Flow control ile congestion control farkı nedir?</strong>
+Flow control alıcının arabelleğini korur ve alıcının bildirdiği pencereye (rwnd) göre çalışır. Congestion control ağı korur, gönderen kayıp ve gecikmeye bakarak kendi penceresini (cwnd) ayarlar. Gönderen ikisinin küçüğü kadar veriyi yolda tutabilir.
+Sık yapılan hata: İkisini aynı mekanizma sanmak.</p>
+<p><strong>5. TCP ile UDP arasındaki fark nedir, hangisini ne zaman seçersin?</strong>
+TCP bağlantılı, sıralı ve güvenilir bir bayt akışı sunar. UDP bağlantısız, sırasız ve yeniden gönderimsiz datagram taşır. Geç gelen veri işe yaramıyorsa (canlı görüşme, oyundaki konum) UDP, her baytın eksiksiz ulaşması gerekiyorsa (dosya, web sayfası) TCP seçilir.
+Sık yapılan hata: “UDP güvenilmez, o yüzden hiçbir ciddi uygulamada kullanılmaz” demek.</p>
+<p><strong>6. DNS neden UDP kullanır? Hep UDP mi kullanır?</strong>
+Sorgu ve cevap genelde tek pakete sığar, bağlantı kurmak işi iki katına çıkarırdı. Cevap büyükse sunucu kırpılmış cevap döner ve istemci TCP ile tekrar sorar. Zone transfer da TCP ile yapılır.
+Sık yapılan hata: “DNS yalnızca UDP 53 kullanır” demek.</p>
+<p><strong>7. TIME_WAIT nedir, neden var?</strong>
+Bağlantıyı kapatan tarafın son ACK’ten sonra 2×MSL boyunca beklediği durumdur. Son ACK kaybolursa yeniden gönderebilmek ve eski bağlantının gecikmiş segmentlerinin aynı port dörtlüsüyle açılan yeni bir bağlantıya karışmasını önlemek için vardır.
+Sık yapılan hata: TIME_WAIT’i bir hata ya da sızıntı belirtisi saymak.</p>
+<p><strong>8. HTTP/2 head-of-line blocking’i çözdü mü? QUIC neyi değiştirdi?</strong>
+HTTP/2 uygulama katmanındaki tıkanmayı stream’lerle çözdü, ama tek bir TCP bağlantısı kullandığı için kaybolan bir segment bütün stream’leri bekletir. QUIC stream’leri taşıma katmanında ayırır, kayıp yalnızca ilgili stream’i etkiler. Ayrıca TLS’yi el sıkışmaya katarak bağlantı kurulumunu bir RTT’ye indirir.
+Sık yapılan hata: QUIC’in UDP üzerinde çalıştığı için güvenilir olmadığını söylemek.</p>
+<p><img alt="Özet kart: OSI ve TCP/IP katmanları, encapsulation, TCP el sıkışması ve kapanışı, TCP ve UDP farkı, QUIC&amp;#x27;in getirdikleri" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/net1-ozet-kart.GCTwl1SB_1Iw65.webp" ></p>
+<p><em>12. bölümde: HTTP, DNS, REST, JWT, cookie ve session.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

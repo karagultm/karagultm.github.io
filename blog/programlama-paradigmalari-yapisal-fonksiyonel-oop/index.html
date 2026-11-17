@@ -1,0 +1,314 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Imperative ve declarative farkı, yapısal programlama, saf fonksiyon, immutability, map/filter/reduce ve OOP'ye giriş: aynı problemin üç paradigmada çözümü ve mülakat soruları."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Programlama Paradigmaları: Yapısal, Fonksiyonel ve Nesne Yönelimli · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="tr" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Programlama Paradigmaları: Yapısal, Fonksiyonel ve Nesne Yönelimli</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 Kasım 2026</time> · paradigma, fonksiyonel, oop, mulakat, programlama-101 · Bölüm 3</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/programming-paradigms-structured-functional-oop/" hreflang="en" lang="en" data-astro-cid-7jjqptxk>Read in English</a></p> <img src="/_astro/par-kapak.7qhBp9Cp_1KoTmP.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak">  <article class="yazi" data-astro-cid-7jjqptxk><h1 id="programlama-paradigmaları-yapısal-fonksiyonel-ve-nesne-yönelimli">Programlama Paradigmaları: Yapısal, Fonksiyonel ve Nesne Yönelimli</h1>
+<p><em>Programlama 101, Bölüm 3</em></p>
+<p>Bu yazının konusu, aynı problemi çözen iki kodun neden birbirine hiç benzemeyebileceği. Biri döngü ve sayaçla ilerler, diğeri veriyi fonksiyonlardan geçirir, üçüncüsü işi nesnelere dağıtır. Üçü de doğru sonucu verir. Aradaki fark, programcının problemi nasıl parçaladığıdır.</p>
+<p>Aşağıda paradigma kavramını, imperative ile declarative ayrımını ve üç yaygın paradigmayı anlatıyorum: yapısal (prosedürel), fonksiyonel ve nesne yönelimli. Ardından aynı problemi üç paradigmada çözüyorum. Sonda mülakatta sık gelen sorular ve kısa cevapları var.</p>
+<hr>
+<h2 id="1-paradigma-nedir">1. Paradigma nedir?</h2>
+<p><strong>Programming Paradigm (Programlama Paradigması)</strong>, bir programı düşünme ve kurma biçimidir. Kodun hangi parçalara bölüneceğini, verinin nerede tutulacağını ve nasıl değişeceğini belirler.</p>
+<p>Paradigma bir dil değildir. Dil bir araç, paradigma o aracı kullanma tarzıdır. Aynı mutfakta aynı malzemeyle biri tarife adım adım uyarak, diğeri her tezgaha bir iş verip mutfağı istasyonlara bölerek yemek yapabilir. Malzeme aynı, işin örgütlenmesi farklı.</p>
+<p>Bir dil bazı paradigmaları kolaylaştırır, bazılarını zorlaştırır. Haskell fonksiyonel stile, Java nesne yönelimli stile yöneltir. Python, Java, C# ve JavaScript gibi bugün yaygın dillerin çoğu birden fazla paradigmayı destekler. Buna 7. bölümde döneceğim.</p>
+<hr>
+<h2 id="2-imperative-ve-declarative">2. Imperative ve declarative</h2>
+<p>Paradigmalar kabaca iki büyük gruba ayrılır.</p>
+<p><strong>Imperative (Buyurgan)</strong> programlamada bilgisayara işin nasıl yapılacağı adım adım söylenir. Program, değişkenlerin değerini değiştiren komutlar dizisidir. Yapısal ve prosedürel programlama bu gruptadır. OOP de çoğu dilde imperative bir yapı üzerine kuruludur, çünkü nesnelerin durumu metotlarla değiştirilir.</p>
+<p><strong>Declarative (Bildirimsel)</strong> programlamada istenen sonuç tarif edilir, sonuca giden adımlar dile ya da altyapıya bırakılır. SQL, HTML ve mantık programlama dili Prolog bu gruptadır. Fonksiyonel programlama da genelde burada sayılır.</p>
+<p>Imperative stil birine tarif vermektir (“yumurtayı kır, çırp, tavaya dök”), declarative stil restoranda sipariş vermektir (“bir omlet”). Omletin nasıl yapıldığı mutfağın işidir.</p>
+<p>Aynı iş iki stilde şöyle görünür. Stokta olan ürünlerin adları:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># imperative: adımlar tek tek yazılır</span></span>
+<span class="line"><span style="color:#E1E4E8">adlar </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> urun </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> urunler:</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> urun[</span><span style="color:#9ECBFF">"stokta"</span><span style="color:#E1E4E8">]:</span></span>
+<span class="line"><span style="color:#E1E4E8">        adlar.append(urun[</span><span style="color:#9ECBFF">"ad"</span><span style="color:#E1E4E8">])</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#6A737D">-- declarative: yalnız istenen sonuç tarif edilir</span></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#E1E4E8"> ad </span><span style="color:#F97583">FROM</span><span style="color:#E1E4E8"> urunler </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> stokta </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<p>SQL sorgusu tabloyu hangi sırayla tarayacağını ya da bir indeks kullanıp kullanmayacağını söylemez. Bu kararları veritabanının sorgu planlayıcısı verir.</p>
+<p>Bu ayrım kesin bir çizgi değil, bir yelpazedir. Python’daki <code>[u["ad"] for u in urunler if u["stokta"]]</code> ifadesi yukarıdaki döngüden daha declarative’dir, ama SQL kadar değildir.</p>
+<hr>
+<h2 id="3-yapısal-ve-prosedürel-programlama">3. Yapısal ve prosedürel programlama</h2>
+<p>Bu iki terim sık sık eş anlamlı kullanılır, ama farklı şeyleri anlatırlar.</p>
+<p><strong>Structured Programming (Yapısal Programlama)</strong> akış kontrolüyle ilgilidir. Program yalnızca üç yapıdan kurulur:</p>
+<ul>
+<li><strong>Sequence (Sıra):</strong> Komutlar yazıldığı sırayla çalışır.</li>
+<li><strong>Selection (Seçim):</strong> <code>if</code> / <code>else</code> ile dallanma.</li>
+<li><strong>Iteration (Tekrar):</strong> <code>for</code> ve <code>while</code> döngüleri.</li>
+</ul>
+<p>1966’da kanıtlanan bir teorem, her algoritmanın bu üç yapıyla yazılabileceğini gösterdi. Yapısal programlama <code>goto</code> ile koda istenen satıra atlama alışkanlığına karşı çıktı. Her bloğun tek girişi ve tek çıkışı olduğu için kod yukarıdan aşağıya okunabilir hale gelir.</p>
+<p><strong>Procedural Programming (Prosedürel Programlama)</strong> ise kodun nasıl bölündüğüyle ilgilidir. Program, her biri tek bir işi yapan <strong>Procedure (Prosedür)</strong> ya da fonksiyonlara ayrılır ve ana akış bunları sırayla çağırır. C ve Pascal bu stilin klasik dilleridir.</p>
+<p>Pratikte ikisi birlikte gelir. Bugün “prosedürel kod” denince genelde yapısal akış kullanan, fonksiyonlara bölünmüş imperative kod kastedilir.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> kdv_ekle</span><span style="color:#E1E4E8">(fiyat, oran):</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> fiyat </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">1</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> oran)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> fatura_toplami</span><span style="color:#E1E4E8">(kalemler, oran):</span></span>
+<span class="line"><span style="color:#E1E4E8">    toplam </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> fiyat, adet </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> kalemler:        </span><span style="color:#6A737D"># tekrar</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> adet </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">:                    </span><span style="color:#6A737D"># seçim</span></span>
+<span class="line"><span style="color:#E1E4E8">            toplam </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> kdv_ekle(fiyat, oran) </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> adet</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> toplam</span></span></code></pre>
+<p>Veri ile o veriyi işleyen fonksiyonlar ayrı durur. Fonksiyonlar veriyi parametre olarak alır, değiştirir ya da yeni bir değer döndürür.</p>
+<p>Bu stil küçük ve orta boy programlarda doğrudan ve okunaklıdır. Sorun, program büyüdükçe çok fonksiyonun aynı veriyi değiştirmeye başlamasıyla çıkar ve bir değişikliğin neyi bozduğunu görmek zorlaşır. Bu sorunun ilacı yapısal programlamayı bırakmak değil, verinin kimin tarafından değiştirilebileceğini sınırlamaktır. OOP ve fonksiyonel programlama bunu iki farklı yoldan yapar.</p>
+<hr>
+<h2 id="4-fonksiyonel-programlama">4. Fonksiyonel programlama</h2>
+<p><strong>Functional Programming (Fonksiyonel Programlama)</strong>, programı matematikteki gibi fonksiyonların birleşimi olarak kurar. Veri bir yerde tutulup adım adım değiştirilmez. Bir fonksiyondan geçer ve yeni bir değer olarak çıkar. Bir üretim bandına benzer: ham madde bir uçtan girer, her istasyon onu dönüştürür, ürün diğer uçtan çıkar.</p>
+<p>Bu stilin dört temel kavramı var.</p>
+<h3 id="saf-fonksiyon-ve-yan-etki">Saf fonksiyon ve yan etki</h3>
+<p><strong>Pure Function (Saf Fonksiyon)</strong> iki koşulu sağlar. Aynı girdiye her zaman aynı çıktıyı verir ve dışarıda hiçbir şeyi değiştirmez.</p>
+<p><strong>Side Effect (Yan Etki)</strong>, bir fonksiyonun değer döndürmek dışında dış dünyada yaptığı her değişikliktir. Global bir değişkeni ya da parametre olarak gelen listeyi değiştirmek, ekrana yazmak, dosyaya ya da veritabanına yazmak, ağa istek atmak yan etkidir. Okuma tarafında da benzer bir durum var: saati, rastgele sayıyı ya da global bir değişkeni okuyan fonksiyon aynı girdiye farklı çıktı verebilir, bu yüzden saf sayılmaz.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">kdv_orani </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0.20</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> kdvli</span><span style="color:#E1E4E8">(fiyat):                 </span><span style="color:#6A737D"># saf değil: dış değişkene bağlı</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> fiyat </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">1</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> kdv_orani)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> kdvli_saf</span><span style="color:#E1E4E8">(fiyat, oran):       </span><span style="color:#6A737D"># saf: sonuç yalnız girdilere bağlı</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> fiyat </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">1</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> oran)</span></span></code></pre>
+<p><code>kdv_orani</code> başka bir yerde değiştirilirse <code>kdvli(100)</code> farklı sonuç döner. <code>kdvli_saf(100, 0.20)</code> ise her zaman 120 verir.</p>
+<p>Saf fonksiyonun test edilmesi kolaydır. Kurulacak ortam, sıfırlanacak global durum yoktur, girdi verilir ve çıktıya bakılır. Sonucu önbelleğe almak da güvenlidir, çünkü aynı girdi hep aynı sonucu verir.</p>
+<p>Bir programın tamamı saf olamaz. Ekrana hiçbir şey yazmayan, hiçbir şey kaydetmeyen program işe yaramaz. Fonksiyonel stilde amaç yan etkiyi yok etmek değil, programın kenarlarına toplamaktır. Hesaplama saf fonksiyonlarda yapılır, okuma ve yazma birkaç belirli yerde kalır.</p>
+<h3 id="immutability-değişmezlik">Immutability (değişmezlik)</h3>
+<p><strong>Immutability (Değişmezlik)</strong>, bir değer oluşturulduktan sonra değiştirilmemesidir. Değişiklik gerektiğinde eskisi korunur ve yeni bir değer üretilir.</p>
+<p>Python’da <code>list</code> ve <code>dict</code> değiştirilebilir (mutable), <code>tuple</code>, <code>str</code> ve <code>frozenset</code> değiştirilemez (immutable). Değiştirilebilir bir listeyi fonksiyona vermek klasik bir hata kaynağıdır:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> indirim_uygula</span><span style="color:#E1E4E8">(fiyatlar):</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">len</span><span style="color:#E1E4E8">(fiyatlar)):</span></span>
+<span class="line"><span style="color:#E1E4E8">        fiyatlar[i] </span><span style="color:#F97583">*=</span><span style="color:#79B8FF"> 0.9</span><span style="color:#6A737D">               # çağıranın listesi değişiyor</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> indirimli</span><span style="color:#E1E4E8">(fiyatlar):</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> [f </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 0.9</span><span style="color:#F97583"> for</span><span style="color:#E1E4E8"> f </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> fiyatlar]   </span><span style="color:#6A737D"># yeni liste döner, girdi aynı kalır</span></span></code></pre>
+<p>İlk fonksiyonu çağıran kod, kendi listesinin değiştiğini fark etmeyebilir. İkincisinde orijinal fiyatlar korunur.</p>
+<p>Değişmez veri paralel çalışmayı da kolaylaştırır. Hiçbir thread ortak veriyi değiştirmiyorsa, iki thread’in aynı anda aynı değişkene yazmasından doğan data race oluşamaz. Bu, paralelliğin bedava olduğu anlamına gelmez. İşin parçalara bölünmesi ve sonuçların birleştirilmesi yine gerekir, dış kaynaklara (dosya, veritabanı) erişimde sıralama sorunları da devam eder.</p>
+<p>Bedeli bellek ve kopyalamadır. Fonksiyonel diller bunu, yeni yapının eskisiyle ortak kısımları paylaştığı veri yapılarıyla hafifletir.</p>
+<h3 id="higher-order-function-ve-first-class-function">Higher-order function ve first-class function</h3>
+<p>Bir dilde fonksiyonlar değişkene atanabiliyor, parametre olarak verilebiliyor ve fonksiyondan döndürülebiliyorsa o dilde <strong>First-Class Function (Birinci Sınıf Fonksiyon)</strong> vardır. Python, JavaScript ve C# böyledir. Java 8’den beri lambda ifadeleriyle buna yakın bir kullanım sunar.</p>
+<p><strong>Higher-Order Function (Yüksek Mertebeden Fonksiyon)</strong> ise başka bir fonksiyonu parametre olarak alan ya da sonuç olarak döndüren fonksiyondur.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> carpan</span><span style="color:#E1E4E8">(k):</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#F97583"> lambda</span><span style="color:#E1E4E8"> x: x </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> k                </span><span style="color:#6A737D"># fonksiyon döndürüyor</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">uc_kat </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> carpan(</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(uc_kat(</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">))                          </span><span style="color:#6A737D"># 15</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">meyveler </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#9ECBFF">"karpuz"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"elma"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"kivi"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"muz"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">sorted</span><span style="color:#E1E4E8">(meyveler, </span><span style="color:#FFAB70">key</span><span style="color:#F97583">=</span><span style="color:#79B8FF">len</span><span style="color:#E1E4E8">))          </span><span style="color:#6A737D"># fonksiyon alıyor</span></span>
+<span class="line"><span style="color:#6A737D"># ['muz', 'elma', 'kivi', 'karpuz']</span></span></code></pre>
+<p><code>carpan</code> bir fonksiyon döndürdüğü için, <code>sorted</code> de <code>key</code> parametresiyle bir fonksiyon aldığı için higher-order’dır. First-class dilin özelliğidir, higher-order ise tek tek fonksiyonların.</p>
+<h3 id="map-filter-ve-reduce">map, filter ve reduce</h3>
+<p>Fonksiyonel stilde döngülerin çoğunun yerini üç higher-order fonksiyon alır:</p>
+<table>
+<thead>
+<tr>
+<th>Fonksiyon</th>
+<th>Ne yapar</th>
+<th><code>[1, 2, 3, 4]</code> üzerinde</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>map(f, liste)</code></td>
+<td>Her elemana <code>f</code> uygular</td>
+<td><code>x * x</code> -> <code>[1, 4, 9, 16]</code></td>
+</tr>
+<tr>
+<td><code>filter(p, liste)</code></td>
+<td><code>p</code>’nin doğru döndüğü elemanları tutar</td>
+<td>çift mi -> <code>[2, 4]</code></td>
+</tr>
+<tr>
+<td><code>reduce(f, liste, baş)</code></td>
+<td>Elemanları tek değere indirger</td>
+<td>toplama -> <code>10</code></td>
+</tr>
+</tbody>
+</table>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> functools </span><span style="color:#F97583">import</span><span style="color:#FFAB70"> reduce</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">sayilar </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">kareler </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> list</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">map</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">lambda</span><span style="color:#E1E4E8"> x: x </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> x, sayilar))           </span><span style="color:#6A737D"># [1, 4, 9, 16]</span></span>
+<span class="line"><span style="color:#E1E4E8">ciftler </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> list</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">filter</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">lambda</span><span style="color:#E1E4E8"> x: x </span><span style="color:#F97583">%</span><span style="color:#79B8FF"> 2</span><span style="color:#F97583"> ==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">, sayilar))   </span><span style="color:#6A737D"># [2, 4]</span></span>
+<span class="line"><span style="color:#E1E4E8">toplam </span><span style="color:#F97583">=</span><span style="color:#FFAB70"> reduce</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">lambda</span><span style="color:#E1E4E8"> a, b: a </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> b, sayilar, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)         </span><span style="color:#6A737D"># 10</span></span></code></pre>
+<p>Python’a özgü iki ayrıntı var. <code>reduce</code> Python 3’te yerleşik değildir, <code>functools</code>’tan alınır. <code>map</code> ve <code>filter</code> liste değil, istendikçe değer üreten tembel (lazy) bir iterator döndürür, bu yüzden sonucu görmek için <code>list(...)</code> gerekir. Python’da çoğu zaman bunların yerine list comprehension ve <code>sum</code> gibi hazır fonksiyonlar tercih edilir.</p>
+<p>Fonksiyonel dillerde döngü yerine recursion da sık kullanılır. Python’da bu iyi bir fikir değildir. Varsayılan recursion derinliği 1000 civarındadır ve dil tail call optimization yapmaz.</p>
+<hr>
+<h2 id="5-nesne-yönelimli-programlama-kısa-tanıtım">5. Nesne yönelimli programlama: kısa tanıtım</h2>
+<p><strong>Object-Oriented Programming (OOP, Nesne Yönelimli Programlama)</strong>, veriyi ve o veriyi işleyen kodu tek bir birimde toplar. Bu birime <strong>Object (Nesne)</strong>, nesnenin kalıbına <strong>Class (Sınıf)</strong> denir. Nesnenin verisi onun durumu (state), metotları da davranışıdır (behavior).</p>
+<p>Prosedürel kodda veri bir yerde, fonksiyonlar başka bir yerde durur. OOP’de “bu veriyi kim değiştirebilir?” sorusunun cevabı bellidir: yalnızca nesnenin kendi metotları. Bir banka hesabının bakiyesi dışarıdan doğrudan değiştirilmez, <code>para_yatir</code> ve <code>para_cek</code> metotları üzerinden değişir ve bu metotlar kuralları (eksi bakiye olmaz gibi) kendisi denetler.</p>
+<p>Farkı bir kütüphane üzerinden görmek kolay. Prosedürel stilde tek bir kütüphaneci elindeki yapılacaklar listesiyle her işi kendisi yapar. OOP’de her işin bir sorumlusu vardır (kayıt görevlisi, raf görevlisi, üye) ve bunlar birbirine iş verir. Sisteme yeni bir tür eklendiğinde (örneğin DVD ödünç verme) mevcut sorumluların çoğuna dokunmadan yeni bir sorumlu eklemek mümkün olur.</p>
+<p>OOP dört ilke üzerine kuruludur: <strong>Encapsulation (Kapsülleme)</strong>, <strong>Inheritance (Kalıtım)</strong>, <strong>Polymorphism (Çok Biçimlilik)</strong> ve <strong>Abstraction (Soyutlama)</strong>. Bunlar ve sınıf tasarımıyla ilgili sorular bir sonraki yazının konusu. Burada yalnızca paradigmalar arasındaki yerini görmek yeterli.</p>
+<p>OOP’nin aşağıdan yukarıya, yapısal programlamanın yukarıdan aşağıya tasarlandığı sık söylenir. Bunlar eğilimdir, kural değil.</p>
+<hr>
+<h2 id="6-aynı-problem-üç-paradigma">6. Aynı problem, üç paradigma</h2>
+<p>Problem: Bir alışveriş sepetinde stokta olan ürünlerin toplam tutarını bulmak. Sepetin içeriği:</p>
+<table>
+<thead>
+<tr>
+<th>Ürün</th>
+<th>Fiyat</th>
+<th>Adet</th>
+<th>Stokta</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>kalem</td>
+<td>12</td>
+<td>3</td>
+<td>evet</td>
+</tr>
+<tr>
+<td>defter</td>
+<td>45</td>
+<td>2</td>
+<td>evet</td>
+</tr>
+<tr>
+<td>çanta</td>
+<td>300</td>
+<td>1</td>
+<td>hayır</td>
+</tr>
+</tbody>
+</table>
+<p>Beklenen sonuç 12 × 3 + 45 × 2 = 126.</p>
+<h3 id="yapısal--prosedürel">Yapısal / prosedürel</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">sepet </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span><span style="color:#9ECBFF">"ad"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"kalem"</span><span style="color:#E1E4E8">,  </span><span style="color:#9ECBFF">"fiyat"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">12.0</span><span style="color:#E1E4E8">,  </span><span style="color:#9ECBFF">"adet"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"stokta"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">True</span><span style="color:#E1E4E8">},</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span><span style="color:#9ECBFF">"ad"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"defter"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"fiyat"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">45.0</span><span style="color:#E1E4E8">,  </span><span style="color:#9ECBFF">"adet"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"stokta"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">True</span><span style="color:#E1E4E8">},</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span><span style="color:#9ECBFF">"ad"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"çanta"</span><span style="color:#E1E4E8">,  </span><span style="color:#9ECBFF">"fiyat"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">300.0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"adet"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"stokta"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">False</span><span style="color:#E1E4E8">},</span></span>
+<span class="line"><span style="color:#E1E4E8">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> stoktaki_toplam</span><span style="color:#E1E4E8">(sepet):</span></span>
+<span class="line"><span style="color:#E1E4E8">    toplam </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> urun </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> sepet:</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> urun[</span><span style="color:#9ECBFF">"stokta"</span><span style="color:#E1E4E8">]:</span></span>
+<span class="line"><span style="color:#E1E4E8">            toplam </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> urun[</span><span style="color:#9ECBFF">"fiyat"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> urun[</span><span style="color:#9ECBFF">"adet"</span><span style="color:#E1E4E8">]   </span><span style="color:#6A737D"># toplam her adımda değişiyor</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> toplam</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(stoktaki_toplam(sepet))   </span><span style="color:#6A737D"># 126.0</span></span></code></pre>
+<p>Adımlar açıkça yazılmış. Durumu tutan tek değişken <code>toplam</code> ve her turda değeri değişiyor.</p>
+<h3 id="fonksiyonel">Fonksiyonel</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> functools </span><span style="color:#F97583">import</span><span style="color:#FFAB70"> reduce</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">stoktakiler </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> filter</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">lambda</span><span style="color:#E1E4E8"> u: u[</span><span style="color:#9ECBFF">"stokta"</span><span style="color:#E1E4E8">], sepet)</span></span>
+<span class="line"><span style="color:#E1E4E8">tutarlar </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> map</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">lambda</span><span style="color:#E1E4E8"> u: u[</span><span style="color:#9ECBFF">"fiyat"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> u[</span><span style="color:#9ECBFF">"adet"</span><span style="color:#E1E4E8">], stoktakiler)</span></span>
+<span class="line"><span style="color:#E1E4E8">toplam </span><span style="color:#F97583">=</span><span style="color:#FFAB70"> reduce</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">lambda</span><span style="color:#E1E4E8"> a, b: a </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> b, tutarlar, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(toplam)   </span><span style="color:#6A737D"># 126.0</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Python'da aynı iş genelde tek satırda yazılır:</span></span>
+<span class="line"><span style="color:#E1E4E8">toplam </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> sum</span><span style="color:#E1E4E8">(u[</span><span style="color:#9ECBFF">"fiyat"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> u[</span><span style="color:#9ECBFF">"adet"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> u </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> sepet </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> u[</span><span style="color:#9ECBFF">"stokta"</span><span style="color:#E1E4E8">])</span></span></code></pre>
+<p>Değeri değişen bir değişken yok. Veri üç aşamadan geçiyor: süz, dönüştür, indirge. Sepetin kendisine dokunulmuyor.</p>
+<h3 id="nesne-yönelimli">Nesne yönelimli</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Urun</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(self, ad, fiyat, adet, stokta</span><span style="color:#F97583">=</span><span style="color:#79B8FF">True</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.ad, </span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.fiyat, </span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.adet, </span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.stokta </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ad, fiyat, adet, stokta</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> tutar</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.fiyat </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.adet</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Sepet</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">._urunler </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []                 </span><span style="color:#6A737D"># dışarıdan doğrudan erişilmesin</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> ekle</span><span style="color:#E1E4E8">(self, urun):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">._urunler.append(urun)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> toplam</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> sum</span><span style="color:#E1E4E8">(u.tutar() </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> u </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">._urunler </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> u.stokta)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">sepet </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Sepet()</span></span>
+<span class="line"><span style="color:#E1E4E8">sepet.ekle(Urun(</span><span style="color:#9ECBFF">"kalem"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">12.0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">sepet.ekle(Urun(</span><span style="color:#9ECBFF">"defter"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">45.0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">sepet.ekle(Urun(</span><span style="color:#9ECBFF">"çanta"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">300.0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">stokta</span><span style="color:#F97583">=</span><span style="color:#79B8FF">False</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(sepet.toplam())   </span><span style="color:#6A737D"># 126.0</span></span></code></pre>
+<p>Kod daha uzun, ama sorumluluklar dağıtılmış. Bir ürünün tutarını nasıl hesaplayacağını <code>Urun</code> bilir, sepete neyin girip neyin sayılacağını <code>Sepet</code> bilir. Yarın indirimli ürünler eklenecekse değişiklik <code>Urun</code> tarafında kalır, sepeti kullanan kod etkilenmez.</p>
+<p><code>_urunler</code> başındaki alt çizgi Python’da bir uyarıdır, zorlama değildir. Java’daki <code>private</code> derleyici tarafından denetlenir, Python’da ise bu bir anlaşmadır ve dışarıdan erişim yine mümkündür.</p>
+<p><code>Sepet.toplam</code> metodunun içinde fonksiyonel bir ifade kullanıldığı da görülüyor. Gerçek kodda paradigmalar böyle iç içe geçer.</p>
+<p><img alt="Aynı sepet problemi üç paradigmada: yapısal çözüm döngü ve değişen toplam değişkeniyle, fonksiyonel çözüm filter, map ve reduce aşamalarıyla, nesne yönelimli çözüm Urun ve Sepet sınıflarıyla; altta veri, durum ve kodun bölünme biçimini karşılaştıran satırlar" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/par-comparison-en.Bm54dKYN_1I7Ujz.webp" ></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Yapısal / prosedürel</th>
+<th>Fonksiyonel</th>
+<th>Nesne yönelimli</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Temel birim</td>
+<td>Prosedür / fonksiyon</td>
+<td>Saf fonksiyon</td>
+<td>Nesne (veri + metot)</td>
+</tr>
+<tr>
+<td>Veri ve kod</td>
+<td>Ayrı</td>
+<td>Ayrı, veri değişmez</td>
+<td>Birlikte</td>
+</tr>
+<tr>
+<td>Durum değişimi</td>
+<td>Değişkenler yerinde değişir</td>
+<td>Yeni değer üretilir</td>
+<td>Nesnenin kendi metotlarıyla</td>
+</tr>
+<tr>
+<td>Tekrar</td>
+<td><code>for</code>, <code>while</code></td>
+<td><code>map</code>, <code>filter</code>, recursion</td>
+<td>Döngüler metotların içinde</td>
+</tr>
+<tr>
+<td>Güçlü olduğu yer</td>
+<td>Kısa, doğrusal işler</td>
+<td>Veri dönüşümü, test, eşzamanlılık</td>
+<td>Durumu ve kuralı olan varlıkları modellemek</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="7-hangisi-ne-zaman-ve-çok-paradigmalı-diller">7. Hangisi ne zaman ve çok paradigmalı diller</h2>
+<p>Bu üçü birbirinin rakibi değil, farklı problemlere uyan araçlardır.</p>
+<p>Yapısal / prosedürel stil kısa scriptlerde, tek seferlik veri işleme kodunda ve donanıma yakın, performansın kritik olduğu yerlerde (gömülü sistemler, işletim sistemi çekirdekleri) doğal tercihtir. Akış yukarıdan aşağıya okunur, ek soyutlama yoktur.</p>
+<p>Fonksiyonel stil veri dönüşümünde öne çıkar: bir listeyi süzmek, dönüştürmek, gruplamak, raporlamak. Saf fonksiyonlar test edilmesi en kolay kod parçalarıdır. Eşzamanlı çalışan sistemlerde değişmez veri, ortak belleğe yazmaktan doğan hataların büyük kısmını baştan engeller.</p>
+<p>OOP, durumu ve kuralı olan çok sayıda varlığın birbiriyle konuştuğu sistemlere uyar: kullanıcı arayüzleri, oyunlar, sipariş, hesap, ürün gibi kavramların olduğu iş uygulamaları. Büyük ekiplerde her sınıfın kendi sorumluluğunun olması işi bölmeyi kolaylaştırır.</p>
+<p>Mülakatta iyi karşılanan bir gözlem şu: OOP’de yeni bir tür eklemek kolaydır (yeni bir sınıf yazılır), ama tüm türlere yeni bir işlem eklemek her sınıfa dokunmayı gerektirir. Fonksiyonel stilde tersi geçerlidir. Yeni bir işlem tek bir fonksiyondur, ama yeni bir veri türü eklemek o veriyi işleyen her fonksiyonu etkiler. Seçim, sistemin hangi yönde büyüyeceğine bağlıdır.</p>
+<h3 id="çok-paradigmalı-diller">Çok paradigmalı diller</h3>
+<p>Bugünkü dillerin çoğu tek bir paradigmaya bağlı değildir:</p>
+<ul>
+<li><strong>Python:</strong> Sınıflar, birinci sınıf fonksiyonlar, <code>map</code>/<code>filter</code>, comprehension’lar ve düz prosedürel scriptler bir arada.</li>
+<li><strong>Java:</strong> Her kod bir sınıfın içinde durur, ama Java 8 ile gelen lambda ifadeleri ve Stream API fonksiyonel stili mümkün kıldı.</li>
+<li><strong>C# ve JavaScript:</strong> Sınıflar ve lambda’lar birlikte. C#‘taki LINQ’in <code>Where</code>, <code>Select</code> ve <code>Aggregate</code> metotları sırasıyla filter, map ve reduce’a karşılık gelir.</li>
+<li><strong>Haskell:</strong> Saf fonksiyonel bir dil. Yan etkiler tür sisteminde ayrıca işaretlenir.</li>
+</ul>
+<p>Sepet örneğinin Java’daki fonksiyonel karşılığı:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">double</span><span style="color:#E1E4E8"> toplam </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> sepet.</span><span style="color:#B392F0">stream</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">filter</span><span style="color:#E1E4E8">(Urun</span><span style="color:#F97583">::</span><span style="color:#E1E4E8">isStokta)</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">mapToDouble</span><span style="color:#E1E4E8">(u </span><span style="color:#F97583">-></span><span style="color:#E1E4E8"> u.</span><span style="color:#B392F0">getFiyat</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> u.</span><span style="color:#B392F0">getAdet</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">sum</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<p>Yaygın bir uygulama düzeni üçünü birlikte kullanır. Uygulamanın iskeleti sınıflarla kurulur, hesaplama mantığı mümkün olduğunca saf fonksiyonlarla yazılır, dosya, veritabanı ve ağ işleri ise kenarda, imperative kodda kalır. Bu düzene “functional core, imperative shell” denir.</p>
+<hr>
+<h2 id="mülakatta-sorulanlar">Mülakatta sorulanlar</h2>
+<p><strong>1. Programlama paradigması nedir? Dil ile aynı şey mi?</strong>
+Paradigma, programı kurma ve problemi parçalama biçimidir. Dil ise bu biçimi uygulamaya yarayan araçtır. Çoğu modern dil birden fazla paradigmayı destekler.
+Sık yapılan hata: “Python fonksiyonel bir dildir” ya da “Java yalnızca OOP’dir” gibi dil ile paradigmayı bire bir eşlemek.</p>
+<p><strong>2. Imperative ve declarative programlama arasındaki fark nedir?</strong>
+Imperative kod sonuca giden adımları tek tek yazar ve durumu değiştirir. Declarative kod istenen sonucu tarif eder, adımları dile ya da altyapıya bırakır. SQL declarative, <code>for</code> döngüsüyle yazılmış toplama imperative’e örnektir.
+Sık yapılan hata: Bunu kesin bir ikilik sanmak. Arada bir yelpaze vardır, list comprehension ikisinin arasında durur.</p>
+<p><strong>3. Yapısal programlama ile prosedürel programlama aynı şey mi?</strong>
+Hayır. Yapısal programlama akış kontrolüyle ilgilidir ve programı sıra, seçim ve tekrardan kurar, <code>goto</code> kullanmaz. Prosedürel programlama kodu prosedürlere bölmekle ilgilidir. Pratikte çoğu zaman birlikte kullanılırlar.
+Sık yapılan hata: Yapısal programlamayı spagetti kodla ilişkilendirmek. Yapısal programlama tam tersine <code>goto</code> kaynaklı spagetti koda karşı ortaya çıktı.</p>
+<p><strong>4. Saf fonksiyon nedir? Yan etkiye örnek verir misin?</strong>
+Aynı girdiye her zaman aynı çıktıyı veren ve dışarıda hiçbir şeyi değiştirmeyen fonksiyondur. Global değişkeni ya da parametre olarak gelen listeyi değiştirmek, ekrana veya dosyaya yazmak, ağa istek atmak yan etkidir.
+Sık yapılan hata: Yalnızca değer döndürmesine bakmak. Saati ya da global bir değişkeni okuyan fonksiyon hiçbir şeyi değiştirmese de saf değildir.</p>
+<p><strong>5. Immutability neden önemli, bedeli ne?</strong>
+Değer değişmediği için bir fonksiyon, kendisine verilen veriyi başka bir kodun arkadan değiştirmesinden etkilenmez. Thread’ler ortak veriye yazmadığı için data race oluşmaz. Bedeli, her değişiklikte yeni değer üretmenin getirdiği ek bellek ve kopyalama maliyetidir.
+Sık yapılan hata: “Immutable veriyle eşzamanlılık sorunu hiç olmaz” demek. Data race ortadan kalkar, ama işi bölmek ve dış kaynaklara erişimi sıraya koymak yine gerekir.</p>
+<p><strong>6. Higher-order function ile first-class function arasındaki fark nedir?</strong>
+First-class function dilin özelliğidir: fonksiyonlar değişkene atanabilir, parametre olarak verilebilir ve döndürülebilir. Higher-order function ise bu özelliği kullanan, başka bir fonksiyonu alan ya da döndüren fonksiyondur. <code>map</code>, <code>filter</code> ve <code>sorted(key=...)</code> buna örnektir.
+Sık yapılan hata: İkisini aynı kavram sanmak.</p>
+<p><strong>7. map, filter ve reduce ne yapar?</strong>
+<code>map</code> her elemana bir fonksiyon uygular ve aynı uzunlukta sonuç üretir. <code>filter</code> koşulu sağlayan elemanları tutar. <code>reduce</code> elemanları bir birleştirme fonksiyonuyla tek bir değere indirger.
+Sık yapılan hata: Python 3’te <code>map</code> ve <code>filter</code>’ın liste döndürdüğünü sanmak. İkisi de tembel iterator döndürür ve bir kez tüketilince biter.</p>
+<p><strong>8. OOP ne zaman, fonksiyonel stil ne zaman tercih edilir?</strong>
+Durumu ve kuralı olan, birbiriyle konuşan varlıklar modelleniyorsa OOP uygundur. Veri bir dizi dönüşümden geçiyorsa ya da eşzamanlılık ve test kolaylığı önemliyse fonksiyonel stil öne çıkar. Çoğu gerçek projede ikisi birlikte kullanılır.
+Sık yapılan hata: Bir paradigmayı her durumda üstün ilan etmek ya da her şeyi sınıfa sarmak.</p>
+<p><img alt="Özet kart: imperative ve declarative ayrımı, yapısal programlamanın üç yapısı, saf fonksiyon, immutability, map/filter/reduce ve OOP&amp;#x27;nin veri ile davranışı birleştirmesi" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/par-ozet-kart.BckSwPjH_ZCcy0Y.webp" ></p>
+<p><em>4. bölümde: OOP’nin dört ilkesi. Encapsulation, inheritance, polymorphism ve abstraction, örnekleri ve mülakat sorularıyla.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

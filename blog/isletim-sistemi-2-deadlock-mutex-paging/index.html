@@ -1,0 +1,437 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Race condition, mutex ve semaphore, deadlock, virtual memory, sayfa değiştirme algoritmaları ve thrashing: mülakatta sorulan işletim sistemi konuları, örnekleri ve hesaplarıyla."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>İşletim Sistemi 2: Deadlock, Mutex ve Paging · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="tr" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>İşletim Sistemi 2: Deadlock, Mutex ve Paging</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 Kasım 2026</time> · isletim-sistemi, mulakat, programlama-101 · Bölüm 9</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/operating-systems-2-deadlock-mutex-paging/" hreflang="en" lang="en" data-astro-cid-7jjqptxk>Read in English</a></p> <img src="/_astro/os2-kapak.CJD3MyQr_SQJui.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak"> <section class="ders" aria-labelledby="ders-baslik" data-astro-cid-7jjqptxk> <div class="ders-ust" data-astro-cid-7jjqptxk> <h2 id="ders-baslik" data-astro-cid-7jjqptxk>Kendin dene</h2> <a class="dugme" href="/etkilesim/deadlock.html#lang=tr" target="_blank" rel="noopener" data-astro-cid-7jjqptxk>Tam ekranda aç</a> </div> <iframe src="/etkilesim/deadlock.html#lang=tr" title="Etkileşimli ders" loading="lazy" data-astro-cid-7jjqptxk></iframe> </section> <article class="yazi" data-astro-cid-7jjqptxk><h1 id="i̇şletim-sistemi-2-deadlock-mutex-ve-paging">İşletim Sistemi 2: Deadlock, Mutex ve Paging</h1>
+<p><em>Programlama 101, Bölüm 9</em></p>
+<ol start="8">
+<li>bölümde işletim sisteminin CPU’yu process ve thread’ler arasında nasıl paylaştırdığına baktık. Orada thread’lerin aynı belleği gördüğünü ve bunun bir bedeli olduğunu söylemiştim. Bu yazı o bedelle başlıyor.</li>
+</ol>
+<p>İlk yarı eşzamanlılık üzerine: ortak veriye birden fazla thread eriştiğinde ne bozulur, kilitler bunu nasıl önler ve kilitlerin kendisi deadlock’a nasıl yol açar. İkinci yarı bellek üzerine: virtual memory, paging, sayfa değiştirme algoritmaları ve bellek yetmediğinde sistemin neden donmuş gibi davrandığı. Sonda mülakatta sık gelen sorular var.</p>
+<hr>
+<h2 id="1-race-condition-ve-critical-section">1. Race condition ve critical section</h2>
+<p><strong>Race Condition (Yarış Durumu)</strong>, birden fazla thread’in ortak bir veriye aynı anda eriştiği, en az birinin yazdığı ve sonucun işlemlerin sırasına bağlı olduğu durumdur. Yalnızca okuyan thread’ler sorun çıkarmaz.</p>
+<p>En bilinen örnek sayaç artırmak. <code>balance += 1</code> tek satır görünür ama üç adımdır: oku, bir ekle, geri yaz. İki thread aynı değeri okursa ikisi de aynı sonucu yazar ve artışlardan biri kaybolur.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> threading, time</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">balance </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> deposit</span><span style="color:#E1E4E8">(n):</span></span>
+<span class="line"><span style="color:#F97583">    global</span><span style="color:#E1E4E8"> balance</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> _ </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(n):</span></span>
+<span class="line"><span style="color:#E1E4E8">        current </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> balance      </span><span style="color:#6A737D"># oku</span></span>
+<span class="line"><span style="color:#E1E4E8">        time.sleep(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)          </span><span style="color:#6A737D"># thread değişimine fırsat ver</span></span>
+<span class="line"><span style="color:#E1E4E8">        balance </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> current </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#6A737D">  # yaz</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">threads </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [threading.Thread(</span><span style="color:#FFAB70">target</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">deposit, </span><span style="color:#FFAB70">args</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">10_000</span><span style="color:#E1E4E8">,)) </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> _ </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">)]</span></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> t </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> threads: t.start()</span></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> t </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> threads: t.join()</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(balance)   </span><span style="color:#6A737D"># 40000 beklenir</span></span></code></pre>
+<p>Beklenen sonuç 40.000. Python 3.13’te iki çalıştırmada 10.296 ve 10.711 çıktı, her seferinde farklı. <code>time.sleep(0)</code> hatayı görünür kılmak için var. O satır olmadan da aynı hata oluşabilir, sadece daha seyrek.</p>
+<p>Kodun ortak veriye dokunan kısmına <strong>Critical Section (Kritik Bölge)</strong> denir. Doğru bir çözümden üç şey beklenir:</p>
+<ul>
+<li><strong>Mutual Exclusion (Karşılıklı Dışlama):</strong> Bölgede aynı anda en fazla bir thread bulunur.</li>
+<li><strong>Progress (İlerleme):</strong> Bölge boşsa ve girmek isteyen varsa, kimin gireceğine makul sürede karar verilir.</li>
+<li><strong>Bounded Waiting (Sınırlı Bekleme):</strong> Hiçbir thread süresiz bekletilmez.</li>
+</ul>
+<p>Tek kişilik bir soyunma kabini gibi. İçeride biri varken kapı kilitlidir, sıradaki dışarıda bekler.</p>
+<hr>
+<h2 id="2-mutex-semaphore-ve-monitor">2. Mutex, semaphore ve monitor</h2>
+<p>Peterson algoritması gibi yalnızca yazılımla kurulan çözümler, bugünkü işlemciler bellek işlemlerini yeniden sıraladığı için ek bariyer olmadan güvenilir değildir. Pratikte işlemcinin atomik komutları (<code>test-and-set</code>, <code>compare-and-swap</code>) üzerine kurulmuş araçlar kullanılır.</p>
+<h3 id="mutex">Mutex</h3>
+<p><strong>Mutex (Mutual Exclusion Lock)</strong>, kritik bölgeye girmeden önce alınan, çıkınca bırakılan bir kilittir. Önceki örnek tek satırla düzeliyor:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">lock </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> threading.Lock()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> deposit</span><span style="color:#E1E4E8">(n):</span></span>
+<span class="line"><span style="color:#F97583">    global</span><span style="color:#E1E4E8"> balance</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> _ </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(n):</span></span>
+<span class="line"><span style="color:#F97583">        with</span><span style="color:#E1E4E8"> lock:                 </span><span style="color:#6A737D"># critical section</span></span>
+<span class="line"><span style="color:#E1E4E8">            current </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> balance</span></span>
+<span class="line"><span style="color:#E1E4E8">            time.sleep(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">            balance </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> current </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span></span></code></pre>
+<p>Bu sürüm her çalıştırmada 40.000 veriyor.</p>
+<p>Mutex’in tanımlayıcı özelliği <strong>Ownership (Sahiplik)</strong>: kilidi alan thread bırakır. Kilit doluysa bekleyen thread genelde uyutulur ve CPU harcamaz. Döngüde sürekli “boşaldı mı” diye bakan kilide <strong>Spinlock</strong> denir, bu bekleme busy waiting’dir. Kilit çok kısa tutulacaksa spinlock, uyutup uyandırmaktan ucuz olabilir.</p>
+<h3 id="semaphore">Semaphore</h3>
+<p><strong>Semaphore (Semafor)</strong>, bir tamsayı sayaç ve iki işlemden oluşur. <code>wait()</code> (P, acquire) sayacı azaltır, sayaç sıfırsa thread bekler. <code>signal()</code> (V, release) sayacı artırır ve bekleyen birini uyandırır.</p>
+<ul>
+<li><strong>Counting Semaphore (Sayan Semafor):</strong> Sayaç N’den başlar, kaynağı aynı anda en fazla N thread kullanır. Otopark girişindeki “boş yer: 3” tabelası gibi.</li>
+<li><strong>Binary Semaphore (İkili Semafor):</strong> Sayaç yalnızca 0 ya da 1 olur.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">slots </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> threading.Semaphore(</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">)   </span><span style="color:#6A737D"># aynı anda en fazla 3 bağlantı</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> use_connection</span><span style="color:#E1E4E8">(i):</span></span>
+<span class="line"><span style="color:#F97583">    with</span><span style="color:#E1E4E8"> slots:</span></span>
+<span class="line"><span style="color:#E1E4E8">        time.sleep(</span><span style="color:#79B8FF">0.1</span><span style="color:#E1E4E8">)          </span><span style="color:#6A737D"># bağlantıyı kullan</span></span></code></pre>
+<p>On thread bunu aynı anda çağırdığında, ölçüm eklenmiş sürümde içeride aynı anda en fazla 3 thread görüldü. Bağlantı havuzları ve eşzamanlı istek sınırları bu yapıyla kurulur.</p>
+<h3 id="mutex-ile-binary-semaphore-arasındaki-fark">Mutex ile binary semaphore arasındaki fark</h3>
+<p>İkisi de 0 ve 1 gibi davrandığı için sık karıştırılır. Fark sahiplikte ve amaçta.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Mutex</th>
+<th>Binary semaphore</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sahiplik</td>
+<td>Var, kilidi alan bırakır</td>
+<td>Yok, herhangi bir thread <code>signal()</code> çağırabilir</td>
+</tr>
+<tr>
+<td>Tipik kullanım</td>
+<td>Ortak veriyi korumak</td>
+<td>Bir olayın gerçekleştiğini başka thread’e bildirmek</td>
+</tr>
+</tbody>
+</table>
+<p>Mutex soyunma kabininin kilidi gibidir, kapıyı içerideki açar. Binary semaphore ise yarışı başlatan bayrak gibidir. Bayrağı hakem kaldırır, koşan ise koşucudur.</p>
+<p>Java’da fark açıkça görülüyor:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#E1E4E8">ReentrantLock lock </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> ReentrantLock</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">lock.</span><span style="color:#B392F0">lock</span><span style="color:#E1E4E8">();                                  </span><span style="color:#6A737D">// main thread aldı</span></span>
+<span class="line"><span style="color:#F97583">new</span><span style="color:#B392F0"> Thread</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">-></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    try</span><span style="color:#E1E4E8"> { lock.</span><span style="color:#B392F0">unlock</span><span style="color:#E1E4E8">(); }                    </span><span style="color:#6A737D">// başka thread bırakmaya çalışıyor</span></span>
+<span class="line"><span style="color:#F97583">    catch</span><span style="color:#E1E4E8"> (IllegalMonitorStateException </span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) { System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"mutex: izin yok"</span><span style="color:#E1E4E8">); }</span></span>
+<span class="line"><span style="color:#E1E4E8">}).</span><span style="color:#B392F0">start</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Semaphore ready </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Semaphore</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);           </span><span style="color:#6A737D">// başlangıçta 0</span></span>
+<span class="line"><span style="color:#F97583">new</span><span style="color:#B392F0"> Thread</span><span style="color:#E1E4E8">(ready</span><span style="color:#F97583">::</span><span style="color:#E1E4E8">release).</span><span style="color:#B392F0">start</span><span style="color:#E1E4E8">();           </span><span style="color:#6A737D">// sinyal başka thread'den</span></span>
+<span class="line"><span style="color:#E1E4E8">ready.</span><span style="color:#B392F0">acquire</span><span style="color:#E1E4E8">();                              </span><span style="color:#6A737D">// main sinyali bekliyor</span></span></code></pre>
+<p><code>ReentrantLock</code> sahibi olmayan thread’in <code>unlock()</code> çağrısını reddediyor. <code>Semaphore</code> ise başka thread’in <code>release()</code> çağırmasına izin veriyor ve main thread devam ediyor.</p>
+<p>Sahipliğin ne kadar sıkı denetlendiği kütüphaneye göre değişir. Python’un <code>threading.Lock</code>’u başka bir thread tarafından bırakılabilir, sahipliği denetleyen <code>threading.RLock</code>’tur. POSIX’te varsayılan mutex’i sahibi olmayan thread’in açması tanımsız davranıştır. “Başkası açarsa program her zaman çöker” demek doğru değil.</p>
+<h3 id="monitor">Monitor</h3>
+<p><strong>Monitor</strong>, kilidi ve bekleme koşullarını bir nesnenin içine gizleyen dil seviyesinde bir yapıdır. Nesnenin metodlarına aynı anda tek thread girer. Bir koşul beklenecekse (kuyruk boşken gibi) <strong>Condition Variable (Koşul Değişkeni)</strong> kullanılır: thread <code>wait()</code> ile kilidi bırakıp uyur, başka bir thread <code>notify()</code> ile uyandırır. Java’daki <code>synchronized</code> ve <code>wait()/notify()</code> bu modeldir. Kilit metodun girişinde alınıp çıkışında bırakıldığı için <code>signal()</code>’ın atlanması gibi hatalar azalır.</p>
+<hr>
+<h2 id="3-deadlock">3. Deadlock</h2>
+<p><strong>Deadlock (Kilitlenme)</strong>, bir grup thread’in her birinin, gruptaki bir başkasının tuttuğu kaynağı beklemesi ve hiçbirinin ilerleyememesidir. Tek şeritli bir köprüye iki yönden aynı anda giren iki araç gibi. İkisi de karşıdakinin geri çekilmesini bekler.</p>
+<p><img alt="Deadlock: T1 A kilidini tutup B&amp;#x27;yi bekliyor, T2 B kilidini tutup A&amp;#x27;yı bekliyor; bekleme okları bir döngü oluşturuyor" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/os2-deadlock.uWOpSxOS_Z2iE6qP.webp" ></p>
+<p>Kodda en sık görülen şekli, iki thread’in iki kilidi ters sırayla alması:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">a, b </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> threading.Lock(), threading.Lock()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> worker</span><span style="color:#E1E4E8">(first, second, name):</span></span>
+<span class="line"><span style="color:#F97583">    with</span><span style="color:#E1E4E8"> first:</span></span>
+<span class="line"><span style="color:#E1E4E8">        time.sleep(</span><span style="color:#79B8FF">0.1</span><span style="color:#E1E4E8">)                  </span><span style="color:#6A737D"># diğer thread de ilk kilidini alsın</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> second.acquire(</span><span style="color:#FFAB70">timeout</span><span style="color:#F97583">=</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#E1E4E8">            second.release()</span></span>
+<span class="line"><span style="color:#79B8FF">            print</span><span style="color:#E1E4E8">(name, </span><span style="color:#9ECBFF">"bitti"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">        else</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#79B8FF">            print</span><span style="color:#E1E4E8">(name, </span><span style="color:#9ECBFF">"ikinci kilidi alamadı"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">threading.Thread(</span><span style="color:#FFAB70">target</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">worker, </span><span style="color:#FFAB70">args</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(a, b, </span><span style="color:#9ECBFF">"T1"</span><span style="color:#E1E4E8">)).start()</span></span>
+<span class="line"><span style="color:#E1E4E8">threading.Thread(</span><span style="color:#FFAB70">target</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">worker, </span><span style="color:#FFAB70">args</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(b, a, </span><span style="color:#9ECBFF">"T2"</span><span style="color:#E1E4E8">)).start()  </span><span style="color:#6A737D"># ters sıra</span></span></code></pre>
+<p>Çıktıda iki thread de “ikinci kilidi alamadı” yazıyor. <code>timeout</code> olmasaydı program sonsuza kadar bekleyecekti. İki thread de önce <code>a</code>, sonra <code>b</code> alırsa sorun ortadan kalkıyor.</p>
+<h3 id="coffman-koşulları">Coffman koşulları</h3>
+<p>Deadlock için dört koşulun aynı anda sağlanması gerekir:</p>
+<ol>
+<li><strong>Mutual Exclusion:</strong> Kaynağı aynı anda tek bir thread kullanabilir.</li>
+<li><strong>Hold and Wait (Tut ve Bekle):</strong> Thread bir kaynağı tutarken başkasını bekler.</li>
+<li><strong>No Preemption (Zorla Alınamama):</strong> Kaynak, tutan thread’den zorla alınamaz.</li>
+<li><strong>Circular Wait (Döngüsel Bekleme):</strong> T1, T2’nin kaynağını, T2 de T1’inkini bekler.</li>
+</ol>
+<p>Biri kırılırsa deadlock oluşamaz.</p>
+<h3 id="önleme-kaçınma-ve-tespit">Önleme, kaçınma ve tespit</h3>
+<p><strong>Prevention (Önleme)</strong>, koşullardan birini tasarım gereği imkânsız kılar. Hold and wait, thread’in bütün kaynakları tek seferde istemesiyle kırılır. No preemption, ikinci kilidi alamayan thread’in elindekini bırakıp yeniden denemesiyle kırılır (<code>tryLock</code>, zaman aşımlı kilitler). Circular wait, kilitlere sıra numarası verip herkesin onları artan sırayla almasıyla kırılır. Pratikte en çok kullanılan yol sonuncusudur. Mutual exclusion’ı kırmak çoğu zaman mümkün değildir.</p>
+<p><strong>Avoidance (Kaçınma)</strong>, her kaynak isteğinde sistemin güvenli kalıp kalmayacağına bakar. Bilinen örneği <strong>Banker’s Algorithm (Bankacı Algoritması)</strong>. Her process en fazla ne kadar kaynak isteyebileceğini baştan bildirir. Bir istek geldiğinde sistem, isteği karşıladıktan sonra bütün process’lerin bir sırayla bitirilebileceği bir yol kalıp kalmadığını hesaplar. Böyle bir sıra varsa durum <strong>Safe State (Güvenli Durum)</strong> sayılır ve istek karşılanır, yoksa process bekletilir. Kasasındaki parayla bütün müşterilerin en kötü durumdaki taleplerini karşılayamayacaksa yeni kredi vermeyen bir banka gibi. En fazla ihtiyacın önceden bilinmesi gerektiği için genel amaçlı işletim sistemlerinde pek kullanılmaz.</p>
+<p><strong>Detection and Recovery (Tespit ve Kurtarma)</strong>, deadlock’a izin verir ve aralıklarla kontrol eder. Kimin kimi beklediğini gösteren <strong>Wait-for Graph (Bekleme Grafı)</strong> çizilir ve döngü aranır. Döngü varsa process’lerden biri sonlandırılır ya da kaynağı geri alınır. Veritabanları böyle çalışır, birbirini bekleyen iki transaction’dan biri geri alınır.</p>
+<p>Dördüncü yol sorunu görmezden gelmektir. Genel amaçlı işletim sistemlerinin çoğu uygulama seviyesindeki deadlock’lar için bunu yapar, kilit sırasını kurmak programcıya kalır.</p>
+<hr>
+<h2 id="4-livelock-ve-starvation">4. Livelock ve starvation</h2>
+<p><strong>Livelock</strong>, thread’lerin bloklanmadığı, sürekli bir şey yaptığı ama hiçbirinin ilerlemediği durumdur. Dar bir koridorda karşılaşan iki kişinin aynı anda sağa, sonra aynı anda sola çekilmesi gibi. Kilit alamayınca elindekini bırakıp hemen yeniden deneyen iki thread aynı ritme girerse bu olur. Çözüm, yeniden denemeden önce rastgele bir süre beklemektir.</p>
+<p><strong>Starvation (Açlık)</strong>, bir thread’in ilerleyebilecek durumda olduğu halde sırasının hiç gelmemesidir. 8. bölümde scheduling için anlattığım durum kilitlerde de görülür. Adil olmayan bir kilidi hep aynı thread’ler kapabilir. Java’da <code>new ReentrantLock(true)</code> gibi adil kilitler bekleyenlere geliş sırasıyla kilit verir.</p>
+<hr>
+<h2 id="5-virtual-memory-ve-paging">5. Virtual memory ve paging</h2>
+<p><strong>Virtual Memory (Sanal Bellek)</strong>, her process’e kendine ait, sıfırdan başlayan geniş bir adres alanı varmış gibi gösteren mekanizmadır. Process’in gördüğü <strong>Virtual Address (Sanal Adres)</strong>, donanımdaki <strong>MMU (Memory Management Unit)</strong> tarafından RAM’deki <strong>Physical Address (Fiziksel Adres)</strong>‘e çevrilir. Böylece process’ler birbirinin belleğini göremez ve programın o an kullanılmayan kısımları diskte durabilir.</p>
+<h3 id="page-frame-ve-page-table">Page, frame ve page table</h3>
+<p><strong>Paging (Sayfalama)</strong> bu çeviriyi sabit boyutlu bloklarla yapar. Sanal adres alanı <strong>Page (Sayfa)</strong> adı verilen eşit parçalara, fiziksel RAM aynı boyuttaki <strong>Frame (Çerçeve)</strong>‘lere bölünür. Tipik boyut 4 KB. Hangi sayfanın hangi frame’de olduğu her process’in kendi <strong>Page Table (Sayfa Tablosu)</strong>‘nda yazar. Telli bir dosyanın sayfaları gibi: her sayfa raftaki herhangi bir boşluğa konabilir, nerede olduğu bir fihristte tutulur.</p>
+<p>Çeviri, adresi sayfa numarası ve sayfa içi konum (offset) olarak ikiye ayırmakla başlar. 4096 baytlık sayfalarla sanal adres 20000 için:</p>
+<ul>
+<li>Sayfa numarası = 20000 / 4096 = 4 (tam bölme)</li>
+<li>Offset = 20000 − 4 × 4096 = 3616</li>
+</ul>
+<p>Page table’da sayfa 4 frame 9’daysa fiziksel adres 9 × 4096 + 3616 = 40480 olur. Offset değişmez, yalnızca sayfa numarası frame numarasıyla yer değiştirir.</p>
+<h3 id="tlb">TLB</h3>
+<p>Page table da bellekte durur. Her erişim önce tabloyu okumayı gerektirseydi bellek erişimleri en az iki kat yavaşlardı. <strong>TLB (Translation Lookaside Buffer)</strong>, son kullanılan sayfa-frame eşlemelerini tutan küçük bir donanım önbelleğidir. Eşleme TLB’deyse (TLB hit) çeviri neredeyse bedavadır, değilse (TLB miss) page table okunur ve sonuç TLB’ye yazılır. Programlar aynı bölgelere tekrar tekrar eriştiği için bulunma oranı çok yüksektir. 8. bölümde context switch’in dolaylı maliyeti olarak geçen “TLB’nin soğuması” buradan geliyor.</p>
+<h3 id="page-fault">Page fault</h3>
+<p>Process RAM’de olmayan bir sayfaya eriştiğinde MMU bir <strong>Page Fault (Sayfa Hatası)</strong> üretir. Adı hata olsa da çoğu zaman işletim sisteminin olağan işidir:</p>
+<ol>
+<li>CPU kernel’e geçer.</li>
+<li>Kernel sayfanın diskteki yerini bulur.</li>
+<li>Boş bir frame seçer, yoksa bir sayfayı dışarı çıkarır.</li>
+<li>Sayfayı frame’e okur ve page table’ı günceller.</li>
+<li>Hataya yol açan komut baştan çalıştırılır.</li>
+</ol>
+<p>Sayfaların ancak ihtiyaç duyulduğunda yüklenmesine <strong>Demand Paging (İsteğe Bağlı Sayfalama)</strong> denir. Process’in erişim hakkı olmayan bir adrese dokunması ise başka bir durumdur, kernel process’i sonlandırır (Linux’ta segmentation fault).</p>
+<hr>
+<h2 id="6-sayfa-değiştirme-algoritmaları">6. Sayfa değiştirme algoritmaları</h2>
+<p>RAM doluyken yeni bir sayfa gerekirse hangi sayfanın çıkarılacağına <strong>Page Replacement (Sayfa Değiştirme)</strong> algoritması karar verir.</p>
+<ul>
+<li><strong>FIFO (First In, First Out):</strong> RAM’e en önce giren sayfa çıkar. Sık kullanılan eski bir sayfayı da çıkarabilir.</li>
+<li><strong>LRU (Least Recently Used):</strong> En uzun süredir kullanılmayan sayfa çıkar. Tam LRU donanımda pahalı olduğu için işletim sistemleri <strong>Clock (Second Chance)</strong> gibi yaklaşık sürümlerini kullanır.</li>
+<li><strong>Optimal (OPT):</strong> Gelecekte en geç kullanılacak sayfa çıkar. En az page fault’u verir ama geleceği bilmeyi gerektirir, bu yüzden yalnızca karşılaştırma ölçütü olarak kullanılır.</li>
+</ul>
+<h3 id="hesaplı-örnek-3-frame-12-erişim">Hesaplı örnek: 3 frame, 12 erişim</h3>
+<p>Erişim dizisi <code>1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5</code>, 3 frame var ve başta hepsi boş. “Hata” satırı page fault olup olmadığını, parantez içinde de çıkarılan sayfayı gösteriyor.</p>
+<p>FIFO:</p>
+<table>
+<thead>
+<tr>
+<th>Erişim</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>1</th>
+<th>2</th>
+<th>5</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+</tr>
+<tr>
+<td>F2</td>
+<td></td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>F3</td>
+<td></td>
+<td></td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Hata</td>
+<td>evet</td>
+<td>evet</td>
+<td>evet</td>
+<td>evet (1)</td>
+<td>evet (2)</td>
+<td>evet (3)</td>
+<td>evet (4)</td>
+<td>hayır</td>
+<td>hayır</td>
+<td>evet (1)</td>
+<td>evet (2)</td>
+<td>hayır</td>
+</tr>
+</tbody>
+</table>
+<p>Toplam 9 page fault. 4 geldiğinde en eski sayfa 1 olduğu için o çıkıyor, hemen ardından 1 isteniyor ve geri yükleniyor. FIFO bir sayfanın ne kadar kullanıldığına bakmadığı için bu tür kayıplar yaşanıyor.</p>
+<p>LRU:</p>
+<table>
+<thead>
+<tr>
+<th>Erişim</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>1</th>
+<th>2</th>
+<th>5</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>F2</td>
+<td></td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>F3</td>
+<td></td>
+<td></td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Hata</td>
+<td>evet</td>
+<td>evet</td>
+<td>evet</td>
+<td>evet (1)</td>
+<td>evet (2)</td>
+<td>evet (3)</td>
+<td>evet (4)</td>
+<td>hayır</td>
+<td>hayır</td>
+<td>evet (5)</td>
+<td>evet (1)</td>
+<td>evet (2)</td>
+</tr>
+</tbody>
+</table>
+<p>Toplam 10 page fault. İlk yedi adım FIFO ile aynı. 3 geldiğinde 1 ve 2 az önce kullanıldığı için 5 çıkıyor, ama 5 iki adım sonra yeniden isteniyor. LRU genelde FIFO’dan iyi sonuç verir, ama bu dizide değil.</p>
+<p>Optimal’de 4 geldiğinde 1 ve 2 hemen kullanılacak, 3 en geç, bu yüzden 3 çıkıyor. 5 geldiğinde aynı mantıkla 4 çıkıyor. 3 geldiğinde 1 ve 2 bir daha kullanılmıyor, hangisi çıksa sonuç aynı. Toplam 7 page fault. Bu dizide 3 frame ile daha azı mümkün değil.</p>
+<table>
+<thead>
+<tr>
+<th>Algoritma</th>
+<th>3 frame</th>
+<th>4 frame</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FIFO</td>
+<td>9</td>
+<td>10</td>
+</tr>
+<tr>
+<td>LRU</td>
+<td>10</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Optimal</td>
+<td>7</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<p>Sayıları küçük bir Python simülasyonuyla kontrol ettim, elle yapılan hesapla aynı çıktı.</p>
+<p>İkinci sütunda ilginç bir şey var. FIFO’da frame sayısı 3’ten 4’e çıkınca page fault 9’dan 10’a yükseliyor, daha fazla bellek daha kötü sonuç veriyor. Buna <strong>Belady’s Anomaly (Belady Anomalisi)</strong> denir. LRU ve Optimal bu anomaliyi göstermez, çünkü k frame’de tuttukları sayfalar her zaman k+1 frame’de tutacaklarının alt kümesidir.</p>
+<hr>
+<h2 id="7-thrashing">7. Thrashing</h2>
+<p><strong>Thrashing</strong>, sistemin zamanının büyük kısmını sayfaları disk ile RAM arasında taşımaya harcadığı ve faydalı iş yapamadığı durumdur. Masaya iki kitap sığarken dört kitapla çalışmaya benzer. Bütün zaman kitapları rafla masa arasında taşımakla geçer.</p>
+<p>Bir process’in kısa bir zaman aralığında aktif kullandığı sayfalara <strong>Working Set (Çalışma Kümesi)</strong> denir. Çalışan process’lerin working set’leri toplamı RAM’i aşınca her process, başkasının az önce çıkardığı sayfasını geri ister. Belirtisi tipiktir: disk sürekli çalışır, CPU kullanımı düşüktür, sistem donmuş gibidir. Eski bazı zamanlayıcılar düşük CPU kullanımını görüp sisteme daha fazla process alıyor ve durumu ağırlaştırıyordu.</p>
+<p>Çözüm, aynı anda çalışan process sayısını (<strong>Degree of Multiprogramming</strong>) azaltmak ya da RAM eklemektir. İşletim sistemleri bunu <strong>Working Set Model</strong> ile (process’i ancak working set’i sığıyorsa çalıştırmak) ya da <strong>Page Fault Frequency</strong> ile (fault oranı yükselen process’e daha fazla frame vermek) otomatik yapmaya çalışır.</p>
+<p>Paging ile swapping sık sık aynı şeymiş gibi kullanılıyor. Paging, belleğin sayfalarla yönetilmesidir ve RAM yeterliyken de çalışır. Sayfaların diske yazılıp geri okunması (swap) bu yapının üzerinde olur. Thrashing, bu taşımanın kontrolden çıkmasıdır.</p>
+<hr>
+<h2 id="8-fragmentation-ve-segmentation">8. Fragmentation ve segmentation</h2>
+<p><strong>Fragmentation (Parçalanma)</strong>, boş belleğin var olduğu halde kullanılamamasıdır.</p>
+<p><strong>Internal Fragmentation (İç Parçalanma)</strong>: Ayrılan blok ihtiyaçtan büyükse, bloğun içindeki kullanılmayan kısım boşa gider. 4 KB sayfalarla 10 KB’lık veri üç sayfa kaplar ve son sayfadaki 2 KB kullanılmaz. Küçük bir eşyayı büyük bir koliyle göndermeye benzer.</p>
+<p><strong>External Fragmentation (Dış Parçalanma)</strong>: Toplam boş bellek yeterlidir ama bitişik değildir. 15 MB boş yer olduğu halde en büyük boşluk 5 MB’sa 10 MB’lık istek karşılanamaz. Sinemada toplam on boş koltuk olduğu halde dört kişilik bir grubun yan yana yer bulamaması gibi.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Internal</th>
+<th>External</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Boşluk nerede</td>
+<td>Ayrılan bloğun içinde</td>
+<td>Ayrılan bloklar arasında</td>
+</tr>
+<tr>
+<td>Sebep</td>
+<td>Sabit boyutlu bloklar</td>
+<td>Değişken boyutlu ayırma</td>
+</tr>
+<tr>
+<td>Görüldüğü yer</td>
+<td>Paging, sabit bölümleme</td>
+<td>Segmentation, dinamik bölümleme</td>
+</tr>
+<tr>
+<td>Azaltma</td>
+<td>Daha küçük blok boyutu</td>
+<td>Compaction, paging</td>
+</tr>
+</tbody>
+</table>
+<p>Internal fragmentation’ın çözümü olarak bazen “best fit” gösteriliyor, bu yanlış. Best fit, first fit ve worst fit değişken boyutlu ayırmada boşluk seçme stratejileridir ve external fragmentation’a yöneliktir. Internal fragmentation’ı azaltan şey blok boyutunu küçültmektir, bedeli daha büyük bir page table.</p>
+<p><strong>Compaction (Sıkıştırma)</strong>, dolu blokları belleğin bir ucuna kaydırıp boşlukları birleştirir. Taşınan her şeyin adresi değiştiği için pahalıdır. Disk birleştirme (defragmentation) ise dosyaların disk üzerindeki parçalarıyla ilgilidir, ayrı bir iştir. Paging sorunu kökten çözer: her frame aynı boyutta olduğu için herhangi bir boş frame herhangi bir sayfaya uyar. Geriye son sayfadaki küçük internal fragmentation kalır.</p>
+<p><strong>Segmentation (Bölütleme)</strong>, belleği sabit sayfalar yerine programın mantıksal parçalarına böler: kod, veri, stack, heap. Her segmentin kendi boyutu ve erişim izni vardır. Değişken boyutlu olduğu için external fragmentation’a açıktır. Bugünkü 64 bit sistemlerde segmentation büyük ölçüde devre dışıdır, bellek yönetimi paging ile yapılır.</p>
+<hr>
+<h2 id="mülakatta-sorulanlar">Mülakatta sorulanlar</h2>
+<p><strong>1. Race condition nedir, nasıl önlenir?</strong>
+Birden fazla thread’in ortak veriye eşzamanlı eriştiği, en az birinin yazdığı ve sonucun çalışma sırasına bağlı olduğu durumdur. Ortak veriye dokunan kod critical section sayılır ve mutex gibi bir kilitle korunur. Atomik işlemler ya da değişmez veri de çözüm olabilir.
+Sık yapılan hata: <code>count += 1</code>’in tek bir işlem olduğunu varsaymak.</p>
+<p><strong>2. Mutex ile binary semaphore arasındaki fark nedir?</strong>
+Mutex’in sahibi vardır, kilidi alan thread bırakır ve amacı ortak veriyi korumaktır. Binary semaphore’un sahibi yoktur, bir thread <code>wait()</code> derken başka biri <code>signal()</code> çağırabilir. Bu yüzden thread’ler arası haberleşmede kullanılır.
+Sık yapılan hata: “İkisi de 0 ve 1 alıyor, yani aynı şey” demek.</p>
+<p><strong>3. Deadlock için gereken dört koşul nedir, nasıl önlenir?</strong>
+Mutual exclusion, hold and wait, no preemption ve circular wait. Dördü aynı anda sağlanmalıdır, biri kırılırsa deadlock oluşmaz. Pratikte en kolayı circular wait’i kırmaktır: bütün kilitler sabit bir sırayla alınır. Banker’s algoritması ise koşulları kırmak yerine her isteği güvenli durum kontrolünden geçirir, bu kaçınmadır.
+Sık yapılan hata: Koşulları sayıp hangisinin nasıl kırılacağını söyleyememek.</p>
+<p><strong>4. Deadlock, livelock ve starvation farkı nedir?</strong>
+Deadlock’ta thread’ler bloklanmış bekler ve hiçbiri ilerlemez. Livelock’ta thread’ler çalışır ama yine kimse ilerlemez. Starvation’da sistem ilerler, yalnızca bir thread’in sırası hiç gelmez.
+Sık yapılan hata: Livelock’u deadlock’un bir türü sanmak. Livelock’ta CPU harcanır.</p>
+<p><strong>5. Page fault nedir? Her page fault bir hata mıdır?</strong>
+RAM’de olmayan bir sayfaya erişimdir. İşletim sistemi sayfayı diskten getirir ve komut yeniden çalışır. Bu normaldir, demand paging buna dayanır.
+Sık yapılan hata: Page fault’u segmentation fault ile karıştırmak.</p>
+<p><strong>6. TLB nedir, neden gerekir?</strong>
+Sanal-fiziksel adres eşlemelerini tutan küçük bir donanım önbelleğidir. Olmasaydı her bellek erişimi önce bellekteki page table’ın okunmasını gerektirirdi. Context switch’ten sonra içeriği büyük ölçüde işe yaramaz hale gelir.
+Sık yapılan hata: TLB’yi CPU’nun veri önbelleğiyle (L1/L2) karıştırmak.</p>
+<p><strong>7. Sistem çok yavaş, disk sürekli çalışıyor ama CPU kullanımı düşük. Sorun ne olabilir?</strong>
+Büyük olasılıkla thrashing. Process’lerin working set’leri RAM’e sığmıyor ve sistem zamanını page fault karşılamakla geçiriyor. Çözüm aynı anda çalışan process sayısını azaltmak ya da RAM eklemektir.
+Sık yapılan hata: Düşük CPU kullanımını görüp daha fazla iş başlatmak.</p>
+<p><img alt="Özet kart: race condition, mutex ve semaphore, deadlock koşulları, paging, TLB, sayfa değiştirme, thrashing, fragmentation" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/os2-ozet-kart.rFsjwgKM_Z16VBEX.webp" ></p>
+<p><em>10. bölümde: eşzamanlılık, multithreading ve async.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

@@ -1,0 +1,508 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="What happens when you type an address into a browser, DNS resolution, HTTP methods and status codes, REST principles, cookies and sessions, how JWT works and where it falls short, CORS: the web fundamentals interviewers ask about, with runnable examples."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Networking 2: HTTP, DNS, REST, JWT, Cookies and Sessions · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="en" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Networking 2: HTTP, DNS, REST, JWT, Cookies and Sessions</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 November 2026</time> · networking, http, interview, programming-101 · Part 12</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/ag-2-http-dns-rest-jwt/" hreflang="tr" lang="tr" data-astro-cid-7jjqptxk>Türkçe oku</a></p> <img src="/_astro/net2-kapak.CSQ_QaG7_1ey3Cd.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak">  <article class="yazi" data-astro-cid-7jjqptxk><h1 id="networking-2-http-dns-rest-jwt-cookies-and-sessions">Networking 2: HTTP, DNS, REST, JWT, Cookies and Sessions</h1>
+<p><em>Programming 101, Part 12</em></p>
+<p>Part 11 covered how data travels from one machine to another over TCP, UDP and QUIC. This post moves one layer up, to the application layer. The topic is what happens between typing an address into a browser and seeing the page.</p>
+<p>First come DNS and setting up the connection, then HTTP methods, status codes, headers and REST principles. The last part is about authentication: cookies, sessions, JWT and CORS. At the end there are interview questions with short answers.</p>
+<hr>
+<h2 id="1-from-the-address-bar-to-the-page">1. From the address bar to the page</h2>
+<p>When <code>https://example.com/products</code> is typed into a browser and Enter is pressed, things happen roughly in this order:</p>
+<ol>
+<li>The address is split up: scheme <code>https</code>, domain <code>example.com</code>, path <code>/products</code>. No port is given, so 443 is used.</li>
+<li>The domain’s IP address is found through DNS, checking caches first.</li>
+<li>A TCP connection is opened to port 443 of that address (one RTT).</li>
+<li>A TLS handshake runs on top of it (one more RTT with TLS 1.3).</li>
+<li>The HTTP request goes over the encrypted channel: <code>GET /products</code>.</li>
+<li>The server returns a response made of a status code, headers and a body.</li>
+<li>The browser makes new requests for the CSS, JavaScript and images in the HTML, most of them over the same connection.</li>
+</ol>
+<p>With HTTP/3, steps 3 and 4 merge into a single round trip inside QUIC.</p>
+<p><img alt="Request flow from browser to server: cache check, the DNS resolution chain, TCP handshake, TLS handshake, HTTP request and response" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/net2-istek-akisi.dnfXOKDR_Zuj9Yt.webp" ></p>
+<hr>
+<h2 id="2-dns-from-domain-name-to-ip-address">2. DNS: from domain name to IP address</h2>
+<p><strong>DNS (Domain Name System)</strong> is a hierarchical database, distributed around the world, that maps domain names to IP addresses. It resembles a phone book, except there is no single book. Each level only knows who holds the level below it.</p>
+<h3 id="the-resolution-chain">The resolution chain</h3>
+<p>The browser first checks its own cache, then the operating system’s. If the answer is not there, it sends the question to a <strong>Recursive Resolver</strong>. This is usually the internet provider’s DNS server or a public one configured by hand. The resolver asks every question needed to find the answer on the client’s behalf:</p>
+<ol>
+<li><strong>Root Server:</strong> The resolver asks about <code>example.com</code>. The root server does not know the answer and returns the servers responsible for <code>.com</code>. There are 13 root server names, each spread across hundreds of physical machines via anycast.</li>
+<li><strong>TLD Server (Top-Level Domain):</strong> The <code>.com</code> server does not know the answer either. It says which name servers hold the <code>example.com</code> zone.</li>
+<li><strong>Authoritative Server:</strong> The server that actually holds the domain’s records. It returns the IP address.</li>
+</ol>
+<p>The resolver returns the answer to the client and stores it in its cache. The questions the resolver sends to the other servers are iterative: at each step it gets an “ask this one” reply and goes to the next server itself.</p>
+<h3 id="caching-and-ttl">Caching and TTL</h3>
+<p>Every DNS record has a <strong>TTL (Time To Live)</strong> in seconds, which says how long the record may be cached. With a TTL of 3600, the resolver will not ask the same question again for an hour. Most steps in the chain therefore rarely run in practice. The addresses of the <code>.com</code> servers are almost always in the cache.</p>
+<p>There is a side effect. When an IP address changes, the old record lives on in some caches until its TTL runs out. What is called “DNS propagation” is really old caches expiring. Lowering the TTL to a few minutes before a migration is common for this reason.</p>
+<p>In Python, the operating system’s resolver is called like this:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> socket</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> info </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> socket.getaddrinfo(</span><span style="color:#9ECBFF">"example.com"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">443</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">proto</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">socket.</span><span style="color:#79B8FF">IPPROTO_TCP</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#79B8FF">    print</span><span style="color:#E1E4E8">(info[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">].name, info[</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">][</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">])</span></span>
+<span class="line"><span style="color:#6A737D"># AF_INET 203.0.113.10</span></span>
+<span class="line"><span style="color:#6A737D"># AF_INET 203.0.113.11</span></span></code></pre>
+<p>Getting several addresses back is normal. If one does not respond, the client tries another. The addresses in the output are from the documentation range, real output will differ.</p>
+<hr>
+<h2 id="3-tcp-tls-and-https">3. TCP, TLS and HTTPS</h2>
+<p>Once the IP address is known, the TCP handshake from Part 11 takes place. If HTTPS is used, TLS follows.</p>
+<p><strong>TLS (Transport Layer Security)</strong> is the protocol that encrypts traffic between two ends and verifies the server’s identity. <strong>HTTPS</strong> is not a separate protocol, it is HTTP spoken over a TLS connection. Three things happen during the handshake:</p>
+<ul>
+<li>The client sends the cipher suites it supports and the domain it wants to reach (<strong>SNI</strong>).</li>
+<li>The server sends its certificate, which binds the domain to a public key and is signed by a certificate authority. The browser checks the signature chain and the domain.</li>
+<li>Both sides derive a shared session key through asymmetric key exchange. Later traffic is protected with this key using symmetric encryption, which is much faster.</li>
+</ul>
+<p>With HTTPS, the path, query parameters, headers and body are encrypted. The IP address being contacted, and in most cases the domain in the SNI, can still be seen by someone on the network.</p>
+<hr>
+<h2 id="4-the-structure-of-an-http-message">4. The structure of an HTTP message</h2>
+<p><strong>HTTP (Hypertext Transfer Protocol)</strong> is an application protocol in which the client sends a request and the server answers. In HTTP/1.1 messages are plain text:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="http"><code><span class="line"><span style="color:#F97583">GET</span><span style="color:#E1E4E8"> /products?page=2 </span><span style="color:#F97583">HTTP</span><span style="color:#E1E4E8">/</span><span style="color:#79B8FF">1.1</span></span>
+<span class="line"><span style="color:#85E89D">Host</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> example.com</span></span>
+<span class="line"><span style="color:#85E89D">Accept</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> application/json</span></span>
+<span class="line"><span style="color:#85E89D">Authorization</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> Bearer eyJhbGciOi...</span></span>
+<span class="line"></span></code></pre>
+<p>The request line holds the method, path and version. The headers are followed by an empty line, then the body if there is one. The response has the same shape, with a status line such as <code>HTTP/1.1 200 OK</code> first. HTTP/2 and HTTP/3 carry the same information in binary frames.</p>
+<hr>
+<h2 id="5-methods-safe-and-idempotent">5. Methods, safe and idempotent</h2>
+<p>The method says what the client wants to do with the resource.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>What it does</th>
+<th>Safe</th>
+<th>Idempotent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>Reads the resource</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>HEAD</td>
+<td>Same as GET, without a body</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>OPTIONS</td>
+<td>Asks which options are supported</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>Creates a new resource or triggers an action</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>Replaces the resource entirely with the given one, may create it</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>PATCH</td>
+<td>Changes part of the resource</td>
+<td>No</td>
+<td>Not guaranteed</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>Deletes the resource</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<p>A <strong>safe</strong> method does not change state on the server. Browsers and caches repeat and prefetch GET requests freely, so a GET endpoint that deletes an order is dangerous.</p>
+<p>An <strong>idempotent</strong> method leaves the server in the same final state whether it is sent once or ten times. If <code>PUT /users/42</code> is sent ten times with the same body, the user ends up in the same state. A second <code>DELETE /orders/7</code> may return 404, but the server’s state is the same: the order is gone. Idempotency is about the state being the same, not the response.</p>
+<p>This matters in practice when the network fails. If the connection drops before the response arrives, the client cannot know whether the request was processed. Retrying an idempotent request is safe, retrying a POST is not: the same payment request sent twice creates two payments. Payment APIs therefore ask for a unique <code>Idempotency-Key</code> header and do not process a second request with the same key.</p>
+<p>The common list “REST has four methods: GET, POST, PUT, DELETE” leaves out PATCH. PUT also does not mean “update”, it means “replace the resource entirely with this”. Fields that are not sent are treated as removed.</p>
+<hr>
+<h2 id="6-status-codes">6. Status codes</h2>
+<p>The first digit of a status code gives its class:</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1xx</td>
+<td>Informational</td>
+</tr>
+<tr>
+<td>2xx</td>
+<td>Success</td>
+</tr>
+<tr>
+<td>3xx</td>
+<td>Redirection</td>
+</tr>
+<tr>
+<td>4xx</td>
+<td>Client error</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Server error</td>
+</tr>
+</tbody>
+</table>
+<p>Common ones:</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200 OK</td>
+<td>Success, the result is in the body</td>
+</tr>
+<tr>
+<td>201 Created</td>
+<td>A resource was created with POST, the <code>Location</code> header gives its address</td>
+</tr>
+<tr>
+<td>204 No Content</td>
+<td>Success, nothing to return (most DELETEs)</td>
+</tr>
+<tr>
+<td>301 / 308</td>
+<td>Permanent redirect</td>
+</tr>
+<tr>
+<td>302 / 307</td>
+<td>Temporary redirect</td>
+</tr>
+<tr>
+<td>304 Not Modified</td>
+<td>The cached copy is still valid</td>
+</tr>
+<tr>
+<td>400 Bad Request</td>
+<td>Malformed request, validation error</td>
+</tr>
+<tr>
+<td>401 Unauthorized</td>
+<td>Not authenticated, token missing or invalid</td>
+</tr>
+<tr>
+<td>403 Forbidden</td>
+<td>Identity known, but not allowed to do this</td>
+</tr>
+<tr>
+<td>404 Not Found</td>
+<td>The resource does not exist</td>
+</tr>
+<tr>
+<td>429 Too Many Requests</td>
+<td>Rate limit exceeded</td>
+</tr>
+<tr>
+<td>500 Internal Server Error</td>
+<td>Unexpected error on the server</td>
+</tr>
+<tr>
+<td>502 / 504</td>
+<td>A proxy got an invalid response from the server behind it / got no response in time</td>
+</tr>
+<tr>
+<td>503 Service Unavailable</td>
+<td>The server temporarily cannot serve</td>
+</tr>
+</tbody>
+</table>
+<p>Although 401 is named “Unauthorized”, it means “I don’t know who you are”. 403 means “I know who you are, and you are not allowed”. 307 and 308 keep the method when redirecting, while with 301 and 302 a client may turn a POST into a GET.</p>
+<hr>
+<h2 id="7-headers-and-a-request-from-python">7. Headers and a request from Python</h2>
+<p>Headers carry metadata about the request and the response. Common ones:</p>
+<ul>
+<li><code>Host</code>: The requested domain. Required in HTTP/1.1, it makes hosting several sites on one IP possible.</li>
+<li><code>Content-Type</code> and <code>Accept</code>: The body’s format and the formats the client accepts.</li>
+<li><code>Authorization</code>: Credentials, for example <code>Bearer &#x3C;token></code>.</li>
+<li><code>Cache-Control</code>: Caching rules, for example <code>no-store</code> or <code>max-age=60</code>.</li>
+<li><code>ETag</code> and <code>If-None-Match</code>: The client sends the version it holds, and if the resource has not changed the server returns a bodiless 304.</li>
+<li><code>Set-Cookie</code> and <code>Cookie</code>: Set a cookie and send it back.</li>
+</ul>
+<p>An HTTPS request with Python’s standard library:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> http.client</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">conn </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> http.client.HTTPSConnection(</span><span style="color:#9ECBFF">"example.com"</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">timeout</span><span style="color:#F97583">=</span><span style="color:#79B8FF">10</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">conn.request(</span><span style="color:#9ECBFF">"GET"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"/"</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">headers</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#9ECBFF">"Accept"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"text/html"</span><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#E1E4E8">resp </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> conn.getresponse()</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(resp.status, resp.reason, resp.version)  </span><span style="color:#6A737D"># 200 OK 11</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(resp.getheader(</span><span style="color:#9ECBFF">"Content-Type"</span><span style="color:#E1E4E8">))          </span><span style="color:#6A737D"># text/html; charset=utf-8</span></span>
+<span class="line"><span style="color:#E1E4E8">body </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> resp.read()</span></span>
+<span class="line"><span style="color:#E1E4E8">conn.close()</span></span></code></pre>
+<p><code>HTTPSConnection</code> does the DNS lookup, the TCP connection and the TLS handshake internally. A <code>resp.version</code> of 11 means HTTP/1.1. <code>urllib.request.urlopen</code>, on the other hand, raises 4xx and 5xx codes as <code>HTTPError</code>.</p>
+<hr>
+<h2 id="8-http11-http2-and-http3">8. HTTP/1.1, HTTP/2 and HTTP/3</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>HTTP/1.1</th>
+<th>HTTP/2</th>
+<th>HTTP/3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Transport</td>
+<td>TCP</td>
+<td>TCP</td>
+<td>QUIC (over UDP)</td>
+</tr>
+<tr>
+<td>Message format</td>
+<td>Text</td>
+<td>Binary frames</td>
+<td>Binary frames</td>
+</tr>
+<tr>
+<td>Concurrent requests on one connection</td>
+<td>No, one after another</td>
+<td>Yes, as streams</td>
+<td>Yes, as streams</td>
+</tr>
+<tr>
+<td>Header compression</td>
+<td>None</td>
+<td>HPACK</td>
+<td>QPACK</td>
+</tr>
+<tr>
+<td>Head-of-line blocking</td>
+<td>At the application layer</td>
+<td>At the TCP layer</td>
+<td>Only in the stream with the loss</td>
+</tr>
+<tr>
+<td>TLS</td>
+<td>Optional</td>
+<td>Required in practice by browsers</td>
+<td>Part of the protocol</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Multiplexing</strong>, introduced by HTTP/2, means carrying many requests interleaved over one connection. HTTP/3, as described in Part 11, replaces the transport layer with QUIC.</p>
+<hr>
+<h2 id="9-rest-principles">9. REST principles</h2>
+<p><strong>REST (Representational State Transfer)</strong> is an architectural style that describes access to resources over a network. It was defined in a doctoral dissertation in 2000. It is not a protocol and is not tied to HTTP, although in practice it is almost always implemented with HTTP.</p>
+<p>The principles expected in an interview:</p>
+<ul>
+<li><strong>Resource-oriented URLs:</strong> A URL points to a resource, not an action. The method states the action.</li>
+<li><strong>Stateless:</strong> Each request carries everything needed to process it, credentials included. The server keeps no client context between requests.</li>
+<li><strong>Right method and right code:</strong> On an error, a fitting 4xx or 5xx code is used instead of returning <code>{"error": true}</code> inside a 200.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Action-oriented (avoided)</th>
+<th>Resource-oriented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET /getAllOrders</code></td>
+<td><code>GET /orders</code></td>
+</tr>
+<tr>
+<td><code>POST /createOrder</code></td>
+<td><code>POST /orders</code></td>
+</tr>
+<tr>
+<td><code>GET /deleteOrder?id=7</code></td>
+<td><code>DELETE /orders/7</code></td>
+</tr>
+<tr>
+<td><code>GET /getUserOrders?userId=42</code></td>
+<td><code>GET /users/42/orders</code></td>
+</tr>
+</tbody>
+</table>
+<p>The benefit of statelessness shows up in scaling: consecutive requests can go to different servers. It does not mean there is no database. What is ruled out is keeping session context in server memory and having later requests depend on it.</p>
+<hr>
+<h2 id="10-cookies-and-sessions">10. Cookies and sessions</h2>
+<p>HTTP is stateless, so the server cannot tell from the protocol that two requests come from the same user. There are two common ways to recognize a logged-in user: a server-side session and a token.</p>
+<p>A <strong>Cookie</strong> is a small key-value item the server gives the browser with the <code>Set-Cookie</code> header, which the browser sends back with the <code>Cookie</code> header on later requests to the same site. A cookie is a transport mechanism. It can hold a session ID or a JWT.</p>
+<p>In the <strong>Session</strong> approach, after a successful login the server generates a random, unguessable ID and stores the user’s data under that ID on its own side. It gives the browser only the ID:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="http"><code><span class="line"><span style="color:#F97583">HTTP</span><span style="color:#E1E4E8">/</span><span style="color:#79B8FF">1.1</span><span style="color:#79B8FF"> 200</span><span style="color:#9ECBFF"> OK</span></span>
+<span class="line"><span style="color:#85E89D">Set-Cookie</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> session_id=Xk29fQa7Lm; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=3600</span></span></code></pre>
+<p>On every later request the browser sends <code>Cookie: session_id=Xk29fQa7Lm</code>, and the server looks the ID up in its store to find the user. It works like a coat check ticket. The ticket only has a number on it, the coat stays with the attendant.</p>
+<p>With more than one server, the session store is kept somewhere all of them can reach.</p>
+<h3 id="cookie-flags">Cookie flags</h3>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>What it does</th>
+<th>Protects against</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HttpOnly</td>
+<td>JavaScript cannot read the cookie through <code>document.cookie</code></td>
+<td>Cookie theft via XSS</td>
+</tr>
+<tr>
+<td>Secure</td>
+<td>The cookie is only sent over HTTPS</td>
+<td>Eavesdropping on unencrypted connections</td>
+</tr>
+<tr>
+<td>SameSite=Strict</td>
+<td>Not sent on any request that starts from another site</td>
+<td>CSRF</td>
+</tr>
+<tr>
+<td>SameSite=Lax</td>
+<td>Sent on top-level GET navigations from other sites, not on other cross-site requests</td>
+<td>CSRF, without breaking usability</td>
+</tr>
+<tr>
+<td>SameSite=None</td>
+<td>Sent on every request, must be combined with Secure</td>
+<td>No protection, for cross-site use</td>
+</tr>
+</tbody>
+</table>
+<p><strong>CSRF (Cross-Site Request Forgery)</strong> is another site sending a request to the target site through the user’s browser. Because the browser attaches the cookie automatically, the request looks like it comes from the logged-in user, and SameSite limits this. <strong>XSS (Cross-Site Scripting)</strong> is an attacker injecting their own JavaScript into the page, and HttpOnly stops that script from reading the cookie.</p>
+<hr>
+<h2 id="11-sessions-versus-tokens">11. Sessions versus tokens</h2>
+<p>In the token approach the server does not store the user’s data. It signs the data and hands it to the client. The client brings it back on every request, and the server uses the signature to confirm the data has not been changed.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Server-side session</th>
+<th>Signed token (JWT)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Where user data lives</td>
+<td>In the server’s store</td>
+<td>Inside the token</td>
+</tr>
+<tr>
+<td>What the client holds</td>
+<td>A meaningless ID</td>
+<td>Readable but signed data</td>
+</tr>
+<tr>
+<td>On every request</td>
+<td>A store lookup</td>
+<td>A signature check, no store needed</td>
+</tr>
+<tr>
+<td>Logout and revocation</td>
+<td>Deleting the record is enough</td>
+<td>Hard, valid until it expires</td>
+</tr>
+<tr>
+<td>Several servers and services</td>
+<td>Needs a shared store</td>
+<td>Any service with the key can verify</td>
+</tr>
+</tbody>
+</table>
+<p>For a single web application a session is simple and secure. Tokens make sense when many services need to verify the user independently.</p>
+<hr>
+<h2 id="12-jwt">12. JWT</h2>
+<p><strong>JWT (JSON Web Token)</strong> is a token format made of three parts separated by dots: <code>header.payload.signature</code>.</p>
+<ul>
+<li><strong>Header:</strong> The signing algorithm and type, for example <code>{"alg": "HS256", "typ": "JWT"}</code>.</li>
+<li><strong>Payload:</strong> Fields called <strong>claims</strong>. Standard ones are <code>sub</code> (user ID), <code>iat</code> (issued at), <code>exp</code> (expiry), <code>iss</code> (issuer), <code>aud</code> (intended service).</li>
+<li><strong>Signature:</strong> The first two parts signed with a key.</li>
+</ul>
+<p>The header and payload are not encrypted, only encoded with <strong>Base64URL</strong>. Base64URL is not encryption, it is an encoding that turns binary data into characters that are safe in a URL. Describing JWT as an “encrypted token” is wrong. A JWT is signed, not encrypted. Anyone who gets hold of the token can read its contents, but cannot change them without breaking the signature. If the contents must stay secret, there is a separate encrypted format called JWE.</p>
+<p>The code below builds a JWT by hand, decodes it without the key and tries to verify a modified copy:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> base64, hmac, hashlib, json</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> b64url</span><span style="color:#E1E4E8">(data):</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> base64.urlsafe_b64encode(data).rstrip(</span><span style="color:#F97583">b</span><span style="color:#9ECBFF">"="</span><span style="color:#E1E4E8">).decode()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> b64url_decode</span><span style="color:#E1E4E8">(s):</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> base64.urlsafe_b64decode(s </span><span style="color:#F97583">+</span><span style="color:#9ECBFF"> "="</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">-</span><span style="color:#79B8FF">len</span><span style="color:#E1E4E8">(s) </span><span style="color:#F97583">%</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">secret </span><span style="color:#F97583">=</span><span style="color:#F97583"> b</span><span style="color:#9ECBFF">"secret-key"</span></span>
+<span class="line"><span style="color:#E1E4E8">header </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">"alg"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"HS256"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"typ"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"JWT"</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">payload </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">"sub"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"42"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"role"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"user"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"iat"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1794873600</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"exp"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1794874500</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">h </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> b64url(json.dumps(header, </span><span style="color:#FFAB70">separators</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">","</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">":"</span><span style="color:#E1E4E8">)).encode())</span></span>
+<span class="line"><span style="color:#E1E4E8">p </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> b64url(json.dumps(payload, </span><span style="color:#FFAB70">separators</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">","</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">":"</span><span style="color:#E1E4E8">)).encode())</span></span>
+<span class="line"><span style="color:#E1E4E8">sig </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> b64url(hmac.new(secret, </span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">h</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">.</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">p</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">.encode(), hashlib.sha256).digest())</span></span>
+<span class="line"><span style="color:#E1E4E8">token </span><span style="color:#F97583">=</span><span style="color:#F97583"> f</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">h</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">.</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">p</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">.</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">sig</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># the payload can be read without the key</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(json.loads(b64url_decode(token.split(</span><span style="color:#9ECBFF">"."</span><span style="color:#E1E4E8">)[</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">])))</span></span>
+<span class="line"><span style="color:#6A737D"># {'sub': '42', 'role': 'user', 'iat': 1794873600, 'exp': 1794874500}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> verify</span><span style="color:#E1E4E8">(tok):</span></span>
+<span class="line"><span style="color:#E1E4E8">    h, p, s </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tok.split(</span><span style="color:#9ECBFF">"."</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    expected </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> b64url(hmac.new(secret, </span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">h</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">.</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">p</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">.encode(), hashlib.sha256).digest())</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> hmac.compare_digest(s, expected)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">forged </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> b64url(json.dumps({</span><span style="color:#F97583">**</span><span style="color:#E1E4E8">payload, </span><span style="color:#9ECBFF">"role"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"admin"</span><span style="color:#E1E4E8">}, </span><span style="color:#FFAB70">separators</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">","</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">":"</span><span style="color:#E1E4E8">)).encode())</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(verify(token), verify(</span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">h</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">.</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">forged</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">.</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">sig</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">))  </span><span style="color:#6A737D"># True False</span></span></code></pre>
+<p>The payload with its role changed to <code>admin</code> fails verification with the old signature, since a valid signature needs the key. The payload, however, can be read by anyone, so no secret data goes into it. In a real project this is done not by hand but with a library that also checks <code>exp</code> and the algorithm.</p>
+<p><strong>HS256</strong> signs and verifies with a single secret key. <strong>RS256</strong> signs with a private key and verifies with a public key, so other services can verify tokens but cannot issue them. The verifying side must take the algorithm from its own configuration, not from the token’s header. Otherwise an unsigned token with <code>"alg": "none"</code> may be accepted, a vulnerability that has actually been seen in the past.</p>
+<h3 id="expiry-and-refresh-tokens">Expiry and refresh tokens</h3>
+<p>The biggest weakness of JWT is that it cannot be revoked. Since the server does not keep the token anywhere, a token with a valid signature and an unexpired <code>exp</code> is accepted. This holds even if the user logs out or the token is stolen.</p>
+<p>The usual solution is two tokens:</p>
+<ul>
+<li><strong>Access Token:</strong> A short-lived JWT, for example 15 minutes. Sent with every API request, so a stolen one is useful only briefly.</li>
+<li><strong>Refresh Token:</strong> Long-lived, used only to get a new access token. The server records these, so they can be revoked.</li>
+</ul>
+<p>On logout the refresh token is deleted, and the user is out of the system after at most one access token lifetime. If the refresh token is replaced with a new one on every use (<strong>rotation</strong>), reuse of an old one signals that it was stolen.</p>
+<p>A blocklist of revoked tokens is also possible, but that means a store lookup on every request and partly gives back the “no server-side state” advantage of JWT.</p>
+<h3 id="where-is-the-token-stored">Where is the token stored?</h3>
+<p>Any JavaScript on the page can read a token in <code>localStorage</code>, so an XSS hole steals it directly. A token in an HttpOnly cookie cannot be read from JavaScript, but since it is sent automatically it needs CSRF protection. Mobile apps keep the token in the operating system’s secure storage and send it with the <code>Authorization: Bearer</code> header.</p>
+<hr>
+<h2 id="13-cors">13. CORS</h2>
+<p>Browsers enforce the <strong>Same-Origin Policy</strong>. JavaScript on a page can send a request to another origin but cannot read the response. An <strong>origin</strong> is the combination of scheme, domain and port. <code>https://example.com</code> and <code>https://api.example.com</code> are different origins, and so are <code>http://example.com</code> and <code>https://example.com</code>.</p>
+<p><strong>CORS (Cross-Origin Resource Sharing)</strong> is the server declaring, through headers, which origins may read its responses:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="http"><code><span class="line"><span style="color:#85E89D">Access-Control-Allow-Origin</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> https://app.example.com</span></span>
+<span class="line"><span style="color:#85E89D">Access-Control-Allow-Methods</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> GET, POST, DELETE</span></span>
+<span class="line"><span style="color:#85E89D">Access-Control-Allow-Headers</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> Authorization, Content-Type</span></span>
+<span class="line"><span style="color:#85E89D">Access-Control-Allow-Credentials</span><span style="color:#F97583">:</span><span style="color:#9ECBFF"> true</span></span></code></pre>
+<p>For a DELETE or a request with an <code>Authorization</code> header, the browser first sends an <code>OPTIONS</code> request (the <strong>preflight</strong>) and sends the real request only if the response allows it.</p>
+<p>CORS is not a firewall. The browser enforces it. Someone sending the same request with <code>curl</code> or a Python script is not stopped by CORS. CORS only prevents another site from reading data through the user’s browser with that user’s session. The API’s real protection is still authentication and authorization. With cookie-bearing requests <code>*</code> cannot be used, the origin has to be named explicitly.</p>
+<hr>
+<h2 id="interview-questions">Interview questions</h2>
+<p><strong>1. What happens when you type an address into a browser?</strong>
+The browser finds the IP address through DNS, checking caches first. It opens a TCP connection, runs the TLS handshake if it is HTTPS, and sends the HTTP request. While the HTML is processed, new requests are made for sub-resources.
+Common mistake: Skipping the DNS caches and the TLS step and saying “the request goes to the server”.</p>
+<p><strong>2. How does DNS resolution work?</strong>
+The client sends the question to a recursive resolver. If the answer is not cached, the resolver learns the TLD server’s address from a root server, the authoritative server’s address from the TLD server, and gets the answer from the authoritative server. The answer is cached for its TTL.
+Common mistake: Assuming every query goes to a root server.</p>
+<p><strong>3. What do idempotent and safe mean? How is POST different from PUT?</strong>
+A safe method does not change server state. An idempotent method leaves the same final state no matter how many times it is sent. PUT replaces the resource at a known address entirely and is idempotent. POST creates a new resource, and sending it twice can create two.
+Common mistake: Confusing idempotency with returning the same response. What matters is the final state on the server.</p>
+<p><strong>4. What is the difference between 401 and 403?</strong>
+401 says the identity is not authenticated, the token is missing or invalid. 403 says the identity is known but lacks permission.
+Common mistake: Reading the name “Unauthorized” and treating 401 as a permission error.</p>
+<p><strong>5. What does it mean for REST to be stateless?</strong>
+Each request carries everything needed to process it, credentials included. The server keeps no client session context between requests. This lets requests be routed to any server.
+Common mistake: Describing stateless as the application storing no data at all.</p>
+<p><strong>6. What is the difference between a session and a JWT?</strong>
+With a session the data lives in the server’s store, the client holds only an ID, and revoking means deleting the record. With a JWT the data sits signed inside the token, no store is needed, but it cannot be revoked until it expires. That is why JWTs are kept short-lived and renewed with a refresh token.
+Common mistake: Claiming JWT is always more secure than sessions.</p>
+<p><strong>7. Is a JWT encrypted? What should not go in the payload?</strong>
+No, the header and payload are only Base64URL-encoded and anyone can read them. The signature only prevents tampering. Passwords and sensitive personal data do not go in the payload.
+Common mistake: Taking Base64 for encryption.</p>
+<p><strong>8. What do HttpOnly, Secure and SameSite do? What does CORS protect?</strong>
+HttpOnly hides the cookie from JavaScript, Secure sends it only over HTTPS, and SameSite limits sending it on cross-site requests, which makes CSRF harder. CORS decides whether the browser lets a page from another origin read the API’s response.
+Common mistake: Treating CORS as server-side access control. It has no effect on requests made outside a browser.</p>
+<p><img alt="Summary card: the DNS resolution chain, the safe and idempotent table of HTTP methods, status code classes, REST principles, sessions versus JWT, cookie flags" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/net2-ozet-kart.BGf1XYAe_MS7yE.webp" ></p>
+<p><em>In Part 13: databases and SQL.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

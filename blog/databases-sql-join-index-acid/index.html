@@ -1,0 +1,500 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="The logical execution order of a SQL query, JOIN types, indexes and B-trees, ACID, transactions and isolation levels, normalization, views, stored procedures, triggers and SQL injection: the database fundamentals interviewers ask about, with examples run in SQLite."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Databases and SQL: Query Order, JOINs, Indexes, ACID and Normalization · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="en" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Databases and SQL: Query Order, JOINs, Indexes, ACID and Normalization</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 November 2026</time> · sql, databases, interview, programming-101 · Part 13</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/veritabani-sql-join-index-acid/" hreflang="tr" lang="tr" data-astro-cid-7jjqptxk>Türkçe oku</a></p> <img src="/_astro/sql-kapak.ChKD5YMe_2lx67H.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak"> <section class="ders" aria-labelledby="ders-baslik" data-astro-cid-7jjqptxk> <div class="ders-ust" data-astro-cid-7jjqptxk> <h2 id="ders-baslik" data-astro-cid-7jjqptxk>Try it yourself</h2> <a class="dugme" href="/etkilesim/join.html#lang=en" target="_blank" rel="noopener" data-astro-cid-7jjqptxk>Open full screen</a> </div> <iframe src="/etkilesim/join.html#lang=en" title="Interactive lesson" loading="lazy" data-astro-cid-7jjqptxk></iframe> </section> <article class="yazi" data-astro-cid-7jjqptxk><h1 id="databases-and-sql-query-order-joins-indexes-acid-and-normalization">Databases and SQL: Query Order, JOINs, Indexes, ACID and Normalization</h1>
+<p><em>Programming 101, Part 13</em></p>
+<p>Part 12 covered how an HTTP request reaches the server, along with REST, JWT and sessions. Where that request lands, a database query usually runs. This post is about that query: how it is evaluated, how it gets faster, and how concurrent writes avoid corrupting each other.</p>
+<p>I ran every example with Python’s <code>sqlite3</code> module (SQLite 3.45), and the outputs in the tables come from those runs. Where SQLite lacks a feature, I say so in place.</p>
+<hr>
+<h2 id="1-sample-tables">1. Sample tables</h2>
+<p>Two small tables are used throughout the post: customers and orders.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> customers</span><span style="color:#E1E4E8"> (id </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> PRIMARY KEY</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">name</span><span style="color:#F97583"> TEXT</span><span style="color:#E1E4E8">, city </span><span style="color:#F97583">TEXT</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> orders</span><span style="color:#E1E4E8"> (id </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> PRIMARY KEY</span><span style="color:#E1E4E8">, customer_id </span><span style="color:#F97583">INTEGER</span><span style="color:#E1E4E8">, amount </span><span style="color:#F97583">INTEGER</span><span style="color:#E1E4E8">, order_date </span><span style="color:#F97583">TEXT</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">INSERT INTO</span><span style="color:#E1E4E8"> customers </span><span style="color:#F97583">VALUES</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'A'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'Ankara'</span><span style="color:#E1E4E8">), (</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'B'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'Izmir'</span><span style="color:#E1E4E8">), (</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'C'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'Ankara'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">INSERT INTO</span><span style="color:#E1E4E8"> orders </span><span style="color:#F97583">VALUES</span></span>
+<span class="line"><span style="color:#E1E4E8">  (</span><span style="color:#79B8FF">101</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">250</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'2026-01-05'</span><span style="color:#E1E4E8">), (</span><span style="color:#79B8FF">102</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'2026-02-10'</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">  (</span><span style="color:#79B8FF">103</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">400</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'2026-02-11'</span><span style="color:#E1E4E8">), (</span><span style="color:#79B8FF">104</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">,  </span><span style="color:#79B8FF">80</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'2026-03-01'</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>Customer C has no orders. Order 104 belongs to customer 4, who does not exist. In a real schema a <strong>Foreign Key</strong> would prevent that. Here it is left in on purpose to show the differences between JOINs.</p>
+<hr>
+<h2 id="2-the-logical-execution-order-of-a-query">2. The logical execution order of a query</h2>
+<p>A SQL query starts with <code>SELECT</code>, but the database does not evaluate it in that order. The logical order is:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>FROM / JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> DISTINCT -> ORDER BY -> LIMIT</span></span></code></pre>
+<p>Each step works on the intermediate table produced by the previous one.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">SELECT</span><span style="color:#E1E4E8"> customer_id, </span><span style="color:#79B8FF">SUM</span><span style="color:#E1E4E8">(amount) </span><span style="color:#F97583">AS</span><span style="color:#E1E4E8"> total</span></span>
+<span class="line"><span style="color:#F97583">FROM</span><span style="color:#E1E4E8"> orders</span></span>
+<span class="line"><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> amount </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 50</span></span>
+<span class="line"><span style="color:#F97583">GROUP BY</span><span style="color:#E1E4E8"> customer_id</span></span>
+<span class="line"><span style="color:#F97583">HAVING</span><span style="color:#79B8FF"> SUM</span><span style="color:#E1E4E8">(amount) </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 200</span></span>
+<span class="line"><span style="color:#F97583">ORDER BY</span><span style="color:#E1E4E8"> total </span><span style="color:#F97583">DESC</span></span>
+<span class="line"><span style="color:#F97583">LIMIT</span><span style="color:#79B8FF"> 10</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>customer_id</th>
+<th>total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>400</td>
+</tr>
+<tr>
+<td>1</td>
+<td>350</td>
+</tr>
+</tbody>
+</table>
+<p>Customer 4 has a total of 80, so <code>HAVING</code> removed it. <code>ORDER BY total</code> works because sorting comes after <code>SELECT</code>, and the name <code>total</code> exists at that point.</p>
+<p>For the same reason an alias cannot be used in <code>WHERE</code>. If <code>SELECT amount * 1.2 AS gross</code> is followed by <code>WHERE gross > 200</code>, then at the time <code>WHERE</code> runs, <code>SELECT</code> has not been evaluated yet and there is no column called <code>gross</code>. In standard SQL and in most databases this is an error, and the expression is repeated as <code>WHERE amount * 1.2 > 200</code>. SQLite is lenient here and accepts the alias, so a query that works in SQLite can fail in another database.</p>
+<p>This order is logical. The optimizer may run operations in a different order or merge them, as long as the result does not change. The right answer is not “the database physically runs it this way” but “the meaning of the query is defined by this order”.</p>
+<hr>
+<h2 id="3-where-vs-having">3. WHERE vs HAVING</h2>
+<p><strong>WHERE</strong> filters individual rows before grouping. <strong>HAVING</strong> filters groups after grouping. That is why aggregate functions such as <code>SUM</code> and <code>COUNT</code> cannot be used in <code>WHERE</code>: there are no groups yet at that point.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">SELECT</span><span style="color:#E1E4E8"> city, </span><span style="color:#79B8FF">COUNT</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">*</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">AS</span><span style="color:#E1E4E8"> cnt</span></span>
+<span class="line"><span style="color:#F97583">FROM</span><span style="color:#E1E4E8"> customers</span></span>
+<span class="line"><span style="color:#F97583">GROUP BY</span><span style="color:#E1E4E8"> city</span></span>
+<span class="line"><span style="color:#F97583">HAVING</span><span style="color:#79B8FF"> COUNT</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">*</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>city</th>
+<th>cnt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ankara</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>A condition that can be written against rows goes into <code>WHERE</code>. <code>HAVING city = 'Ankara'</code> gives the same result, but it groups unnecessary rows first and throws them away afterwards.</p>
+<hr>
+<h2 id="4-join-types">4. JOIN types</h2>
+<p>A <strong>JOIN</strong> puts the rows of two tables side by side based on a condition. In the queries below only the JOIN type changes:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">SELECT</span><span style="color:#79B8FF"> c</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">name</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">o</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">id</span><span style="color:#F97583"> AS</span><span style="color:#E1E4E8"> order_id, </span><span style="color:#79B8FF">o</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">amount</span></span>
+<span class="line"><span style="color:#F97583">FROM</span><span style="color:#E1E4E8"> customers c</span></span>
+<span class="line"><span style="color:#F97583">INNER JOIN</span><span style="color:#E1E4E8"> orders o </span><span style="color:#F97583">ON</span><span style="color:#79B8FF"> o</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">customer_id</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> c</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">id</span><span style="color:#E1E4E8">;   </span><span style="color:#6A737D">-- LEFT, RIGHT, FULL OUTER</span></span></code></pre>
+<p>Without <code>ORDER BY</code>, row order is not guaranteed. I listed the rows in a readable order.</p>
+<p><strong>INNER JOIN</strong> returns only the rows that match on both sides. C and 104 drop out.</p>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>order_id</th>
+<th>amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>101</td>
+<td>250</td>
+</tr>
+<tr>
+<td>A</td>
+<td>102</td>
+<td>100</td>
+</tr>
+<tr>
+<td>B</td>
+<td>103</td>
+<td>400</td>
+</tr>
+</tbody>
+</table>
+<p><strong>LEFT JOIN</strong> returns every row of the left table. Where there is no match on the right, the right-hand columns are <code>NULL</code>.</p>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>order_id</th>
+<th>amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>101</td>
+<td>250</td>
+</tr>
+<tr>
+<td>A</td>
+<td>102</td>
+<td>100</td>
+</tr>
+<tr>
+<td>B</td>
+<td>103</td>
+<td>400</td>
+</tr>
+<tr>
+<td>C</td>
+<td>NULL</td>
+<td>NULL</td>
+</tr>
+</tbody>
+</table>
+<p><strong>RIGHT JOIN</strong> is the mirror image: every row of the right table is returned. The result is the three INNER JOIN rows plus <code>(NULL, 104, 80)</code>.</p>
+<p><strong>FULL OUTER JOIN</strong> returns every row from both sides: the three INNER JOIN rows, <code>C, NULL, NULL</code> and <code>NULL, 104, 80</code>. SQLite has supported RIGHT and FULL JOIN since version 3.39. Older versions and MySQL have no FULL JOIN, so a LEFT JOIN and a reversed LEFT JOIN have to be combined with <code>UNION</code>.</p>
+<p><strong>CROSS JOIN</strong> takes no condition and produces the Cartesian product of the two tables. 3 customers and 4 orders give 12 rows.</p>
+<p>A <strong>Self Join</strong> joins a table with itself. There is no separate keyword. The same table gets two different aliases. Finding each employee’s manager in the same table is the typical example:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> employees</span><span style="color:#E1E4E8"> (id </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> PRIMARY KEY</span><span style="color:#E1E4E8">, title </span><span style="color:#F97583">TEXT</span><span style="color:#E1E4E8">, manager_id </span><span style="color:#F97583">INTEGER</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">INSERT INTO</span><span style="color:#E1E4E8"> employees </span><span style="color:#F97583">VALUES</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'General Manager'</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">NULL</span><span style="color:#E1E4E8">), (</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'Team Lead'</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">), (</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'Developer'</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#79B8FF"> e</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">title</span><span style="color:#F97583"> AS</span><span style="color:#E1E4E8"> employee, </span><span style="color:#79B8FF">m</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">title</span><span style="color:#F97583"> AS</span><span style="color:#E1E4E8"> manager</span></span>
+<span class="line"><span style="color:#F97583">FROM</span><span style="color:#E1E4E8"> employees e</span></span>
+<span class="line"><span style="color:#F97583">LEFT JOIN</span><span style="color:#E1E4E8"> employees m </span><span style="color:#F97583">ON</span><span style="color:#79B8FF"> e</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">manager_id</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> m</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">id</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>employee</th>
+<th>manager</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>General Manager</td>
+<td>NULL</td>
+</tr>
+<tr>
+<td>Team Lead</td>
+<td>General Manager</td>
+</tr>
+<tr>
+<td>Developer</td>
+<td>Team Lead</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-left-join-and-where-trap">The LEFT JOIN and WHERE trap</h3>
+<p>If a <code>WHERE</code> condition is placed on a right-table column after a LEFT JOIN, the rows where that column is <code>NULL</code> are removed and the query behaves like an INNER JOIN.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#6A737D">-- C disappears: NULL > 200 is not true</span></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#79B8FF"> c</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">name</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">o</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">amount</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> customers c</span></span>
+<span class="line"><span style="color:#F97583">LEFT JOIN</span><span style="color:#E1E4E8"> orders o </span><span style="color:#F97583">ON</span><span style="color:#79B8FF"> o</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">customer_id</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> c</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">id</span></span>
+<span class="line"><span style="color:#F97583">WHERE</span><span style="color:#79B8FF"> o</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">amount</span><span style="color:#F97583"> ></span><span style="color:#79B8FF"> 200</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">-- C stays: the condition is part of the match</span></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#79B8FF"> c</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">name</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">o</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">amount</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> customers c</span></span>
+<span class="line"><span style="color:#F97583">LEFT JOIN</span><span style="color:#E1E4E8"> orders o </span><span style="color:#F97583">ON</span><span style="color:#79B8FF"> o</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">customer_id</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> c</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">id</span><span style="color:#F97583"> AND</span><span style="color:#79B8FF"> o</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">amount</span><span style="color:#F97583"> ></span><span style="color:#79B8FF"> 200</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<p>The first query returns <code>A 250</code> and <code>B 400</code>. The second adds a <code>C NULL</code> row. Along the same lines, counting orders per customer uses <code>COUNT(o.id)</code>, not <code>COUNT(*)</code>. <code>COUNT(*)</code> gives 1 for C, while <code>COUNT(o.id)</code> gives 0 because it does not count <code>NULL</code>s.</p>
+<p><img alt="JOIN types: which rows INNER, LEFT, RIGHT and FULL OUTER JOIN return on two tables, with unmatched rows filled with NULL" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/sql-join.BtZZ70AH_Z88RBY.webp" ></p>
+<hr>
+<h2 id="5-indexes">5. Indexes</h2>
+<p>An <strong>Index</strong> is a separate data structure that keeps the values of one or more columns of a table in sorted order and points from each value to the matching row. It works like the index at the back of a book: to find the page where a term appears, nobody reads the book cover to cover. They look it up alphabetically in the index.</p>
+<h3 id="how-a-b-tree-works">How a B-tree works</h3>
+<p>The default index structure in relational databases is the <strong>B-tree</strong> (usually its B+ tree variant). It is a balanced tree, and each node corresponds to a disk page, so a single node holds hundreds of keys. That keeps the tree very shallow. Even in a table with millions of rows, the path from root to leaf is three or four steps. Lookup is <code>O(log n)</code>, while a full scan without an index is <code>O(n)</code> (Big O from Part 1). Because the leaves are sorted, range queries such as <code>BETWEEN</code> and <code>></code> also benefit from the index.</p>
+<p>In SQLite, <code>EXPLAIN QUERY PLAN</code> shows whether a query uses an index. Without an index, the plan for <code>WHERE customer_id = 1</code> says <code>SCAN orders</code>, meaning the whole table is read. After an index is added, the plan becomes <code>SEARCH ... USING INDEX</code>.</p>
+<h3 id="faster-reads-slower-writes">Faster reads, slower writes</h3>
+<p>An index is not free. Every <code>INSERT</code>, every <code>DELETE</code> and every <code>UPDATE</code> that touches an indexed column has to update all of the table’s indexes as well as the table. The new key is placed in the right spot in the sorted structure, and if the page is full it is split (a page split). Inserting one row into a table with five indexes means writing to six separate structures.</p>
+<p>That is why not every column gets an index. Good candidates are columns that appear often in <code>WHERE</code>, <code>JOIN</code> and <code>ORDER BY</code> and are selective. An index on an <code>is_active</code> column with only two values is usually useless, because walking the index to fetch half of the rows costs more than a scan. An index also cannot be used when the column is wrapped in a function: <code>WHERE UPPER(name) = 'A'</code> scans the table despite an index on <code>name</code>.</p>
+<h3 id="composite-indexes-and-the-leftmost-prefix-rule">Composite indexes and the leftmost prefix rule</h3>
+<p>A <strong>Composite Index</strong> is built on more than one column, and column order matters. An index on <code>(customer_id, order_date)</code> is sorted by customer first, and by date within each customer. It is like a phone book sorted by last name and then first name: searching by last name is fast, searching by first name alone is not.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> INDEX</span><span style="color:#B392F0"> ix_orders_customer_date</span><span style="color:#F97583"> ON</span><span style="color:#E1E4E8"> orders (customer_id, order_date);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">EXPLAIN QUERY PLAN </span><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> orders </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> customer_id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">EXPLAIN QUERY PLAN </span><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> orders </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> customer_id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#F97583"> AND</span><span style="color:#E1E4E8"> order_date </span><span style="color:#F97583">>=</span><span style="color:#9ECBFF"> '2026-02-01'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">EXPLAIN QUERY PLAN </span><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> orders </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> order_date </span><span style="color:#F97583">>=</span><span style="color:#9ECBFF"> '2026-02-01'</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Plan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>customer_id = 1</code></td>
+<td>SEARCH USING INDEX (customer_id=?)</td>
+</tr>
+<tr>
+<td><code>customer_id = 1 AND order_date >= ...</code></td>
+<td>SEARCH USING INDEX (customer_id=? AND order_date>?)</td>
+</tr>
+<tr>
+<td><code>order_date >= ...</code></td>
+<td>SCAN orders</td>
+</tr>
+</tbody>
+</table>
+<p>This is the <strong>Leftmost Prefix</strong> rule. An index can be used with a prefix of its columns starting from the left: <code>(a)</code>, <code>(a, b)</code>, <code>(a, b, c)</code>. A search on <code>b</code> alone cannot use the index’s order. Equality conditions go first, and the range condition goes last.</p>
+<h3 id="clustered-and-non-clustered">Clustered and non-clustered</h3>
+<p>A <strong>Clustered Index</strong> means the table’s rows are physically stored in the order of that index. The rows themselves sit in the index leaves, so a table can have only one. In MySQL’s InnoDB the table is always stored by primary key, and in SQLite by <code>rowid</code>.</p>
+<p>A <strong>Non-clustered Index</strong> is a separate structure. Its leaves hold the key and a pointer to the row’s location (or the clustered key). If the requested columns are not in the index, a second lookup goes to the table. If every column the query needs is in the index, that step is skipped, and such an index is called a <strong>Covering Index</strong>.</p>
+<hr>
+<h2 id="6-acid-and-transactions">6. ACID and transactions</h2>
+<p>A <strong>Transaction</strong> is a group of statements that must succeed together or be undone together. It starts with <code>BEGIN</code>, becomes permanent with <code>COMMIT</code>, and is undone with <code>ROLLBACK</code>. The classic example is a money transfer: debiting one account and crediting another are two separate <code>UPDATE</code>s, and if only one of them happens, money either vanishes or appears out of nowhere.</p>
+<p>The four properties a transaction guarantees are known as <strong>ACID</strong>:</p>
+<ul>
+<li><strong>Atomicity:</strong> Either all statements in the transaction are applied, or none are.</li>
+<li><strong>Consistency:</strong> The transaction moves the database from one valid state to another. Constraints such as primary keys, foreign keys and <code>CHECK</code> are not violated.</li>
+<li><strong>Isolation:</strong> Concurrent transactions see each other’s unfinished changes only as far as the chosen isolation level allows.</li>
+<li><strong>Durability:</strong> A transaction whose <code>COMMIT</code> has returned is not lost, even if the power goes out right after. The database writes the change to a log on disk first (the write-ahead log), then acknowledges the commit.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> accounts</span><span style="color:#E1E4E8"> (id </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> PRIMARY KEY</span><span style="color:#E1E4E8">, balance </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> CHECK</span><span style="color:#E1E4E8"> (balance </span><span style="color:#F97583">>=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#F97583">INSERT INTO</span><span style="color:#E1E4E8"> accounts </span><span style="color:#F97583">VALUES</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">), (</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">50</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">BEGIN</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">UPDATE</span><span style="color:#E1E4E8"> accounts </span><span style="color:#F97583">SET</span><span style="color:#E1E4E8"> balance </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> balance </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 150</span><span style="color:#F97583"> WHERE</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;   </span><span style="color:#6A737D">-- succeeds</span></span>
+<span class="line"><span style="color:#F97583">UPDATE</span><span style="color:#E1E4E8"> accounts </span><span style="color:#F97583">SET</span><span style="color:#E1E4E8"> balance </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> balance </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 150</span><span style="color:#F97583"> WHERE</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;   </span><span style="color:#6A737D">-- CHECK violation, error</span></span>
+<span class="line"><span style="color:#F97583">ROLLBACK</span><span style="color:#E1E4E8">;                                                   </span><span style="color:#6A737D">-- the application catches the error and calls it</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>balance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>100</td>
+</tr>
+<tr>
+<td>2</td>
+<td>50</td>
+</tr>
+</tbody>
+</table>
+<p>There is a detail that is easy to miss. An error does not roll back the transaction by itself. In SQLite a <code>CHECK</code> violation undoes only that statement, and the first <code>UPDATE</code> stays pending inside the transaction. If the error is caught and <code>COMMIT</code> is called instead of <code>ROLLBACK</code>, account 2 ends up at 200, account 1 stays at 100, and 150 units of money appear from nowhere. I confirmed this by running it. On the error path, <code>ROLLBACK</code> is always written explicitly.</p>
+<hr>
+<h2 id="7-isolation-levels">7. Isolation levels</h2>
+<p>An <strong>Isolation Level</strong> determines how much consistency is traded for concurrency. Levels are defined by which read anomalies they allow:</p>
+<ul>
+<li><strong>Dirty Read:</strong> Reading a change that another transaction has not committed yet. If that transaction rolls back, the value that was read never existed.</li>
+<li><strong>Non-repeatable Read:</strong> Reading the same row twice within a transaction and getting a different value because another transaction committed an <code>UPDATE</code> in between.</li>
+<li><strong>Phantom Read:</strong> Running the same query twice and getting a different number of rows because rows were inserted or deleted in between. For example, <code>WHERE amount > 100</code> returns 3 rows first and 4 rows later.</li>
+</ul>
+<p>A non-repeatable read is an existing row changing. A phantom read is rows entering or leaving the result set.</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Dirty read</th>
+<th>Non-repeatable read</th>
+<th>Phantom read</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Read Uncommitted</td>
+<td>Possible</td>
+<td>Possible</td>
+<td>Possible</td>
+</tr>
+<tr>
+<td>Read Committed</td>
+<td>Prevented</td>
+<td>Possible</td>
+<td>Possible</td>
+</tr>
+<tr>
+<td>Repeatable Read</td>
+<td>Prevented</td>
+<td>Prevented</td>
+<td>Possible</td>
+</tr>
+<tr>
+<td>Serializable</td>
+<td>Prevented</td>
+<td>Prevented</td>
+<td>Prevented</td>
+</tr>
+</tbody>
+</table>
+<p>The table shows the worst case the SQL standard allows at each level. Databases are often stricter. In PostgreSQL, Read Uncommitted behaves like Read Committed, and Repeatable Read also prevents phantom reads because it uses a snapshot. Defaults differ too: Read Committed in PostgreSQL and SQL Server, Repeatable Read in MySQL InnoDB. In SQLite only one writer can be active at a time, so transactions behave as serializable.</p>
+<hr>
+<h2 id="8-normalization">8. Normalization</h2>
+<p><strong>Normalization</strong> is splitting tables so as to reduce repeated data and the update errors it causes. If the same fact is stored in two places, updating one and forgetting the other leaves the database contradicting itself.</p>
+<p>Starting table:</p>
+<table>
+<thead>
+<tr>
+<th>order_id</th>
+<th>customer</th>
+<th>city</th>
+<th>products</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>101</td>
+<td>A</td>
+<td>Ankara</td>
+<td>Pen x3, Notebook x1</td>
+</tr>
+<tr>
+<td>102</td>
+<td>B</td>
+<td>Izmir</td>
+<td>Pen x2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>1NF (First Normal Form):</strong> Every cell holds a single, atomic value, and there are no repeating groups. The <code>products</code> column breaks this rule. A query for “orders containing pens” turns into a text search. Once each product gets its own row, the table is in 1NF, and the key is the pair <code>(order_id, product)</code>:</p>
+<table>
+<thead>
+<tr>
+<th>order_id</th>
+<th>product</th>
+<th>qty</th>
+<th>price</th>
+<th>customer</th>
+<th>city</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>101</td>
+<td>Pen</td>
+<td>3</td>
+<td>20</td>
+<td>A</td>
+<td>Ankara</td>
+</tr>
+<tr>
+<td>101</td>
+<td>Notebook</td>
+<td>1</td>
+<td>45</td>
+<td>A</td>
+<td>Ankara</td>
+</tr>
+<tr>
+<td>102</td>
+<td>Pen</td>
+<td>2</td>
+<td>20</td>
+<td>B</td>
+<td>Izmir</td>
+</tr>
+</tbody>
+</table>
+<p><strong>2NF:</strong> In addition to 1NF, every non-key column must depend on the whole key. <code>price</code> depends only on <code>product</code>, and <code>customer</code> and <code>city</code> depend only on <code>order_id</code>. Because of this <strong>Partial Dependency</strong>, the price of a pen is repeated in every order. The table is split into three: <code>products(id, name, price)</code>, <code>orders(id, customer, city)</code> and <code>order_items(order_id, product_id, qty)</code>.</p>
+<p><strong>3NF:</strong> In addition to 2NF, a non-key column must not depend on another non-key column. In the <code>orders</code> table, <code>city</code> depends on the customer, not on the order (a <strong>Transitive Dependency</strong>). If the customer moves, all of their orders have to be updated. The customer moves to a separate table:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> customers</span><span style="color:#E1E4E8"> (id </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> PRIMARY KEY</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">name</span><span style="color:#F97583"> TEXT</span><span style="color:#E1E4E8">, city </span><span style="color:#F97583">TEXT</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> products</span><span style="color:#E1E4E8">  (id </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> PRIMARY KEY</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">name</span><span style="color:#F97583"> TEXT</span><span style="color:#E1E4E8">, price </span><span style="color:#F97583">INTEGER</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> orders</span><span style="color:#E1E4E8">    (id </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> PRIMARY KEY</span><span style="color:#E1E4E8">, customer_id </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> REFERENCES</span><span style="color:#E1E4E8"> customers(id));</span></span>
+<span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> order_items</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">  order_id   </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> REFERENCES</span><span style="color:#E1E4E8"> orders(id),</span></span>
+<span class="line"><span style="color:#E1E4E8">  product_id </span><span style="color:#F97583">INTEGER</span><span style="color:#F97583"> REFERENCES</span><span style="color:#E1E4E8"> products(id),</span></span>
+<span class="line"><span style="color:#E1E4E8">  qty        </span><span style="color:#F97583">INTEGER</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">  PRIMARY KEY</span><span style="color:#E1E4E8"> (order_id, product_id)</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>When the flat view is needed, it is rebuilt with JOINs. Joining the four tables gave this result:</p>
+<table>
+<thead>
+<tr>
+<th>order_id</th>
+<th>name</th>
+<th>city</th>
+<th>product</th>
+<th>qty</th>
+<th>subtotal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>101</td>
+<td>A</td>
+<td>Ankara</td>
+<td>Pen</td>
+<td>3</td>
+<td>60</td>
+</tr>
+<tr>
+<td>101</td>
+<td>A</td>
+<td>Ankara</td>
+<td>Notebook</td>
+<td>1</td>
+<td>45</td>
+</tr>
+<tr>
+<td>102</td>
+<td>B</td>
+<td>Izmir</td>
+<td>Pen</td>
+<td>2</td>
+<td>40</td>
+</tr>
+</tbody>
+</table>
+<p>In a real ordering system, <code>order_items</code> usually gets a <code>unit_price</code> column as well. That is not a 2NF violation, because it stores a different fact: not the product’s current price, but its price at the time of the order. When the product’s price changes, the totals of past orders must not change.</p>
+<h3 id="when-to-denormalize">When to denormalize</h3>
+<p><strong>Denormalization</strong> is deliberately going back to repeated data for read performance. It is considered where reads far outnumber writes and the same JOIN runs over and over. Reporting tables or an <code>order_count</code> counter kept on the customer row are examples. The cost is that keeping the copies consistent falls to triggers or application code. Normalize first, and denormalize when there is a measured performance problem.</p>
+<hr>
+<h2 id="9-views-stored-procedures-and-triggers">9. Views, stored procedures and triggers</h2>
+<p>A <strong>View</strong> is a named, saved <code>SELECT</code> query. It holds no data itself, and the underlying query runs every time it is used. It is used to hide a complex JOIN behind a single name and to grant access through a view instead of the table.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> VIEW</span><span style="color:#B392F0"> customer_summary</span><span style="color:#F97583"> AS</span></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#79B8FF"> c</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">name</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">COUNT</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">o</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">id</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">AS</span><span style="color:#E1E4E8"> order_count, </span><span style="color:#79B8FF">COALESCE</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">SUM</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">o</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">amount</span><span style="color:#E1E4E8">), </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">AS</span><span style="color:#E1E4E8"> total</span></span>
+<span class="line"><span style="color:#F97583">FROM</span><span style="color:#E1E4E8"> customers c </span><span style="color:#F97583">LEFT JOIN</span><span style="color:#E1E4E8"> orders o </span><span style="color:#F97583">ON</span><span style="color:#79B8FF"> o</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">customer_id</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> c</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">id</span></span>
+<span class="line"><span style="color:#F97583">GROUP BY</span><span style="color:#79B8FF"> c</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">id</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">c</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">name</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> customer_summary </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> total </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;   </span><span style="color:#6A737D">-- A 2 350, B 1 400</span></span></code></pre>
+<p>A <strong>Materialized View</strong> actually stores the result and shows stale data until it is refreshed. In PostgreSQL it is refreshed with <code>REFRESH MATERIALIZED VIEW</code>. SQL Server does the same job with an indexed view, and SQLite has no equivalent. The <code>CREATE MATERIALIZED VIEW</code> statement exists in PostgreSQL and Oracle, not in SQL Server.</p>
+<p>A <strong>Stored Procedure</strong> is code stored in the database that takes parameters and can run several statements. SQLite has no stored procedures. The example below is written in SQL Server (T-SQL) syntax and was not run:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> PROCEDURE</span><span style="color:#E1E4E8"> AddOrder @CustomerId </span><span style="color:#F97583">INT</span><span style="color:#E1E4E8">, @ProductId </span><span style="color:#F97583">INT</span><span style="color:#E1E4E8">, @Qty </span><span style="color:#F97583">INT</span></span>
+<span class="line"><span style="color:#F97583">AS</span></span>
+<span class="line"><span style="color:#F97583">BEGIN</span></span>
+<span class="line"><span style="color:#F97583">    SET</span><span style="color:#F97583"> XACT_ABORT</span><span style="color:#F97583"> ON</span><span style="color:#E1E4E8">;   </span><span style="color:#6A737D">-- on error, roll back the whole transaction</span></span>
+<span class="line"><span style="color:#F97583">    BEGIN</span><span style="color:#F97583"> TRANSACTION</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        UPDATE</span><span style="color:#E1E4E8"> products </span><span style="color:#F97583">SET</span><span style="color:#E1E4E8"> stock </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> stock </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> @Qty </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> @ProductId </span><span style="color:#F97583">AND</span><span style="color:#E1E4E8"> stock </span><span style="color:#F97583">>=</span><span style="color:#E1E4E8"> @Qty;</span></span>
+<span class="line"><span style="color:#F97583">        IF</span><span style="color:#E1E4E8"> @@ROWCOUNT </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#F97583"> THROW</span><span style="color:#79B8FF"> 50001</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'Insufficient stock'</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        INSERT INTO</span><span style="color:#E1E4E8"> orders (customer_id, product_id, qty) </span><span style="color:#F97583">VALUES</span><span style="color:#E1E4E8"> (@CustomerId, @ProductId, @Qty);</span></span>
+<span class="line"><span style="color:#F97583">    COMMIT</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">END</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<p>The stock check happens in the <code>WHERE</code> clause of the <code>UPDATE</code>. If it were done first with a separate <code>SELECT</code>, another order could reduce the same stock between the two statements. The difference from a function: a function always returns a value and can be used inside <code>SELECT</code>, while a stored procedure is called with <code>EXEC</code>. Functions are often said to be lighter, but in SQL Server a scalar function runs separately for each row and can slow large queries down noticeably.</p>
+<p>A <strong>Trigger</strong> is code that runs automatically when an <code>INSERT</code>, <code>UPDATE</code> or <code>DELETE</code> happens on a table. It is common for audit logs. SQLite supports triggers:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> order_log</span><span style="color:#E1E4E8"> (order_id </span><span style="color:#F97583">INTEGER</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">action</span><span style="color:#F97583"> TEXT</span><span style="color:#E1E4E8">, logged_at </span><span style="color:#F97583">TEXT</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TRIGGER</span><span style="color:#B392F0"> trg_order_delete</span><span style="color:#F97583"> AFTER</span><span style="color:#F97583"> DELETE</span><span style="color:#F97583"> ON</span><span style="color:#E1E4E8"> orders</span></span>
+<span class="line"><span style="color:#F97583">BEGIN</span></span>
+<span class="line"><span style="color:#F97583">  INSERT INTO</span><span style="color:#E1E4E8"> order_log </span><span style="color:#F97583">VALUES</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">OLD</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">id</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'DELETE'</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">datetime</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'now'</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#F97583">END</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">DELETE</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> orders </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 104</span><span style="color:#E1E4E8">;   </span><span style="color:#6A737D">-- order_log: (104, 'DELETE', ...)</span></span></code></pre>
+<p>SQLite and PostgreSQL access the deleted or inserted row through <code>OLD</code> and <code>NEW</code>, while SQL Server uses the <code>deleted</code> and <code>inserted</code> pseudo-tables. For simple rules such as stock never going negative, a <code>CHECK</code> constraint is clearer than a trigger.</p>
+<hr>
+<h2 id="10-sql-injection-and-parameterized-queries">10. SQL injection and parameterized queries</h2>
+<p><strong>SQL Injection</strong> happens when user input is pasted directly into the query text and ends up being executed as SQL.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">user_input </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "' OR '1'='1"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># wrong: the input becomes part of the query text</span></span>
+<span class="line"><span style="color:#E1E4E8">db.execute(</span><span style="color:#F97583">f</span><span style="color:#9ECBFF">"SELECT id, name FROM customers WHERE name = '</span><span style="color:#79B8FF">{</span><span style="color:#E1E4E8">user_input</span><span style="color:#79B8FF">}</span><span style="color:#9ECBFF">'"</span><span style="color:#E1E4E8">).fetchall()</span></span>
+<span class="line"><span style="color:#6A737D"># [(1, 'A'), (2, 'B'), (3, 'C')]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># right: the input is sent as a separate parameter</span></span>
+<span class="line"><span style="color:#E1E4E8">db.execute(</span><span style="color:#9ECBFF">"SELECT id, name FROM customers WHERE name = ?"</span><span style="color:#E1E4E8">, (user_input,)).fetchall()</span></span>
+<span class="line"><span style="color:#6A737D"># []</span></span></code></pre>
+<p>The first query becomes <code>WHERE name = '' OR '1'='1'</code>, and since the condition is true for every row, all customers come back. With a <strong>Parameterized Query</strong> the query text and the value are sent to the database separately. Whatever the value contains, it is only compared as data. The second query looks for a customer whose name is literally <code>' OR '1'='1</code> and finds none.</p>
+<p>Escaping quotes by hand is not enough. Table and column names cannot be parameters. If they come from the user, they are checked against an allowlist.</p>
+<hr>
+<h2 id="interview-questions">Interview questions</h2>
+<p><strong>1. In what order is a SQL query evaluated? Why can’t an alias be used in WHERE?</strong>
+The logical order is FROM and JOIN, WHERE, GROUP BY, HAVING, SELECT, DISTINCT, ORDER BY, LIMIT. An alias is defined in SELECT, and WHERE is evaluated before that, so the alias does not exist yet. ORDER BY comes after SELECT, so it can use the alias.
+Common mistake: Taking this as the physical execution order. The optimizer can reorder steps as long as the result stays the same.</p>
+<p><strong>2. What is the difference between WHERE and HAVING?</strong>
+WHERE filters rows before grouping, HAVING filters groups after grouping. Aggregate functions cannot be used in WHERE.
+Common mistake: Putting row-level conditions in HAVING. The result is the same, but unnecessary data gets grouped.</p>
+<p><strong>3. What is the difference between INNER JOIN and LEFT JOIN?</strong>
+INNER JOIN returns only rows that match on both sides. LEFT JOIN returns every row of the left table, with the right side NULL where there is no match.
+Common mistake: Adding a WHERE condition on a right-table column after a LEFT JOIN. The NULL rows are removed and the query turns into an INNER JOIN. The condition belongs in ON.</p>
+<p><strong>4. Why does an index speed up reads, and why not index every column?</strong>
+A B-tree index keeps values sorted and turns an O(n) full scan into an O(log n) lookup. Every INSERT, DELETE and relevant UPDATE has to update all indexes too, so writes get slower, and indexes take up space.
+Common mistake: Expecting an index to help on low-selectivity columns or on columns wrapped in a function.</p>
+<p><strong>5. With a composite index on (customer_id, order_date), does WHERE order_date = … use the index?</strong>
+Usually not. The index is sorted by customer_id first and is used through a prefix starting from the left. SQLite produces a full scan plan for this query.
+Common mistake: Assuming column order does not matter. Columns with equality conditions go first, the range column goes last.</p>
+<p><strong>6. What is ACID?</strong>
+Atomicity means the transaction is applied entirely or not at all. Consistency means constraints are preserved, isolation means concurrent transactions are kept apart, and durability means committed data survives a crash.
+Common mistake: Assuming a failing statement rolls back the transaction by itself. On the error path, ROLLBACK is called explicitly.</p>
+<p><strong>7. What is the difference between a dirty read, a non-repeatable read and a phantom read?</strong>
+A dirty read is reading uncommitted data. A non-repeatable read is the same row changing between two reads, and a phantom read is rows being inserted or deleted between two runs of the same query. Read Committed prevents the first, Repeatable Read the second, and Serializable all three.
+Common mistake: Treating non-repeatable reads and phantom reads as the same thing. One is an existing row changing, the other is the result set changing.</p>
+<p><strong>8. What is normalization, and when do you denormalize?</strong>
+Normalization is splitting tables to reduce repeated data and update errors. 1NF means atomic values, 2NF removes partial dependencies, and 3NF removes transitive dependencies. Denormalization is deliberately adding repetition back when there is a measured read performance problem.
+Common mistake: Calling the price stored on an order line at order time a normalization error. It is a different fact.</p>
+<p><img alt="Summary card: the logical query order, JOIN types, B-tree indexes and the leftmost prefix rule, ACID, the isolation level table, and 1NF, 2NF, 3NF" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/sql-ozet-kart.Cwdijqzs_2h8ooh.webp" ></p>
+<p><em>In Part 14: software testing.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

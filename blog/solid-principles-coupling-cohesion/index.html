@@ -1,0 +1,336 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Low coupling and high cohesion, then the five SOLID principles, each with a violating example and a fixed version in Java. The square-rectangle problem in LSP, the difference between DIP and dependency injection, and interview questions."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>SOLID Principles, Coupling and Cohesion · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="en" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>SOLID Principles, Coupling and Cohesion</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 November 2026</time> · solid, oop, interview, programming-101 · Part 6</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/solid-ilkeleri-coupling-cohesion/" hreflang="tr" lang="tr" data-astro-cid-7jjqptxk>Türkçe oku</a></p> <img src="/_astro/solid-kapak.ZgdBD4ge_1YRgfp.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak">  <article class="yazi" data-astro-cid-7jjqptxk><h1 id="solid-principles-coupling-and-cohesion">SOLID Principles, Coupling and Cohesion</h1>
+<p><em>Programming 101, Part 6</em></p>
+<p>Part 4 covered the four pillars of OOP, the abstract class vs. interface choice and composition. That post was about how a single class is written. This one asks a question one level up: how should classes connect to each other so that the code does not get harder to change as it grows?</p>
+<p>That question has two measures: coupling and cohesion. SOLID can be read as five concrete rules for keeping both measures in good shape. Below I first cover the two concepts, then the five principles one by one. Each principle has a Java example that breaks it and a fixed version. At the end I briefly touch on overusing the principles and then move on to interview questions.</p>
+<hr>
+<h2 id="1-coupling-and-cohesion">1. Coupling and cohesion</h2>
+<p><strong>Coupling</strong> describes how much two modules depend on each other. A module here can be a class, a package or a service. If changing one class forces you to change other classes too, the coupling between them is high.</p>
+<p><strong>Cohesion</strong> describes how much the parts inside a module serve the same purpose. If all the fields and methods of a class gather around a single job, cohesion is high. If invoice calculation, sending email and writing logs to a file sit in the same class, it is low.</p>
+<p>The goal is low coupling and high cohesion. The two pull in the same direction. When related code is kept in one place, less information has to travel between modules.</p>
+<p>Glued parts and snap-together parts make a useful comparison. Try to pull apart two glued pieces and one of them breaks, which is what high coupling feels like. Snap-together pieces hold on to each other only at their connection points. On the cohesion side, compare a multi-tool with a scalpel. The multi-tool does a bit of everything, the scalpel does one job well.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Cohesion</th>
+<th>Coupling</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Looks at</td>
+<td>The inside of a module</td>
+<td>The space between modules</td>
+</tr>
+<tr>
+<td>Question</td>
+<td>Do this module’s parts serve the same job?</td>
+<td>How much of the others does this module know about?</td>
+</tr>
+<tr>
+<td>Target</td>
+<td>High</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Bad case</td>
+<td>Unrelated work stuffed into one class</td>
+<td>A change in one class breaking other classes</td>
+</tr>
+</tbody>
+</table>
+<p>Coupling cannot be brought down to zero. Modules that know nothing about each other do not make a program. The aim is not to remove dependencies but to gather them at a narrow and stable point. A class calling another class’s <code>public</code> method is normal. Reaching into its internal fields, having to know the order in which its methods must be called, or steering its internal flow with a flag parameter tightens the bond.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#6A737D">// tight coupling: Order knows the internal structure of Customer</span></span>
+<span class="line"><span style="color:#F97583">double</span><span style="color:#E1E4E8"> discount </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> order.</span><span style="color:#B392F0">getCustomer</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">getMembership</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">getLevel</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">getDiscountRate</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// loose coupling: only the needed question is asked</span></span>
+<span class="line"><span style="color:#F97583">double</span><span style="color:#E1E4E8"> discount </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> order.</span><span style="color:#B392F0">getCustomer</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">discountRate</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<p>The chain on the first line means any change in the membership structure can break that line. In the second, the customer class keeps the details of how the rate is computed to itself.</p>
+<p><img alt="The five SOLID principles: SRP one reason to change, OCP extending without modifying existing code, LSP a subtype safely replacing its supertype, ISP small purpose-specific interfaces, DIP high-level code depending on abstractions rather than concrete classes" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/solid-ilkeler.DAm5HFkl_Z3qEv7.webp" ></p>
+<hr>
+<h2 id="2-where-solid-comes-from">2. Where SOLID comes from</h2>
+<p>SOLID is made from the initials of five design principles. Some of them had been known since the 1980s. Around 2000 an author brought them together in a paper on object-oriented design, and the acronym caught on a few years later.</p>
+<table>
+<thead>
+<tr>
+<th>Letter</th>
+<th>Principle</th>
+<th>In one sentence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S</td>
+<td>Single Responsibility</td>
+<td>A class should have only one reason to change</td>
+</tr>
+<tr>
+<td>O</td>
+<td>Open/Closed</td>
+<td>New behavior should be addable without modifying existing code</td>
+</tr>
+<tr>
+<td>L</td>
+<td>Liskov Substitution</td>
+<td>A subtype should work correctly anywhere its supertype is expected</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Interface Segregation</td>
+<td>A class should not be forced to depend on methods it does not use</td>
+</tr>
+<tr>
+<td>D</td>
+<td>Dependency Inversion</td>
+<td>High-level code should depend on abstractions, not concrete classes</td>
+</tr>
+</tbody>
+</table>
+<p>The five are not independent rules. SRP and ISP raise cohesion, DIP and OCP lower coupling, and LSP makes sure inheritance does not break that arrangement.</p>
+<hr>
+<h2 id="3-single-responsibility-principle-srp">3. Single Responsibility Principle (SRP)</h2>
+<p>The <strong>Single Responsibility Principle</strong> says that a class should have only one reason to change.</p>
+<p>It is often summarized as “a class does one thing”. That summary is incomplete and misleading. The narrower “one thing” is defined, the more every method turns into its own class. The measure is not the size of the job but where the change comes from. If a change requested by accounting and a change requested by reporting both open the same class, that class has two responsibilities.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Invoice</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#E1E4E8"> List&#x3C;</span><span style="color:#F97583">LineItem</span><span style="color:#E1E4E8">> items;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#B392F0"> calculateTotal</span><span style="color:#E1E4E8">() { </span><span style="color:#6A737D">/* tax and discount rules */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> saveToDatabase</span><span style="color:#E1E4E8">() { </span><span style="color:#6A737D">/* SQL query */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    String </span><span style="color:#B392F0">generatePdf</span><span style="color:#E1E4E8">() { </span><span style="color:#6A737D">/* page layout, fonts */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>This class changes for three separate reasons: when a tax rule changes, when the table structure changes and when the PDF template changes. Each comes from different people at different times. If someone breaks the tax calculation while editing the PDF layout, the bug shows up somewhere nobody expected. Testing is harder too, because testing the total means setting up a class that holds a database connection.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Invoice</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#E1E4E8"> List&#x3C;</span><span style="color:#F97583">LineItem</span><span style="color:#E1E4E8">> items;</span></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#B392F0"> calculateTotal</span><span style="color:#E1E4E8">() { </span><span style="color:#6A737D">/* business rules only */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> InvoiceRepository</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> save</span><span style="color:#E1E4E8">(Invoice </span><span style="color:#FFAB70">invoice</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* SQL */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> InvoicePdfWriter</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    String </span><span style="color:#B392F0">generate</span><span style="color:#E1E4E8">(Invoice </span><span style="color:#FFAB70">invoice</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* page layout */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Now when a tax rule changes, only <code>Invoice</code> is opened. <code>InvoiceRepository</code> and <code>InvoicePdfWriter</code> depend on <code>Invoice</code>, but <code>Invoice</code> knows about neither of them.</p>
+<p>A practical sign of SRP is the class name. A class that is hard to name without the word “and”, or that hides behind a catch-all name like <code>Manager</code>, <code>Processor</code> or <code>Helper</code>, usually has scattered responsibilities.</p>
+<hr>
+<h2 id="4-openclosed-principle-ocp">4. Open/Closed Principle (OCP)</h2>
+<p>The <strong>Open/Closed Principle</strong> says that a module should be open for extension and closed for modification. Adding new behavior should be possible by adding new code, rather than opening and editing existing, tested code.</p>
+<p>A power strip works this way. Adding a new device does not mean tearing out the wiring in the wall. It gets plugged into a free socket.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> DiscountCalculator</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#B392F0"> calculate</span><span style="color:#E1E4E8">(Customer </span><span style="color:#FFAB70">c</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">double</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (c.</span><span style="color:#B392F0">getType</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">equals</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"STANDARD"</span><span style="color:#E1E4E8">))    </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> amount;</span></span>
+<span class="line"><span style="color:#F97583">        else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (c.</span><span style="color:#B392F0">getType</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">equals</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"MEMBER"</span><span style="color:#E1E4E8">)) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> amount </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 0.95</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (c.</span><span style="color:#B392F0">getType</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">equals</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"VIP"</span><span style="color:#E1E4E8">))    </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> amount </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 0.85</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> amount;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>When a new customer type is added, this method has to be opened. If the same <code>if</code> chain also exists elsewhere, for example in shipping fees and loyalty points, each one has to be found and updated separately. Forgetting one leads to a silent bug.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> DiscountPolicy</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#B392F0"> apply</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> StandardDiscount</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> DiscountPolicy</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> double</span><span style="color:#B392F0"> apply</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">) { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> amount; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> VipDiscount</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> DiscountPolicy</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> double</span><span style="color:#B392F0"> apply</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">) { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> amount </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 0.85</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> DiscountCalculator</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#B392F0"> calculate</span><span style="color:#E1E4E8">(DiscountPolicy </span><span style="color:#FFAB70">policy</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">double</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> policy.</span><span style="color:#B392F0">apply</span><span style="color:#E1E4E8">(amount);   </span><span style="color:#6A737D">// this line does not change when a new type arrives</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>A new type means a new class. <code>DiscountCalculator</code> stays the same. The payment method example in Part 4 rested on the same idea: the extension point is an interface plus polymorphism.</p>
+<p>Two misreadings are worth watching for. First, “closed for modification” does not mean existing code never changes. Fixing bugs, or updating code when requirements change, is perfectly normal. What should be closed is opening the same place every time the same kind of addition comes along. Second, not every <code>if</code> is an OCP violation. Writing an interface and two classes for a two-branch condition that has not changed in years brings no gain. The principle matters for places that change again and again along the same axis.</p>
+<hr>
+<h2 id="5-liskov-substitution-principle-lsp">5. Liskov Substitution Principle (LSP)</h2>
+<p>The <strong>Liskov Substitution Principle</strong> says that an object of a subtype should be usable anywhere the supertype is expected, without breaking the correctness of the program. Code that uses the supertype should not have to know which subclass the object came from.</p>
+<p>The compiler only checks the signature part of this. Once <code>Square extends Rectangle</code> is written, Java accepts a square wherever a rectangle is expected. LSP is about behavior: does the square behave like a rectangle?</p>
+<h3 id="square-and-rectangle">Square and rectangle</h3>
+<p>In mathematics every square is a rectangle. That makes the following design look right at first glance.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Rectangle</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    protected</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> width, height;</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> setWidth</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> width</span><span style="color:#E1E4E8">)   { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.width </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> width; }</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> setHeight</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> height</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.height </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> height; }</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#B392F0"> area</span><span style="color:#E1E4E8">()                 { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> width </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> height; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Square</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> Rectangle</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> setWidth</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> width</span><span style="color:#E1E4E8">)   { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.width </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> width; </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.height </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> width; }</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> setHeight</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> height</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.width </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> height; </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.height </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> height; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>The square ties both setters together to keep its own rule. The problem shows up in code that uses rectangles.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">void</span><span style="color:#B392F0"> resize</span><span style="color:#E1E4E8">(Rectangle r) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    r.</span><span style="color:#B392F0">setWidth</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    r.</span><span style="color:#B392F0">setHeight</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    assert</span><span style="color:#E1E4E8"> r.</span><span style="color:#B392F0">area</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 20</span><span style="color:#E1E4E8">;   </span><span style="color:#6A737D">// with a Square the area is 16, the expectation breaks</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><code>resize</code> makes a reasonable assumption about a rectangle: changing the width does not affect the height. That assumption is part of <code>Rectangle</code>’s contract. <code>Square</code> breaks the contract, so even though the code compiles, a square cannot stand in for a rectangle. The mathematical “is-a” relationship does not carry over to software unchanged when the objects are mutable.</p>
+<h3 id="the-contract">The contract</h3>
+<p>Thinking about LSP in terms of contracts makes it easier. A method’s contract has three parts:</p>
+<ul>
+<li><strong>Precondition:</strong> what the caller must guarantee before calling the method. A subclass cannot strengthen it. If the superclass accepts any positive amount, the subclass cannot say “only amounts under 1000”.</li>
+<li><strong>Postcondition:</strong> what is guaranteed when the method finishes. A subclass cannot weaken it. If the superclass promises to return a sorted list, the subclass cannot return an unsorted one.</li>
+<li><strong>Invariant:</strong> properties of the object that must always hold. A subclass must preserve them.</li>
+</ul>
+<p>In the square example, the violated part is the postcondition of <code>setWidth</code>: “the width changes, the height stays the same”. The square cannot give that guarantee.</p>
+<p>A subclass overriding a superclass method by throwing <code>UnsupportedOperationException</code> is often a sign of the same problem. If code that makes birds fly throws an error when a penguin comes along, the penguin cannot fulfil the <code>Bird</code> contract. The Java library has an exception worth knowing here. A list created with <code>List.of(...)</code> throws this error on <code>add</code>, but the <code>List</code> documentation defines those methods as “optional” from the start. Since the contract says so explicitly, it is not a violation, though it is still a design choice that calling code has to keep in mind.</p>
+<h3 id="the-fix">The fix</h3>
+<p>The fix is to not derive the square from the rectangle. The two can share a common supertype without having to replace each other.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> Shape</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#B392F0"> area</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">record</span><span style="color:#B392F0"> Rectangle</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> width, </span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> height) </span><span style="color:#F97583">implements</span><span style="color:#B392F0"> Shape</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> area</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> width </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> height; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">record</span><span style="color:#B392F0"> Square</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> side) </span><span style="color:#F97583">implements</span><span style="color:#B392F0"> Shape</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> area</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> side </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> side; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>The source of the problem was the setters. Once the objects are immutable, there is no longer an expectation like “change the width and the height stays the same”. The bird example is fixed in the same direction: if flying is a capability, it goes into a separate <code>Flyable</code> interface implemented only by birds that can fly, not into the <code>Bird</code> class.</p>
+<hr>
+<h2 id="6-interface-segregation-principle-isp">6. Interface Segregation Principle (ISP)</h2>
+<p>The <strong>Interface Segregation Principle</strong> says that no class should be forced to depend on methods it does not use. Instead of one large interface that covers everything, small interfaces split by what their users need are preferred.</p>
+<p>A restaurant menu is a good picture. A vegetarian customer is not handed the mixed grill and told to eat only the salad. A separate menu is prepared.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> MultiFunctionPrinter</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> print</span><span style="color:#E1E4E8">(Document </span><span style="color:#FFAB70">d</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> scan</span><span style="color:#E1E4E8">(Document </span><span style="color:#FFAB70">d</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> fax</span><span style="color:#E1E4E8">(Document </span><span style="color:#FFAB70">d</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> BasicPrinter</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> MultiFunctionPrinter</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> print</span><span style="color:#E1E4E8">(Document </span><span style="color:#FFAB70">d</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* prints */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> scan</span><span style="color:#E1E4E8">(Document </span><span style="color:#FFAB70">d</span><span style="color:#E1E4E8">)  { </span><span style="color:#F97583">throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> UnsupportedOperationException</span><span style="color:#E1E4E8">(); }</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> fax</span><span style="color:#E1E4E8">(Document </span><span style="color:#FFAB70">d</span><span style="color:#E1E4E8">)   { </span><span style="color:#F97583">throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> UnsupportedOperationException</span><span style="color:#E1E4E8">(); }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><code>BasicPrinter</code> can only print, but the interface forces it to write the scan and fax methods too. Those two empty methods bring along the LSP problem from the previous section. On top of that, a client that only prints has to be recompiled when the signature of the fax method changes.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> Printer</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">void</span><span style="color:#B392F0"> print</span><span style="color:#E1E4E8">(Document </span><span style="color:#FFAB70">d</span><span style="color:#E1E4E8">); }</span></span>
+<span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> Scanner</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">void</span><span style="color:#B392F0"> scan</span><span style="color:#E1E4E8">(Document </span><span style="color:#FFAB70">d</span><span style="color:#E1E4E8">); }</span></span>
+<span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> Fax</span><span style="color:#E1E4E8">     { </span><span style="color:#F97583">void</span><span style="color:#B392F0"> fax</span><span style="color:#E1E4E8">(Document </span><span style="color:#FFAB70">d</span><span style="color:#E1E4E8">); }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> BasicPrinter</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> Printer</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> print</span><span style="color:#E1E4E8">(Document </span><span style="color:#FFAB70">d</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* prints */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> OfficeMachine</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> Printer</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">Scanner</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">Fax</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    /* actually implements all three */</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Since a Java class can implement more than one interface, this principle is easy to apply in Java. The splitting criterion is the client: interfaces are split according to the code that uses them, not the class that implements them. A reporting module that only prints sees <code>Printer</code> and does not know what else the machine can do.</p>
+<p>SRP and ISP look alike. SRP looks at a class’s reasons to change, ISP at an interface’s clients. One organizes the inside of a class, the other the face it shows to the outside.</p>
+<hr>
+<h2 id="7-dependency-inversion-principle-dip">7. Dependency Inversion Principle (DIP)</h2>
+<p>The <strong>Dependency Inversion Principle</strong> says two things. High-level modules should not depend on low-level modules, both should depend on abstractions. Abstractions should not depend on details, details should depend on abstractions.</p>
+<p>High level means the application’s actual business rules: how an order is approved, when a notification is sent. Low level means the details those rules use: which database, which email library.</p>
+<p>The electrical wiring in a house is not soldered directly to a lamp. A socket goes in between. The wiring knows the socket standard, and the lamp knows the plug standard. When the lamp changes, nobody has to break the wall.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> EmailSender</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> send</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">to</span><span style="color:#E1E4E8">, String </span><span style="color:#FFAB70">message</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* SMTP */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> OrderService</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> EmailSender sender </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> EmailSender</span><span style="color:#E1E4E8">();   </span><span style="color:#6A737D">// hard-wired to a concrete class</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> approve</span><span style="color:#E1E4E8">(Order </span><span style="color:#FFAB70">order</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">        // ... business rules</span></span>
+<span class="line"><span style="color:#E1E4E8">        sender.</span><span style="color:#B392F0">send</span><span style="color:#E1E4E8">(order.</span><span style="color:#B392F0">customerEmail</span><span style="color:#E1E4E8">(), </span><span style="color:#9ECBFF">"Your order has been approved"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><code>OrderService</code> carries the business rule, but it is tied directly to an email class. When notifications move to SMS, or when a test should not send real email, this class has to be opened.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> Notifier</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> send</span><span style="color:#E1E4E8">(Order </span><span style="color:#FFAB70">order</span><span style="color:#E1E4E8">, String </span><span style="color:#FFAB70">message</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> OrderService</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> Notifier notifier;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">    OrderService</span><span style="color:#E1E4E8">(Notifier </span><span style="color:#FFAB70">notifier</span><span style="color:#E1E4E8">) {   </span><span style="color:#6A737D">// the dependency is passed in</span></span>
+<span class="line"><span style="color:#79B8FF">        this</span><span style="color:#E1E4E8">.notifier </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> notifier;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> approve</span><span style="color:#E1E4E8">(Order </span><span style="color:#FFAB70">order</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">        // ... business rules</span></span>
+<span class="line"><span style="color:#E1E4E8">        notifier.</span><span style="color:#B392F0">send</span><span style="color:#E1E4E8">(order, </span><span style="color:#9ECBFF">"Your order has been approved"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> EmailNotifier</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> Notifier</span><span style="color:#E1E4E8"> { </span><span style="color:#6A737D">/* SMTP */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> SmsNotifier</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> Notifier</span><span style="color:#E1E4E8"> { </span><span style="color:#6A737D">/* SMS provider */</span><span style="color:#E1E4E8"> }</span></span></code></pre>
+<h3 id="what-does-inversion-invert">What does “inversion” invert?</h3>
+<p>In the first design the dependency arrow points down: <code>OrderService -> EmailSender</code>. In the second, both arrows point at the interface in the middle: <code>OrderService -> Notifier &#x3C;- EmailNotifier</code>. The low-level class now conforms to a contract defined by the high level.</p>
+<p>There is a detail that often gets skipped. The <code>Notifier</code> interface belongs to the business-rule side that uses it, not to the email side. Putting the interface in the email package and naming it <code>EmailInterface</code> still points the dependency at the low level, it only adds a layer in between. What gets inverted is the direction of the source-code dependency. The direction of the call at runtime stays the same.</p>
+<h3 id="dip-vs-dependency-injection">DIP vs. dependency injection</h3>
+<p><strong>Dependency Injection</strong> means an object receives the objects it needs from outside, usually through its constructor, instead of creating them itself with <code>new</code>. <code>OrderService(Notifier notifier)</code> above is an example of constructor injection.</p>
+<p>The two are often confused, but they sit at different levels:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>DIP</th>
+<th>Dependency injection</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>What</td>
+<td>A design principle</td>
+<td>A technique</td>
+</tr>
+<tr>
+<td>Question</td>
+<td>What should code depend on?</td>
+<td>How does a dependency reach the object?</td>
+</tr>
+<tr>
+<td>Answer</td>
+<td>An abstraction, not a concrete class</td>
+<td>From outside: constructor, setter or a framework</td>
+</tr>
+</tbody>
+</table>
+<p>DI is the most common way to apply DIP, but they are not the same thing. Taking a concrete <code>EmailSender</code> through the constructor is DI, but because the class is still tied to a concrete class, it does not follow DIP. The reverse is possible too: depending on an abstraction through a factory or a service locator follows DIP without DI. DI frameworks are tools that automate creating these objects and wiring them together. <strong>Inversion of Control</strong> is a broader idea: creating objects and managing the flow are taken away from the code itself and handed to an outside structure. DI is one form of it.</p>
+<p>Notes sometimes say “if you write <code>new</code> inside your code, you are violating DIP”. That is too broad. Creating <code>new ArrayList&#x3C;>()</code>, <code>new BigDecimal("10")</code> or a value object is fine, since these are stable and not expected to change. DIP targets volatile details: the database, the network, the file system, third-party services. These are also usually the dependencies you want to replace with a fake in tests.</p>
+<hr>
+<h2 id="8-the-cost-of-overdoing-it">8. The cost of overdoing it</h2>
+<p>Every SOLID principle comes with a cost: more classes, more interfaces, more jumping between files while reading code. The cost is worth paying when the problem the principle prevents actually exists.</p>
+<p>Common excesses:</p>
+<ul>
+<li>Writing an interface for every class that has a single implementation and is never expected to have another. If no fake is needed for tests, that interface is just a layer of indirection.</li>
+<li>Reading SRP as “one method per class” and splitting logic into dozens of tiny classes. Cohesion does not go up in that case, it goes down, because code that belongs together gets scattered.</li>
+<li>Turning every <code>if</code> into a strategy hierarchy because something might come along in the future.</li>
+</ul>
+<p>A good measure is change itself. When the same place is opened a second or third time for the same reason, it is time to put an abstraction there. An abstraction added earlier often ends up on the wrong axis, because it is not yet known in which direction the code will change.</p>
+<hr>
+<h2 id="interview-questions">Interview questions</h2>
+<p><strong>1. What are coupling and cohesion, and which one should be high?</strong>
+Coupling measures how much modules depend on each other, cohesion measures how much the parts of a module serve the same purpose. The goal is low coupling and high cohesion. That way a change stays in one place and does not break other modules.
+Common mistake: Saying coupling should be zero. The aim is not to remove dependencies but to gather them at a narrow and stable point.</p>
+<p><strong>2. What do the letters of SOLID stand for?</strong>
+Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation and Dependency Inversion. In order: one reason to change, extending without modifying, a subtype being able to replace its supertype, small client-specific interfaces, and depending on abstractions.
+Common mistake: Reciting the principles without being able to give an example for each.</p>
+<p><strong>3. What does Single Responsibility mean?</strong>
+A class should have only one reason to change. The measure is not how many methods the class has, but how many different sources its change requests come from.
+Common mistake: Reading SRP as “each class contains one method”.</p>
+<p><strong>4. Should Square extend Rectangle?</strong>
+Not for a mutable rectangle class. The rectangle’s contract says changing the width does not affect the height. A square cannot give that guarantee and breaks code that relies on it. With immutable objects, or a shared <code>Shape</code> interface, the problem goes away.
+Common mistake: Assuming LSP holds because the code compiles. The compiler checks signatures, not behavior.</p>
+<p><strong>5. Under LSP, how can a subclass change preconditions and postconditions?</strong>
+It cannot strengthen preconditions, it can only weaken them. It cannot weaken postconditions, it can only strengthen them. It must also preserve the superclass’s invariants.
+Common mistake: Getting it backwards, thinking a subclass may demand stricter input.</p>
+<p><strong>6. Does the Open/Closed Principle mean existing code is never changed?</strong>
+No. Bugs get fixed, and code is updated when requirements change. The principle asks that the same code is not opened every time the same kind of addition comes along, so new behavior can be added with a new class.
+Common mistake: Treating every <code>if</code> block as an OCP violation.</p>
+<p><strong>7. Why does interface segregation matter?</strong>
+A large interface forces implementing classes to write methods they do not use, either empty or throwing an error. Client code is also affected by changes to methods it never calls. Interfaces are split according to the code that uses them.
+Common mistake: Splitting interfaces according to the implementing class.</p>
+<p><strong>8. What is the difference between dependency inversion and dependency injection?</strong>
+DIP is a design principle saying code should depend on abstractions rather than concrete classes. DI is the technique of giving an object its dependencies from outside, for example through the constructor. DI is a common way to apply DIP, but injecting a concrete class is DI without being DIP.
+Common mistake: Treating them as the same thing, or saying “I use a DI framework, so I follow DIP”.</p>
+<p><img alt="Summary card: low coupling and high cohesion compared, a one-sentence definition and a violation sign for each of the five SOLID principles, and the difference between DIP and dependency injection" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/solid-ozet-kart.DYmD7T6D_Z27F2UR.webp" ></p>
+<p><em>In Part 7: design patterns.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

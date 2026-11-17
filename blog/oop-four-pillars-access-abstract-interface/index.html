@@ -1,0 +1,394 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Encapsulation, inheritance, polymorphism and abstraction, Java access modifiers and the abstract class vs. interface choice: the OOP fundamentals interviewers ask about, with Java examples."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>OOP: The Four Pillars, Access Modifiers, Abstract Classes and Interfaces · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="en" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>OOP: The Four Pillars, Access Modifiers, Abstract Classes and Interfaces</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 November 2026</time> · oop, java, interview, programming-101 · Part 4</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/oop-dort-temel-ilke-erisim-abstract-interface/" hreflang="tr" lang="tr" data-astro-cid-7jjqptxk>Türkçe oku</a></p> <img src="/_astro/oop-kapak.CMLzllNr_Z900zw.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak">  <article class="yazi" data-astro-cid-7jjqptxk><h1 id="oop-the-four-pillars-access-modifiers-abstract-classes-and-interfaces">OOP: The Four Pillars, Access Modifiers, Abstract Classes and Interfaces</h1>
+<p><em>Programming 101, Part 4</em></p>
+<p>Part 3 put structured, functional and object-oriented programming side by side. There I said that OOP splits a program into objects that keep data and the code working on that data together. This post opens up that part: how are objects designed, and what rules do they follow?</p>
+<p>In OOP interviews the questions usually come from the same place. The four pillars, the difference between overloading and overriding, access modifiers, and the choice between an abstract class and an interface. All examples are in Java, because most of these questions are asked through Java and a few version-dependent details show up there.</p>
+<p>Below I first cover the difference between a class and an object, then the four pillars one by one. After that come access modifiers, the abstract class vs. interface question and a short note on composition. At the end there are common interview questions with short answers.</p>
+<hr>
+<h2 id="1-class-and-object">1. Class and object</h2>
+<p>A <strong>Class</strong> is a template that defines what data an object holds and what it can do. An <strong>Object</strong> is a concrete instance created from that template, and it takes up space in memory. That is why an object is also called an <strong>Instance</strong>.</p>
+<p>A class is like a house plan, and objects are the houses built from it. There is one plan, and any number of houses can be built from it. Each house can have different wall colors, but the room layout is the same.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Account</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    String owner;        </span><span style="color:#6A737D">// state</span></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#E1E4E8"> balance;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> deposit</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">) {   </span><span style="color:#6A737D">// behavior</span></span>
+<span class="line"><span style="color:#E1E4E8">        balance </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> amount;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Account a </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Account</span><span style="color:#E1E4E8">();   </span><span style="color:#6A737D">// a new object in memory</span></span>
+<span class="line"><span style="color:#E1E4E8">Account b </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Account</span><span style="color:#E1E4E8">();   </span><span style="color:#6A737D">// a separate object, separate balance</span></span></code></pre>
+<p>When <code>new</code> is called, the object is created on the heap and the <strong>Constructor</strong> runs. A constructor has the same name as the class and no return type. If a class has no constructor at all, the compiler adds a no-argument one. A constructor in Java does the job that <code>__init__</code> does in Python.</p>
+<p><img alt="The four pillars of OOP: encapsulation keeps data inside the class, inheritance passes members from superclass to subclass, polymorphism makes the same call behave differently on different objects, abstraction hides details behind an interface" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/oop-dort-ilke.DI1rYvx7_1dh3sr.webp" ></p>
+<hr>
+<h2 id="2-encapsulation">2. Encapsulation</h2>
+<p><strong>Encapsulation</strong> means keeping an object’s data so that it cannot be changed directly from outside, and letting that data be accessed only through the object’s own methods.</p>
+<p>A bank account shows this well. Nobody edits the balance by hand. To deposit or withdraw money you go to the counter, and the counter applies rules: negative amounts are rejected, and you cannot withdraw more than the balance.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Account</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> double</span><span style="color:#E1E4E8"> balance;   </span><span style="color:#6A737D">// not visible from outside</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> deposit</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (amount </span><span style="color:#F97583">&#x3C;=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> IllegalArgumentException</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Amount must be positive"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        balance </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> amount;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> withdraw</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (amount </span><span style="color:#F97583">></span><span style="color:#E1E4E8"> balance) </span><span style="color:#F97583">throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> IllegalStateException</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Insufficient funds"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        balance </span><span style="color:#F97583">-=</span><span style="color:#E1E4E8"> amount;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> double</span><span style="color:#B392F0"> getBalance</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> balance; }   </span><span style="color:#6A737D">// reading allowed, writing not</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>There is deliberately no <code>setBalance</code> method here. Encapsulation is often explained as “make the fields private and write a getter and a setter for each”. But adding an unconditional setter to every field opens the data to the outside again. The real goal is to keep the rules that stop the object from reaching an invalid state in one place. If the balance only changes through <code>deposit</code> and <code>withdraw</code>, a bad value can only come from those two methods.</p>
+<p>The second benefit is that the internals can change. If the balance is later stored as a <code>long</code> in cents instead of a <code>double</code>, outside code does not notice. Money calculations use <code>BigDecimal</code> or integers rather than <code>double</code>. I used <code>double</code> here only to keep the example short.</p>
+<hr>
+<h2 id="3-inheritance">3. Inheritance</h2>
+<p><strong>Inheritance</strong> is a class taking over the fields and methods of another class. The class that passes them on is the <strong>Superclass</strong> (or parent), the one that receives them is the <strong>Subclass</strong> (or child). In Java this is done with <code>extends</code>.</p>
+<p>Consider a vehicle class. A car and a truck are both vehicles, and both have a plate number and a speed. That shared part is written once in the vehicle, and the subclasses only add what is different.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Vehicle</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    protected</span><span style="color:#E1E4E8"> String plate;</span></span>
+<span class="line"><span style="color:#F97583">    protected</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> speed;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> accelerate</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">) { speed </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> amount; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Truck</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> Vehicle</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> loadCapacity;   </span><span style="color:#6A737D">// only trucks have this</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> load</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> tons</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* ... */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Truck t </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Truck</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">t.</span><span style="color:#B392F0">accelerate</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">20</span><span style="color:#E1E4E8">);   </span><span style="color:#6A737D">// method inherited from Vehicle</span></span></code></pre>
+<p>Inheritance models an <strong>is-a</strong> relationship. If the sentence “a truck is a vehicle” is true, inheritance fits. If the sentence sounds forced, for example “a customer is an address”, the wrong tool has probably been chosen.</p>
+<p>In Java a class can <code>extend</code> only one class. This is called <strong>Single Inheritance</strong>. The reason is the <strong>Diamond Problem</strong>: if two superclasses define a method with the same name in different ways, it is unclear which one the subclass should use. A class can, however, <code>implement</code> as many interfaces as it needs. I come back to this in section 7.</p>
+<p>A few more rules:</p>
+<ul>
+<li>Constructors are not inherited. A subclass constructor calls the superclass constructor with <code>super(...)</code> on its first line. If it does not, the compiler inserts a no-argument <code>super()</code>.</li>
+<li>A class marked <code>final</code> cannot be extended. <code>String</code> is the well-known example.</li>
+<li>Every class implicitly descends from <code>Object</code>. <code>toString</code>, <code>equals</code> and <code>hashCode</code> come from there.</li>
+</ul>
+<hr>
+<h2 id="4-polymorphism">4. Polymorphism</h2>
+<p><strong>Polymorphism</strong> is the same call producing different behavior on different objects. The “power” button on a universal remote works this way. The button is the same, but pressed at the TV it brings up a picture, and pressed at the air conditioner it brings cold air.</p>
+<p>Java does this in two ways, and interviewers almost always ask about the difference.</p>
+<h3 id="overloading-compile-time-polymorphism">Overloading: compile-time polymorphism</h3>
+<p><strong>Overloading</strong> means writing methods in the same class with the same name but different parameter lists. The number, types or order of the parameters must differ. Changing only the return type is not enough, and the compiler reports it as an error.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Calculator</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#B392F0"> add</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> a</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">int</span><span style="color:#FFAB70"> b</span><span style="color:#E1E4E8">)          { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> b; }</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#B392F0"> add</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> a</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">int</span><span style="color:#FFAB70"> b</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">int</span><span style="color:#FFAB70"> c</span><span style="color:#E1E4E8">)   { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> b </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> c; }</span></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#B392F0"> add</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> a</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">double</span><span style="color:#FFAB70"> b</span><span style="color:#E1E4E8">) { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> b; }</span></span>
+<span class="line"><span style="color:#6A737D">    // long add(int a, int b) { ... }  compile error: only the return type differs</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>The compiler decides which method runs by looking at the argument types at compile time. That is why overloading is called <strong>Compile-time (Static) Polymorphism</strong>.</p>
+<h3 id="overriding-runtime-polymorphism">Overriding: runtime polymorphism</h3>
+<p><strong>Overriding</strong> is a subclass rewriting a superclass method with the same signature.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Animal</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    String </span><span style="color:#B392F0">sound</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#9ECBFF"> "..."</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Cat</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> Animal</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span></span>
+<span class="line"><span style="color:#E1E4E8">    String </span><span style="color:#B392F0">sound</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#9ECBFF"> "Meow"</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Dog</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> Animal</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span></span>
+<span class="line"><span style="color:#E1E4E8">    String </span><span style="color:#B392F0">sound</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#9ECBFF"> "Woof"</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Animal a </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Cat</span><span style="color:#E1E4E8">();          </span><span style="color:#6A737D">// reference type Animal, object Cat</span></span>
+<span class="line"><span style="color:#E1E4E8">System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(a.</span><span style="color:#B392F0">sound</span><span style="color:#E1E4E8">()); </span><span style="color:#6A737D">// "Meow"</span></span></code></pre>
+<p>The variable <code>a</code> has type <code>Animal</code>, but the method that runs is <code>Cat</code>’s. The decision is made at runtime, based on the object’s actual type. This is called <strong>Dynamic Method Dispatch</strong> or <strong>Runtime Polymorphism</strong>. Code that loops over a <code>List&#x3C;Animal></code> and calls <code>sound()</code> on each element keeps working unchanged when a new kind of animal is added.</p>
+<p><code>@Override</code> is not required, but it is worth writing. If the signature has a typo, say <code>Sound()</code>, the compiler reports that the method does not override anything. Without the annotation a new method quietly appears instead.</p>
+<p>The rules of overriding:</p>
+<ul>
+<li>The method name and parameter list must be the same. The return type can be the same or a subtype of it (<strong>Covariant Return Type</strong>).</li>
+<li>Access cannot be narrowed. A method that is <code>public</code> in the superclass cannot become <code>protected</code> in the subclass.</li>
+<li><code>private</code>, <code>static</code> and <code>final</code> methods cannot be overridden. A <code>private</code> method is not visible to the subclass. A <code>static</code> method with the same signature in the subclass does not override the one in the superclass, it hides it (<strong>Method Hiding</strong>). Which one runs is decided at compile time from the reference type.</li>
+<li>Fields are not overridden. A field with the same name in the subclass hides the superclass field, and which one is read also depends on the reference type.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Overloading</th>
+<th>Overriding</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Where</td>
+<td>In the same class (or a subclass)</td>
+<td>In a subclass</td>
+</tr>
+<tr>
+<td>Signature</td>
+<td>Same name, different parameters</td>
+<td>Same name and parameters</td>
+</tr>
+<tr>
+<td>Decided</td>
+<td>At compile time</td>
+<td>At runtime</td>
+</tr>
+<tr>
+<td>Based on</td>
+<td>Reference and argument types</td>
+<td>The object’s actual type</td>
+</tr>
+<tr>
+<td><code>static</code> methods</td>
+<td>Can be overloaded</td>
+<td>Cannot be overridden, only hidden</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="5-abstraction">5. Abstraction</h2>
+<p><strong>Abstraction</strong> means showing what something does while hiding how it does it. The user only sees the interface they need.</p>
+<p>Driving a car needs a steering wheel, an accelerator and a brake. You do not need to know how fuel is injected in the engine when you press the pedal. If the engine changes, say from petrol to electric, the pedals stay the same.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> PaymentMethod</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> pay</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> CardPayment</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> PaymentMethod</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> pay</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* card check, bank request */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> BankTransfer</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> PaymentMethod</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> pay</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* IBAN check, transfer */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">void</span><span style="color:#B392F0"> completeOrder</span><span style="color:#E1E4E8">(PaymentMethod method, </span><span style="color:#F97583">double</span><span style="color:#E1E4E8"> amount) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    method.</span><span style="color:#B392F0">pay</span><span style="color:#E1E4E8">(amount);   </span><span style="color:#6A737D">// does not know which method it is, and does not need to</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><code>completeOrder</code> only knows that a <code>pay</code> method exists. When a new payment method is added later, this method does not change.</p>
+<p>Encapsulation and abstraction are often confused, because both hide something. Encapsulation locks data and the rules protecting it inside the class, and its question is “who can touch this data, and how?” Abstraction works at the design level and answers “which operations do I show to the outside, and which details do I hide?” Java has two tools for abstraction: abstract classes and interfaces.</p>
+<hr>
+<h2 id="6-access-modifiers">6. Access modifiers</h2>
+<p>An <strong>Access Modifier</strong> decides which code can see a class, field or method. Java has four levels. One of them is not a keyword. It is the default level that applies when nothing is written.</p>
+<table>
+<thead>
+<tr>
+<th>Modifier</th>
+<th>Same class</th>
+<th>Same package</th>
+<th>Subclass in another package</th>
+<th>Other code in another package</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>public</code></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>protected</code></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes (through inheritance)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>default (nothing written)</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>private</code></td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>A house is a useful picture. The name on the door is <code>public</code>, anyone can see it. The PIN of your bank card is <code>private</code>, only the owner knows it, not even their child. Default is the apartment building: everyone living in the same building knows, people from outside do not. <code>protected</code> covers the building and the family. A child living in a different building can access it too.</p>
+<h3 id="default-package-private">Default (package-private)</h3>
+<p>When no modifier is written, the member is open only to classes in the same package. This is called <strong>Package-Private</strong>. Notes written with C# in mind often skip this level, because C# has a different default (<code>private</code> for class members). In Java, forgetting to write <code>private</code> opens the field to the whole package.</p>
+<p>A top-level (non-nested) class can only be <code>public</code> or default. <code>private class</code> and <code>protected class</code> are only valid for classes declared inside another class.</p>
+<h3 id="the-package-rule-of-protected">The package rule of protected</h3>
+<p><code>protected</code> is often summarized as “only subclasses can access it”. In Java that is incomplete. Every class in the same package can access a <code>protected</code> member, even if it is not a subclass. So <code>protected</code> gives everything default gives, plus subclasses in other packages.</p>
+<p>There is a limit for a subclass in another package, too. It accesses the <code>protected</code> member through itself (or through a reference of its own type). It cannot create a separate object of the superclass type and reach into its <code>protected</code> field.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">package</span><span style="color:#E1E4E8"> bank;</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Account</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    protected</span><span style="color:#F97583"> double</span><span style="color:#E1E4E8"> balance;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">package</span><span style="color:#E1E4E8"> promo;               </span><span style="color:#6A737D">// different package</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> bank.Account;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> SavingsAccount</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> Account</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> addInterest</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">        balance </span><span style="color:#F97583">*=</span><span style="color:#79B8FF"> 1.02</span><span style="color:#E1E4E8">;             </span><span style="color:#6A737D">// valid: its own inherited field</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        Account other </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Account</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#6A737D">        // other.balance = 0;        compile error: a different Account object</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>The subclass can only reach the part it inherited. It cannot look inside another object of the parent type.</p>
+<h3 id="which-one-in-practice">Which one in practice?</h3>
+<p>Fields are almost always <code>private</code>. Methods are opened as far as needed: operations offered to the outside are <code>public</code>, helpers inside the package are default, and extension points that subclasses are expected to override are <code>protected</code>. Starting from the most restrictive level and opening up when needed is easier than trying to close something later. Once something is <code>public</code>, it is not always possible to find and change all the code that uses it.</p>
+<hr>
+<h2 id="7-abstract-class-vs-interface">7. Abstract class vs. interface</h2>
+<p>Both define gaps that subclasses must fill, and neither can be instantiated directly with <code>new</code>. The differences have changed across Java versions. The claim “an interface can only have abstract methods”, which still appears in older notes, has not been true since Java 8.</p>
+<h3 id="abstract-class">Abstract class</h3>
+<p>An <strong>Abstract Class</strong> is declared with the <code>abstract</code> keyword. It can contain abstract methods without a body as well as normal methods. It can have fields, constructors and members at any access level. A class can <code>extend</code> only one abstract class.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">abstract</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Employee</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> String name;</span></span>
+<span class="line"><span style="color:#F97583">    protected</span><span style="color:#B392F0"> Employee</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">name</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.name </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> name; }   </span><span style="color:#6A737D">// can have a constructor</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    abstract</span><span style="color:#F97583"> double</span><span style="color:#B392F0"> calculatePay</span><span style="color:#E1E4E8">();                           </span><span style="color:#6A737D">// subclass fills this in</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    String </span><span style="color:#B392F0">payrollLine</span><span style="color:#E1E4E8">() {                                    </span><span style="color:#6A737D">// shared, ready-made code</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> name </span><span style="color:#F97583">+</span><span style="color:#9ECBFF"> ": "</span><span style="color:#F97583"> +</span><span style="color:#B392F0"> calculatePay</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> FullTime</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> Employee</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">    FullTime</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">name</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">super</span><span style="color:#E1E4E8">(name); }</span></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#B392F0"> calculatePay</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> 40000</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>An abstract class has a constructor, but <code>new Employee(...)</code> cannot be written. The constructor runs when a subclass calls it with <code>super(...)</code>, to set up the shared fields. A class with an abstract method must be abstract. The reverse is not required: a class with no abstract methods can also be declared abstract just to prevent instantiation. A subclass that is not itself abstract must implement every abstract method.</p>
+<h3 id="interfaces-and-version-changes">Interfaces and version changes</h3>
+<p>An <strong>Interface</strong> is a contract that defines the operations a class will offer. A class can <code>implement</code> more than one interface. An interface has no object state (instance fields). Every variable declared in it is implicitly <code>public static final</code>, which means a constant. It has no constructor either.</p>
+<p>On the method side, the following were added across versions:</p>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>What an interface can contain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Java 7 and earlier</td>
+<td>Only abstract methods (implicitly <code>public abstract</code>) and constants</td>
+</tr>
+<tr>
+<td>Java 8</td>
+<td><code>default</code> methods (with a body, implementing classes may override them) and <code>static</code> methods</td>
+</tr>
+<tr>
+<td>Java 9</td>
+<td><code>private</code> methods and <code>private static</code> methods</td>
+</tr>
+</tbody>
+</table>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> Notifier</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> send</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">message</span><span style="color:#E1E4E8">);                    </span><span style="color:#6A737D">// abstract</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    default</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> sendAll</span><span style="color:#E1E4E8">(List&#x3C;</span><span style="color:#F97583">String</span><span style="color:#E1E4E8">> </span><span style="color:#FFAB70">messages</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">// Java 8</span></span>
+<span class="line"><span style="color:#E1E4E8">        messages.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(m </span><span style="color:#F97583">-></span><span style="color:#B392F0"> send</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">format</span><span style="color:#E1E4E8">(m)));</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    static</span><span style="color:#E1E4E8"> Notifier </span><span style="color:#B392F0">silent</span><span style="color:#E1E4E8">() {                    </span><span style="color:#6A737D">// Java 8</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> message </span><span style="color:#F97583">-></span><span style="color:#E1E4E8"> { };</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#E1E4E8"> String </span><span style="color:#B392F0">format</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">m</span><span style="color:#E1E4E8">) {             </span><span style="color:#6A737D">// Java 9</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#9ECBFF"> "[notice] "</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> m;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><code>default</code> methods were added so that a new method could be added to an existing interface without breaking every class that implements it. <code>stream()</code>, added to <code>Collection</code> in Java 8, and <code>forEach</code>, added to <code>Iterable</code>, are examples. <code>private</code> methods exist so that several <code>default</code> methods can share code without exposing it.</p>
+<p>Two details can come up in interviews:</p>
+<ul>
+<li>A <code>static</code> method in an interface is not inherited by implementing classes. It is called with the interface name, <code>Notifier.silent()</code>. <code>EmailNotifier.silent()</code> does not compile.</li>
+<li>If a class implements two interfaces with a <code>default</code> method of the same signature, the compiler reports an error. The class must override that method itself. To pick one from inside, it writes <code>A.super.method()</code>. This is how Java handles the diamond problem: behavior can be inherited, but when there is a conflict the class decides. State (fields) is never inherited from an interface.</li>
+</ul>
+<h3 id="comparison">Comparison</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Abstract class</th>
+<th>Interface</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Inheritance</td>
+<td>A class <code>extends</code> only one</td>
+<td>A class <code>implements</code> several</td>
+</tr>
+<tr>
+<td>Fields</td>
+<td>Any instance fields</td>
+<td>Only <code>public static final</code> constants</td>
+</tr>
+<tr>
+<td>Constructor</td>
+<td>Allowed</td>
+<td>Not allowed</td>
+</tr>
+<tr>
+<td>Method bodies</td>
+<td>Always allowed</td>
+<td><code>default</code> and <code>static</code> since Java 8, <code>private</code> since Java 9</td>
+</tr>
+<tr>
+<td>Member access</td>
+<td><code>public</code>, <code>protected</code>, default, <code>private</code></td>
+<td>Methods are <code>public</code> by default, <code>private</code> is also allowed since Java 9</td>
+</tr>
+<tr>
+<td>Relationship</td>
+<td>is-a: sharing a common root</td>
+<td>can-do: having a capability</td>
+</tr>
+</tbody>
+</table>
+<h3 id="when-to-choose-which">When to choose which</h3>
+<p>An interface is chosen to describe a shared capability of classes that are not otherwise related. <code>Comparable</code>, <code>Runnable</code> and <code>AutoCloseable</code> are of this kind. A file and a database connection can both be closed, but they have no common ancestor. The contract a type offers to the outside is also usually defined as an interface, so the code that uses it is not tied to one concrete class.</p>
+<p>An abstract class is chosen when closely related classes share state and code. If all subclasses have the same fields, a constructor must set them up, or <code>protected</code> helper methods are needed, an interface is not enough, because an interface cannot hold state.</p>
+<p>The two can also be used together. In the Java library, <code>List</code> is an interface and <code>AbstractList</code> is an abstract class that partly implements it. Someone writing a new list extends <code>AbstractList</code> and fills in a few methods. The code using the list only knows about <code>List</code>.</p>
+<hr>
+<h2 id="8-composition-over-inheritance">8. Composition over inheritance</h2>
+<p><strong>Composition</strong> is a class using another class’s behavior by holding it as a field rather than inheriting from it. The relationship is not is-a but <strong>has-a</strong>. “A car is an engine” is wrong, “a car has an engine” is right.</p>
+<p>The “composition over inheritance” principle says that when sharing code, composition should be considered first. Inheritance ties the subclass tightly to the internal details of the superclass. A change in the superclass can break subclasses it never anticipated. The subclass also inherits every <code>public</code> method of the superclass, whether it wants them or not.</p>
+<p>Java’s own library has a well-known example. <code>java.util.Stack</code> extends <code>Vector</code>. Because of that, methods that touch the middle of the stack, such as <code>get(index)</code> and <code>add(index, element)</code>, can be called on a stack. The stack rule of “push and pop only at the top” is broken this way. The Java documentation now recommends the <code>Deque</code> interface and <code>ArrayDeque</code> for stacks.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> SafeStack</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#F97583">T</span><span style="color:#E1E4E8">> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> Deque&#x3C;</span><span style="color:#F97583">T</span><span style="color:#E1E4E8">> items </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> ArrayDeque&#x3C;>();   </span><span style="color:#6A737D">// has-a</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> push</span><span style="color:#E1E4E8">(T </span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">)    { items.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(e); }</span></span>
+<span class="line"><span style="color:#E1E4E8">    T </span><span style="color:#B392F0">pop</span><span style="color:#E1E4E8">()           { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> items.</span><span style="color:#B392F0">pop</span><span style="color:#E1E4E8">(); }</span></span>
+<span class="line"><span style="color:#F97583">    boolean</span><span style="color:#B392F0"> isEmpty</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> items.</span><span style="color:#B392F0">isEmpty</span><span style="color:#E1E4E8">(); }</span></span>
+<span class="line"><span style="color:#6A737D">    // no access to the middle, because it was never exposed</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>This does not mean inheritance should never be used. When there is a real is-a relationship and the subclass can safely be used anywhere the superclass is expected, inheritance is the right tool. The trouble starts when inheritance is used only to avoid repeating code.</p>
+<hr>
+<h2 id="interview-questions">Interview questions</h2>
+<p><strong>1. What are the four pillars of OOP?</strong>
+Encapsulation keeps data inside the class and lets it change only through methods. Inheritance is a class taking over the members of another class. Polymorphism is the same call behaving differently depending on the object’s type, and abstraction is hiding details and showing only the interface that is needed.
+Common mistake: Defining encapsulation as “writing a getter and a setter for every field”.</p>
+<p><strong>2. What is the difference between overloading and overriding?</strong>
+Overloading is methods with the same name and different parameter lists, and the choice is made at compile time. Overriding is a subclass rewriting a superclass method with the same signature, and the choice is made at runtime, based on the object’s actual type.
+Common mistake: Calling two methods that differ only in return type an overload. That is a compile error.</p>
+<p><strong>3. Can a static method be overridden?</strong>
+No. A static method with the same signature in a subclass hides the superclass method (method hiding). Which one runs is decided at compile time from the reference type, not from the object.
+Common mistake: Reusing the signature without <code>@Override</code> and thinking it is an override. Adding <code>@Override</code> makes the compiler report an error.</p>
+<p><strong>4. What does protected mean in Java?</strong>
+The member is accessible from the same class, from every class in the same package, and from subclasses in other packages. A subclass in another package can only use that access through the member it inherited. It cannot reach the protected field of another object of the superclass type.
+Common mistake: Saying “only subclasses can access it” and forgetting package access.</p>
+<p><strong>5. What happens if no access modifier is written?</strong>
+The member becomes package-private. Classes in the same package can access it. Classes in other packages, subclasses included, cannot.
+Common mistake: Assuming the default is private, as it is in C#.</p>
+<p><strong>6. What is the difference between an abstract class and an interface?</strong>
+An abstract class can have fields, constructors and members at any access level, and a class extends only one. An interface holds no state, its fields are only constants, and a class can implement several. Since Java 8 an interface can have default and static methods, and since Java 9 private methods.
+Common mistake: Saying “an interface can only have abstract methods”. That was true up to Java 7.</p>
+<p><strong>7. Why does an abstract class have a constructor if it cannot be instantiated?</strong>
+The constructor runs when a subclass calls it with <code>super(...)</code>, to set up the shared fields of the abstract class. The object is always an instance of a concrete subclass, and the abstract class prepares part of it.
+Common mistake: Saying “an abstract class cannot have a constructor”.</p>
+<p><strong>8. What does composition over inheritance mean?</strong>
+When sharing code, first consider holding an object as a field (has-a), and use inheritance (is-a) when there is a real type relationship. Inheritance ties the subclass tightly to the superclass’s internals and also exposes methods that were not wanted.
+Common mistake: Reading the principle as “never use inheritance”.</p>
+<p><img alt="Summary card: the four pillars, overloading vs. overriding, the Java access modifier table, and the abstract class vs. interface comparison" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/oop-ozet-kart.vNWCYx3q_yyh0p.webp" ></p>
+<p><em>In Part 5: memory, meaning the stack, the heap and the garbage collector.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

@@ -1,0 +1,270 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Big O, Ω ve Θ, karmaşıklık sınıfları, koddan karmaşıklık çıkarma, amortized O(1) ve two-sum: mülakatın ilk sorusu, örnekleri ve hesaplarıyla."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Big O: Kodun Hızını Ölçmek · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="tr" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Big O: Kodun Hızını Ölçmek</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-16T00:00:00.000Z" data-astro-cid-7jjqptxk>16 Kasım 2026</time> · algoritma, big-o, mulakat, programlama-101 · Bölüm 1</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/big-o-measuring-code-speed/" hreflang="en" lang="en" data-astro-cid-7jjqptxk>Read in English</a></p> <img src="/_astro/bigo-kapak.C4TVmVk4_ZnJLsn.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak">  <article class="yazi" data-astro-cid-7jjqptxk><h1 id="big-o-kodun-hızını-ölçmek">Big O: Kodun Hızını Ölçmek</h1>
+<p><em>Programlama 101, Bölüm 1</em></p>
+<p>Bu yazının konusu bir kodun ne kadar hızlı olduğunu donanımdan bağımsız olarak nasıl ölçeceğimiz.</p>
+<p>İki kod da 100 elemanla 1 milisaniyede bitiyor. 1 milyon elemanla biri yine anında bitiyor, diğeri 17 dakika sürüyor. Aradaki fark donanımdan değil, kodun büyüme biçiminden geliyor.</p>
+<p>Mülakatta algoritma sorularının çoğu aynı soruyla biter: “Bunun karmaşıklığı ne?” Aşağıda bu soruya koda bakıp hesaplayarak nasıl cevap verildiğini anlatıyorum. Sonda mülakatta sık gelen sorular ve kısa cevapları var.</p>
+<hr>
+<h2 id="1-neden-saniye-değil-büyüme-ölçülür">1. Neden saniye değil, büyüme ölçülür?</h2>
+<p>Saniye yanıltıcıdır. Aynı kod bir laptopta 2 saniye, bir sunucuda 0,3 saniye sürebilir. Dil, derleyici ve o an arka planda çalışan işler de sonucu değiştirir.</p>
+<p><strong>Big O</strong> başka bir şeyi ölçer: veri büyüdükçe işin ne kadar büyüdüğünü. Girdi boyutuna <strong>n</strong> denir ve adım sayısı n’nin fonksiyonu olarak yazılır.</p>
+<p>Kargo dağıtımı buna benzer. “Bu paket 3 saatte gelir” demek kuryeye, trafiğe ve havaya bağlıdır. “Paket sayısı ikiye katlanınca dağıtım süresi de ikiye katlanır” demek ise dağıtım yönteminin kendisi hakkında bir bilgidir. Big O yöntemi ölçer.</p>
+<p>İki tür karmaşıklık vardır:</p>
+<ul>
+<li><strong>Time Complexity (Zaman Karmaşıklığı):</strong> Veri arttıkça kaç adım atıldığı.</li>
+<li><strong>Space Complexity (Alan Karmaşıklığı):</strong> Veri arttıkça ne kadar ek bellek gerektiği.</li>
+</ul>
+<hr>
+<h2 id="2-karmaşıklık-sınıfları">2. Karmaşıklık sınıfları</h2>
+<table>
+<thead>
+<tr>
+<th>Sınıf</th>
+<th>İsim</th>
+<th>Tipik örnek</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>O(1)</td>
+<td>Constant (sabit)</td>
+<td>Dizide indeksle erişim <code>arr[5]</code></td>
+</tr>
+<tr>
+<td>O(log n)</td>
+<td>Logaritmik</td>
+<td>Binary search</td>
+</tr>
+<tr>
+<td>O(n)</td>
+<td>Doğrusal</td>
+<td>Listeyi bir kez gezmek</td>
+</tr>
+<tr>
+<td>O(n log n)</td>
+<td>Linearithmic</td>
+<td>Merge sort, iyi sıralama algoritmaları</td>
+</tr>
+<tr>
+<td>O(n²)</td>
+<td>Karesel</td>
+<td>İç içe iki döngü, bubble sort</td>
+</tr>
+<tr>
+<td>O(2ⁿ)</td>
+<td>Üstel</td>
+<td>Bir kümenin tüm alt kümelerini denemek</td>
+</tr>
+<tr>
+<td>O(n!)</td>
+<td>Faktöriyel</td>
+<td>Tüm sıralamaları (permütasyonları) denemek</td>
+</tr>
+</tbody>
+</table>
+<p>O(1) için bir depo düşünülebilir. Depoda 100 kutu da olsa 1 milyon kutu da olsa, 1 numaralı kutunun yerini bilen görevli doğrudan gidip alır.</p>
+<p>O(log n) sayı tahmin oyununa benzer. 1–100 arasında tutulan bir sayı için “50” denir, cevap “aşağı” gelir ve 50 seçenek tek hamlede elenir. Her adımda aralık yarıya iner. 100 sayı için en fazla 7 tahmin, 1 milyon sayı için 20 tahmin yeter (2²⁰ ≈ 1.048.576).</p>
+<p>O(n) için kutuların karışık olduğunu ve içinde kırmızı top olan kutunun arandığını düşünelim. Her kutuya tek tek bakmak gerekir. 10 kutu 10 bakış, 1000 kutu 1000 bakış demektir.</p>
+<p>O(n²) bir odadaki herkesin diğer herkesle tokalaşmasıdır. 10 kişide 45, 100 kişide 4.950 tokalaşma olur. Kişi sayısı 10 katına çıkınca iş yaklaşık 110 katına çıkar. Tam sayı n(n−1)/2’dir. Sabitler atılınca O(n²) kalır.</p>
+<h3 id="büyüme-tablosu">Büyüme tablosu</h3>
+<p>Adım sayıları (log tabanı 2, yuvarlanmış):</p>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>O(1)</th>
+<th>O(log n)</th>
+<th>O(n)</th>
+<th>O(n log n)</th>
+<th>O(n²)</th>
+<th>O(2ⁿ)</th>
+<th>O(n!)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10</td>
+<td>1</td>
+<td>3</td>
+<td>10</td>
+<td>33</td>
+<td>100</td>
+<td>1.024</td>
+<td>3.628.800</td>
+</tr>
+<tr>
+<td>100</td>
+<td>1</td>
+<td>7</td>
+<td>100</td>
+<td>664</td>
+<td>10.000</td>
+<td>≈1,3×10³⁰</td>
+<td>≈9,3×10¹⁵⁷</td>
+</tr>
+<tr>
+<td>1.000</td>
+<td>1</td>
+<td>10</td>
+<td>1.000</td>
+<td>≈10.000</td>
+<td>10⁶</td>
+<td>≈1,1×10³⁰¹</td>
+<td>≈4×10²⁵⁶⁷</td>
+</tr>
+<tr>
+<td>1.000.000</td>
+<td>1</td>
+<td>20</td>
+<td>10⁶</td>
+<td>≈2×10⁷</td>
+<td>10¹²</td>
+<td>301.030 basamaklı</td>
+<td>5,5 milyon basamaklı</td>
+</tr>
+</tbody>
+</table>
+<p>Saniyede 1 milyar basit işlem yapan bir makinede n = 1 milyon için O(n²) yaklaşık 17 dakika, O(n log n) ise 0,02 saniye sürer. n = 100’de O(2ⁿ) yaklaşık 4×10¹³ yıl sürer. Bu, evrenin yaşının binlerce katı.</p>
+<p><img alt="Büyüme grafiği: O(1), O(log n), O(n), O(n log n), O(n²), O(2ⁿ)" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/bigo-buyume.DDEumYHm_1gWWy4.webp" ></p>
+<hr>
+<h2 id="3-koddan-karmaşıklık-çıkarmak">3. Koddan karmaşıklık çıkarmak</h2>
+<p>Yöntem basit: girdiye bağlı olarak kaç kez tekrar eden iş olduğu sayılır.</p>
+<p>Tek döngü O(n) verir:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> toplam</span><span style="color:#E1E4E8">(arr):</span></span>
+<span class="line"><span style="color:#E1E4E8">    t </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> x </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> arr:      </span><span style="color:#6A737D"># n kez</span></span>
+<span class="line"><span style="color:#E1E4E8">        t </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> x         </span><span style="color:#6A737D"># O(1)</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> t</span></span></code></pre>
+<p>İç içe döngü O(n²) verir:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> ciftler</span><span style="color:#E1E4E8">(arr):</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">len</span><span style="color:#E1E4E8">(arr)):          </span><span style="color:#6A737D"># n kez</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> j </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">len</span><span style="color:#E1E4E8">(arr)):      </span><span style="color:#6A737D"># her biri için n kez</span></span>
+<span class="line"><span style="color:#79B8FF">            print</span><span style="color:#E1E4E8">(arr[i], arr[j])</span></span></code></pre>
+<p>Art arda döngüler toplanır, iç içe olanlar çarpılır. İki ayrı <code>for</code> O(n) + O(n) = O(2n) = O(n) eder. İç içe iki <code>for</code> ise O(n · n) = O(n²) eder.</p>
+<p>Her adımda aralığı yarıya bölen kod O(log n) verir:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> binary_search</span><span style="color:#E1E4E8">(arr, hedef):          </span><span style="color:#6A737D"># arr sıralı olmalı</span></span>
+<span class="line"><span style="color:#E1E4E8">    lo, hi </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">len</span><span style="color:#E1E4E8">(arr) </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#F97583">    while</span><span style="color:#E1E4E8"> lo </span><span style="color:#F97583">&#x3C;=</span><span style="color:#E1E4E8"> hi:</span></span>
+<span class="line"><span style="color:#E1E4E8">        mid </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (lo </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> hi) </span><span style="color:#F97583">//</span><span style="color:#79B8FF"> 2</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> arr[mid] </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> hedef: </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> mid</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> arr[mid] </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> hedef: lo </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> mid </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#F97583">        else</span><span style="color:#E1E4E8">: hi </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> mid </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#F97583"> -</span><span style="color:#79B8FF">1</span></span></code></pre>
+<p><strong>Recursion (Özyineleme)</strong> varsa çağrı ağacı sayılır:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> fib</span><span style="color:#E1E4E8">(n):</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> n </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> n</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> fib(n </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> fib(n </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">)     </span><span style="color:#6A737D"># her çağrı 2 çağrı doğurur</span></span></code></pre>
+<p>Her çağrı iki çağrıya dallanır ve ağaç kabaca 2ⁿ düğüme ulaşır, yani O(2ⁿ). Daha sıkı sınır ≈1,618ⁿ’dir, ama O(2ⁿ) doğru bir üst sınırdır. Sonuçlar bir sözlükte saklanırsa (<strong>memoization</strong>) her <code>fib(k)</code> bir kez hesaplanır ve karmaşıklık O(n)‘e iner.</p>
+<h3 id="sabitler-ve-küçük-terimler-atılır">Sabitler ve küçük terimler atılır</h3>
+<p><code>3n² + 5n + 100</code> adım atan bir kod O(n²)‘dir. n = 1 milyonda 3n² = 3×10¹² iken 5n yalnızca 5×10⁶’dır, yanında önemsiz kalır. Sabit 3 ise donanıma göre zaten değişir ve büyüme biçimini değiştirmez. 500 km’lik bir yolculukta otoparktan çıkmak için geçen 2 dakikanın hesaba katılmaması gibi.</p>
+<p>Aynı nedenle log’un tabanı da yazılmaz. log₂ n ile log₁₀ n arasında yalnızca sabit bir çarpan (≈3,32) fark vardır.</p>
+<hr>
+<h2 id="4-o-ω-ve-θ-üst-sınır-alt-sınır-kesin-sınır">4. O, Ω ve Θ: üst sınır, alt sınır, kesin sınır</h2>
+<p>Üç gösterim de birer sınırdır. Pizza siparişi üzerinden anlatmak kolay:</p>
+<ul>
+<li><strong>Big O (üst sınır):</strong> Kurye “trafik olsa da en geç 60 dakikada oradayım” der. Teslimat bundan yavaş olmaz.</li>
+<li><strong>Big Omega, Ω (alt sınır):</strong> “Yollar boş olsa da en az 15 dakika sürer.” Teslimat bundan hızlı olmaz.</li>
+<li><strong>Big Theta, Θ (kesin sınır):</strong> “Her seferinde 30–35 dakika.” Üst ve alt sınır aynı büyüme hızındadır.</li>
+</ul>
+<p>Grafikte algoritmanın adım sayısı inişli çıkışlı bir eğri çiziyorsa O bu eğrinin üstüne çıkamayacağı tavandır, Ω altına inemeyeceği tabandır. İkisi aynı büyüme hızına oturursa Θ elde edilir.</p>
+<p>Burada sık yapılan bir karışıklık var. O, Ω ve Θ sınır türleridir. Best, average ve worst case ise senaryo türleridir. Bunlar farklı eksenlerdir. “O = worst case, Ω = best case” yaygın ama yanlış bir kısayoldur ve her senaryonun kendi Θ’sı olabilir. Günlük kullanımda “Big O” denince genelde worst case’in sıkı sınırı kastedilir.</p>
+<hr>
+<h2 id="5-best-average-ve-worst-case">5. Best, average ve worst case</h2>
+<p>Doğrusal arama (<strong>Linear Search</strong>) örneği:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> ara</span><span style="color:#E1E4E8">(arr, hedef):</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> i, x </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> enumerate</span><span style="color:#E1E4E8">(arr):</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> x </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> hedef: </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> i</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#F97583"> -</span><span style="color:#79B8FF">1</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>Senaryo</th>
+<th>Ne olur</th>
+<th>Karmaşıklık</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Best</td>
+<td>Hedef ilk eleman</td>
+<td>Θ(1)</td>
+</tr>
+<tr>
+<td>Average</td>
+<td>Hedef ortalarda</td>
+<td>~n/2 adım -> Θ(n)</td>
+</tr>
+<tr>
+<td>Worst</td>
+<td>Hedef sonda ya da yok</td>
+<td>Θ(n)</td>
+</tr>
+</tbody>
+</table>
+<p>Mülakatta aksi söylenmedikçe worst case konuşulur, çünkü sistemin en kötü durumda da dayanacağından emin olmak istenir. Bazı algoritmalarda iki senaryo arasındaki fark büyüktür. Quicksort ortalamada O(n log n), en kötü durumda (kötü pivot seçimiyle) O(n²)‘dir.</p>
+<hr>
+<h2 id="6-space-complexity">6. Space complexity</h2>
+<p>Bellek için de aynı mantık geçerli:</p>
+<ul>
+<li><strong>O(1) alan:</strong> 1 milyon sayı toplanıyor, ama yalnızca tek bir <code>toplam</code> değişkeni tutuluyor.</li>
+<li><strong>O(n) alan:</strong> Sayılar yeni bir listeye kopyalanıyor ya da bir sözlüğe dolduruluyor.</li>
+</ul>
+<p>Gözden kaçan bellek tüketicisi recursion’dır. Her çağrı stack’te bir çerçeve açar. Recursive bir <code>toplam(arr, i)</code> fonksiyonu n derinliğe iner ve ek değişken tutmasa bile O(n) alan harcar.</p>
+<p>Genelde girdinin kendisi sayılmaz. Konuşulan, <strong>Auxiliary Space (Ek Alan)</strong>‘dir.</p>
+<hr>
+<h2 id="7-amortized-o1-dinamik-diziye-ekleme">7. Amortized O(1): dinamik diziye ekleme</h2>
+<p>Python’daki <code>list.append</code>, Java’daki <code>ArrayList.add</code> gibi dinamik diziler arka planda sabit boyutlu bir dizi tutar. Dizi dolunca sabit bir oranla daha büyük yeni bir dizi açılır ve bütün elemanlar oraya kopyalanır. Büyüme oranı Java’da 1,5 kat, birçok C++ uygulamasında 2 kat, Python’da daha küçük bir orandır. Bu kopyalama O(n)‘dir.</p>
+<p>Buna rağmen append O(1) sayılır. Kapasite ikiye katlanıyorsa n ekleme boyunca kopyalanan toplam eleman sayısı 1 + 2 + 4 + … + n &#x3C; 2n’dir. 2n iş n eklemeye bölününce ekleme başına ortalama 2 kopya düşer. Buna <strong>Amortized O(1)</strong> denir.</p>
+<p>Kira ödemesine benzer. Her ay küçük bir ödeme yapılır, birkaç yılda bir de taşınma masrafı çıkar. Taşınma pahalıdır ama aylara bölününce aylık maliyeti pek değiştirmez.</p>
+<p>Amortized, ortalama durumla aynı şey değildir. Ortalama durum rastgele girdiye bakar. Amortized analiz ise en kötü işlem dizisinde bile toplam maliyeti garanti eder.</p>
+<hr>
+<h2 id="8-hesaplı-örnek-two-sum">8. Hesaplı örnek: two-sum</h2>
+<p>Soru: Bir dizide toplamı <code>hedef</code>e eşit olan iki elemanın indekslerini bulmak.</p>
+<p><strong>Brute Force (Kaba Kuvvet)</strong> çözüm O(n²)‘dir:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> two_sum</span><span style="color:#E1E4E8">(nums, hedef):</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">len</span><span style="color:#E1E4E8">(nums)):</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> j </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(i </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">len</span><span style="color:#E1E4E8">(nums)):</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> nums[i] </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> nums[j] </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> hedef:</span></span>
+<span class="line"><span style="color:#F97583">                return</span><span style="color:#E1E4E8"> [i, j]</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> None</span></span></code></pre>
+<p>En kötü durumda n(n−1)/2 çift denenir. n = 10.000 için bu yaklaşık 50 milyon karşılaştırma eder.</p>
+<p><strong>Hash Map</strong> ile çözüm O(n)‘dir:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> two_sum</span><span style="color:#E1E4E8">(nums, hedef):</span></span>
+<span class="line"><span style="color:#E1E4E8">    gorulen </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {}                       </span><span style="color:#6A737D"># değer -> indeks</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> i, x </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> enumerate</span><span style="color:#E1E4E8">(nums):</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> hedef </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> x </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> gorulen:       </span><span style="color:#6A737D"># ortalama O(1)</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> [gorulen[hedef </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> x], i]</span></span>
+<span class="line"><span style="color:#E1E4E8">        gorulen[x] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> i</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> None</span></span></code></pre>
+<p>Her elemana bir kez bakılır. “Eşi daha önce geçti mi?” sorusu sözlükte ortalama O(1)‘de cevaplanır. n = 10.000 için yaklaşık 10.000 adım eder, bu da 5.000 kat daha az iş demek.</p>
+<p>Bedeli bellek. Zaman O(n²)‘den O(n)‘e indi, alan ise O(1)‘den O(n)‘e çıktı. Bu <strong>Time–Space Trade-off (Zaman–Alan Takası)</strong> mülakatta açıkça söylenmesi beklenen noktadır.</p>
+<p>Bir partide herkese tek tek doğum gününü sormak yerine kapıda bir deftere herkesin doğum günü yazılır. Yeni gelen yalnızca deftere bakar. Hash map çözümü bu deftere karşılık gelir.</p>
+<hr>
+<h2 id="mülakatta-sorulanlar">Mülakatta sorulanlar</h2>
+<p><strong>1. Big O nedir, neden saniye yerine o kullanılır?</strong>
+Girdi büyüdükçe adım sayısının nasıl büyüdüğünü gösteren üst sınırdır. Saniye donanıma ve ortama bağlıdır. Büyüme biçimi ise algoritmanın kendisine aittir.
+Sık yapılan hata: Big O’yu “kodun kaç saniye sürdüğü” diye tanımlamak.</p>
+<p><strong>2. O(2n) ile O(n) arasında fark var mı?</strong>
+Hayır. Sabitler atılır, ikisi de O(n)‘dir. Pratikte sabit fark önemli olabilir, ama karmaşıklık sınıfı aynıdır.
+Sık yapılan hata: İki ayrı döngüyü O(n²) sanmak. Art arda döngüler toplanır, çarpılmaz.</p>
+<p><strong>3. İç içe iki döngü her zaman O(n²) mi?</strong>
+Hayır. Dış döngü n, iç döngü m eleman geziyorsa O(n·m)‘dir. İç döngü sabit 10 kez dönüyorsa O(n)‘dir.
+Sık yapılan hata: İki farklı girdiyi tek bir n ile yazmak.</p>
+<p><strong>4. O, Ω ve Θ farkı nedir?</strong>
+O üst sınır, Ω alt sınır, Θ ikisinin aynı olduğu kesin sınırdır. Bunlar sınır türleridir. Best ve worst case ise senaryodur.
+Sık yapılan hata: “Θ ortalama durumdur” demek.</p>
+<p><strong>5. Binary search neden O(log n)?</strong>
+Her adımda aranan aralık yarıya iner. n elemanı 1’e indirmek log₂ n adım sürer. Ön şart dizinin sıralı olmasıdır.
+Sık yapılan hata: Sıralama maliyetini unutmak. Sırasız diziyi önce sıralamak O(n log n)‘dir.</p>
+<p><strong>6. Dinamik diziye eleman eklemek neden O(1)?</strong>
+Tek bir ekleme yeniden boyutlandırma yüzünden O(n) sürebilir. Kapasite katlanarak büyüdüğü için n eklemenin toplam maliyeti O(n)‘dir, ekleme başına amortized O(1) düşer.
+Sık yapılan hata: Amortized’ı ortalama durumla karıştırmak.</p>
+<p><strong>7. Recursive bir fonksiyonun alan karmaşıklığı nedir?</strong>
+En az recursion derinliği kadardır, çünkü her çağrı stack’te bir çerçeve tutar. n derinliğe inen fonksiyon, ek değişken kullanmasa da O(n) alan harcar.
+Sık yapılan hata: “Dizi oluşturmadım, O(1) alan” demek.</p>
+<p><strong>8. Two-sum’ı O(n²)‘den nasıl hızlandırırsın?</strong>
+Görülen elemanlar bir hash map’te tutulur ve her eleman için <code>hedef − x</code> ortalama O(1)‘de aranır. Toplam O(n) zaman, O(n) alan. Dizi sıralıysa iki işaretçiyle (two pointers) O(1) ek alanla da çözülür.
+Sık yapılan hata: Hash map’in en kötü durumda O(n) arama yapabileceğini ve ek O(n) alanı hiç anmamak.</p>
+<p><img alt="Özet kart: Big O, büyüme sınıfları, O/Ω/Θ, amortized O(1), two-sum" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/bigo-ozet-kart.6r0Rolyq_1m3un0.webp" ></p>
+<p><em>2. bölümde: veri yapıları. Dizi, linked list, stack, queue, hash map ve ağaçlar, her işlemin Big O maliyetiyle.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

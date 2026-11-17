@@ -1,0 +1,342 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Processes, threads, context switches, Round Robin and zombie processes: the OS fundamentals interviewers ask about, with worked examples."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Operating Systems 1: Processes, Threads and Scheduling · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="en" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Operating Systems 1: Processes, Threads and Scheduling</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-16T00:00:00.000Z" data-astro-cid-7jjqptxk>16 November 2026</time> · operating-systems, interview, programming-101 · Part 8</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/isletim-sistemi-1-process-thread-zamanlama/" hreflang="tr" lang="tr" data-astro-cid-7jjqptxk>Türkçe oku</a></p> <img src="/_astro/os1-kapak.BG-WxsFb_Z1iItGr.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak"> <section class="ders" aria-labelledby="ders-baslik" data-astro-cid-7jjqptxk> <div class="ders-ust" data-astro-cid-7jjqptxk> <h2 id="ders-baslik" data-astro-cid-7jjqptxk>Try it yourself</h2> <a class="dugme" href="/etkilesim/round-robin.html#lang=en" target="_blank" rel="noopener" data-astro-cid-7jjqptxk>Open full screen</a> </div> <iframe src="/etkilesim/round-robin.html#lang=en" title="Interactive lesson" loading="lazy" data-astro-cid-7jjqptxk></iframe> </section> <article class="yazi" data-astro-cid-7jjqptxk><h1 id="operating-systems-1-processes-threads-and-scheduling">Operating Systems 1: Processes, Threads and Scheduling</h1>
+<p><em>Programming 101, Part 8</em></p>
+<p>This post is about the most basic question in operating systems: there are only a few CPUs and many programs that want to run. Who gets the CPU next, and for how long?</p>
+<p>Music is playing, a few browser tabs are open, and a project is compiling in the background. All of it seems to run at once, but a core executes one thing at any given moment. The operating system creates the impression of parallel work by switching between jobs thousands of times per second.</p>
+<p>Below I cover what processes and threads are, how the operating system switches between them, and which algorithms decide the order. At the end there are common interview questions with short answers.</p>
+<hr>
+<h2 id="1-what-does-an-operating-system-do">1. What does an operating system do?</h2>
+<p>An <strong>Operating System (OS)</strong> is the software that sits between the hardware and the programs. It divides CPU time, memory, files and devices among programs.</p>
+<p>At the center of this work is the <strong>Kernel</strong>. The kernel is the piece of code that always stays in memory and has the widest privileges.</p>
+<p>It works like a building manager. Residents do not go down to the boiler room themselves, they tell the manager the heating is off. Programs do not touch the hardware either, they pass their requests to the kernel.</p>
+<hr>
+<h2 id="2-user-mode-kernel-mode-and-system-calls">2. User mode, kernel mode and system calls</h2>
+<p>The CPU runs in two modes:</p>
+<ul>
+<li><strong>User Mode:</strong> Applications run here. They cannot access hardware directly.</li>
+<li><strong>Kernel Mode:</strong> The kernel runs here. It can access the disk, the network card and all of memory.</li>
+</ul>
+<p>When a program wants to open a file, it cannot do it on its own and has to ask the kernel. That request is a <strong>System Call</strong>. The flow:</p>
+<ol>
+<li>The program makes a system call (“open this file”).</li>
+<li>The CPU switches to kernel mode.</li>
+<li>The kernel does the work.</li>
+<li>Control returns to user mode.</li>
+</ol>
+<p>Opening a file, sending data over the network and creating a new process all go through this path.</p>
+<p>In Python, <code>open("log.txt")</code> turns into an <code>openat</code> system call on Linux. You can see this with <code>strace</code>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">strace</span><span style="color:#79B8FF"> -e</span><span style="color:#9ECBFF"> trace=openat,read,write</span><span style="color:#9ECBFF"> cat</span><span style="color:#9ECBFF"> log.txt</span></span></code></pre>
+<p>The output shows <code>openat(...)</code>, <code>read(...)</code> and <code>write(...)</code> lines. Even <code>cat</code> does not read the file itself, it asks the kernel.</p>
+<p>The reason for the split is safety and stability. A program that crashes in user mode only takes itself down. It cannot lock up the system.</p>
+<hr>
+<h2 id="3-program-vs-process">3. Program vs. process</h2>
+<p>A <strong>Program</strong> is a passive file sitting on disk. A <strong>Process</strong> is that program while it runs. A program is like a recipe, and a process is the cook making the dish from that recipe in a kitchen.</p>
+<p>Several processes can run from the same program. Open three browser windows and look at Task Manager or the output of <code>ps aux</code>, and the same program shows up as several rows. Each has its own <strong>PID</strong> (Process ID) and its own memory space. One recipe, several cooks.</p>
+<hr>
+<h2 id="4-pcb-the-record-of-a-process">4. PCB: the record of a process</h2>
+<p>The operating system keeps a <strong>PCB (Process Control Block)</strong> for every process. On Linux this structure is called <code>task_struct</code>.</p>
+<p>It can be compared to a patient file in a hospital. When the shift changes, the new doctor reads the file and continues the treatment from where it stopped. When the CPU returns to a process, it reads from the PCB where that process left off. A PCB contains:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PID, parent PID</td>
+<td>Identity and who the parent is</td>
+</tr>
+<tr>
+<td>State</td>
+<td>ready, running, waiting…</td>
+</tr>
+<tr>
+<td>Program counter + registers</td>
+<td>To resume where it left off</td>
+</tr>
+<tr>
+<td>Scheduling info</td>
+<td>Priority, how much CPU it has used</td>
+</tr>
+<tr>
+<td>Memory info</td>
+<td>Address mappings such as the page table</td>
+</tr>
+<tr>
+<td>Open files</td>
+<td>List of file descriptors</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="5-process-states">5. Process states</h2>
+<p>A process goes through five states during its life:</p>
+<ol>
+<li><strong>New:</strong> Being created.</li>
+<li><strong>Ready:</strong> Ready to run, waiting for its turn on the CPU.</li>
+<li><strong>Running:</strong> Currently executing on a core.</li>
+<li><strong>Waiting / Blocked:</strong> Waiting for an event. This can be a disk read, a network response or user input.</li>
+<li><strong>Terminated:</strong> Finished.</li>
+</ol>
+<p><img alt="Process states: new → ready ⇄ running → terminated, running → waiting → ready" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/os1-surec-durumlari.C8Zcq6le_Z18qBGd.webp" ></p>
+<p>A bank queue maps well onto these states. When you walk into the bank and take a number, you are ready. When the teller calls you, you are running. If the teller asks for a signed document, you leave to get it, and that is waiting. When you come back with the document, you cannot walk straight to the counter. You take a new number and you are ready again.</p>
+<h3 id="transitions-to-watch">Transitions to watch</h3>
+<ul>
+<li>Running -> Ready: Its time ran out and the scheduler took it off the CPU.</li>
+<li>Running -> Waiting: It started I/O (a request to the disk or network).</li>
+<li>Waiting -> Ready: The I/O finished and the process went back into the queue.</li>
+</ul>
+<p>The last one is where most interview mistakes happen. A process whose I/O has finished does not go straight to running. It enters the ready queue first.</p>
+<hr>
+<h2 id="6-processes-and-threads-what-is-shared-and-what-is-not">6. Processes and threads: what is shared and what is not</h2>
+<p>A <strong>Thread</strong> is a unit of execution inside a process. A process can have more than one thread.</p>
+<p>A useful picture is a process as a house and its threads as housemates. The kitchen and the fridge are shared (code, heap). Each person has their own notebook and their own page in it (stack, program counter). Separate processes are separate houses, and nobody can open the neighbor’s fridge.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Between threads</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Shared</td>
+<td>Code, global variables, heap, open files</td>
+</tr>
+<tr>
+<td>Not shared</td>
+<td>Stack, registers, program counter, thread ID</td>
+</tr>
+</tbody>
+</table>
+<p>A small example shows the difference:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> threading, multiprocessing</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">data </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []  </span><span style="color:#6A737D"># shared list</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> add</span><span style="color:#E1E4E8">(x):</span></span>
+<span class="line"><span style="color:#E1E4E8">    data.append(x)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">if</span><span style="color:#79B8FF"> __name__</span><span style="color:#F97583"> ==</span><span style="color:#9ECBFF"> "__main__"</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    t </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> threading.Thread(</span><span style="color:#FFAB70">target</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">add, </span><span style="color:#FFAB70">args</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">,))</span></span>
+<span class="line"><span style="color:#E1E4E8">    t.start(); t.join()</span></span>
+<span class="line"><span style="color:#79B8FF">    print</span><span style="color:#E1E4E8">(data)   </span><span style="color:#6A737D"># [1]  the thread saw the same memory</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    p </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> multiprocessing.Process(</span><span style="color:#FFAB70">target</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">add, </span><span style="color:#FFAB70">args</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">,))</span></span>
+<span class="line"><span style="color:#E1E4E8">    p.start(); p.join()</span></span>
+<span class="line"><span style="color:#79B8FF">    print</span><span style="color:#E1E4E8">(data)   </span><span style="color:#6A737D"># [1]  the process wrote to its own copy</span></span></code></pre>
+<p>The thread appended to the list and the main program saw it. The separate process wrote to its own copy of memory, so the list in the main program did not change.</p>
+<p>Threads are lightweight and communicate easily because they see the same memory. The cost is the bugs that appear when shared memory is written at the same time. Processes are isolated from each other, so if one crashes the others are not affected. In exchange, communication between them takes more work. Part 2 covers the problems of shared memory.</p>
+<hr>
+<h2 id="7-context-switches-and-their-cost">7. Context switches and their cost</h2>
+<p>When the CPU moves from one process or thread to another, it performs a <strong>Context Switch</strong>. The registers and program counter of the running job are saved to its PCB, and the values of the next job are loaded from its own PCB. If the switch is to a different process, the memory mapping changes as well.</p>
+<p>It is like two people sharing one computer: the one getting up saves their game, the one sitting down loads theirs. Nobody is playing in between.</p>
+<p>The cost has two parts:</p>
+<ul>
+<li><strong>Direct cost:</strong> The time to save and load. It is on the order of microseconds, and no user work happens during it. This part is pure <strong>overhead</strong>.</li>
+<li><strong>Indirect cost:</strong> The CPU caches and the <strong>TLB</strong> start cold for the new process’s data, and the data it needs has to be loaded again. In practice this is usually the expensive part.</li>
+</ul>
+<p>Switching between threads of the same process is generally cheaper, because the memory mapping does not change.</p>
+<hr>
+<h2 id="8-scheduling-who-gets-the-cpu">8. Scheduling: who gets the CPU?</h2>
+<p>The <strong>Scheduler</strong> decides which of the jobs waiting in the ready queue will run. The first distinction is whether a running job can be interrupted.</p>
+<h3 id="non-preemptive">Non-Preemptive</h3>
+<p>The running job stays on the CPU until it finishes or gives up the CPU itself (for example, by going to I/O). A bank teller works this way. However long the current customer’s business takes, the teller does not stop halfway, even if the person behind is in a hurry.</p>
+<h3 id="preemptive">Preemptive</h3>
+<p>The operating system can stop the running job when its time runs out or when a more important job arrives. A doctor in the emergency room who is changing a dressing will leave it if someone comes in with a heart attack. The cost is more frequent context switches.</p>
+<p>All of today’s general-purpose desktop and mobile operating systems are preemptive. Otherwise a single program stuck in an infinite loop would lock the whole machine, and the mouse pointer would not move.</p>
+<h3 id="algorithms">Algorithms</h3>
+<ul>
+<li><strong>FCFS (First Come, First Served):</strong> Jobs run in arrival order. It is simple. The problem is that a long job at the front makes the short jobs behind it wait. This is called the <strong>Convoy Effect</strong>, similar to being stuck behind a truck on the highway.</li>
+<li><strong>SJF (Shortest Job First):</strong> The shortest job runs first. It minimizes the average waiting time. But the length of a job is not known in advance, it has to be estimated. The preemptive version is called <strong>SRTF</strong>.</li>
+<li><strong>Round Robin (RR):</strong> Each job gets a fixed <strong>Time Quantum</strong> in turn. A job whose time runs out moves to the end of the queue.</li>
+<li><strong>Priority:</strong> The job with the highest priority runs. It can be preemptive or non-preemptive.</li>
+</ul>
+<p>Round Robin is easy to picture as three friends sharing one computer. The rule: everyone plays for 10 minutes in turn. P1 sits down, and when the 10 minutes are up, P1 gets up and goes to the back of the line even if the level is not finished. Then P2 and P3 play. When it is P1’s turn again, P1 continues from where it stopped. For interviews, the phrase to keep in mind for Round Robin is “in turn, with equal time”.</p>
+<h3 id="worked-example-3-processes-3-algorithms">Worked example: 3 processes, 3 algorithms</h3>
+<p>All three processes arrive at t=0, in the order P1, P2, P3. Context switch time is taken as zero.</p>
+<table>
+<thead>
+<tr>
+<th>Process</th>
+<th>Burst (CPU time)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1</td>
+<td>8</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>Formulas used:</p>
+<ul>
+<li>Turnaround = completion − arrival</li>
+<li>Waiting = turnaround − burst</li>
+</ul>
+<p>FCFS: P1 [0–8], P2 [8–12], P3 [12–14]
+Waiting: 0, 8, 12 -> average 6.67</p>
+<p>SJF: P3 [0–2], P2 [2–6], P1 [6–14]
+Waiting: P3=0, P2=2, P1=6 -> average 2.67</p>
+<p>Round Robin (quantum = 2):</p>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>0–2</th>
+<th>2–4</th>
+<th>4–6</th>
+<th>6–8</th>
+<th>8–10</th>
+<th>10–12</th>
+<th>12–14</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>On CPU</td>
+<td>P1</td>
+<td>P2</td>
+<td>P3 (done)</td>
+<td>P1</td>
+<td>P2 (done)</td>
+<td>P1</td>
+<td>P1 (done)</td>
+</tr>
+<tr>
+<td>Remaining</td>
+<td>P1:6</td>
+<td>P2:2</td>
+<td>P3:0</td>
+<td>P1:4</td>
+<td>P2:0</td>
+<td>P1:2</td>
+<td>P1:0</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Process</th>
+<th>Completion</th>
+<th>Turnaround</th>
+<th>Waiting</th>
+<th>First time on CPU</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1</td>
+<td>14</td>
+<td>14</td>
+<td>6</td>
+<td>0</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>10</td>
+<td>10</td>
+<td>6</td>
+<td>2</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>6</td>
+<td>6</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Avg.</td>
+<td></td>
+<td>10</td>
+<td>5.33</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>SJF gives the best average waiting time, but it requires knowing job lengths in advance. Where RR does well is <strong>Response Time</strong>. No process waited more than 4 units to get on the CPU for the first time, and the average was 2. In FCFS, P3 did not see the CPU at all for 12 units.</p>
+<h3 id="how-long-should-the-quantum-be">How long should the quantum be?</h3>
+<p>If the quantum is too short, most of the time goes to context switches and the real work moves slowly. If it is too long, RR effectively turns into FCFS, the jobs in line wait a long time and the system feels frozen.</p>
+<h3 id="starvation-and-aging">Starvation and Aging</h3>
+<p><strong>Starvation</strong> is when a process never gets its turn. In a system using priority scheduling, if high-priority jobs keep arriving, a low-priority backup job can wait indefinitely. The same happens in SJF, where long jobs can starve.</p>
+<p><strong>Aging</strong> means raising the priority of a waiting process over time. For example, its priority goes up by 1 for every 100 ms it waits. Eventually it reaches the top level and runs. It is like moving someone who has waited in line for a long time to the front after a while.</p>
+<hr>
+<h2 id="9-zombie-and-orphan-processes">9. Zombie and orphan processes</h2>
+<p>A <strong>Zombie Process</strong> is a process that has finished and released its memory but has not yet been removed from the process table. The name sounds odd, but it is part of the normal working of the operating system.</p>
+<p>On Linux, a process creates a <strong>Child</strong> process with <code>fork()</code>. When the child finishes, it is not removed completely right away. It keeps a row in the process table until the <strong>Parent</strong> reads its <strong>Exit Status</strong>. The row is kept so the parent can find out whether the child succeeded.</p>
+<p>It is like a customer in a restaurant who has finished eating but cannot leave because the waiter has not come to take the bill. The customer no longer consumes anything, but the table still shows as taken. Here the waiter is the parent, and taking the bill is the <code>wait()</code> call.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="c"><code><span class="line"><span style="color:#F97583">#include</span><span style="color:#9ECBFF"> &#x3C;stdio.h></span></span>
+<span class="line"><span style="color:#F97583">#include</span><span style="color:#9ECBFF"> &#x3C;stdlib.h></span></span>
+<span class="line"><span style="color:#F97583">#include</span><span style="color:#9ECBFF"> &#x3C;unistd.h></span></span>
+<span class="line"><span style="color:#F97583">#include</span><span style="color:#9ECBFF"> &#x3C;sys/wait.h></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">int</span><span style="color:#B392F0"> main</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">void</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    pid_t</span><span style="color:#E1E4E8"> pid </span><span style="color:#F97583">=</span><span style="color:#B392F0"> fork</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (pid </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span><span style="color:#6A737D">              // child: work is done</span></span>
+<span class="line"><span style="color:#B392F0">        printf</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"child </span><span style="color:#79B8FF">%d</span><span style="color:#9ECBFF"> done</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">getpid</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#B392F0">        exit</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#B392F0">    sleep</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">30</span><span style="color:#E1E4E8">);</span><span style="color:#6A737D">                   // parent waits without calling wait()</span></span>
+<span class="line"><span style="color:#B392F0">    wait</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">NULL</span><span style="color:#E1E4E8">);</span><span style="color:#6A737D">                  // child is reaped after 30 s</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>During those 30 seconds, in another terminal:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">ps</span><span style="color:#79B8FF"> -o</span><span style="color:#9ECBFF"> pid,ppid,stat,cmd</span></span>
+<span class="line"><span style="color:#6A737D"># 4122 4121 Z   [a.out] &#x3C;defunct></span></span></code></pre>
+<p>The <code>Z</code> state and the <code>&#x3C;defunct></code> label mark the zombie. The fix is to call <code>wait()</code> right away, or to handle the <code>SIGCHLD</code> signal and reap the child there.</p>
+<h3 id="when-does-it-become-a-problem">When does it become a problem?</h3>
+<p>A few zombies are not a problem. They use no CPU or RAM and take up one row in the table. If a buggy server creates thousands of children and reaps none of them, the PIDs run out and no new process can start, because there are no ID numbers left to hand out.</p>
+<p>A zombie cannot be killed with <code>kill -9</code>, because it has already finished. The fix is to correct the parent or terminate it.</p>
+<h3 id="orphan-processes">Orphan processes</h3>
+<p>In the reverse case the parent dies first while the child is still running. The child is adopted by <code>init</code>/<code>systemd</code> (PID 1), which reaps it with <code>wait()</code> when it finishes. For this reason orphan processes usually cause no trouble. Zombies whose parent has died are cleaned up by PID 1 the same way.</p>
+<p>As short definitions, a zombie is a process that has finished but has not been removed from the table. An orphan is a process whose parent has died but which keeps running.</p>
+<hr>
+<h2 id="10-cpu-bound-or-io-bound">10. CPU-bound or I/O-bound?</h2>
+<ul>
+<li><strong>CPU-Bound:</strong> Spends most of its time computing. Image processing and encryption are examples. In terms of process states, it is mostly running.</li>
+<li><strong>I/O-Bound:</strong> Spends most of its time waiting. A database query or an HTTP request, for example. It is mostly waiting.</li>
+</ul>
+<p>The right tool depends on this. CPU-bound work needs more than one core: <strong>Multithreading</strong> (<code>Task.Run</code> in C#) or <strong>Multiprocessing</strong>. For I/O-bound work, what matters is not tying up a thread while it waits, and that is where <strong>Async/Await</strong> is used.</p>
+<p>An e-commerce API sending a request to a payment service and waiting for the response is I/O-bound work. With <code>await</code> the thread is released and serves other requests. Resizing product images is CPU-bound work.</p>
+<p>Python has one detail here. In CPython, because of the <strong>GIL</strong>, only one thread executes Python code at a time. So adding threads to CPU-bound work does not speed it up, and <code>multiprocessing</code> is needed.</p>
+<hr>
+<h2 id="interview-questions">Interview questions</h2>
+<p><strong>1. What is the difference between a process and a thread?</strong>
+A process is a running program with its own isolated memory space. A thread is a unit of execution inside a process. Threads in the same process share code, heap and open files, but each has its own stack and registers.
+Common mistake: Saying “threads share nothing” or “they share the stack too”.</p>
+<p><strong>2. What is a context switch, and why is it expensive?</strong>
+It is the CPU saving the state of one execution unit to its PCB and loading the next one when it switches. No useful work happens during that time, and the cache and TLB go cold.
+Common mistake: Counting only the save time and forgetting the cache effect.</p>
+<p><strong>3. What is the difference between preemptive and non-preemptive scheduling?</strong>
+In preemptive scheduling the OS can forcibly stop the running job (when the quantum expires or a higher-priority job arrives). In non-preemptive scheduling the job stays on the CPU until it finishes or gives it up. Modern general-purpose operating systems are preemptive.
+Common mistake: Calling Round Robin non-preemptive.</p>
+<p><strong>4. How do you choose the quantum in Round Robin?</strong>
+If it is too short, context switch overhead dominates. If it is too long, RR turns into FCFS and response time gets worse. The quantum should be much larger than the context switch time and a bit longer than the CPU burst of a typical interactive job.
+Common mistake: Saying “the shorter, the fairer”.</p>
+<p><strong>5. What is starvation, and how is it prevented?</strong>
+It is when a process never gets its turn on the CPU. It occurs with priority scheduling and SJF. It is prevented with aging, which raises the priority of a waiting process over time.
+Common mistake: Confusing starvation with deadlock.</p>
+<p><strong>6. What are zombie and orphan processes?</strong>
+A zombie is a finished process that stays in the process table because its parent has not called <code>wait()</code>. An orphan is a process whose parent died first and which is still running. It is adopted by PID 1. If zombies pile up, the PIDs can run out.
+Common mistake: Saying “I’ll kill the zombie with <code>kill -9</code>”.</p>
+<p><strong>7. What is a system call? Why is there a user/kernel mode split?</strong>
+It is a program in user mode requesting a service from the kernel (<code>read</code>, <code>write</code>, <code>fork</code>). The split stops programs from touching hardware directly and crashing the system.
+Common mistake: Assuming every library function is a system call (<code>printf</code> ends up calling <code>write</code>, but it is not a system call itself).</p>
+<p><strong>8. Can you speed up CPU-bound work with async/await?</strong>
+No. Async makes good use of waiting time, it does not parallelize computation. CPU-bound work needs threads or processes that spread it across several cores.
+Common mistake: Thinking async means “running in parallel in the background”.</p>
+<p><img alt="Summary card: process, thread, context switch, scheduling, zombie" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/os1-ozet-kart.Cvbp0Xre_Z2uDT5B.webp" ></p>
+<p><em>In Part 9: deadlock, mutex and semaphore, race conditions and memory management (paging, thrashing).</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

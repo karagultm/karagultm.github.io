@@ -1,0 +1,314 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Imperative vs. declarative, structured programming, pure functions, immutability, map/filter/reduce and an introduction to OOP: one problem solved in three paradigms, plus interview questions."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Programming Paradigms: Structured, Functional and Object-Oriented · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="en" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Programming Paradigms: Structured, Functional and Object-Oriented</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 November 2026</time> · paradigms, functional, oop, interview, programming-101 · Part 3</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/programlama-paradigmalari-yapisal-fonksiyonel-oop/" hreflang="tr" lang="tr" data-astro-cid-7jjqptxk>Türkçe oku</a></p> <img src="/_astro/par-kapak.7qhBp9Cp_1KoTmP.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak">  <article class="yazi" data-astro-cid-7jjqptxk><h1 id="programming-paradigms-structured-functional-and-object-oriented">Programming Paradigms: Structured, Functional and Object-Oriented</h1>
+<p><em>Programming 101, Part 3</em></p>
+<p>This post is about why two pieces of code that solve the same problem can look nothing alike. One walks through the data with a loop and a counter, another passes the data through functions, a third spreads the work across objects. All of them give the right answer. The difference is in how the programmer breaks the problem down.</p>
+<p>Below I cover what a paradigm is, the split between imperative and declarative, and three common paradigms: structured (procedural), functional and object-oriented. Then I solve the same problem in all three. At the end there are common interview questions with short answers.</p>
+<hr>
+<h2 id="1-what-is-a-paradigm">1. What is a paradigm?</h2>
+<p>A <strong>Programming Paradigm</strong> is a way of thinking about and building a program. It decides how the code is divided, where the data lives and how it changes.</p>
+<p>A paradigm is not a language. The language is the tool, the paradigm is a way of using it. In the same kitchen with the same ingredients, one cook follows a recipe step by step while another splits the kitchen into stations and gives each one a task. The ingredients are the same, the organization of the work is different.</p>
+<p>A language makes some paradigms easy and others awkward. Haskell pushes toward a functional style, Java toward an object-oriented one. Most widely used languages today, such as Python, Java, C# and JavaScript, support more than one paradigm. I come back to this in section 7.</p>
+<hr>
+<h2 id="2-imperative-vs-declarative">2. Imperative vs. declarative</h2>
+<p>Paradigms roughly fall into two large groups.</p>
+<p>In <strong>Imperative</strong> programming, the computer is told how to do the work, step by step. A program is a sequence of commands that change the values of variables. Structured and procedural programming belong here. OOP also sits on an imperative base in most languages, because an object’s state is changed through its methods.</p>
+<p>In <strong>Declarative</strong> programming, the desired result is described and the steps to get there are left to the language or the runtime. SQL, HTML and the logic programming language Prolog belong here. Functional programming is usually counted in this group too.</p>
+<p>The imperative style is like giving someone a recipe (“crack the eggs, whisk them, pour them into the pan”). The declarative style is like ordering at a restaurant (“an omelette, please”). How the omelette gets made is the kitchen’s business.</p>
+<p>The same task in both styles, the names of products in stock:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># imperative: every step is written out</span></span>
+<span class="line"><span style="color:#E1E4E8">names </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> product </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> products:</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> product[</span><span style="color:#9ECBFF">"in_stock"</span><span style="color:#E1E4E8">]:</span></span>
+<span class="line"><span style="color:#E1E4E8">        names.append(product[</span><span style="color:#9ECBFF">"name"</span><span style="color:#E1E4E8">])</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#6A737D">-- declarative: only the desired result is described</span></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> name</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> products </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> in_stock </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<p>The SQL query does not say in what order to scan the table or whether to use an index. The database’s query planner makes those decisions.</p>
+<p>The split is not a hard line but a spectrum. In Python, <code>[p["name"] for p in products if p["in_stock"]]</code> is more declarative than the loop above, but less declarative than SQL.</p>
+<hr>
+<h2 id="3-structured-and-procedural-programming">3. Structured and procedural programming</h2>
+<p>The two terms are often used as synonyms, but they describe different things.</p>
+<p><strong>Structured Programming</strong> is about control flow. A program is built from only three constructs:</p>
+<ul>
+<li><strong>Sequence:</strong> Statements run in the order they are written.</li>
+<li><strong>Selection:</strong> Branching with <code>if</code> / <code>else</code>.</li>
+<li><strong>Iteration:</strong> <code>for</code> and <code>while</code> loops.</li>
+</ul>
+<p>A theorem proved in 1966 showed that any algorithm can be written with these three constructs. Structured programming argued against the habit of jumping to arbitrary lines with <code>goto</code>. Since every block has one entry and one exit, the code can be read from top to bottom.</p>
+<p><strong>Procedural Programming</strong> is about how the code is divided. The program is split into <strong>Procedures</strong>, or functions, each doing one job, and the main flow calls them in order. C and Pascal are the classic languages of this style.</p>
+<p>In practice the two come together. Today “procedural code” usually means imperative code that uses structured control flow and is split into functions.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> add_vat</span><span style="color:#E1E4E8">(price, rate):</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> price </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">1</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> rate)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> invoice_total</span><span style="color:#E1E4E8">(items, rate):</span></span>
+<span class="line"><span style="color:#E1E4E8">    total </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> price, qty </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> items:            </span><span style="color:#6A737D"># iteration</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> qty </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">:                     </span><span style="color:#6A737D"># selection</span></span>
+<span class="line"><span style="color:#E1E4E8">            total </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> add_vat(price, rate) </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> qty</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> total</span></span></code></pre>
+<p>Data and the functions that work on it live apart. Functions take the data as parameters and either change it or return a new value.</p>
+<p>This style is direct and readable in small and medium programs. The trouble starts as the program grows and many functions begin to modify the same data, making it hard to see what a change has broken. The cure is not to abandon structured programming but to limit who is allowed to change the data. OOP and functional programming do this in two different ways.</p>
+<hr>
+<h2 id="4-functional-programming">4. Functional programming</h2>
+<p><strong>Functional Programming</strong> builds a program as a composition of functions, as in mathematics. Data is not kept in one place and changed step by step. It passes through a function and comes out as a new value. It resembles an assembly line: raw material goes in at one end, each station transforms it, the finished product comes out at the other end.</p>
+<p>The style rests on four ideas.</p>
+<h3 id="pure-functions-and-side-effects">Pure functions and side effects</h3>
+<p>A <strong>Pure Function</strong> meets two conditions. It always returns the same output for the same input, and it changes nothing outside itself.</p>
+<p>A <strong>Side Effect</strong> is any change a function makes to the outside world other than returning a value. Modifying a global variable or a list passed in as a parameter, printing to the screen, writing to a file or a database, and sending a network request are all side effects. Reading has a similar issue: a function that reads the clock, a random number or a global variable can return different outputs for the same input, so it is not pure either.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">vat_rate </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0.20</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> with_vat</span><span style="color:#E1E4E8">(price):              </span><span style="color:#6A737D"># not pure: depends on an outside variable</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> price </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">1</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> vat_rate)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> with_vat_pure</span><span style="color:#E1E4E8">(price, rate):   </span><span style="color:#6A737D"># pure: result depends only on inputs</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> price </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">1</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> rate)</span></span></code></pre>
+<p>If <code>vat_rate</code> is changed somewhere else, <code>with_vat(100)</code> returns a different result. <code>with_vat_pure(100, 0.20)</code> always returns 120.</p>
+<p>Pure functions are easy to test. There is no environment to set up and no global state to reset: give an input, check the output. Caching the result is also safe, because the same input always gives the same result.</p>
+<p>A whole program cannot be pure. A program that never prints or saves anything is useless. The goal of the functional style is not to remove side effects but to push them to the edges of the program. Computation happens in pure functions, and reading and writing stay in a few known places.</p>
+<h3 id="immutability">Immutability</h3>
+<p><strong>Immutability</strong> means a value is not changed after it is created. When a change is needed, the old value is kept and a new one is produced.</p>
+<p>In Python, <code>list</code> and <code>dict</code> are mutable, while <code>tuple</code>, <code>str</code> and <code>frozenset</code> are immutable. Passing a mutable list to a function is a classic source of bugs:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> apply_discount</span><span style="color:#E1E4E8">(prices):</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">len</span><span style="color:#E1E4E8">(prices)):</span></span>
+<span class="line"><span style="color:#E1E4E8">        prices[i] </span><span style="color:#F97583">*=</span><span style="color:#79B8FF"> 0.9</span><span style="color:#6A737D">                 # the caller's list changes</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> discounted</span><span style="color:#E1E4E8">(prices):</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> [p </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 0.9</span><span style="color:#F97583"> for</span><span style="color:#E1E4E8"> p </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> prices]     </span><span style="color:#6A737D"># returns a new list, input unchanged</span></span></code></pre>
+<p>Code that calls the first function may not notice that its own list has changed. With the second, the original prices are kept.</p>
+<p>Immutable data also makes parallel work easier. If no thread modifies shared data, the data race that comes from two threads writing to the same variable at once cannot happen. That does not make parallelism free. The work still has to be split and the results combined, and ordering problems remain when accessing outside resources such as files or databases.</p>
+<p>The cost is memory and copying. Functional languages soften this with data structures in which the new version shares the unchanged parts with the old one.</p>
+<h3 id="higher-order-and-first-class-functions">Higher-order and first-class functions</h3>
+<p>If a language lets functions be assigned to variables, passed as parameters and returned from other functions, it has <strong>First-Class Functions</strong>. Python, JavaScript and C# work this way. Java has offered something close to it since Java 8, through lambda expressions.</p>
+<p>A <strong>Higher-Order Function</strong> is a function that takes another function as a parameter or returns one as its result.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> multiplier</span><span style="color:#E1E4E8">(k):</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#F97583"> lambda</span><span style="color:#E1E4E8"> x: x </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> k                </span><span style="color:#6A737D"># returns a function</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">triple </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> multiplier(</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(triple(</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">))                          </span><span style="color:#6A737D"># 15</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">fruits </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#9ECBFF">"watermelon"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"apple"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"kiwi"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"fig"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">sorted</span><span style="color:#E1E4E8">(fruits, </span><span style="color:#FFAB70">key</span><span style="color:#F97583">=</span><span style="color:#79B8FF">len</span><span style="color:#E1E4E8">))            </span><span style="color:#6A737D"># takes a function</span></span>
+<span class="line"><span style="color:#6A737D"># ['fig', 'kiwi', 'apple', 'watermelon']</span></span></code></pre>
+<p><code>multiplier</code> is higher-order because it returns a function, and <code>sorted</code> is higher-order because it takes one through its <code>key</code> parameter. First-class is a property of the language, higher-order is a property of individual functions.</p>
+<h3 id="map-filter-and-reduce">map, filter and reduce</h3>
+<p>In the functional style, most loops are replaced by three higher-order functions:</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>What it does</th>
+<th>On <code>[1, 2, 3, 4]</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>map(f, items)</code></td>
+<td>Applies <code>f</code> to each element</td>
+<td><code>x * x</code> -> <code>[1, 4, 9, 16]</code></td>
+</tr>
+<tr>
+<td><code>filter(p, items)</code></td>
+<td>Keeps elements for which <code>p</code> is true</td>
+<td>is even -> <code>[2, 4]</code></td>
+</tr>
+<tr>
+<td><code>reduce(f, items, start)</code></td>
+<td>Folds the elements into one value</td>
+<td>addition -> <code>10</code></td>
+</tr>
+</tbody>
+</table>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> functools </span><span style="color:#F97583">import</span><span style="color:#FFAB70"> reduce</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">numbers </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">squares </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> list</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">map</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">lambda</span><span style="color:#E1E4E8"> x: x </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> x, numbers))            </span><span style="color:#6A737D"># [1, 4, 9, 16]</span></span>
+<span class="line"><span style="color:#E1E4E8">evens </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> list</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">filter</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">lambda</span><span style="color:#E1E4E8"> x: x </span><span style="color:#F97583">%</span><span style="color:#79B8FF"> 2</span><span style="color:#F97583"> ==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">, numbers))      </span><span style="color:#6A737D"># [2, 4]</span></span>
+<span class="line"><span style="color:#E1E4E8">total </span><span style="color:#F97583">=</span><span style="color:#FFAB70"> reduce</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">lambda</span><span style="color:#E1E4E8"> a, b: a </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> b, numbers, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)           </span><span style="color:#6A737D"># 10</span></span></code></pre>
+<p>Two details are specific to Python. <code>reduce</code> is not a built-in in Python 3, it comes from <code>functools</code>. <code>map</code> and <code>filter</code> do not return lists but lazy iterators that produce values on demand, so <code>list(...)</code> is needed to see the result. In Python, list comprehensions and ready-made functions like <code>sum</code> are often preferred over these.</p>
+<p>Functional languages also use recursion in place of loops. In Python this is not a good idea. The default recursion limit is around 1000 and the language does no tail call optimization.</p>
+<hr>
+<h2 id="5-object-oriented-programming-a-short-introduction">5. Object-oriented programming: a short introduction</h2>
+<p><strong>Object-Oriented Programming (OOP)</strong> keeps data and the code that works on it in a single unit. That unit is an <strong>Object</strong>, and its template is a <strong>Class</strong>. An object’s data is its state, and its methods are its behavior.</p>
+<p>In procedural code the data sits in one place and the functions in another. In OOP the answer to “who can change this data?” is clear: only the object’s own methods. A bank account’s balance is not changed directly from outside. It changes through <code>deposit</code> and <code>withdraw</code> methods, and those methods enforce the rules themselves, such as no negative balance.</p>
+<p>A library makes the difference easy to see. In the procedural style a single librarian does every job from one to-do list. In OOP every job has someone responsible for it (a registrar, a shelver, a member), and they hand work to each other. When a new kind of item is added to the system, say DVD lending, a new responsible party can be added without touching most of the existing ones.</p>
+<p>OOP is built on four principles: <strong>Encapsulation</strong>, <strong>Inheritance</strong>, <strong>Polymorphism</strong> and <strong>Abstraction</strong>. These, and questions about class design, are the topic of the next post. Here it is enough to see where OOP sits among the paradigms.</p>
+<p>It is often said that OOP is designed bottom-up and structured programming top-down. These are tendencies, not rules.</p>
+<hr>
+<h2 id="6-the-same-problem-in-three-paradigms">6. The same problem in three paradigms</h2>
+<p>The problem: find the total price of the items in a shopping cart that are in stock. The cart:</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Price</th>
+<th>Qty</th>
+<th>In stock</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pen</td>
+<td>12</td>
+<td>3</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>notebook</td>
+<td>45</td>
+<td>2</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>bag</td>
+<td>300</td>
+<td>1</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<p>The expected result is 12 × 3 + 45 × 2 = 126.</p>
+<h3 id="structured--procedural">Structured / procedural</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">cart </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span><span style="color:#9ECBFF">"name"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"pen"</span><span style="color:#E1E4E8">,      </span><span style="color:#9ECBFF">"price"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">12.0</span><span style="color:#E1E4E8">,  </span><span style="color:#9ECBFF">"qty"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"in_stock"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">True</span><span style="color:#E1E4E8">},</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span><span style="color:#9ECBFF">"name"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"notebook"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"price"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">45.0</span><span style="color:#E1E4E8">,  </span><span style="color:#9ECBFF">"qty"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"in_stock"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">True</span><span style="color:#E1E4E8">},</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span><span style="color:#9ECBFF">"name"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"bag"</span><span style="color:#E1E4E8">,      </span><span style="color:#9ECBFF">"price"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">300.0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"qty"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"in_stock"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">False</span><span style="color:#E1E4E8">},</span></span>
+<span class="line"><span style="color:#E1E4E8">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> in_stock_total</span><span style="color:#E1E4E8">(cart):</span></span>
+<span class="line"><span style="color:#E1E4E8">    total </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> item </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> cart:</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> item[</span><span style="color:#9ECBFF">"in_stock"</span><span style="color:#E1E4E8">]:</span></span>
+<span class="line"><span style="color:#E1E4E8">            total </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> item[</span><span style="color:#9ECBFF">"price"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> item[</span><span style="color:#9ECBFF">"qty"</span><span style="color:#E1E4E8">]   </span><span style="color:#6A737D"># total changes every step</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> total</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(in_stock_total(cart))   </span><span style="color:#6A737D"># 126.0</span></span></code></pre>
+<p>The steps are spelled out. The only variable holding state is <code>total</code>, and its value changes on every pass.</p>
+<h3 id="functional">Functional</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> functools </span><span style="color:#F97583">import</span><span style="color:#FFAB70"> reduce</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">in_stock </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> filter</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">lambda</span><span style="color:#E1E4E8"> i: i[</span><span style="color:#9ECBFF">"in_stock"</span><span style="color:#E1E4E8">], cart)</span></span>
+<span class="line"><span style="color:#E1E4E8">amounts </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> map</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">lambda</span><span style="color:#E1E4E8"> i: i[</span><span style="color:#9ECBFF">"price"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> i[</span><span style="color:#9ECBFF">"qty"</span><span style="color:#E1E4E8">], in_stock)</span></span>
+<span class="line"><span style="color:#E1E4E8">total </span><span style="color:#F97583">=</span><span style="color:#FFAB70"> reduce</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">lambda</span><span style="color:#E1E4E8"> a, b: a </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> b, amounts, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(total)   </span><span style="color:#6A737D"># 126.0</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># In Python the same thing is usually one line:</span></span>
+<span class="line"><span style="color:#E1E4E8">total </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> sum</span><span style="color:#E1E4E8">(i[</span><span style="color:#9ECBFF">"price"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> i[</span><span style="color:#9ECBFF">"qty"</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> cart </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> i[</span><span style="color:#9ECBFF">"in_stock"</span><span style="color:#E1E4E8">])</span></span></code></pre>
+<p>No variable changes its value. The data passes through three stages: filter, transform, fold. The cart itself is never touched.</p>
+<h3 id="object-oriented">Object-oriented</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Item</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(self, name, price, qty, in_stock</span><span style="color:#F97583">=</span><span style="color:#79B8FF">True</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.name, </span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.price, </span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.qty, </span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.in_stock </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> name, price, qty, in_stock</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> amount</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.price </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.qty</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Cart</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">._items </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []                   </span><span style="color:#6A737D"># not meant to be accessed directly</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> add</span><span style="color:#E1E4E8">(self, item):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">._items.append(item)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> total</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> sum</span><span style="color:#E1E4E8">(i.amount() </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">._items </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> i.in_stock)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">cart </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Cart()</span></span>
+<span class="line"><span style="color:#E1E4E8">cart.add(Item(</span><span style="color:#9ECBFF">"pen"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">12.0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">cart.add(Item(</span><span style="color:#9ECBFF">"notebook"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">45.0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">cart.add(Item(</span><span style="color:#9ECBFF">"bag"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">300.0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">in_stock</span><span style="color:#F97583">=</span><span style="color:#79B8FF">False</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(cart.total())   </span><span style="color:#6A737D"># 126.0</span></span></code></pre>
+<p>The code is longer, but the responsibilities are spread out. <code>Item</code> knows how to compute its own amount, <code>Cart</code> knows what goes in and what gets counted. If discounted items are added tomorrow, the change stays in <code>Item</code>, and code that uses the cart is not affected.</p>
+<p>The leading underscore in <code>_items</code> is a warning in Python, not an enforcement. Java’s <code>private</code> is checked by the compiler, while in Python it is a convention and outside access is still possible.</p>
+<p>Note also that <code>Cart.total</code> uses a functional expression inside. In real code the paradigms mix like this.</p>
+<p><img alt="The same cart problem in three paradigms: the structured solution with a loop and a changing total variable, the functional solution with filter, map and reduce stages, the object-oriented solution with Item and Cart classes; rows at the bottom compare how data, state and code are divided" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/par-comparison-en.Bm54dKYN_1I7Ujz.webp" ></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Structured / procedural</th>
+<th>Functional</th>
+<th>Object-oriented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Basic unit</td>
+<td>Procedure / function</td>
+<td>Pure function</td>
+<td>Object (data + methods)</td>
+</tr>
+<tr>
+<td>Data and code</td>
+<td>Separate</td>
+<td>Separate, data does not change</td>
+<td>Together</td>
+</tr>
+<tr>
+<td>State change</td>
+<td>Variables change in place</td>
+<td>New values are produced</td>
+<td>Through the object’s own methods</td>
+</tr>
+<tr>
+<td>Repetition</td>
+<td><code>for</code>, <code>while</code></td>
+<td><code>map</code>, <code>filter</code>, recursion</td>
+<td>Loops inside methods</td>
+</tr>
+<tr>
+<td>Strong at</td>
+<td>Short, linear tasks</td>
+<td>Data transformation, testing, concurrency</td>
+<td>Modeling entities with state and rules</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="7-when-to-use-which-and-multi-paradigm-languages">7. When to use which, and multi-paradigm languages</h2>
+<p>These three are not rivals. They are tools that fit different problems.</p>
+<p>The structured / procedural style is the natural choice for short scripts, one-off data processing, and code close to the hardware where performance is critical (embedded systems, operating system kernels). The flow reads top to bottom with no extra abstraction.</p>
+<p>The functional style stands out in data transformation: filtering, transforming, grouping and reporting on a collection. Pure functions are the easiest code to test. In concurrent systems, immutable data prevents most of the bugs that come from writing to shared memory.</p>
+<p>OOP fits systems where many entities with state and rules talk to each other: user interfaces, games, business applications with concepts like orders, accounts and products. In large teams, giving each class its own responsibility makes it easier to divide the work.</p>
+<p>One observation that goes over well in interviews: in OOP, adding a new type is easy (write a new class), but adding a new operation to all types means touching every class. In the functional style it is the other way around. A new operation is a single function, but a new data type affects every function that handles that data. The choice depends on which direction the system is expected to grow.</p>
+<h3 id="multi-paradigm-languages">Multi-paradigm languages</h3>
+<p>Most of today’s languages are not tied to a single paradigm:</p>
+<ul>
+<li><strong>Python:</strong> Classes, first-class functions, <code>map</code>/<code>filter</code>, comprehensions and plain procedural scripts all side by side.</li>
+<li><strong>Java:</strong> All code lives inside a class, but lambda expressions and the Stream API, added in Java 8, made the functional style possible.</li>
+<li><strong>C# and JavaScript:</strong> Classes and lambdas together. In C#, LINQ’s <code>Where</code>, <code>Select</code> and <code>Aggregate</code> methods correspond to filter, map and reduce.</li>
+<li><strong>Haskell:</strong> A purely functional language. Side effects are marked separately in the type system.</li>
+</ul>
+<p>The functional version of the cart example in Java:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">double</span><span style="color:#E1E4E8"> total </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> cart.</span><span style="color:#B392F0">stream</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">filter</span><span style="color:#E1E4E8">(Item</span><span style="color:#F97583">::</span><span style="color:#E1E4E8">isInStock)</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">mapToDouble</span><span style="color:#E1E4E8">(i </span><span style="color:#F97583">-></span><span style="color:#E1E4E8"> i.</span><span style="color:#B392F0">getPrice</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> i.</span><span style="color:#B392F0">getQty</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">sum</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<p>A common application layout uses all three. The skeleton of the application is built with classes, the computation logic is written as pure functions where possible, and file, database and network work stays at the edges in imperative code. This layout is called “functional core, imperative shell”.</p>
+<hr>
+<h2 id="interview-questions">Interview questions</h2>
+<p><strong>1. What is a programming paradigm? Is it the same as a language?</strong>
+A paradigm is a way of building a program and breaking down a problem. A language is the tool used to apply it. Most modern languages support more than one paradigm.
+Common mistake: Mapping languages to paradigms one to one, as in “Python is a functional language” or “Java is only OOP”.</p>
+<p><strong>2. What is the difference between imperative and declarative programming?</strong>
+Imperative code writes out the steps toward the result and changes state along the way. Declarative code describes the desired result and leaves the steps to the language or the runtime. SQL is declarative, a sum written with a <code>for</code> loop is imperative.
+Common mistake: Treating it as a strict binary. It is a spectrum, and a list comprehension sits between the two.</p>
+<p><strong>3. Are structured programming and procedural programming the same thing?</strong>
+No. Structured programming is about control flow: it builds programs from sequence, selection and iteration and avoids <code>goto</code>. Procedural programming is about splitting code into procedures. In practice they are usually used together.
+Common mistake: Associating structured programming with spaghetti code. Structured programming was created to fight the spaghetti code that <code>goto</code> produced.</p>
+<p><strong>4. What is a pure function? Give an example of a side effect.</strong>
+A function that always returns the same output for the same input and changes nothing outside itself. Modifying a global variable or a list passed in as a parameter, printing, writing to a file and sending a network request are side effects.
+Common mistake: Only checking whether it returns a value. A function that reads the clock or a global variable is not pure, even if it changes nothing.</p>
+<p><strong>5. Why does immutability matter, and what does it cost?</strong>
+Because values do not change, a function is not affected by some other code modifying its data behind its back. Threads do not write to shared data, so data races do not occur. The cost is the extra memory and copying of producing a new value on every change.
+Common mistake: Saying “with immutable data there are no concurrency problems at all”. Data races go away, but the work still has to be split and access to outside resources still has to be ordered.</p>
+<p><strong>6. What is the difference between a higher-order function and a first-class function?</strong>
+First-class functions are a property of the language: functions can be assigned to variables, passed as arguments and returned. A higher-order function uses that property by taking or returning another function. <code>map</code>, <code>filter</code> and <code>sorted(key=...)</code> are examples.
+Common mistake: Treating them as the same concept.</p>
+<p><strong>7. What do map, filter and reduce do?</strong>
+<code>map</code> applies a function to each element and produces a result of the same length. <code>filter</code> keeps the elements that satisfy a condition. <code>reduce</code> folds the elements into a single value with a combining function.
+Common mistake: Assuming <code>map</code> and <code>filter</code> return lists in Python 3. Both return lazy iterators that are exhausted after one pass.</p>
+<p><strong>8. When is OOP the better choice, and when is the functional style?</strong>
+OOP fits when modeling entities that have state and rules and talk to each other. The functional style stands out when data goes through a series of transformations, or when concurrency and ease of testing matter. Most real projects use both.
+Common mistake: Declaring one paradigm superior in every case, or wrapping everything in a class.</p>
+<p><img alt="Summary card: imperative vs. declarative, the three constructs of structured programming, pure functions, immutability, map/filter/reduce, and OOP combining data with behavior" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/par-ozet-kart.BckSwPjH_ZCcy0Y.webp" ></p>
+<p><em>Part 4: the four principles of OOP. Encapsulation, inheritance, polymorphism and abstraction, with examples and interview questions.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

@@ -1,0 +1,298 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="The purpose of testing, verification vs. validation, the test pyramid, black box and white box testing, Arrange-Act-Assert, test doubles, TDD, regression and smoke tests, code coverage: the testing fundamentals interviewers ask about, with Python examples."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Software Testing: Test Levels, Unit Tests, Mocks and TDD · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="en" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Software Testing: Test Levels, Unit Tests, Mocks and TDD</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 November 2026</time> · testing, interview, programming-101 · Part 14</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/yazilim-testi-unit-mock-tdd/" hreflang="tr" lang="tr" data-astro-cid-7jjqptxk>Türkçe oku</a></p> <img src="/_astro/test-kapak.B5Y6wrso_AXtb0.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak">  <article class="yazi" data-astro-cid-7jjqptxk><h1 id="software-testing-test-levels-unit-tests-mocks-and-tdd">Software Testing: Test Levels, Unit Tests, Mocks and TDD</h1>
+<p><em>Programming 101, Part 14</em></p>
+<p>The earlier parts of this series covered how code is written and how it runs: data structures, OOP, design patterns, concurrency, networking. This part asks a different question: how do you make sure the code you wrote actually works?</p>
+<p>Testing questions in interviews usually come from two directions. The first is concepts: test levels, black box and white box, the difference between a regression test and a smoke test. The second is practice: how to write a unit test, when to use a mock, what coverage tells you. The examples use <code>unittest</code> from Python’s standard library, and all of them were run to check them. The same ideas apply in JUnit 5 and pytest.</p>
+<p>Below I first cover the purpose of testing and the difference between verification and validation. Then come test levels, test design techniques, the anatomy of a unit test, test doubles and TDD. After that are regression, smoke and sanity tests, non-functional tests and coverage. At the end there are common interview questions.</p>
+<hr>
+<h2 id="1-the-purpose-of-testing">1. The purpose of testing</h2>
+<p><strong>Software Testing</strong> is the process of running software under given conditions and comparing the expected result with the actual one in order to find defects. The goal is to gain confidence that the software meets its requirements and to see defects before users do.</p>
+<p>One of the basic principles of testing is this: testing can show that defects are present, but it cannot prove they are absent. If a hundred tests pass, you cannot say the code has no bugs. You can only say no bug showed up in those hundred cases. Trying every input combination (exhaustive testing) is impossible outside trivial functions. A function that takes two <code>int</code> values already has 2^64 possible input pairs.</p>
+<p>So testing is a matter of choice. You decide deliberately which inputs are worth trying. Two other principles guide that choice. Defects tend to cluster in a few modules (defect clustering), and the later a defect is found, the more expensive it is to fix. A mistake caught at the requirements stage is a one-paragraph edit. The same mistake found in production means changing code, data and possibly how you talk to customers.</p>
+<p>The order of the terms is also a common question. The developer’s mistake is called an <strong>Error (Mistake)</strong>. The result of that mistake in the code is a <strong>Defect</strong>, also called a fault or a bug. The wrong behavior observed when defective code runs is a <strong>Failure</strong>. Not every defect becomes a failure. A defect on a code path that never runs can go unnoticed for years.</p>
+<hr>
+<h2 id="2-verification-and-validation">2. Verification and validation</h2>
+<p>The two terms look very close, but they answer different questions.</p>
+<p><strong>Verification</strong> checks whether the product was built according to its specification: “Are we building the product right?” <strong>Validation</strong> checks whether the product meets the user’s real need: “Are we building the right product?”</p>
+<p>An example makes the difference clear. The specification says “the report should be downloadable as a PDF”, and the system does that flawlessly. Verification passes. But users want to work with the report in a spreadsheet and copy the PDF by hand every time. Validation fails. The product matches the specification but does not meet the need.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Verification</th>
+<th>Validation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Question</td>
+<td>Are we building the product right?</td>
+<td>Are we building the right product?</td>
+</tr>
+<tr>
+<td>Measured against</td>
+<td>Specification, design, requirements document</td>
+<td>The user’s real need</td>
+</tr>
+<tr>
+<td>Typical activities</td>
+<td>Code review, requirements review, unit and integration tests</td>
+<td>Acceptance tests, user trials, beta</td>
+</tr>
+</tbody>
+</table>
+<p>The source notes need a correction here. They pair verification with “static testing done without running the software” and validation with “dynamic testing done by running it”. That pairing is incomplete. Static activities such as code review are verification, but a unit test is also verification even though it runs the code, because it checks conformance to the specification. The distinction is about what you measure against, not about the technique.</p>
+<hr>
+<h2 id="3-test-levels-and-the-test-pyramid">3. Test levels and the test pyramid</h2>
+<p>Tests are split into four levels by how large a part of the system they cover.</p>
+<p>A <strong>Unit Test</strong> tests the smallest testable piece, usually a function or a class, in isolation from the other pieces. It runs in milliseconds, and when it fails the location of the problem is obvious.</p>
+<p>An <strong>Integration Test</strong> tests how units talk to each other. Whether a service sends the right query to the database and reads the result correctly is an integration test concern. Units can each work correctly and still fail together: one may expect dates as <code>day/month/year</code> and the other as <code>month/day/year</code>.</p>
+<p>A <strong>System Test</strong> tests the whole deployed system against its requirements. Besides functional behavior, non-functional properties such as performance and security are covered at this level.</p>
+<p>An <strong>Acceptance Test</strong> checks whether the system meets the user’s or customer’s needs and forms the basis for the release decision. <strong>User Acceptance Testing (UAT)</strong> is its best-known form. Alpha testing happens in the developer’s environment, beta testing in the user’s.</p>
+<p>There are two approaches to integration testing. In the big bang approach all modules are combined at once and tested together. Little preparation is needed, but when something fails it is hard to tell which interface caused it. In the incremental approach modules are added one at a time. A <strong>Stub</strong> replaces a lower-level module that is not written yet, and a <strong>Driver</strong> replaces a higher-level module, the caller, that is not written yet.</p>
+<p><img alt="Test pyramid: many fast unit tests at the base, fewer integration tests in the middle, a small number of slow end-to-end and acceptance tests at the top" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/test-piramit.iUsYP066_w0Maw.webp" ></p>
+<p>The <strong>Test Pyramid</strong> is a model of how tests should be distributed across these levels. Many unit tests at the base, fewer integration tests in the middle, a small number of end-to-end tests at the top. The reason is cost. Higher up, tests get slower, harder to set up, and harder to diagnose when they break. A unit test finishes in a millisecond. An end-to-end test that opens a browser and fills in a form takes seconds and can occasionally fail for no reason because of network latency.</p>
+<p>The inverse of the pyramid, where most tests are end-to-end and only a few are unit tests, is called the “ice cream cone”. A suite shaped like that is slow, and developers start avoiding running it after each change.</p>
+<hr>
+<h2 id="4-black-box-and-white-box-testing">4. Black box and white box testing</h2>
+<p>There are two viewpoints in test design. The difference is whether the person writing the test knows what is inside the code.</p>
+<p><strong>Black Box Testing</strong> tests the system only through inputs and outputs. It does not look at how the code is written, it looks at what the specification says. The test asks what the software does.</p>
+<p><strong>White Box Testing</strong> designs tests from the internal structure of the code. The goal is to run every <code>if</code> branch and every loop at least once. The test asks how the software does it. A mix of the two, with partial knowledge of the internals, is called <strong>Gray Box Testing</strong>.</p>
+<p>Two black box techniques come up most often.</p>
+<p><strong>Equivalence Partitioning</strong> splits inputs into groups that the system treats the same way and picks one representative from each group. If one value in a group works, the other values in that group are assumed to work too.</p>
+<p><strong>Boundary Value Analysis</strong> is based on the observation that defects cluster at the boundaries between groups. Values on both sides of each boundary are tested. Mistakes such as writing <code>&#x3C;=</code> instead of <code>&#x3C;</code> are caught exactly here.</p>
+<p>An example rule: a ticket discount depends on age. Ages 0–17 get 50%, ages 18–64 get no discount, ages 65–120 get 30%, and anything outside that range is invalid.</p>
+<table>
+<thead>
+<tr>
+<th>Partition</th>
+<th>Range</th>
+<th>Representative</th>
+<th>Boundary values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Invalid (low)</td>
+<td>age &#x3C; 0</td>
+<td>−5</td>
+<td>−1</td>
+</tr>
+<tr>
+<td>Child</td>
+<td>0–17</td>
+<td>10</td>
+<td>0, 17</td>
+</tr>
+<tr>
+<td>Adult</td>
+<td>18–64</td>
+<td>30</td>
+<td>18, 64</td>
+</tr>
+<tr>
+<td>Senior</td>
+<td>65–120</td>
+<td>80</td>
+<td>65, 120</td>
+</tr>
+<tr>
+<td>Invalid (high)</td>
+<td>age > 120</td>
+<td>150</td>
+<td>121</td>
+</tr>
+</tbody>
+</table>
+<p>Five representatives from five partitions and eight boundary values stand in for more than a hundred and twenty possible ages.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> DiscountRateTest</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">unittest</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">TestCase</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> test_boundary_values</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#E1E4E8">        expected </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0.5</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">17</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0.5</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">18</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0.0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">64</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0.0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">65</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0.3</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">120</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0.3</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> age, rate </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> expected.items():</span></span>
+<span class="line"><span style="color:#F97583">            with</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.subTest(</span><span style="color:#FFAB70">age</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">age):</span></span>
+<span class="line"><span style="color:#79B8FF">                self</span><span style="color:#E1E4E8">.assertEqual(discount_rate(age), rate)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> test_out_of_range_ages</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> age </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">-</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">121</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#F97583">            with</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.subTest(</span><span style="color:#FFAB70">age</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">age):</span></span>
+<span class="line"><span style="color:#F97583">                with</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.assertRaises(</span><span style="color:#79B8FF">ValueError</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#E1E4E8">                    discount_rate(age)</span></span></code></pre>
+<p><code>subTest</code> reports each value in the loop as a separate case. If 17 fails, the test keeps checking the other values and the report shows which age broke. In pytest the same thing is done with <code>@pytest.mark.parametrize</code>, in JUnit 5 with <code>@ParameterizedTest</code>.</p>
+<hr>
+<h2 id="5-anatomy-of-a-unit-test-arrange-act-assert">5. Anatomy of a unit test: Arrange-Act-Assert</h2>
+<p>A good unit test has three parts. This structure is called <strong>Arrange-Act-Assert (AAA)</strong>.</p>
+<ul>
+<li>Arrange: the objects and data the test needs are set up.</li>
+<li>Act: the behavior under test is triggered with a single call.</li>
+<li>Assert: the result is checked against the expected value.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> unittest</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> cart_total</span><span style="color:#E1E4E8">(prices, discount</span><span style="color:#F97583">=</span><span style="color:#79B8FF">0.0</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#F97583"> not</span><span style="color:#79B8FF"> 0</span><span style="color:#F97583"> &#x3C;=</span><span style="color:#E1E4E8"> discount </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">        raise</span><span style="color:#79B8FF"> ValueError</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"discount must be between 0 and 1"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> round</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">sum</span><span style="color:#E1E4E8">(prices) </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">1</span><span style="color:#F97583"> -</span><span style="color:#E1E4E8"> discount), </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> CartTotalTest</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">unittest</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">TestCase</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> test_discount_lowers_total</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#E1E4E8">        prices </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">50</span><span style="color:#E1E4E8">]                           </span><span style="color:#6A737D"># Arrange</span></span>
+<span class="line"><span style="color:#E1E4E8">        total </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> cart_total(prices, </span><span style="color:#FFAB70">discount</span><span style="color:#F97583">=</span><span style="color:#79B8FF">0.1</span><span style="color:#E1E4E8">)     </span><span style="color:#6A737D"># Act</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.assertEqual(total, </span><span style="color:#79B8FF">135.0</span><span style="color:#E1E4E8">)               </span><span style="color:#6A737D"># Assert</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> test_invalid_discount_raises</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#F97583">        with</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.assertRaises(</span><span style="color:#79B8FF">ValueError</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#E1E4E8">            cart_total([</span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">], </span><span style="color:#FFAB70">discount</span><span style="color:#F97583">=</span><span style="color:#79B8FF">1.5</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<p>The test name says what is tested and what the expected result is. When <code>test_discount_lowers_total</code> shows up as failed in the report, the problem is clear without opening the code. Names like <code>test1</code> or <code>test_cart</code> do not give that information.</p>
+<p>Tests should be independent of each other. If one test relies on data produced by another, changing the order or running a test on its own leads to failures nobody can explain. <code>setUp</code> in <code>unittest</code>, <code>@BeforeEach</code> in JUnit 5 and fixtures in pytest exist to give each test a clean start.</p>
+<p>A test should check one behavior. Several asserts that check different aspects of the same behavior are fine. The problem is trying three unrelated scenarios, such as placing, cancelling and refunding an order, in one test. When the first assert fails, the state of the other two is unknown.</p>
+<p>The test itself must also be deterministic. A test that depends on the clock, random numbers or the network passes sometimes and fails other times. Such tests are called <strong>Flaky Tests</strong>, and after a while the team stops taking red results seriously.</p>
+<hr>
+<h2 id="6-test-doubles-stub-mock-fake-spy">6. Test doubles: stub, mock, fake, spy</h2>
+<p>The class under test usually depends on other objects: a database, a payment service, an email sender. Using the real ones in a unit test makes it slow and ties it to external systems. Nobody wants a request sent to a real payment service every time the tests run. The general name for an object that stands in for a dependency in a test is a <strong>Test Double</strong>. The name comes from the stunt double who replaces an actor in a film.</p>
+<p>Four kinds are commonly asked about.</p>
+<ul>
+<li><strong>Stub</strong>: Returns a predetermined answer. It provides the data the test needs, and how it was called is not checked.</li>
+<li><strong>Mock</strong>: At the end of the test, which method was called, with which arguments and how many times is verified. The test looks at whether an interaction happened.</li>
+<li><strong>Fake</strong>: A working implementation that is too simple to use in production. An in-memory dictionary instead of a database is the typical example.</li>
+<li><strong>Spy</strong>: Wraps a real object. The real method runs, but the calls are recorded and can be checked afterwards.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> unittest.mock </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Mock</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> OrderService</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(self, payment, email):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.payment, </span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.email </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> payment, email</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> place_order</span><span style="color:#E1E4E8">(self, customer, amount):</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#F97583"> not</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">.payment.charge(customer, amount):</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#79B8FF"> False</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.email.send(customer, </span><span style="color:#9ECBFF">"Your order was received"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> True</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> OrderServiceTest</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">unittest</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">TestCase</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> test_email_sent_when_payment_succeeds</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#E1E4E8">        payment </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Mock()</span></span>
+<span class="line"><span style="color:#E1E4E8">        payment.charge.return_value </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> True</span><span style="color:#6A737D">   # stub: canned answer</span></span>
+<span class="line"><span style="color:#E1E4E8">        email </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Mock()                       </span><span style="color:#6A737D"># mock: call will be verified</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        result </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> OrderService(payment, email).place_order(</span><span style="color:#9ECBFF">"customer-42"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">250</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.assertTrue(result)</span></span>
+<span class="line"><span style="color:#E1E4E8">        email.send.assert_called_once_with(</span><span style="color:#9ECBFF">"customer-42"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"Your order was received"</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<p>In Python the same <code>Mock</code> class can serve as both a stub and a mock. What decides the difference is the object’s role in the test, not its type: <code>payment</code> is a stub because it only answers, <code>email</code> is a mock because a call on it is verified. In Java, Mockito’s <code>when(...).thenReturn(...)</code> and <code>verify(...)</code> cover the same two roles.</p>
+<p>Short examples of a fake and a spy:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> FakeUserRepository</span><span style="color:#E1E4E8">:                    </span><span style="color:#6A737D"># fake: in-memory repository</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">._records </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> save</span><span style="color:#E1E4E8">(self, id, name):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">._records[</span><span style="color:#79B8FF">id</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> name</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> find</span><span style="color:#E1E4E8">(self, id):</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> self</span><span style="color:#E1E4E8">._records.get(</span><span style="color:#79B8FF">id</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> RealCalculator</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> add_vat</span><span style="color:#E1E4E8">(self, amount):</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> amount </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 1.2</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">spy </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Mock(</span><span style="color:#FFAB70">wraps</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">RealCalculator())           </span><span style="color:#6A737D"># spy: the real method runs</span></span>
+<span class="line"><span style="color:#E1E4E8">spy.add_vat(</span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">)                             </span><span style="color:#6A737D"># returns 120.0</span></span>
+<span class="line"><span style="color:#E1E4E8">spy.add_vat.assert_called_once_with(</span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">)     </span><span style="color:#6A737D"># and the call was recorded</span></span></code></pre>
+<h3 id="when-mocks-do-harm">When mocks do harm</h3>
+<p>Mocks are a strong tool, but when overused the test starts checking how the code works instead of what it does. Tests that verify which helper method is called in which order inside a method break on every refactor, even when behavior does not change at all. The suite stops being a safety net and becomes an obstacle to change.</p>
+<p>The second problem is that a mock can behave differently from the real object. A mock may return <code>None</code> where the real service throws an exception. The tests pass and the system breaks in production. When the dependency’s interface changes, the mock keeps imitating the old behavior and no test notices. In Python, using <code>Mock(spec=RealClass)</code> or <code>create_autospec</code> at least catches calls to methods that do not exist.</p>
+<p>A few rules help in practice. If the outcome can be checked through a return value, check that value instead of using a mock. Mock only the boundaries to the outside world: network, file system, clock, payments, email. Do not mock a class from a library you do not own. Write a small wrapper around it first and mock that wrapper. Do not mock simple data objects or classes that only compute something. Use the real ones.</p>
+<hr>
+<h2 id="7-tdd-red-green-refactor">7. TDD: red-green-refactor</h2>
+<p><strong>Test-Driven Development (TDD)</strong> is a development method in which the test is written before the code. It consists of a short cycle repeated over and over.</p>
+<ul>
+<li>Red: A test is written for behavior that does not exist yet and is run. It must fail. If it does not, either the behavior already exists or the test checks nothing.</li>
+<li>Green: The simplest code that makes the test pass is written. Clean code is not the goal at this step.</li>
+<li>Refactor: With the tests green, the code is cleaned up: duplication removed, names fixed. The tests are rerun after every step.</li>
+</ul>
+<p>For a cart total, the first test might be “the total of an empty cart is 0”. Writing <code>return 0</code> makes it pass. The second test is “the total of two items is the sum of their prices”, <code>return 0</code> is no longer enough, and <code>sum</code> comes in. When the discount test arrives, the discount calculation is added. At each step the code grows only as much as one test demands.</p>
+<p>The main payoff of TDD is in design. Because the test comes first, the code is designed to be testable, meaning small pieces that receive their dependencies from outside. There is a cost too: in an exploratory phase where requirements are still unclear, tests may need to be rewritten constantly. TDD is not a kind of test, it is an order of writing.</p>
+<hr>
+<h2 id="8-regression-smoke-and-sanity-tests">8. Regression, smoke and sanity tests</h2>
+<p>These three terms are not test levels. They describe when a test is run and for what purpose.</p>
+<p>A <strong>Regression Test</strong> checks, after a change, that features that worked before still work. Fixing a bug or adding a feature can break something elsewhere. Running the automated suite on every commit is regression testing in practice. When a bug is fixed, adding a test that reproduces it prevents the same bug from coming back.</p>
+<p>A term often confused with regression is <strong>Retesting (Confirmation Testing)</strong>. Retesting reruns the test that found a bug to confirm the fix actually worked. Regression testing looks at whether the fix broke anything around it.</p>
+<p>A <strong>Smoke Test</strong> is a short, shallow check to decide whether a new build is worth testing in more detail. It looks at critical flows: does the application start, can you log in, does the home page load. The name comes from hardware: if no smoke comes out when a new circuit is powered on for the first time, you move on to detailed measurement.</p>
+<p>A <strong>Sanity Test</strong> is a narrow test that, after a small change or bug fix, checks only that the affected area behaves sensibly. A smoke test is broad and shallow and touches every part of the system briefly. A sanity test is narrow and a bit deeper and focuses on one area. The boundary between the two terms varies between sources. In an interview it is enough to state this difference in breadth and depth.</p>
+<hr>
+<h2 id="9-non-functional-tests">9. Non-functional tests</h2>
+<p>Functional testing measures what the system does. <strong>Non-functional Testing</strong> measures how well it does it: speed, capacity, security, usability. Interviews usually ask about the performance family.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Question</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Performance test</td>
+<td>What are the response time and resource usage under a given load?</td>
+</tr>
+<tr>
+<td>Load test</td>
+<td>Does the system respond within the target time at the expected peak number of users?</td>
+</tr>
+<tr>
+<td>Stress test</td>
+<td>Under load beyond what is expected, where and how does the system fail, and does it recover?</td>
+</tr>
+<tr>
+<td>Spike test</td>
+<td>What happens when load suddenly jumps tenfold?</td>
+</tr>
+<tr>
+<td>Soak (endurance) test</td>
+<td>Is there a memory leak or slowdown under normal load sustained for hours?</td>
+</tr>
+</tbody>
+</table>
+<p>The difference between load and stress tests comes up often. A load test confirms that the system meets its targets at the expected load. A stress test pushes the load past the limit on purpose and looks at how the system fails. A system that rejects connections and recovers is very different from one that corrupts data as it goes down. Tools such as JMeter, k6 and Gatling are used for these tests.</p>
+<hr>
+<h2 id="10-code-coverage-and-its-limits">10. Code coverage and its limits</h2>
+<p><strong>Code Coverage</strong> is a measure of how much of the code runs while the tests run. coverage.py does this for Python, JaCoCo for Java. The two most common kinds are:</p>
+<ul>
+<li>Line (statement) coverage: the share of lines executed.</li>
+<li>Branch coverage: whether both the true and the false branch of each <code>if</code> were executed.</li>
+</ul>
+<p>Branch coverage is stricter. If <code>if x > 0: y = 1</code> is run with <code>x = 5</code>, line coverage is 100%, but the case <code>x &#x3C;= 0</code> was never tried.</p>
+<p>100% coverage does not mean bug-free code. Coverage only says a line ran, not that its result was checked. A test with no asserts at all still raises coverage. And coverage cannot be measured for code that was never written. A missing check does not show up in a coverage report.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> average</span><span style="color:#E1E4E8">(numbers):</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> sum</span><span style="color:#E1E4E8">(numbers) </span><span style="color:#F97583">/</span><span style="color:#79B8FF"> len</span><span style="color:#E1E4E8">(numbers)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> AverageTest</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">unittest</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">TestCase</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#B392F0"> test_average</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.assertEqual(average([</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">]), </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">)   </span><span style="color:#6A737D"># coverage 100%</span></span></code></pre>
+<p>This test runs the function’s only line and coverage shows 100%. But <code>average([])</code> throws <code>ZeroDivisionError</code>. Nobody decided what should happen for an empty list and no test asked. The coverage report does not reveal this. Boundary value analysis does.</p>
+<p>Coverage is most useful when read in reverse. Low coverage points to untested areas. High coverage only shows that those areas were executed. Imposing coverage as a target can lead to meaningless tests written just to pass an 80% threshold. To measure whether tests actually catch bugs, <strong>Mutation Testing</strong> is used. The tool injects small defects into the code, for example replacing <code>&#x3C;</code> with <code>&#x3C;=</code>, and checks whether the tests catch the change.</p>
+<hr>
+<h2 id="common-interview-questions">Common interview questions</h2>
+<p><strong>1. What is the difference between verification and validation?</strong>
+Verification checks whether the product was built according to the specification and answers “are we building the product right”. Validation checks whether the product meets the user’s real need and answers “are we building the right product”.
+Common mistake: Treating verification as static testing only and validation as dynamic testing only. A unit test runs the code, but it is verification because it measures against the specification.</p>
+<p><strong>2. What is the test pyramid and why is it shaped like a pyramid?</strong>
+It is a model that says there should be many unit tests at the base, fewer integration tests in the middle and a small number of end-to-end tests at the top. Higher up, tests get slower and more expensive, and failures are harder to diagnose.
+Common mistake: Reading the pyramid as “don’t write end-to-end tests”. They are needed, in small numbers, for critical flows.</p>
+<p><strong>3. What are equivalence partitioning and boundary value analysis?</strong>
+Equivalence partitioning splits inputs into classes the system treats the same way and tests one value from each class. Boundary value analysis tests values on and just outside the edges of those classes, because mistakes like mixing up <code>&#x3C;</code> and <code>&#x3C;=</code> show up there.
+Common mistake: Testing only the valid classes and skipping invalid inputs such as −1 or 121.</p>
+<p><strong>4. What is the difference between a mock and a stub?</strong>
+A stub returns a predetermined answer, and the test looks at the resulting state. On a mock, which method was called with which arguments is verified, and the test looks at the interaction.
+Common mistake: Mocking every dependency and verifying the order of internal calls. Those tests break on refactors that leave behavior unchanged.</p>
+<p><strong>5. What is TDD?</strong>
+A method in which the test is written before the code. First a failing test is written (red), then the simplest code that passes it (green), then the code is cleaned up while the tests stay green (refactor).
+Common mistake: Skipping the red step. A test that was never seen failing may not be checking the right thing.</p>
+<p><strong>6. What is the difference between regression testing, retesting and smoke testing?</strong>
+Retesting confirms that a fixed bug is actually fixed, using that bug’s test. Regression testing checks that a change did not break other features that worked before. A smoke test is a short, shallow check of whether a new build is worth detailed testing.
+Common mistake: Treating retesting and regression testing as the same thing.</p>
+<p><strong>7. Does 100% code coverage mean bug-free code?</strong>
+No. Coverage shows that a line was executed, not that its result was checked correctly. A check that was never written, such as the empty list case, never appears in a coverage report.
+Common mistake: Treating line coverage and branch coverage as the same. An <code>if</code> line with only one branch executed shows as fully covered in line coverage.</p>
+<p><strong>8. What is the difference between a load test and a stress test?</strong>
+A load test checks whether the system meets its target response time at the expected peak load. A stress test deliberately pushes load beyond capacity and looks at how the system fails and whether it recovers.
+Common mistake: Thinking the goal of a stress test is to show the system does not crash. The goal is to see how it crashes.</p>
+<p><img alt="Summary card: verification vs. validation, the test pyramid, the boundary value table, the four kinds of test doubles, the red-green-refactor cycle and the limits of coverage" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/test-ozet-kart.C9Xaejfm_Z29mP0K.webp" ></p>
+<p>The Programming 101 series ends with this part. The parts can be read in order from 1 to 14, and each one builds on concepts covered in the one before it.</p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

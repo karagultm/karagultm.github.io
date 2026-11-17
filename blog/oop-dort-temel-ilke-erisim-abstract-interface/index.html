@@ -1,0 +1,396 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Encapsulation, inheritance, polymorphism ve abstraction, Java'da erişim belirleyiciler ve abstract class ile interface farkı: mülakatta sorulan OOP temelleri, Java örnekleriyle."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>OOP: Dört Temel İlke, Erişim Belirleyiciler, Abstract Class ve Interface · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="tr" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>OOP: Dört Temel İlke, Erişim Belirleyiciler, Abstract Class ve Interface</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 Kasım 2026</time> · oop, java, mulakat, programlama-101 · Bölüm 4</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/oop-four-pillars-access-abstract-interface/" hreflang="en" lang="en" data-astro-cid-7jjqptxk>Read in English</a></p> <img src="/_astro/oop-kapak.CMLzllNr_Z900zw.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak">  <article class="yazi" data-astro-cid-7jjqptxk><h1 id="oop-dört-temel-i̇lke-erişim-belirleyiciler-abstract-class-ve-interface">OOP: Dört Temel İlke, Erişim Belirleyiciler, Abstract Class ve Interface</h1>
+<p><em>Programlama 101, Bölüm 4</em></p>
+<ol start="3">
+<li>bölümde yapısal, fonksiyonel ve nesne yönelimli programlamayı yan yana koymuştuk. Orada OOP’nin programı veriyi ve o veri üzerinde çalışan kodu bir arada tutan nesnelere böldüğünü söylemiştik. Bu yazı o kısmı açıyor: nesneler nasıl tasarlanır, hangi kurallara uyar?</li>
+</ol>
+<p>OOP mülakatlarında sorular genelde aynı yerden gelir. Dört temel ilke, overloading ile overriding farkı, erişim belirleyiciler ve abstract class ile interface arasındaki seçim. Örneklerin hepsi Java’da, çünkü bu soruların çoğu Java üzerinden soruluyor ve sürüme bağlı birkaç ayrıntı da orada çıkıyor.</p>
+<p>Aşağıda önce class ve object ayrımını, sonra dört ilkeyi tek tek anlatıyorum. Ardından erişim belirleyiciler, abstract class ve interface farkı ve kısaca composition geliyor. Sonda mülakatta sık gelen sorular ve kısa cevapları var.</p>
+<hr>
+<h2 id="1-class-ve-object">1. Class ve object</h2>
+<p><strong>Class (Sınıf)</strong>, bir nesnenin hangi verileri tutacağını ve hangi işleri yapabileceğini tanımlayan şablondur. <strong>Object (Nesne)</strong> ise o şablondan oluşturulmuş, bellekte yer kaplayan somut örnektir. Bu yüzden object yerine <strong>Instance (Örnek)</strong> de denir.</p>
+<p>Class bir ev planına benzer, object de o plana göre yapılmış evlere. Plan bir tane, ondan istenen sayıda ev yapılabilir. Her evin duvar rengi farklı olabilir, ama oda düzeni aynıdır.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Hesap</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    String sahip;        </span><span style="color:#6A737D">// durum (state)</span></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#E1E4E8"> bakiye;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> yatir</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> tutar</span><span style="color:#E1E4E8">) {   </span><span style="color:#6A737D">// davranış (behavior)</span></span>
+<span class="line"><span style="color:#E1E4E8">        bakiye </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> tutar;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Hesap a </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Hesap</span><span style="color:#E1E4E8">();   </span><span style="color:#6A737D">// bellekte yeni bir nesne</span></span>
+<span class="line"><span style="color:#E1E4E8">Hesap b </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Hesap</span><span style="color:#E1E4E8">();   </span><span style="color:#6A737D">// ayrı bir nesne, ayrı bakiye</span></span></code></pre>
+<p><code>new</code> çağrıldığında nesne heap’te oluşturulur ve <strong>Constructor (Yapıcı Metot)</strong> çalışır. Constructor’ın adı sınıfın adıyla aynıdır ve dönüş tipi yoktur. Sınıfa hiç constructor yazılmazsa derleyici parametresiz bir tane ekler. Python’daki <code>__init__</code> ne iş görüyorsa Java’da constructor onu yapar.</p>
+<p><img alt="OOP&amp;#x27;nin dört ilkesi: encapsulation verinin sınıf içinde saklanması, inheritance üst sınıftan alt sınıfa aktarım, polymorphism aynı çağrının farklı nesnelerde farklı çalışması, abstraction ayrıntıların arayüzün arkasına gizlenmesi" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/oop-dort-ilke.DI1rYvx7_1dh3sr.webp" ></p>
+<hr>
+<h2 id="2-encapsulation-kapsülleme">2. Encapsulation (kapsülleme)</h2>
+<p><strong>Encapsulation</strong>, bir nesnenin verisini dışarıdan doğrudan değiştirilemeyecek şekilde saklamak ve o veriye yalnızca nesnenin kendi metotları üzerinden erişilmesini sağlamaktır.</p>
+<p>Banka hesabı bunu iyi gösteriyor. Bakiyeyi kimse doğrudan elle değiştiremez. Para yatırmak ya da çekmek için gişeye gidilir ve gişe kuralları uygular: negatif tutar kabul edilmez, bakiyeden fazla para çekilemez.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Hesap</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> double</span><span style="color:#E1E4E8"> bakiye;   </span><span style="color:#6A737D">// dışarıdan görünmez</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> yatir</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> tutar</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (tutar </span><span style="color:#F97583">&#x3C;=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> IllegalArgumentException</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Tutar pozitif olmalı"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        bakiye </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> tutar;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> cek</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> tutar</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (tutar </span><span style="color:#F97583">></span><span style="color:#E1E4E8"> bakiye) </span><span style="color:#F97583">throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> IllegalStateException</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Yetersiz bakiye"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        bakiye </span><span style="color:#F97583">-=</span><span style="color:#E1E4E8"> tutar;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> double</span><span style="color:#B392F0"> getBakiye</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> bakiye; }   </span><span style="color:#6A737D">// okuma serbest, yazma yok</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Burada <code>setBakiye</code> metodu bilinçli olarak yok. Encapsulation sık sık “alanları private yap, her birine getter ve setter yaz” diye anlatılır, ama her alana koşulsuz bir setter eklemek veriyi yine dışarıya açar. Asıl amaç, nesnenin geçersiz bir duruma düşmesini engelleyen kuralları tek bir yerde tutmaktır. Bakiye ancak <code>yatir</code> ve <code>cek</code> üzerinden değişiyorsa, hatalı bir değer de ancak bu iki metottan gelebilir.</p>
+<p>İkinci kazanç, iç yapının değiştirilebilmesi. Yarın bakiye <code>double</code> yerine kuruş cinsinden <code>long</code> olarak tutulursa, dışarıdaki kod bunu fark etmez. Para hesaplarında <code>double</code> yerine <code>BigDecimal</code> ya da tam sayı kullanılır, burada örneği kısa tutmak için <code>double</code> kullandım.</p>
+<hr>
+<h2 id="3-inheritance-kalıtım">3. Inheritance (kalıtım)</h2>
+<p><strong>Inheritance</strong>, bir sınıfın başka bir sınıfın alanlarını ve metotlarını devralmasıdır. Devreden sınıfa <strong>Superclass (Üst Sınıf)</strong> ya da parent, devralana <strong>Subclass (Alt Sınıf)</strong> ya da child denir. Java’da bunun için <code>extends</code> kullanılır.</p>
+<p>Bir taşıt sınıfı düşünülebilir. Araba ve kamyon ikisi de taşıttır, ikisinin de plakası ve hızı vardır. Bu ortak kısım taşıtta bir kez yazılır, alt sınıflar yalnızca kendi farklarını ekler.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Tasit</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    protected</span><span style="color:#E1E4E8"> String plaka;</span></span>
+<span class="line"><span style="color:#F97583">    protected</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> hiz;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> hizlan</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> miktar</span><span style="color:#E1E4E8">) { hiz </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> miktar; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Kamyon</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> Tasit</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> yukKapasitesi;   </span><span style="color:#6A737D">// yalnızca kamyonda var</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> yukle</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> ton</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* ... */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Kamyon k </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Kamyon</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">k.</span><span style="color:#B392F0">hizlan</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">20</span><span style="color:#E1E4E8">);   </span><span style="color:#6A737D">// Tasit'ten gelen metot</span></span></code></pre>
+<p>Inheritance bir <strong>is-a (bir türüdür)</strong> ilişkisi kurar. “Kamyon bir taşıttır” cümlesi doğruysa kalıtım uygundur. Cümle zorlama geliyorsa, örneğin “Müşteri bir adrestir”, büyük ihtimalle yanlış araç seçilmiştir.</p>
+<p>Java’da bir sınıf yalnızca bir sınıftan <code>extends</code> edebilir. Buna <strong>Single Inheritance (Tekli Kalıtım)</strong> denir. Sebebi <strong>Diamond Problem (Elmas Problemi)</strong>: iki üst sınıf aynı adlı metodu farklı şekilde tanımlarsa, alt sınıfın hangisini kullanacağı belirsiz kalır. Bir sınıf buna karşılık istediği kadar interface’i <code>implements</code> edebilir. Bu konuya 7. bölümde dönüyorum.</p>
+<p>Birkaç kural daha var:</p>
+<ul>
+<li>Constructor’lar kalıtılmaz. Alt sınıfın constructor’ı ilk satırda <code>super(...)</code> ile üst sınıfın constructor’ını çağırır, yazılmazsa derleyici parametresiz <code>super()</code> ekler.</li>
+<li><code>final</code> ile işaretlenmiş bir sınıftan kalıtım yapılamaz. <code>String</code> bunun bilinen örneği.</li>
+<li>Bütün sınıflar dolaylı olarak <code>Object</code> sınıfından türer. <code>toString</code>, <code>equals</code> ve <code>hashCode</code> oradan gelir.</li>
+</ul>
+<hr>
+<h2 id="4-polymorphism-çok-biçimlilik">4. Polymorphism (çok biçimlilik)</h2>
+<p><strong>Polymorphism</strong>, aynı çağrının farklı nesnelerde farklı davranış üretmesidir. Uzaktan kumandadaki “aç” tuşu buna benzer. Tuş aynı, ama televizyona basıldığında görüntü gelir, klimaya basıldığında soğuk hava.</p>
+<p>Java’da bu iki yolla olur ve mülakatta ikisinin farkı mutlaka sorulur.</p>
+<h3 id="overloading-compile-time-polymorphism">Overloading: compile-time polymorphism</h3>
+<p><strong>Overloading (Aşırı Yükleme)</strong>, aynı sınıfta aynı adı taşıyan ama parametre listesi farklı olan metotlar yazmaktır. Parametrelerin sayısı, tipi ya da sırası farklı olmalıdır. Yalnızca dönüş tipini değiştirmek yetmez, derleyici bunu hata olarak verir.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Hesaplayici</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#B392F0"> topla</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> a</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">int</span><span style="color:#FFAB70"> b</span><span style="color:#E1E4E8">)          { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> b; }</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#B392F0"> topla</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> a</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">int</span><span style="color:#FFAB70"> b</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">int</span><span style="color:#FFAB70"> c</span><span style="color:#E1E4E8">)   { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> b </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> c; }</span></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#B392F0"> topla</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> a</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">double</span><span style="color:#FFAB70"> b</span><span style="color:#E1E4E8">) { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> b; }</span></span>
+<span class="line"><span style="color:#6A737D">    // long topla(int a, int b) { ... }  derleme hatası: yalnızca dönüş tipi farklı</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Hangi metodun çalışacağına derleyici, argümanların tiplerine bakarak derleme sırasında karar verir. Bu yüzden overloading’e <strong>Compile-time (Static) Polymorphism</strong> denir.</p>
+<h3 id="overriding-runtime-polymorphism">Overriding: runtime polymorphism</h3>
+<p><strong>Overriding (Ezme / Yeniden Tanımlama)</strong>, alt sınıfın üst sınıftaki bir metodu aynı imzayla yeniden yazmasıdır.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Hayvan</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    String </span><span style="color:#B392F0">ses</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#9ECBFF"> "..."</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Kedi</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> Hayvan</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span></span>
+<span class="line"><span style="color:#E1E4E8">    String </span><span style="color:#B392F0">ses</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#9ECBFF"> "Miyav"</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Kopek</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> Hayvan</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span></span>
+<span class="line"><span style="color:#E1E4E8">    String </span><span style="color:#B392F0">ses</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#9ECBFF"> "Hav"</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Hayvan h </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Kedi</span><span style="color:#E1E4E8">();      </span><span style="color:#6A737D">// referans tipi Hayvan, nesne Kedi</span></span>
+<span class="line"><span style="color:#E1E4E8">System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(h.</span><span style="color:#B392F0">ses</span><span style="color:#E1E4E8">()); </span><span style="color:#6A737D">// "Miyav"</span></span></code></pre>
+<p><code>h</code> değişkeninin tipi <code>Hayvan</code>, ama çalışan metot <code>Kedi</code>’nin metodu. Karar, nesnenin gerçek tipine bakılarak çalışma zamanında verilir. Buna <strong>Dynamic Method Dispatch</strong> ya da <strong>Runtime Polymorphism</strong> denir. Bir <code>List&#x3C;Hayvan></code> içinde dolaşıp her birinin <code>ses()</code> metodunu çağıran kod, yeni bir hayvan türü eklendiğinde değişmeden çalışmaya devam eder.</p>
+<p><code>@Override</code> zorunlu değildir, ama yazılması iyi olur. İmzada bir yazım hatası yapılırsa, örneğin <code>Ses()</code>, derleyici “bu metot hiçbir şeyi ezmiyor” diye hata verir. Annotation yoksa ortada sessizce yeni bir metot oluşur.</p>
+<p>Overriding’in kuralları:</p>
+<ul>
+<li>Metot adı ve parametre listesi aynı olmalıdır. Dönüş tipi aynı ya da onun bir alt tipi olabilir (<strong>Covariant Return Type</strong>).</li>
+<li>Erişim seviyesi daraltılamaz. Üst sınıfta <code>public</code> olan metot alt sınıfta <code>protected</code> yapılamaz.</li>
+<li><code>private</code>, <code>static</code> ve <code>final</code> metotlar override edilemez. <code>private</code> metot alt sınıfa görünmez. Alt sınıfta aynı imzayla yazılan <code>static</code> metot üst sınıftakini ezmez, gizler (<strong>Method Hiding</strong>). Hangisinin çalışacağı referansın tipine göre derleme sırasında belirlenir.</li>
+<li>Alanlar (field) override edilmez. Alt sınıfta aynı adla tanımlanan alan üst sınıftakini gizler ve hangisinin okunacağı yine referansın tipine bağlıdır.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Overloading</th>
+<th>Overriding</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nerede</td>
+<td>Aynı sınıfta (ya da alt sınıfta)</td>
+<td>Alt sınıfta</td>
+</tr>
+<tr>
+<td>İmza</td>
+<td>Ad aynı, parametreler farklı</td>
+<td>Ad ve parametreler aynı</td>
+</tr>
+<tr>
+<td>Karar zamanı</td>
+<td>Derleme sırasında</td>
+<td>Çalışma sırasında</td>
+</tr>
+<tr>
+<td>Neye göre</td>
+<td>Referans ve argüman tipleri</td>
+<td>Nesnenin gerçek tipi</td>
+</tr>
+<tr>
+<td><code>static</code> metot</td>
+<td>Overload edilebilir</td>
+<td>Override edilemez, gizlenir</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="5-abstraction-soyutlama">5. Abstraction (soyutlama)</h2>
+<p><strong>Abstraction</strong>, bir şeyin ne yaptığını gösterip nasıl yaptığını gizlemektir. Kullanıcı yalnızca ihtiyaç duyduğu arayüzü görür.</p>
+<p>Araba kullanırken direksiyon, gaz ve fren yeterlidir. Gaza basınca motorda yakıtın nasıl püskürtüldüğünü bilmek gerekmez. Motor değişse, örneğin benzinli yerine elektrikli olsa, pedallar aynı kalır.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> OdemeYontemi</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> ode</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> tutar</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> KartlaOdeme</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> OdemeYontemi</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> ode</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> tutar</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* kart doğrulama, banka isteği */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> HavaleIleOdeme</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> OdemeYontemi</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> ode</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> tutar</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* IBAN kontrolü, transfer */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">void</span><span style="color:#B392F0"> siparisiTamamla</span><span style="color:#E1E4E8">(OdemeYontemi yontem, </span><span style="color:#F97583">double</span><span style="color:#E1E4E8"> tutar) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    yontem.</span><span style="color:#B392F0">ode</span><span style="color:#E1E4E8">(tutar);   </span><span style="color:#6A737D">// hangi yöntem olduğunu bilmiyor, bilmesi de gerekmiyor</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><code>siparisiTamamla</code> yalnızca <code>ode</code> metodunun var olduğunu biliyor. Yarın yeni bir ödeme yöntemi eklendiğinde bu metot değişmez.</p>
+<p>Encapsulation ile abstraction sık karıştırılır, çünkü ikisi de bir şeyleri gizler. Encapsulation veriyi ve onu koruyan kuralları sınıfın içine kapatır, soru “bu veriye kim, nasıl dokunabilir?” sorusudur. Abstraction ise tasarım seviyesindedir ve “dışarıya hangi işlemleri göstereyim, hangi ayrıntıyı saklayayım?” sorusuna cevap verir. Java’da abstraction’ın iki aracı var: abstract class ve interface.</p>
+<hr>
+<h2 id="6-erişim-belirleyiciler-access-modifiers">6. Erişim belirleyiciler (access modifiers)</h2>
+<p><strong>Access Modifier (Erişim Belirleyici)</strong>, bir sınıfın, alanın ya da metodun hangi koddan görülebileceğini belirler. Java’da dört seviye var. Bunlardan biri anahtar kelime değil, hiçbir şey yazılmadığında geçerli olan varsayılan seviye.</p>
+<table>
+<thead>
+<tr>
+<th>Belirleyici</th>
+<th>Aynı sınıf</th>
+<th>Aynı paket</th>
+<th>Başka paketteki alt sınıf</th>
+<th>Başka paketteki diğer kod</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>public</code></td>
+<td>Evet</td>
+<td>Evet</td>
+<td>Evet</td>
+<td>Evet</td>
+</tr>
+<tr>
+<td><code>protected</code></td>
+<td>Evet</td>
+<td>Evet</td>
+<td>Evet (kalıtım yoluyla)</td>
+<td>Hayır</td>
+</tr>
+<tr>
+<td>default (yazılmaz)</td>
+<td>Evet</td>
+<td>Evet</td>
+<td>Hayır</td>
+<td>Hayır</td>
+</tr>
+<tr>
+<td><code>private</code></td>
+<td>Evet</td>
+<td>Hayır</td>
+<td>Hayır</td>
+<td>Hayır</td>
+</tr>
+</tbody>
+</table>
+<p>Bir ev üzerinden düşünülebilir. Kapıdaki isim <code>public</code>, herkes görür. Banka kartının şifresi <code>private</code>, yalnızca sahibi bilir, çocuğuna bile söylemez. Default ise apartman içi: aynı binada oturan herkes bilir, dışarıdan gelen bilmez. <code>protected</code> apartmanla birlikte aileyi de kapsar. Başka binada oturan çocuk da erişebilir.</p>
+<h3 id="default-package-private">Default (package-private)</h3>
+<p>Hiçbir belirleyici yazılmazsa üye yalnızca aynı paketteki sınıflara açıktır. Buna <strong>Package-Private</strong> denir. C# kökenli notlarda bu seviye genelde atlanır, çünkü C#‘ta varsayılan farklıdır (sınıf üyelerinde <code>private</code>). Java’da ise <code>private</code> yazmayı unutmak, alanı bütün pakete açmak demektir.</p>
+<p>En üst seviyedeki (iç içe olmayan) bir sınıf yalnızca <code>public</code> ya da default olabilir. <code>private class</code> ve <code>protected class</code> yalnızca başka bir sınıfın içinde tanımlanan sınıflar için geçerlidir.</p>
+<h3 id="protectedın-paket-kuralı">Protected’ın paket kuralı</h3>
+<p><code>protected</code> çoğu zaman “yalnızca alt sınıflar erişir” diye özetlenir. Java’da bu eksik. <code>protected</code> üyeye aynı paketteki bütün sınıflar erişebilir, alt sınıf olmasalar da. Yani <code>protected</code>, default’un sağladığı her şeyi sağlar ve üstüne başka paketteki alt sınıfları ekler.</p>
+<p>Başka paketteki alt sınıf için de bir sınır var. Alt sınıf <code>protected</code> üyeye kendi üzerinden (ya da kendi tipindeki bir referans üzerinden) erişir. Üst sınıf tipinde ayrı bir nesne oluşturup onun <code>protected</code> alanına erişemez.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">package</span><span style="color:#E1E4E8"> banka;</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Hesap</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    protected</span><span style="color:#F97583"> double</span><span style="color:#E1E4E8"> bakiye;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">package</span><span style="color:#E1E4E8"> kampanya;            </span><span style="color:#6A737D">// farklı paket</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> banka.Hesap;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> VadeliHesap</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> Hesap</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> faizEkle</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">        bakiye </span><span style="color:#F97583">*=</span><span style="color:#79B8FF"> 1.02</span><span style="color:#E1E4E8">;              </span><span style="color:#6A737D">// geçerli: kendi devraldığı alan</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        Hesap baska </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Hesap</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#6A737D">        // baska.bakiye = 0;         derleme hatası: başka bir Hesap nesnesi</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Alt sınıf yalnızca kendi devraldığı parçaya erişebilir. Aynı tipten başka bir nesnenin içine bakamaz.</p>
+<h3 id="pratikte-hangisi">Pratikte hangisi?</h3>
+<p>Alanlar neredeyse her zaman <code>private</code> olur. Metotlar ihtiyaç kadar açılır: dışarıya sunulan işlemler <code>public</code>, paket içi yardımcılar default, alt sınıfların ezmesi beklenen noktalar <code>protected</code>. En kısıtlı seviyeden başlayıp gerektikçe açmak, sonradan kapatmaya çalışmaktan kolaydır. <code>public</code> olan bir şeyi kullanan kodu bulmak ve değiştirmek her zaman mümkün olmaz.</p>
+<hr>
+<h2 id="7-abstract-class-ile-interface-farkı">7. Abstract class ile interface farkı</h2>
+<p>İkisi de doğrudan <code>new</code> ile nesnesi oluşturulamayan, alt sınıfların doldurması gereken boşluklar tanımlayan yapılardır. Farkları Java sürümleriyle değişti. Eski notlardaki “interface’te yalnızca abstract metot olur” bilgisi Java 8’den beri geçerli değil.</p>
+<h3 id="abstract-class">Abstract class</h3>
+<p><strong>Abstract Class (Soyut Sınıf)</strong>, <code>abstract</code> anahtar kelimesiyle tanımlanır. Hem gövdesi olmayan abstract metotlar hem de normal metotlar içerebilir. Alanları, constructor’ı ve her erişim seviyesindeki üyeleri olabilir. Bir sınıf yalnızca bir abstract class’tan <code>extends</code> edebilir.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">abstract</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Calisan</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> String ad;</span></span>
+<span class="line"><span style="color:#F97583">    protected</span><span style="color:#B392F0"> Calisan</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">ad</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.ad </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ad; }   </span><span style="color:#6A737D">// constructor olabilir</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    abstract</span><span style="color:#F97583"> double</span><span style="color:#B392F0"> maasHesapla</span><span style="color:#E1E4E8">();                    </span><span style="color:#6A737D">// alt sınıf doldurur</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    String </span><span style="color:#B392F0">bordroSatiri</span><span style="color:#E1E4E8">() {                           </span><span style="color:#6A737D">// ortak, hazır kod</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> ad </span><span style="color:#F97583">+</span><span style="color:#9ECBFF"> ": "</span><span style="color:#F97583"> +</span><span style="color:#B392F0"> maasHesapla</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> TamZamanli</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> Calisan</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">    TamZamanli</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">ad</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">super</span><span style="color:#E1E4E8">(ad); }</span></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#B392F0"> maasHesapla</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> 40000</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Abstract class’ın constructor’ı vardır, ama <code>new Calisan(...)</code> yazılamaz. Constructor, alt sınıf <code>super(...)</code> ile çağırdığında ortak alanları kurmak için çalışır. Abstract metodu olan bir sınıf abstract olmak zorundadır. Tersi gerekmez: hiç abstract metodu olmayan bir sınıf da yalnızca nesnesinin oluşturulmasını engellemek için abstract tanımlanabilir. Bir alt sınıf, kendisi de abstract değilse, bütün abstract metotları doldurmak zorundadır.</p>
+<h3 id="interface-ve-sürüm-değişiklikleri">Interface ve sürüm değişiklikleri</h3>
+<p><strong>Interface (Arayüz)</strong>, bir sınıfın sunacağı işlemleri tanımlayan bir sözleşmedir. Bir sınıf birden fazla interface’i <code>implements</code> edebilir. Interface’in nesne durumu (instance field) yoktur. İçinde tanımlanan her değişken dolaylı olarak <code>public static final</code>, yani sabittir. Constructor’ı da yoktur.</p>
+<p>Metot tarafında sürümlere göre şunlar eklendi:</p>
+<table>
+<thead>
+<tr>
+<th>Sürüm</th>
+<th>Interface’te ne yazılabilir</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Java 7 ve öncesi</td>
+<td>Yalnızca abstract metotlar (dolaylı olarak <code>public abstract</code>) ve sabitler</td>
+</tr>
+<tr>
+<td>Java 8</td>
+<td><code>default</code> metotlar (gövdeli, implement eden sınıf ezebilir) ve <code>static</code> metotlar</td>
+</tr>
+<tr>
+<td>Java 9</td>
+<td><code>private</code> metotlar ve <code>private static</code> metotlar</td>
+</tr>
+</tbody>
+</table>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> Bildirim</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> gonder</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">mesaj</span><span style="color:#E1E4E8">);                 </span><span style="color:#6A737D">// abstract</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    default</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> gonderToplu</span><span style="color:#E1E4E8">(List&#x3C;</span><span style="color:#F97583">String</span><span style="color:#E1E4E8">> </span><span style="color:#FFAB70">mesajlar</span><span style="color:#E1E4E8">) {   </span><span style="color:#6A737D">// Java 8</span></span>
+<span class="line"><span style="color:#E1E4E8">        mesajlar.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(m </span><span style="color:#F97583">-></span><span style="color:#B392F0"> gonder</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">formatla</span><span style="color:#E1E4E8">(m)));</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    static</span><span style="color:#E1E4E8"> Bildirim </span><span style="color:#B392F0">sessiz</span><span style="color:#E1E4E8">() {                 </span><span style="color:#6A737D">// Java 8</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> mesaj </span><span style="color:#F97583">-></span><span style="color:#E1E4E8"> { };</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#E1E4E8"> String </span><span style="color:#B392F0">formatla</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">m</span><span style="color:#E1E4E8">) {        </span><span style="color:#6A737D">// Java 9</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#9ECBFF"> "[bildirim] "</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> m;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><code>default</code> metotlar, var olan bir interface’e onu implement eden bütün sınıfları bozmadan yeni metot ekleyebilmek için geldi. <code>Collection</code> arayüzüne Java 8’de eklenen <code>stream()</code> ve <code>Iterable</code>’a eklenen <code>forEach</code> bunun örneği. <code>private</code> metotlar ise birkaç <code>default</code> metodun ortak kodunu, dışarıya açmadan paylaşmaları için var.</p>
+<p>İki ayrıntı mülakatta sorulabiliyor:</p>
+<ul>
+<li>Interface’teki <code>static</code> metot, implement eden sınıfa kalıtılmaz. <code>Bildirim.sessiz()</code> diye interface adıyla çağrılır, <code>EpostaBildirim.sessiz()</code> derlenmez.</li>
+<li>Bir sınıf aynı imzalı <code>default</code> metodu olan iki interface’i implement ederse derleyici hata verir. Sınıf o metodu kendisi override etmek zorundadır. İçeriden birini seçmek için <code>A.super.metot()</code> yazılır. Elmas problemi Java’da böyle çözülüyor: davranış kalıtılabilir, ama çakışma varsa kararı sınıf verir. Durum (alan) ise interface’ten hiç kalıtılmaz.</li>
+</ul>
+<h3 id="karşılaştırma">Karşılaştırma</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Abstract class</th>
+<th>Interface</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kalıtım</td>
+<td>Bir sınıf tek bir tanesini <code>extends</code> eder</td>
+<td>Bir sınıf birden fazlasını <code>implements</code> eder</td>
+</tr>
+<tr>
+<td>Alanlar</td>
+<td>Her türlü instance alanı olabilir</td>
+<td>Yalnızca <code>public static final</code> sabitler</td>
+</tr>
+<tr>
+<td>Constructor</td>
+<td>Olabilir</td>
+<td>Olamaz</td>
+</tr>
+<tr>
+<td>Metot gövdesi</td>
+<td>Her zaman olabilirdi</td>
+<td>Java 8’den beri <code>default</code> ve <code>static</code>, Java 9’dan beri <code>private</code></td>
+</tr>
+<tr>
+<td>Üye erişimi</td>
+<td><code>public</code>, <code>protected</code>, default, <code>private</code></td>
+<td>Metotlar varsayılan olarak <code>public</code>, Java 9’dan beri <code>private</code> da olabilir</td>
+</tr>
+<tr>
+<td>İlişki</td>
+<td>is-a: ortak bir kökten gelme</td>
+<td>can-do: bir yeteneğe sahip olma</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ne-zaman-hangisi">Ne zaman hangisi?</h3>
+<p>Interface, birbiriyle akraba olmayan sınıfların ortak bir yeteneğini tanımlarken seçilir. <code>Comparable</code>, <code>Runnable</code>, <code>AutoCloseable</code> bu türden. Bir dosya da, bir veritabanı bağlantısı da kapatılabilir, ama ortak bir ataları yoktur. Bir tipin dışarıya sunduğu sözleşme de çoğunlukla interface olarak tanımlanır, böylece onu kullanan kod tek bir somut sınıfa bağlanmaz.</p>
+<p>Abstract class, yakın akraba sınıflar ortak durum ve ortak kod paylaşıyorsa seçilir. Alt sınıfların hepsinde aynı alanlar varsa, bir constructor bunları kurmalıysa ya da <code>protected</code> yardımcı metotlar gerekiyorsa interface yetmez, çünkü interface durum tutamaz.</p>
+<p>İkisi birlikte de kullanılabilir. Java kütüphanesinde <code>List</code> bir interface’tir, <code>AbstractList</code> ise onu kısmen implement eden bir abstract class. Yeni bir liste yazan kişi <code>AbstractList</code>’ten türeyip birkaç metodu doldurarak işi bitirir. Listeyi kullanan kod ise yalnızca <code>List</code>’i bilir.</p>
+<hr>
+<h2 id="8-composition-over-inheritance">8. Composition over inheritance</h2>
+<p><strong>Composition (Bileşim)</strong>, bir sınıfın başka bir sınıfın davranışını kalıtımla değil, onu bir alan olarak içinde tutarak kullanmasıdır. İlişki is-a değil, <strong>has-a (sahiptir)</strong> ilişkisidir. “Araba bir motordur” yanlış, “arabanın bir motoru vardır” doğru.</p>
+<p>“Composition over inheritance” ilkesi, kod paylaşmak için kalıtım yerine öncelikle composition’ın düşünülmesini söyler. Kalıtım alt sınıfı üst sınıfın iç ayrıntılarına sıkı bağlar. Üst sınıftaki bir değişiklik, onu hiç düşünmemiş alt sınıfları bozabilir. Ayrıca alt sınıf, istemese de üst sınıfın bütün <code>public</code> metotlarını devralır.</p>
+<p>Java’nın kendi kütüphanesinde bilinen bir örnek var. <code>java.util.Stack</code>, <code>Vector</code>’dan türer. Bu yüzden bir stack üzerinde <code>get(index)</code> ve <code>add(index, eleman)</code> gibi, yığının ortasına dokunan metotlar da çağrılabilir. Stack’in “yalnızca üstten ekle, üstten çıkar” kuralı böylece delinmiş olur. Bugün Java belgeleri stack için <code>Deque</code> arayüzünü ve <code>ArrayDeque</code>’yi öneriyor.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Yigin</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#F97583">T</span><span style="color:#E1E4E8">> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> Deque&#x3C;</span><span style="color:#F97583">T</span><span style="color:#E1E4E8">> elemanlar </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> ArrayDeque&#x3C;>();   </span><span style="color:#6A737D">// has-a</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> push</span><span style="color:#E1E4E8">(T </span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) { elemanlar.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(e); }</span></span>
+<span class="line"><span style="color:#E1E4E8">    T </span><span style="color:#B392F0">pop</span><span style="color:#E1E4E8">()        { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> elemanlar.</span><span style="color:#B392F0">pop</span><span style="color:#E1E4E8">(); }</span></span>
+<span class="line"><span style="color:#F97583">    boolean</span><span style="color:#B392F0"> bosMu</span><span style="color:#E1E4E8">(){ </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> elemanlar.</span><span style="color:#B392F0">isEmpty</span><span style="color:#E1E4E8">(); }</span></span>
+<span class="line"><span style="color:#6A737D">    // ortadan erişim yok, çünkü dışarıya açılmadı</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Bu, kalıtımın hiç kullanılmayacağı anlamına gelmiyor. Gerçek bir is-a ilişkisi varsa ve alt sınıf üst sınıfın yerine her yerde sorunsuz kullanılabiliyorsa kalıtım doğru araçtır. Sorun, kalıtımın yalnızca kod tekrarından kaçmak için kullanılmasıyla başlıyor.</p>
+<hr>
+<h2 id="mülakatta-sorulanlar">Mülakatta sorulanlar</h2>
+<p><strong>1. OOP’nin dört temel ilkesi nedir?</strong>
+Encapsulation veriyi sınıf içinde saklayıp yalnızca metotlar üzerinden değiştirilmesini sağlar. Inheritance bir sınıfın başka bir sınıfın üyelerini devralmasıdır. Polymorphism aynı çağrının nesnenin tipine göre farklı çalışmasıdır, abstraction ise ayrıntıyı gizleyip yalnızca gerekli arayüzü göstermektir.
+Sık yapılan hata: Encapsulation’ı “her alana getter ve setter yazmak” diye tanımlamak.</p>
+<p><strong>2. Overloading ile overriding arasındaki fark nedir?</strong>
+Overloading aynı adlı, parametre listesi farklı metotlardır ve hangisinin çalışacağına derleme sırasında karar verilir. Overriding alt sınıfın üst sınıftaki metodu aynı imzayla yeniden yazmasıdır ve karar çalışma sırasında, nesnenin gerçek tipine göre verilir.
+Sık yapılan hata: Yalnızca dönüş tipi farklı iki metodu overloading saymak. Bu derleme hatasıdır.</p>
+<p><strong>3. Static bir metot override edilebilir mi?</strong>
+Hayır. Alt sınıfta aynı imzayla yazılan static metot üst sınıftakini gizler (method hiding). Hangisinin çalışacağı nesneye değil, referansın tipine göre derleme sırasında belirlenir.
+Sık yapılan hata: <code>@Override</code> yazmadan aynı imzayı kullanıp bunu override sanmak. <code>@Override</code> eklenirse derleyici hata verir.</p>
+<p><strong>4. Java’da protected ne anlama gelir?</strong>
+Üyeye aynı sınıf, aynı paketteki bütün sınıflar ve başka paketteki alt sınıflar erişebilir. Başka paketteki alt sınıf bu erişimi yalnızca kendi devraldığı üye üzerinden kullanır, üst sınıf tipindeki başka bir nesnenin protected alanına erişemez.
+Sık yapılan hata: “Yalnızca alt sınıflar erişir” deyip aynı paket erişimini unutmak.</p>
+<p><strong>5. Hiçbir erişim belirleyici yazılmazsa ne olur?</strong>
+Üye package-private olur. Aynı paketteki sınıflar erişebilir, başka paketteki sınıflar, alt sınıflar dahil, erişemez.
+Sık yapılan hata: C#‘taki gibi varsayılanın private olduğunu sanmak.</p>
+<p><strong>6. Abstract class ile interface arasındaki fark nedir?</strong>
+Abstract class’ın alanları, constructor’ı ve her erişim seviyesinde üyesi olabilir, bir sınıf yalnızca birini extends eder. Interface durum tutmaz, alanları yalnızca sabittir ve bir sınıf birden fazlasını implement edebilir. Java 8’den beri interface’te default ve static, Java 9’dan beri private metot yazılabilir.
+Sık yapılan hata: “Interface’te yalnızca abstract metot olur” demek. Bu Java 7’ye kadar doğruydu.</p>
+<p><strong>7. Abstract class’ın constructor’ı neden vardır, nesnesi oluşturulamıyorsa?</strong>
+Constructor, alt sınıf <code>super(...)</code> ile çağırdığında abstract class’taki ortak alanları kurmak için çalışır. Nesne her zaman somut bir alt sınıfın nesnesidir, abstract class onun bir parçasını hazırlar.
+Sık yapılan hata: “Abstract class’ın constructor’ı olamaz” demek.</p>
+<p><strong>8. Composition over inheritance ne demek?</strong>
+Kod paylaşmak için önce bir nesneyi alan olarak içinde tutmayı (has-a) düşünmek, kalıtımı (is-a) gerçek bir tür ilişkisi olduğunda kullanmaktır. Kalıtım alt sınıfı üst sınıfın iç yapısına sıkı bağlar ve istenmeyen metotları da dışarıya açar.
+Sık yapılan hata: İlkeyi “kalıtım hiç kullanılmaz” diye anlamak.</p>
+<p><img alt="Özet kart: dört ilke, overloading ve overriding farkı, Java erişim belirleyicileri tablosu, abstract class ile interface karşılaştırması" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/oop-ozet-kart.vNWCYx3q_yyh0p.webp" ></p>
+<p><em>5. bölümde: bellek, yani stack, heap ve garbage collector.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

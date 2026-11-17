@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TCP El Sıkışması</title>
+<style>
+:root{
+  --krem:#F5F0E6; --kirmizi:#C8463D; --mavi:#3F6FB0; --gri:#A9A19A;
+  --koyu:#3A3A3A; --hardal:#E3B23C; --cizgi:#D9D1C3; --soluk:#6B645D;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--krem);color:var(--koyu);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;}
+body{overflow-x:hidden}
+.rr{max-width:1080px;margin:0 auto;padding:24px 16px 40px}
+.ust{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+h1{font-size:1.45rem;line-height:1.25;margin:0 0 4px;font-weight:800}
+.alt{margin:0;color:var(--soluk);font-size:.92rem}
+button{font:inherit;color:var(--koyu);background:transparent;border:2px solid var(--koyu);
+  border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer;min-height:40px}
+button:hover{background:#ECE5D8}
+button:focus-visible{outline:3px solid var(--mavi);outline-offset:2px}
+button:disabled{opacity:.35;cursor:default;background:transparent}
+button.dolu{background:var(--koyu);color:var(--krem)}
+button.dolu:hover{background:#2c2c2c}
+.dil{flex:none;padding:6px 12px;min-height:36px}
+.ana{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:28px;margin-top:22px;align-items:start}
+@media (max-width:860px){.ana{grid-template-columns:minmax(0,1fr)}}
+.sahne-kap{min-width:0}
+svg.sahne{width:100%;height:auto;display:block;overflow:visible}
+.zarf{transition:transform .8s cubic-bezier(.4,.1,.2,1),opacity .35s ease .85s}
+.zarf.kayip{transition:transform .55s cubic-bezier(.4,.1,.2,1),opacity .6s ease .6s}
+.ok-yeni{animation:belir .7s ease both}
+.ok-kayip-yeni{animation:sol 1.4s ease both}
+@keyframes belir{from{opacity:0}to{opacity:1}}
+@keyframes sol{0%{opacity:0}45%{opacity:1}100%{opacity:.38}}
+.kontrol{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:18px}
+.kontrol .adim-btn{display:flex;gap:8px}
+.q-grup{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.q-grup .etiket{font-weight:700;font-size:.9rem;margin-right:2px}
+.q-grup button{min-width:40px;padding:6px 0;min-height:36px}
+.q-grup button.uzun{padding:6px 10px}
+.q-grup button[aria-pressed="true"]{background:var(--hardal);border-color:var(--koyu)}
+.ipucu{font-size:.8rem;color:var(--soluk);margin:10px 0 0}
+.yan{border-left:3px dashed var(--cizgi);padding-left:22px;min-width:0}
+@media (max-width:860px){.yan{border-left:none;padding-left:0;border-top:3px dashed var(--cizgi);padding-top:18px}}
+.sayac{font-size:.8rem;font-weight:700;color:var(--soluk);margin:0}
+.zaman{font-size:1.6rem;font-weight:800;margin:4px 0 10px}
+.aciklama{font-size:1.02rem;line-height:1.55;margin:0;min-height:5.5em}
+.ozet{margin-top:16px}
+.ozet[hidden]{display:none}
+.kartlar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.kart{background:#ECE5D8;border-radius:10px;padding:10px 8px}
+.kart b{display:block;font-size:1.35rem;font-weight:800}
+.kart span{font-size:.72rem;color:var(--soluk);font-weight:700}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.85rem}
+th,td{text-align:right;padding:5px 4px;border-bottom:1px solid var(--cizgi)}
+th:first-child,td:first-child{text-align:left}
+th{font-size:.72rem;color:var(--soluk)}
+.not{font-size:.92rem;line-height:1.5;margin:12px 0 0}
+.dogrulama{font-size:.8rem;color:var(--soluk);margin:8px 0 0}
+.gorunmez{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hareketsiz .zarf,.hareketsiz .ok-yeni,.hareketsiz .ok-kayip-yeni{transition:none !important;animation:none !important}
+@media (prefers-reduced-motion: reduce){
+  .zarf,.ok-yeni,.ok-kayip-yeni{transition:none !important;animation:none !important}
+}
+</style>
+</head>
+<body>
+<div class="rr" id="rr">
+  <div class="ust">
+    <div>
+      <h1 data-i18n="title"></h1>
+      <p class="alt" data-i18n="sub"></p>
+    </div>
+    <button class="dil" id="dilBtn" type="button"></button>
+  </div>
+
+  <div class="ana">
+    <div class="sahne-kap" id="sahneKap">
+      <svg class="sahne" id="sahne" role="img" aria-labelledby="sahneEtiket">
+        <title id="sahneEtiket"></title>
+        <g id="statik"></g>
+        <g id="akis"></g>
+        <g id="saat"></g>
+      </svg>
+      <div class="kontrol">
+        <div class="adim-btn">
+          <button type="button" id="geriBtn"></button>
+          <button type="button" id="oynatBtn" class="dolu"></button>
+          <button type="button" id="ileriBtn"></button>
+        </div>
+        <div class="q-grup" role="group" id="kGrup" aria-labelledby="kEtiket">
+          <span class="etiket" id="kEtiket" data-i18n="lossLbl"></span>
+        </div>
+      </div>
+      <p class="ipucu" data-i18n="hint"></p>
+    </div>
+
+    <aside class="yan">
+      <p class="sayac" id="sayac"></p>
+      <p class="zaman" id="zaman"></p>
+      <p class="aciklama" id="aciklama" aria-live="polite"></p>
+      <div class="ozet" id="ozet" hidden>
+        <div class="kartlar">
+          <div class="kart"><b id="oP"></b><span data-i18n="cPackets"></span></div>
+          <div class="kart"><b id="oR"></b><span data-i18n="cRetrans"></span></div>
+          <div class="kart"><b id="oL"></b><span data-i18n="cLost"></span></div>
+        </div>
+        <table>
+          <thead><tr><th data-i18n="thSide"></th><th data-i18n="thState"></th><th>seq</th><th>ack</th></tr></thead>
+          <tbody id="tablo"></tbody>
+        </table>
+        <p class="not" id="not"></p>
+        <p class="dogrulama" id="dogrulama"></p>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+// SIM-START
+// TCP bağlantısının saf simülasyonu: olay listesi üretir, DOM'a dokunmaz.
+// Zaman birimi: tek yön gecikme = delay. Sıra ve ACK numaraları bayt cinsinden hesaplanır.
+// loss: 'none' | 'synack' | 'data'. Kaybolan segment yalnız ilk denemede kaybolur.
+function simulateTCP(opts) {
+  const o = Object.assign({ clientIsn: 999, serverIsn: 4999, dataLen: 500, loss: 'none',
+    close: true, delay: 1, rto: 3, msl2: 1.5 }, opts || {});
+  const ends = {
+    C: { state: 'CLOSED', sndNxt: o.clientIsn, rcvNxt: null },
+    S: { state: 'LISTEN', sndNxt: o.serverIsn, rcvNxt: null }
+  };
+  const peer = s => (s === 'C' ? 'S' : 'C');
+  const snap = () => ({
+    C: { state: ends.C.state, seq: ends.C.sndNxt, ack: ends.C.rcvNxt },
+    S: { state: ends.S.state, seq: ends.S.sndNxt, ack: ends.S.rcvNxt }
+  });
+  const setState = (side, st, at, changes) => {
+    if (ends[side].state !== st) { ends[side].state = st; changes.push({ side, state: st, t: at }); }
+  };
+  const consumes = seg => seg.len + (seg.syn ? 1 : 0) + (seg.fin ? 1 : 0);
+
+  function receive(side, seg, at, changes) {
+    const r = ends[side];
+    if (seg.syn && r.rcvNxt === null) r.rcvNxt = seg.seq + consumes(seg);
+    else if (seg.seq === r.rcvNxt) r.rcvNxt += consumes(seg);      // sırası doğru gelen
+    const allAcked = seg.ack !== null && seg.ack === r.sndNxt;     // gönderdiğim her şey onaylandı
+    if (r.state === 'LISTEN' && seg.syn) setState(side, 'SYN-RECEIVED', at, changes);
+    else if (r.state === 'SYN-SENT' && seg.syn && allAcked) setState(side, 'ESTABLISHED', at, changes);
+    else if (r.state === 'SYN-RECEIVED' && allAcked) setState(side, 'ESTABLISHED', at, changes);
+    else if (r.state === 'ESTABLISHED' && seg.fin) setState(side, 'CLOSE-WAIT', at, changes);
+    else if (r.state === 'FIN-WAIT-1' && seg.fin && allAcked) setState(side, 'TIME-WAIT', at, changes);
+    else if (r.state === 'FIN-WAIT-1' && allAcked) setState(side, 'FIN-WAIT-2', at, changes);
+    else if (r.state === 'FIN-WAIT-2' && seg.fin) setState(side, 'TIME-WAIT', at, changes);
+    else if (r.state === 'LAST-ACK' && allAcked) setState(side, 'CLOSED', at, changes);
+  }
+
+  const plan = [
+    { role: 'syn', from: 'C', name: 'SYN', syn: true, ack: false, len: 0 },
+    { role: 'synack', from: 'S', name: 'SYN-ACK', syn: true, ack: true, len: 0 },
+    { role: 'ack3', from: 'C', name: 'ACK', ack: true, len: 0 },
+    { role: 'data', from: 'C', name: null, ack: true, len: o.dataLen },
+    { role: 'dataack', from: 'S', name: 'ACK', ack: true, len: 0 }
+  ];
+  if (o.close) plan.push(
+    { role: 'fin', from: 'C', name: 'FIN', fin: true, ack: true, len: 0 },
+    { role: 'finack', from: 'S', name: 'FIN-ACK', fin: true, ack: true, len: 0 },
+    { role: 'lastack', from: 'C', name: 'ACK', ack: true, len: 0 }
+  );
+
+  const events = [];
+  let t = 0, packets = 0, retransmissions = 0, lost = 0;
+  for (const p of plan) {
+    const snd = ends[p.from];
+    const seg = { seq: snd.sndNxt, ack: p.ack ? snd.rcvNxt : null, len: p.len, syn: !!p.syn, fin: !!p.fin };
+    snd.sndNxt += consumes(seg);
+    for (let attempt = 0; ; attempt++) {
+      const retrans = attempt > 0;
+      const isLost = !retrans && o.loss === p.role;
+      const tSend = t, tArr = t + o.delay;
+      const changes = [];
+      packets++;
+      if (retrans) retransmissions++;
+      if (isLost) lost++;
+      if (!retrans) {                                    // gönderirken değişen durumlar
+        if (p.role === 'syn') setState('C', 'SYN-SENT', tSend, changes);
+        if (p.role === 'fin') setState('C', 'FIN-WAIT-1', tSend, changes);
+        if (p.role === 'finack') setState('S', 'LAST-ACK', tSend, changes);
+      }
+      if (!isLost) receive(peer(p.from), seg, tArr, changes);
+      events.push({ type: 'send', role: p.role, name: p.name, from: p.from, to: peer(p.from),
+        seq: seg.seq, ack: seg.ack, len: seg.len, tSend, tArr, lost: isLost, retrans,
+        changes, states: snap() });
+      if (!isLost) { t = tArr; break; }
+      const tOut = tSend + o.rto;                        // ACK gelmedi, RTO doldu
+      events.push({ type: 'timeout', role: p.role, name: p.name, from: p.from,
+        tStart: tSend, t: tOut, changes: [], states: snap() });
+      t = tOut;
+    }
+  }
+  if (ends.C.state === 'TIME-WAIT') {
+    const changes = [];
+    const tEnd = t + o.msl2;
+    setState('C', 'CLOSED', tEnd, changes);
+    events.push({ type: 'timewait', role: 'timewait', from: 'C', t, tEnd, changes, states: snap() });
+    t = tEnd;
+  }
+  return { opts: o, events, packets, retransmissions, lost, final: snap(), tEnd: t };
+}
+// SIM-END
+</script>
+
+<script>
+(function () {
+  // Yazıdaki örnek: 1000 numarasıyla başlayan 500 baytlık segment, cevabı ack = 1500.
+  // İstemcinin başlangıç numarası 999 seçildi; SYN bir numara tükettiği için veri 1000'den başlar.
+  const OPTS = { clientIsn: 999, serverIsn: 4999, dataLen: 500, close: true, delay: 1, rto: 3, msl2: 1.5 };
+  // Yalnız karşılaştırma için. Ders bu sayıları göstermez, simülasyonu gösterir.
+  const ARTICLE = { dataSeq: 1000, dataLen: 500, ack: 1500 };
+  const KAYIP = ['none', 'synack', 'data'];
+  const RENK = { C: '#3F6FB0', S: '#C8463D' };
+
+  const fmt = (n, lang) => {
+    const s = String(Math.round(n * 100) / 100);
+    return lang === 'tr' ? s.replace('.', ',') : s;
+  };
+
+  const DICT = {
+    tr: {
+      title: 'TCP el sıkışması, adım adım',
+      sub: 'Programlama 101, Bölüm 11 · Ağ 1',
+      langBtn: 'EN', langAria: 'Switch to English',
+      prev: 'Geri', next: 'İleri', play: 'Oynat', pause: 'Durdur',
+      prevAria: 'Önceki adım', nextAria: 'Sonraki adım',
+      playAria: 'Adımları otomatik oynat', pauseAria: 'Otomatik oynatmayı durdur',
+      lossLbl: 'Paket kaybı',
+      lossOpt: { none: 'Yok', synack: 'SYN-ACK', data: 'Veri' },
+      lossAria: { none: 'Paket kaybı olmasın', synack: 'SYN-ACK yolda kaybolsun', data: 'Veri segmenti yolda kaybolsun' },
+      step: (a, b) => `Adım ${a} / ${b}`,
+      side: { C: 'İstemci', S: 'Sunucu' },
+      gen: { C: 'İstemcinin', S: 'Sunucunun' },
+      data: 'veri',
+      hint: 'Zaman yukarıdan aşağı akar, her ok bir segment. Klavyede ← ve → tuşları da adım değiştirir.',
+      scene: 'İstemci ile sunucu arasındaki segmentlerin sıra şeması',
+      intro: (s, L) => `Solda istemci, sağda sunucu. Sunucu LISTEN durumunda bağlantı bekliyor, istemci CLOSED. Başlangıç sıra numaraları istemcide ${s.opts.clientIsn}, sunucuda ${s.opts.serverIsn}. Gerçekte bu numaralar rastgele seçilir.` +
+        (L === 'synack' ? ' Bu çalıştırmada SYN-ACK yolda kaybolacak.' : L === 'data' ? ' Bu çalıştırmada veri segmenti yolda kaybolacak.' : ''),
+      ev: {
+        syn: e => `İstemci SYN gönderiyor ve başlangıç sıra numarasını bildiriyor: seq=${e.seq}. İstemcinin durumu ${e.states.C.state} oldu. Sunucu SYN'i aldı, durumu ${e.states.S.state} oldu.`,
+        synack: e => `Sunucu SYN-ACK ile cevap veriyor. Kendi başlangıç numarası seq=${e.seq}, onay ack=${e.ack}. SYN bir sıra numarası tükettiği için beklenen sıradaki numara ${e.ack - 1} değil ${e.ack}. İstemcinin durumu ${e.states.C.state} oldu.`,
+        ack3: e => `İstemci ACK gönderiyor: seq=${e.seq}, ack=${e.ack}. Sunucunun durumu da ${e.states.S.state} oldu. Bağlantı kuruldu, iki taraf da karşının başlangıç numarasını biliyor.`,
+        data: e => `İstemci ${e.len} baytlık bir veri segmenti gönderiyor: seq=${e.seq}, yani ${e.seq} ile ${e.seq + e.len - 1} arasındaki baytlar. Durumlar değişmiyor.`,
+        dataack: e => `Sunucu ack=${e.ack} ile cevap veriyor: ${e.ack - 1} numaralı bayta kadar her şey elinde, beklediği sıradaki bayt ${e.ack}. Kendisi veri göndermediği için seq=${e.seq} olarak kalıyor.`,
+        fin: e => `İstemci FIN gönderiyor: seq=${e.seq}, ack=${e.ack}. FIN de SYN gibi bir sıra numarası tüketir. İstemcinin durumu ${e.states.C.state}, sunucununki ${e.states.S.state} oldu.`,
+        finack: e => `Sunucu ACK ile kendi FIN'ini tek segmentte gönderiyor: seq=${e.seq}, ack=${e.ack}. Kapanış bu yüzden dört değil üç mesajda bitiyor. Sunucunun durumu ${e.states.S.state}, istemcininki ${e.states.C.state} oldu.`,
+        lastack: e => `İstemci son ACK'i gönderiyor: seq=${e.seq}, ack=${e.ack}. Sunucunun durumu ${e.states.S.state} oldu. İstemci bir süre ${e.states.C.state} durumunda bekliyor.`,
+        timewait: e => `2×MSL süresi doldu ve istemcinin durumu da ${e.states.C.state} oldu. Bu bekleme, son ACK kaybolursa tekrar gönderebilmek için var.`
+      },
+      lost: (e, D) => `${D.side[e.from]} ${D.segName(e)} gönderdi ama segment yolda kayboldu. ${D.gen[e.to]} durumu ${e.states[e.to].state} olarak kalıyor. ${D.gen[e.from]} RTO sayacı çalışıyor, ACK gelmezse segmenti yeniden gönderecek.`,
+      timeout: (e, D) => `RTO doldu, ACK gelmedi. ${D.side[e.from]} ${D.segName(e)} segmentini aynı numaralarla yeniden gönderecek.` +
+        (e.role === 'synack' ? ' İstemcinin SYN için tuttuğu sayaç da işliyor. Gerçekte hangi sayaç önce dolarsa o taraf tekrarlar, burada sunucununki gösteriliyor.' :
+         e.role === 'data' ? ' Fast Retransmit için arkadan gelen segmentlerin yinelenen ACK\'leri gerekirdi. Burada tek segment var, kaybı timeout yakalıyor.' : ''),
+      retrans: 'Yeniden gönderim. ',
+      segName: e => (e.name || 'veri'),
+      final: (s, L) => `Akış t=${fmt(s.tEnd, L)} anında bitti. ${s.packets} segment gitti, ${s.retransmissions ? s.retransmissions + ' tanesi yeniden gönderim' : 'yeniden gönderim olmadı'}. İki ucun son durumu ${s.final.C.state} ve ${s.final.S.state}.`,
+      cPackets: 'Giden segment', cRetrans: 'Yeniden gönderim', cLost: 'Kaybolan',
+      thSide: 'Uç', thState: 'Son durum',
+      note: 'seq, o ucun göndereceği sıradaki bayt. ack, karşıdan beklediği sıradaki bayt. UDP\'de bu adımların hiçbiri yok. Datagram el sıkışmadan gönderilir, ACK beklenmez. Kaybolursa bunu fark edip yeniden göndermek uygulamanın işidir.',
+      check: ok => `Yazıdaki örnek: ${ARTICLE.dataSeq} ile başlayan ${ARTICLE.dataLen} baytlık segment, cevabı ack = ${ARTICLE.ack}. Simülasyon ${ok ? 'aynı sonucu verdi' : 'farklı sonuç verdi'}.`
+    },
+    en: {
+      title: 'The TCP handshake, step by step',
+      sub: 'Programming 101, Part 11 · Networking 1',
+      langBtn: 'TR', langAria: 'Türkçeye geç',
+      prev: 'Back', next: 'Next', play: 'Play', pause: 'Pause',
+      prevAria: 'Previous step', nextAria: 'Next step',
+      playAria: 'Play the steps automatically', pauseAria: 'Pause autoplay',
+      lossLbl: 'Packet loss',
+      lossOpt: { none: 'None', synack: 'SYN-ACK', data: 'Data' },
+      lossAria: { none: 'No packet loss', synack: 'Lose the SYN-ACK on the way', data: 'Lose the data segment on the way' },
+      step: (a, b) => `Step ${a} / ${b}`,
+      side: { C: 'The client', S: 'The server' },
+      gen: { C: 'The client\'s', S: 'The server\'s' },
+      data: 'data',
+      hint: 'Time flows from top to bottom, each arrow is one segment. The ← and → keys also change the step.',
+      scene: 'Sequence diagram of the segments between client and server',
+      intro: (s, L) => `The client is on the left, the server on the right. The server waits for a connection in LISTEN, the client is CLOSED. The initial sequence numbers are ${s.opts.clientIsn} on the client and ${s.opts.serverIsn} on the server. In practice they are chosen at random.` +
+        (L === 'synack' ? ' In this run the SYN-ACK gets lost on the way.' : L === 'data' ? ' In this run the data segment gets lost on the way.' : ''),
+      ev: {
+        syn: e => `The client sends SYN with its initial sequence number: seq=${e.seq}. The client is now ${e.states.C.state}. The server received the SYN and is now ${e.states.S.state}.`,
+        synack: e => `The server replies with SYN-ACK. Its own initial number is seq=${e.seq}, and it confirms with ack=${e.ack}. The SYN used up one sequence number, so the next expected number is ${e.ack}, not ${e.ack - 1}. The client is now ${e.states.C.state}.`,
+        ack3: e => `The client sends ACK: seq=${e.seq}, ack=${e.ack}. The server is now ${e.states.S.state} too. The connection is set up, and each side knows the other's initial number.`,
+        data: e => `The client sends a ${e.len}-byte data segment: seq=${e.seq}, so bytes ${e.seq} to ${e.seq + e.len - 1}. The states do not change.`,
+        dataack: e => `The server replies with ack=${e.ack}: it has everything up to ${e.ack - 1}, and the next byte it expects is ${e.ack}. It has sent no data itself, so it stays at seq=${e.seq}.`,
+        fin: e => `The client sends FIN: seq=${e.seq}, ack=${e.ack}. Like SYN, FIN uses up one sequence number. The client is now ${e.states.C.state}, the server ${e.states.S.state}.`,
+        finack: e => `The server sends its ACK and its own FIN in one segment: seq=${e.seq}, ack=${e.ack}. That is why the close takes three messages instead of four. The server is now ${e.states.S.state}, the client ${e.states.C.state}.`,
+        lastack: e => `The client sends the last ACK: seq=${e.seq}, ack=${e.ack}. The server is now ${e.states.S.state}. The client waits in ${e.states.C.state} for a while.`,
+        timewait: e => `2×MSL has passed and the client is ${e.states.C.state} as well. The wait exists so the last ACK can be resent if it is lost.`
+      },
+      lost: (e, D) => `${D.side[e.from]} sent the ${D.segName(e)} segment, but it was lost on the way. ${D.gen[e.to]} state stays ${e.states[e.to].state}. ${D.gen[e.from]} RTO timer is running. If no ACK arrives, the segment is sent again.`,
+      timeout: (e, D) => `The RTO expired with no ACK. ${D.side[e.from]} resends the ${D.segName(e)} segment with the same numbers.` +
+        (e.role === 'synack' ? ' The client\'s timer for its SYN is running too. In practice whichever timer expires first triggers the resend, and here the server\'s timer is shown.' :
+         e.role === 'data' ? ' Fast Retransmit would need duplicate ACKs from later segments. There is only one segment here, so the timeout catches the loss.' : ''),
+      retrans: 'Retransmission. ',
+      segName: e => (e.name || 'data'),
+      final: (s, L) => `The flow ended at t=${fmt(s.tEnd, L)}. ${s.packets} segments were sent, ${s.retransmissions ? s.retransmissions + ' of them a retransmission' : 'with no retransmission'}. The final states are ${s.final.C.state} and ${s.final.S.state}.`,
+      cPackets: 'Segments sent', cRetrans: 'Retrans­missions', cLost: 'Lost',
+      thSide: 'End', thState: 'Final state',
+      note: 'seq is the next byte that end will send. ack is the next byte it expects from the other end. UDP has none of these steps. A datagram is sent without a handshake and no ACK is awaited. If it is lost, noticing that and sending it again is up to the application.',
+      check: ok => `Example in the post: a ${ARTICLE.dataLen}-byte segment starting at ${ARTICLE.dataSeq} is answered with ack = ${ARTICLE.ack}. The simulation ${ok ? 'gives the same result' : 'gives a different result'}.`
+    }
+  };
+
+  // Yerleşimler: geniş ekran ve dar ekran (mobil) için ayrı koordinatlar.
+  const LAYOUTS = {
+    wide: { vb: 760, x: { C: 190, S: 570 }, devY: 14, pillY: 104, y0: 160, u: 36,
+            oneLine: true, hist: true, font: 14, pillW: 150, pillF: 13, watch: 62 },
+    narrow: { vb: 400, x: { C: 70, S: 330 }, devY: 14, pillY: 104, y0: 172, u: 60,
+              oneLine: false, hist: false, font: 14, pillW: 128, pillF: 12, watch: 42 }
+  };
+
+  const NS = 'http://www.w3.org/2000/svg';
+  const $ = id => document.getElementById(id);
+  const el = (tag, attrs, parent) => {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  };
+
+  const reduceMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const reduced = () => reduceMQ.matches;
+
+  let lang = 'tr', loss = 'none', step = 0, timerId = null, layoutKey = null, saatAnim = null;
+  let sim = simulateTCP(Object.assign({ loss }, OPTS));
+  const T = () => DICT[lang];
+  const lastStep = () => sim.events.length + 1;
+  const L = () => LAYOUTS[layoutKey];
+  const yAt = t => L().y0 + t * L().u;
+  const outer = side => (side === 'C' ? -1 : 1);       // yaşam çizgisinin dış tarafı
+
+  // ----- durum -----
+  function statesAt(k) {
+    if (k === 0) return { C: { state: 'CLOSED' }, S: { state: 'LISTEN' } };
+    if (k > sim.events.length) return sim.final;
+    return sim.events[k - 1].states;
+  }
+
+  // ----- sahne çizimi -----
+  function arrowHead(defs) {
+    const m = el('marker', { id: 'okBasi', viewBox: '0 0 10 10', refX: '6', refY: '5',
+      markerWidth: '4.2', markerHeight: '4.2', orient: 'auto-start-reverse' }, defs);
+    el('path', { d: 'M 0 0 L 10 5 L 0 10 z', fill: '#3A3A3A' }, m);
+  }
+
+  function drawDevice(g, side) {
+    const Y = L(), cx = Y.x[side], y = Y.devY;
+    if (side === 'C') {
+      el('rect', { x: cx - 36, y, width: 72, height: 46, rx: 7, fill: RENK.C }, g);
+      el('rect', { x: cx - 28, y: y + 7, width: 56, height: 32, rx: 4, fill: '#F5F0E6' }, g);
+      el('rect', { x: cx - 20, y: y + 15, width: 30, height: 5, rx: 2.5, fill: '#A9A19A' }, g);
+      el('rect', { x: cx - 20, y: y + 25, width: 40, height: 5, rx: 2.5, fill: '#A9A19A' }, g);
+      el('rect', { x: cx - 46, y: y + 48, width: 92, height: 10, rx: 5, fill: '#3A3A3A' }, g);
+    } else {
+      el('rect', { x: cx - 28, y: y - 2, width: 56, height: 62, rx: 7, fill: RENK.S }, g);
+      for (let i = 0; i < 3; i++) {
+        el('rect', { x: cx - 18, y: y + 8 + i * 16, width: 26, height: 7, rx: 3.5, fill: '#F5F0E6' }, g);
+        el('circle', { cx: cx + 15, cy: y + 11.5 + i * 16, r: 3.5, fill: '#F5F0E6' }, g);
+      }
+    }
+    const tx = el('text', { x: cx, y: y + 82, 'text-anchor': 'middle', 'font-size': 15,
+      'font-weight': 800, fill: '#3A3A3A' }, g);
+    tx.textContent = side === 'C' ? (lang === 'tr' ? 'İstemci' : 'Client') : (lang === 'tr' ? 'Sunucu' : 'Server');
+  }
+
+  function drawStatic() {
+    const Y = L();
+    const H = Y.y0 + sim.tEnd * Y.u + 34;
+    const svg = $('sahne');
+    svg.setAttribute('viewBox', `0 0 ${Y.vb} ${H}`);
+    const g = $('statik');
+    g.innerHTML = '';
+    const defs = el('defs', {}, g);
+    arrowHead(defs);
+    ['C', 'S'].forEach(side => {
+      drawDevice(g, side);
+      el('rect', { x: Y.x[side] - 4, y: Y.pillY + 38, width: 8, height: H - Y.pillY - 50, rx: 4,
+        fill: RENK[side] }, g);
+      const p = el('g', { id: 'pill-' + side }, g);
+      el('rect', { class: 'pill-k', x: Y.x[side] - Y.pillW / 2, y: Y.pillY, width: Y.pillW, height: 28, rx: 14,
+        fill: '#F5F0E6', stroke: '#3A3A3A', 'stroke-width': 2.5 }, p);
+      el('text', { class: 'pill-t', x: Y.x[side], y: Y.pillY + 19, 'text-anchor': 'middle',
+        'font-size': Y.pillF, 'font-weight': 800, fill: '#3A3A3A', 'letter-spacing': .5 }, p);
+    });
+    if (Y.hist) {   // zaman ekseni
+      el('path', { d: `M 28 ${Y.y0} V ${Y.y0 + 90}`, fill: 'none', stroke: '#A9A19A', 'stroke-width': 4,
+        'stroke-dasharray': '8 7', 'stroke-linecap': 'round', 'marker-end': 'url(#okBasi)' }, g);
+      const tt = el('text', { x: 28, y: Y.y0 - 10, 'text-anchor': 'middle', 'font-size': 15,
+        'font-weight': 800, fill: '#6B645D' }, g);
+      tt.textContent = 't';
+    }
+  }
+
+  function setPills(k) {
+    const now = statesAt(k), prev = statesAt(Math.max(0, k - 1));
+    ['C', 'S'].forEach(side => {
+      const p = $('pill-' + side);
+      p.querySelector('.pill-t').textContent = now[side].state;
+      const changed = k > 0 && now[side].state !== prev[side].state;
+      p.querySelector('.pill-k').setAttribute('fill', changed ? '#E3B23C' : '#F5F0E6');
+    });
+  }
+
+  function segLabel(g, e, mx, my, fade) {
+    const Y = L(), D = T();
+    const name = e.name || D.data;
+    const nums = `seq=${e.seq}` + (e.ack !== null ? ` ack=${e.ack}` : '') + (e.len ? ` len=${e.len}` : '');
+    const lg = el('g', {}, g);
+    const bg = el('rect', { rx: 6, fill: e.retrans ? '#E3B23C' : '#F5F0E6', opacity: e.retrans ? 1 : .92 }, lg);
+    const tx = el('text', { x: mx, 'text-anchor': 'middle', 'font-size': Y.font, fill: '#3A3A3A' }, lg);
+    if (Y.oneLine) {
+      tx.setAttribute('y', my - 9);
+      const a = el('tspan', { 'font-weight': 800 }, tx); a.textContent = name + ' ';
+      const b = el('tspan', { 'font-weight': 600 }, tx); b.textContent = nums;
+    } else {
+      tx.setAttribute('y', my - 26);
+      const a = el('tspan', { x: mx, 'font-weight': 800 }, tx); a.textContent = name;
+      const b = el('tspan', { x: mx, dy: Y.font + 2, 'font-weight': 600 }, tx); b.textContent = nums;
+    }
+    if (fade) lg.setAttribute('opacity', .55);
+    try {
+      const bb = tx.getBBox();
+      bg.setAttribute('x', bb.x - 5); bg.setAttribute('y', bb.y - 2);
+      bg.setAttribute('width', bb.width + 10); bg.setAttribute('height', bb.height + 4);
+    } catch (_) { /* görünmez durumda kutu çizilmez */ }
+  }
+
+  function envelope(g, side) {
+    const z = el('g', { class: 'zarf' }, g);
+    el('rect', { x: -15, y: -10, width: 30, height: 20, rx: 3, fill: RENK[side] }, z);
+    el('path', { d: 'M -12 -7 L 0 2 L 12 -7', fill: 'none', stroke: '#F5F0E6', 'stroke-width': 2.5,
+      'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, z);
+    return z;
+  }
+
+  function drawSend(g, e, isNew) {
+    const Y = L();
+    const dir = e.from === 'C' ? 1 : -1;
+    const x1 = Y.x[e.from] + dir * 8, x2 = Y.x[e.to] - dir * 14;
+    const y1 = yAt(e.tSend), y2 = yAt(e.tArr);
+    const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+    const f = .6;
+    const xe = e.lost ? x1 + (x2 - x1) * f : x2, ye = e.lost ? y1 + (y2 - y1) * f : y2;
+    const og = el('g', {}, g);
+    if (e.lost) og.setAttribute('opacity', .38);
+    if (isNew) og.setAttribute('class', e.lost ? 'ok-kayip-yeni' : 'ok-yeni');
+    el('path', { d: `M ${x1} ${y1} L ${xe} ${ye}`, fill: 'none', stroke: '#3A3A3A', 'stroke-width': 4.5,
+      'stroke-dasharray': '10 7', 'stroke-linecap': 'round',
+      'marker-end': e.lost ? '' : 'url(#okBasi)' }, og);
+    if (e.lost) {
+      const s = 9;
+      el('path', { d: `M ${xe - s} ${ye - s} L ${xe + s} ${ye + s} M ${xe + s} ${ye - s} L ${xe - s} ${ye + s}`,
+        stroke: '#3A3A3A', 'stroke-width': 4.5, 'stroke-linecap': 'round' }, og);
+    }
+    segLabel(g, e, mx, my, e.lost);
+    if (isNew && !reduced()) {
+      const z = envelope(g, e.from);
+      z.style.transform = `translate(${x1}px, ${y1}px)`;
+      if (e.lost) z.classList.add('kayip');
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        z.style.transform = `translate(${xe}px, ${ye}px)`;
+        z.style.opacity = 0;
+      }));
+    }
+  }
+
+  // Durum geçmişi (geniş ekran): yaşam çizgisinin dış yanında, değişimin olduğu anda.
+  // Aynı uçta aynı anda iki değişim varsa (CLOSE-WAIT ve LAST-ACK) alt alta yazılır.
+  function drawHistory(g, changes) {
+    const Y = L();
+    if (!Y.hist) return;
+    const groups = {};
+    changes.forEach(c => { (groups[c.side + '@' + c.t] = groups[c.side + '@' + c.t] || []).push(c); });
+    Object.values(groups).forEach(list => list.forEach((c, i) => {
+      const o = outer(c.side);
+      const dy = (i - (list.length - 1) / 2) * 14;
+      const tx = el('text', { x: Y.x[c.side] + o * 26, y: yAt(c.t) + 4 + dy, 'text-anchor': o < 0 ? 'end' : 'start',
+        'font-size': 11.5, 'font-weight': 800, fill: '#6B645D' }, g);
+      tx.textContent = c.state;
+    }));
+  }
+
+  function drawFlow(k, animate) {
+    const g = $('akis');
+    g.innerHTML = '';
+    const E = sim.events, upto = Math.min(k, E.length), changes = [];
+    for (let i = 0; i < upto; i++) {
+      const e = E[i];
+      changes.push(...e.changes);
+      if (e.type === 'send') drawSend(g, e, animate && i === upto - 1 && k <= E.length);
+      if (e.type === 'timewait') {
+        const Y = L(), x = Y.x.C + outer('C') * 14;
+        el('rect', { x: x - 3.5, y: yAt(e.t), width: 7, height: yAt(e.tEnd) - yAt(e.t), rx: 3.5,
+          fill: '#A9A19A' }, g);
+        const tx = el('text', { x: Y.x.C + 14, y: (yAt(e.t) + yAt(e.tEnd)) / 2 + 5,
+          'font-size': 13, 'font-weight': 800, fill: '#6B645D' }, g);
+        tx.textContent = '2×MSL';
+      }
+    }
+    drawHistory(g, changes);
+  }
+
+  // ----- RTO sayacı -----
+  // Kaybolan her segment için gönderenin yaşam çizgisinde hardal bir çubuk; o anki adımda kronometre.
+  function timerSpans(k) {
+    const E = sim.events, upto = Math.min(k, E.length), out = [];
+    for (let i = 0; i < upto; i++) {
+      const e = E[i];
+      if (e.type !== 'send' || !e.lost) continue;
+      const out_ = E[i + 1];
+      const fired = i + 1 < upto;
+      out.push({ e, from: e.tSend, end: fired ? out_.t : e.tArr, rto: out_.t - e.tSend,
+        current: i === upto - 1 || (fired && i + 1 === upto - 1 && k <= E.length),
+        startUsed: fired ? e.tArr - e.tSend : 0 });
+    }
+    return out;
+  }
+
+  function drawWatch(span, used) {
+    const Y = L(), s = $('saat');
+    const side = span.e.from, o = outer(side);
+    const bx = Y.x[side] + o * 14;
+    const y1 = yAt(span.from);
+    let bar = s.querySelector(`[data-bar="${span.from}"]`);
+    if (!bar) {
+      bar = el('rect', { 'data-bar': span.from, x: bx - 3.5, y: y1, width: 7, height: 0, rx: 3.5, fill: '#E3B23C' }, s);
+    }
+    bar.setAttribute('height', Math.max(0, used * Y.u));
+    if (!span.current) {
+      const tx = el('text', { x: Y.x[side] + o * 24, y: yAt(span.from + span.rto / 2) + 5,
+        'text-anchor': o < 0 ? 'end' : 'start', 'font-size': 13, 'font-weight': 800, fill: '#3A3A3A' }, s);
+      tx.textContent = 'RTO';
+      return;
+    }
+    // kronometre
+    const cx = Y.x[side] + o * Y.watch, cy = yAt(span.from + span.rto / 2), r = 17;
+    let w = s.querySelector('.kron');
+    if (!w) {
+      w = el('g', { class: 'kron' }, s);
+      el('rect', { x: cx - 6, y: cy - r - 12, width: 12, height: 7, rx: 2, fill: '#E3B23C' }, w);
+      el('rect', { x: cx - 2.5, y: cy - r - 7, width: 5, height: 7, fill: '#E3B23C' }, w);
+      el('circle', { cx, cy, r, fill: '#F5F0E6', stroke: '#E3B23C', 'stroke-width': 5 }, w);
+      el('path', { class: 'kron-dolu', fill: '#E3B23C', opacity: .5 }, w);
+      el('line', { class: 'kron-ibre', x1: cx, y1: cy, x2: cx, y2: cy - r + 5, stroke: '#3A3A3A',
+        'stroke-width': 3.5, 'stroke-linecap': 'round' }, w);
+      el('circle', { cx, cy, r: 3.5, fill: '#3A3A3A' }, w);
+      el('text', { class: 'kron-t', x: cx, y: cy + r + 18, 'text-anchor': 'middle', 'font-size': 12.5,
+        'font-weight': 800, fill: '#3A3A3A' }, w);
+    }
+    const frac = Math.max(0, Math.min(1, used / span.rto)), ang = frac * 2 * Math.PI, rr = r - 3;
+    w.querySelector('.kron-ibre').setAttribute('x2', cx + Math.sin(ang) * (r - 5));
+    w.querySelector('.kron-ibre').setAttribute('y2', cy - Math.cos(ang) * (r - 5));
+    const d = w.querySelector('.kron-dolu');
+    if (frac <= 0) d.setAttribute('d', '');
+    else if (frac >= 1) d.setAttribute('d', `M ${cx} ${cy - rr} A ${rr} ${rr} 0 1 1 ${cx - 0.01} ${cy - rr} Z`);
+    else {
+      const x = cx + Math.sin(ang) * rr, y = cy - Math.cos(ang) * rr;
+      d.setAttribute('d', `M ${cx} ${cy} L ${cx} ${cy - rr} A ${rr} ${rr} 0 ${frac > .5 ? 1 : 0} 1 ${x} ${y} Z`);
+    }
+    w.querySelector('.kron-t').textContent = `RTO ${fmt(Math.round(used * 10) / 10, lang)}/${span.rto}`;
+  }
+
+  function runTimers(k, animate) {
+    if (saatAnim) cancelAnimationFrame(saatAnim);
+    const s = $('saat');
+    s.innerHTML = '';
+    const spans = timerSpans(k);
+    spans.forEach(sp => { if (!sp.current) drawWatch(sp, sp.end - sp.from); });
+    const cur = spans.find(sp => sp.current);
+    if (!cur) return;
+    const target = cur.end - cur.from;
+    if (!animate || reduced()) { drawWatch(cur, target); return; }
+    const a = cur.startUsed, dur = 750 + 250 * (target - a), t0 = performance.now();
+    const tick = now => {
+      const f = Math.min(1, (now - t0) / dur);
+      drawWatch(cur, a + (target - a) * f);
+      if (f < 1) saatAnim = requestAnimationFrame(tick);
+    };
+    drawWatch(cur, a);
+    saatAnim = requestAnimationFrame(tick);
+  }
+
+  // ----- yan panel -----
+  function explain(k) {
+    const D = T();
+    if (k === 0) return D.intro(sim, loss);
+    if (k > sim.events.length) return D.final(sim, lang);
+    const e = sim.events[k - 1];
+    if (e.type === 'timeout') return D.timeout(e, D);
+    if (e.type === 'send' && e.lost) return D.lost(e, D);
+    return (e.retrans ? D.retrans : '') + D.ev[e.role](e);
+  }
+
+  function timeText(k) {
+    if (k === 0) return 't = 0';
+    if (k > sim.events.length) return 't = ' + fmt(sim.tEnd, lang);
+    const e = sim.events[k - 1];
+    if (e.type === 'send') return e.lost ? `t = ${fmt(e.tSend, lang)}` : `t = ${fmt(e.tSend, lang)}–${fmt(e.tArr, lang)}`;
+    if (e.type === 'timeout') return `t = ${fmt(e.t, lang)}`;
+    return `t = ${fmt(e.t, lang)}–${fmt(e.tEnd, lang)}`;
+  }
+
+  function drawSummary(show) {
+    const box = $('ozet');
+    box.hidden = !show;
+    if (!show) return;
+    const D = T();
+    $('oP').textContent = sim.packets;
+    $('oR').textContent = sim.retransmissions;
+    $('oL').textContent = sim.lost;
+    const tb = $('tablo');
+    tb.innerHTML = '';
+    ['C', 'S'].forEach(side => {
+      const f = sim.final[side];
+      const tr = document.createElement('tr');
+      [lang === 'tr' ? (side === 'C' ? 'İstemci' : 'Sunucu') : (side === 'C' ? 'Client' : 'Server'),
+        f.state, f.seq, f.ack].forEach(v => {
+        const td = document.createElement('td'); td.textContent = v; tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    });
+    $('not').textContent = D.note;
+    const data = sim.events.find(e => e.type === 'send' && e.role === 'data' && !e.lost);
+    const dack = sim.events.find(e => e.type === 'send' && e.role === 'dataack' && !e.lost);
+    const ok = !!data && !!dack && data.seq === ARTICLE.dataSeq && data.len === ARTICLE.dataLen && dack.ack === ARTICLE.ack;
+    $('dogrulama').textContent = D.check(ok);
+  }
+
+  function render(animate) {
+    const D = T();
+    drawFlow(step, animate);
+    setPills(step);
+    runTimers(step, animate);
+    $('sayac').textContent = D.step(step + 1, lastStep() + 1);
+    $('zaman').textContent = timeText(step);
+    $('aciklama').textContent = explain(step);
+    drawSummary(step === lastStep());
+    $('sahneEtiket').textContent = D.scene + '. ' + D.step(step + 1, lastStep() + 1) + '.';
+    $('geriBtn').disabled = step === 0;
+    $('ileriBtn').disabled = step === lastStep();
+  }
+
+  // ----- dil -----
+  function applyLang() {
+    const D = T();
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(n => { n.textContent = D[n.dataset.i18n]; });
+    $('dilBtn').textContent = D.langBtn;
+    $('dilBtn').setAttribute('aria-label', D.langAria);
+    $('geriBtn').textContent = D.prev; $('geriBtn').setAttribute('aria-label', D.prevAria);
+    $('ileriBtn').textContent = D.next; $('ileriBtn').setAttribute('aria-label', D.nextAria);
+    updatePlayBtn();
+    document.querySelectorAll('#kGrup button').forEach(b => {
+      b.textContent = D.lossOpt[b.dataset.k];
+      b.setAttribute('aria-label', D.lossAria[b.dataset.k]);
+    });
+    drawStatic();
+    $('rr').classList.add('hareketsiz');
+    render(false);
+    requestAnimationFrame(() => $('rr').classList.remove('hareketsiz'));
+  }
+
+  // ----- kontrol -----
+  function go(k, animate) {
+    const n = Math.max(0, Math.min(lastStep(), k));
+    if (n === step) return;
+    const back = n < step;
+    step = n;
+    if (back) {
+      $('rr').classList.add('hareketsiz');
+      render(false);
+      requestAnimationFrame(() => requestAnimationFrame(() => $('rr').classList.remove('hareketsiz')));
+    } else render(animate);
+  }
+  function updatePlayBtn() {
+    const D = T(), b = $('oynatBtn');
+    b.textContent = timerId ? D.pause : D.play;
+    b.setAttribute('aria-label', timerId ? D.pauseAria : D.playAria);
+    b.setAttribute('aria-pressed', timerId ? 'true' : 'false');
+  }
+  function stop() { if (timerId) { clearInterval(timerId); timerId = null; updatePlayBtn(); } }
+  function play() {
+    if (step === lastStep()) go(0, false);
+    timerId = setInterval(() => {
+      if (step >= lastStep()) { stop(); return; }
+      go(step + 1, true);
+      if (step >= lastStep()) stop();
+    }, reduced() ? 1400 : 2000);
+    updatePlayBtn();
+  }
+  function setLoss(k) {
+    stop();
+    loss = k;
+    sim = simulateTCP(Object.assign({}, OPTS, { loss }));
+    document.querySelectorAll('#kGrup button').forEach(b =>
+      b.setAttribute('aria-pressed', b.dataset.k === k ? 'true' : 'false'));
+    step = 0;
+    drawStatic();
+    $('rr').classList.add('hareketsiz');
+    render(false);
+    requestAnimationFrame(() => requestAnimationFrame(() => $('rr').classList.remove('hareketsiz')));
+  }
+
+  KAYIP.forEach(k => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'uzun';
+    b.dataset.k = k;
+    b.setAttribute('aria-pressed', k === loss ? 'true' : 'false');
+    b.addEventListener('click', () => setLoss(k));
+    $('kGrup').appendChild(b);
+  });
+  $('geriBtn').addEventListener('click', () => { stop(); go(step - 1, false); });
+  $('ileriBtn').addEventListener('click', () => { stop(); go(step + 1, true); });
+  $('oynatBtn').addEventListener('click', () => { timerId ? stop() : play(); });
+  $('dilBtn').addEventListener('click', () => { lang = lang === 'tr' ? 'en' : 'tr'; applyLang(); });
+  document.addEventListener('keydown', e => {
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    const tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+    if (e.key === 'ArrowRight') { stop(); go(step + 1, true); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft') { stop(); go(step - 1, false); e.preventDefault(); }
+  });
+
+  function pickLayout() {
+    const w = $('sahneKap').clientWidth;
+    const k = w < 520 ? 'narrow' : 'wide';
+    if (k !== layoutKey) {
+      layoutKey = k;
+      drawStatic();
+      $('rr').classList.add('hareketsiz');
+      render(false);
+      requestAnimationFrame(() => requestAnimationFrame(() => $('rr').classList.remove('hareketsiz')));
+    }
+  }
+  reduceMQ.addEventListener && reduceMQ.addEventListener('change', () => render(false));
+
+  // Adres parametreleri (gömme ve test için): #lang=en&loss=data&step=last
+  const params = new URLSearchParams(location.hash.slice(1));
+  if (params.get('lang') === 'en') lang = 'en';
+  const pl = params.get('loss');
+  if (KAYIP.includes(pl)) {
+    loss = pl; sim = simulateTCP(Object.assign({}, OPTS, { loss }));
+    document.querySelectorAll('#kGrup button').forEach(b =>
+      b.setAttribute('aria-pressed', b.dataset.k === pl ? 'true' : 'false'));
+  }
+  layoutKey = $('sahneKap').clientWidth < 520 ? 'narrow' : 'wide';
+  const ps = params.get('step');
+  if (ps === 'last') step = lastStep();
+  else if (ps && !isNaN(ps)) step = Math.max(0, Math.min(lastStep(), Number(ps)));
+  $('rr').classList.add('hareketsiz');
+  applyLang();
+  if (window.ResizeObserver) new ResizeObserver(pickLayout).observe($('sahneKap'));
+  else window.addEventListener('resize', pickLayout);
+})();
+</script>
+</body>
+</html>

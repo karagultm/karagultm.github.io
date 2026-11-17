@@ -1,0 +1,306 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Stack frames, the heap, values and references, == vs. equals, StackOverflowError and OutOfMemoryError, how the garbage collector works and memory leaks in Java: the memory topics interviewers ask about, with Java and Python examples."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Memory: The Stack and the Heap, Garbage Collection and Memory Leaks · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="en" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Memory: The Stack and the Heap, Garbage Collection and Memory Leaks</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 November 2026</time> · memory, java, interview, programming-101 · Part 5</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/bellek-stack-heap-garbage-collector/" hreflang="tr" lang="tr" data-astro-cid-7jjqptxk>Türkçe oku</a></p> <img src="/_astro/mem-kapak.CRgiWZPa_Z2w2mv7.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak">  <article class="yazi" data-astro-cid-7jjqptxk><h1 id="memory-the-stack-and-the-heap-garbage-collection-and-memory-leaks">Memory: The Stack and the Heap, Garbage Collection and Memory Leaks</h1>
+<p><em>Programming 101, Part 5</em></p>
+<p>Part 4 said in passing that when <code>new</code> is called, the object is created on the heap. This post opens up that sentence: what is the heap, what is the stack next to it for, and where do objects go when they are no longer needed?</p>
+<p>Memory questions in interviews usually come as a follow-up to OOP questions. The difference between the stack and the heap, the difference between <code>==</code> and <code>equals</code>, when the garbage collector removes an object, and whether a memory leak is possible when there is a garbage collector are the most common ones. Most examples are in Java. At the end I look briefly at how Python and C/C++ do the same job.</p>
+<p>The order is: first the stack and the heap, then values and references, <code>==</code> vs. <code>equals</code>, two memory errors, the garbage collector, memory leaks in Java, Python and C/C++. At the end there are common interview questions with short answers.</p>
+<hr>
+<h2 id="1-the-stack-and-the-heap">1. The stack and the heap</h2>
+<p>A running Java program splits memory into regions with different purposes. The two that come up in interviews are the stack and the heap.</p>
+<p>The <strong>Stack</strong> is a memory region that belongs to a single thread and keeps track of method calls. When a method is called, a <strong>Stack Frame</strong> for that call is pushed on top of the stack. The frame holds the method’s parameters, its local variables, and the information about where to return when the method finishes. When the method returns, the frame is popped and everything in it goes with it.</p>
+<p>This layout works like a stack of plates. A new plate goes on top, and the top plate is the one taken off. Pulling a plate out of the middle is not possible. That is why allocating and freeing on the stack is very cheap: a single pointer moves up or down.</p>
+<p>The <strong>Heap</strong> is the memory region where every object created with <code>new</code> lives, and it is shared by all threads of the program. The lifetime of an object on the heap is not tied to the method that created it. The method ends, the object stays. The object lives until no path leads to it any more, and then the garbage collector cleans it up.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">void</span><span style="color:#B392F0"> createOrder</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#E1E4E8"> quantity </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">;                    </span><span style="color:#6A737D">// stack: inside the frame, the value itself</span></span>
+<span class="line"><span style="color:#E1E4E8">    Order o </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Order</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"pen"</span><span style="color:#E1E4E8">);          </span><span style="color:#6A737D">// o is on the stack, the Order object on the heap</span></span>
+<span class="line"><span style="color:#E1E4E8">    o.</span><span style="color:#B392F0">setQuantity</span><span style="color:#E1E4E8">(quantity);</span></span>
+<span class="line"><span style="color:#E1E4E8">}   </span><span style="color:#6A737D">// method done: quantity and o are gone, the Order object stays on the heap</span></span></code></pre>
+<p>The variable <code>o</code> is not the object itself but a reference to it. The reference is removed with the frame. If nothing else refers to the object, it is now unreachable and goes away in the next collection.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Stack</th>
+<th>Heap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Owned by</td>
+<td>Each thread has its own stack</td>
+<td>Shared by all threads</td>
+</tr>
+<tr>
+<td>Holds</td>
+<td>Frames: parameters, local variables</td>
+<td>Objects and arrays created with <code>new</code></td>
+</tr>
+<tr>
+<td>Lifetime</td>
+<td>Ends when the method returns</td>
+<td>Lasts until unreachable</td>
+</tr>
+<tr>
+<td>Cleaned by</td>
+<td>Automatically, when the frame is popped</td>
+<td>The garbage collector</td>
+</tr>
+<tr>
+<td>Size</td>
+<td>Small, fixed (1 MB on most 64-bit systems, changed with <code>-Xss</code>)</td>
+<td>Large, limited by <code>-Xmx</code></td>
+</tr>
+<tr>
+<td>When it overflows</td>
+<td><code>StackOverflowError</code></td>
+<td><code>OutOfMemoryError</code></td>
+</tr>
+</tbody>
+</table>
+<p>Because each thread has its own stack, local variables are not shared between threads, so they cannot have a race condition. If two threads can reach the same object on the heap at the same time, synchronization is needed.</p>
+<p><img alt="The stack and the heap: on the left, stack frames pushed one on top of the other for each method call with their local variables, on the right, objects on the heap, with arrows from references in the frames to objects on the heap" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/mem-stack-heap.Cge7BjQ-_Z1QPkmM.webp" ></p>
+<hr>
+<h2 id="2-values-and-references">2. Values and references</h2>
+<p>Java variables come in two kinds. <strong>Primitive Type</strong> variables hold the value itself: <code>int</code>, <code>long</code>, <code>double</code>, <code>boolean</code>, <code>char</code>, <code>byte</code>, <code>short</code>, <code>float</code>. <strong>Reference Type</strong> variables point to where an object lives on the heap. Classes, arrays, <code>String</code> and wrapper classes such as <code>Integer</code> belong to this group.</p>
+<p>On assignment, both kinds copy the value stored in the variable. For a primitive that value is the number itself. For a reference, what gets copied is the address. The object is not copied, and the two variables now point to the same object.</p>
+<p>Method calls work the same way. Java always uses <strong>Pass-by-Value</strong>. For a reference type, the value passed is a copy of the reference.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">static</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> change</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> number, Point p) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    number </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 99</span><span style="color:#E1E4E8">;   </span><span style="color:#6A737D">// only the local copy changes</span></span>
+<span class="line"><span style="color:#E1E4E8">    p.x </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 99</span><span style="color:#E1E4E8">;      </span><span style="color:#6A737D">// the copied reference points to the same object, the object changes</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">static</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> reassign</span><span style="color:#E1E4E8">(Point p) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    p </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Point</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);   </span><span style="color:#6A737D">// the local reference now points elsewhere, the caller's does not</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">int</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 5</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">Point pt </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Point</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">change</span><span style="color:#E1E4E8">(a, pt);       </span><span style="color:#6A737D">// a is still 5, pt.x is now 99</span></span>
+<span class="line"><span style="color:#B392F0">reassign</span><span style="color:#E1E4E8">(pt);        </span><span style="color:#6A737D">// pt.x is still 99</span></span></code></pre>
+<p>When a field of the object changes inside the method, the change is visible outside, because both references point to the same object. But when a new object is assigned to the parameter itself, the caller’s variable is not affected. That is why “Java passes objects by reference” is wrong. With real pass-by-reference, <code>reassign</code> would also change the caller’s variable.</p>
+<h3 id="primitives-do-not-always-live-on-the-stack">Primitives do not always live on the stack</h3>
+<p>The summary “objects live on the heap, primitives live on the stack”, which shows up often in notes, is incomplete. Where a primitive lives is decided by where it is declared, not by its type.</p>
+<ul>
+<li>A primitive that is a local variable or a parameter lives on the stack, in that method’s frame.</li>
+<li>A primitive that is a field of an object is part of that object and lives on the heap with it.</li>
+<li>The elements of an array live on the heap too. <code>new int[1000]</code> allocates a thousand <code>int</code>s on the heap as a single object.</li>
+<li><code>static</code> fields belong to the class, not to any frame. They do not live on the stack either.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Account</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> double</span><span style="color:#E1E4E8"> balance;   </span><span style="color:#6A737D">// a primitive, but inside the Account object: heap</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">void</span><span style="color:#B392F0"> calculate</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#E1E4E8"> rate </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0.02</span><span style="color:#E1E4E8">;           </span><span style="color:#6A737D">// local primitive: stack</span></span>
+<span class="line"><span style="color:#F97583">    int</span><span style="color:#E1E4E8">[] days </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">30</span><span style="color:#E1E4E8">];     </span><span style="color:#6A737D">// the reference is on the stack, the 30 ints on the heap</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>The reverse also holds: a local reference variable is on the stack, and the object it points to is on the heap. There is also an optimization done by the JIT compiler. If <strong>Escape Analysis</strong> shows that an object never leaves the method, the JIT may skip creating the object and keep its fields like local variables. This is a runtime detail and does not change the meaning of the language. In an interview, “objects live on the heap” is the correct answer.</p>
+<hr>
+<h2 id="3--vs-equals">3. <code>==</code> vs. <code>equals</code></h2>
+<p>For primitives, the <code>==</code> operator compares values. For references it checks whether the two references point to the same object, which means it compares addresses. The <code>equals</code> method says whether the contents of two objects count as equal, and each class defines what equality means for itself.</p>
+<p>The default <code>equals</code> inherited from <code>Object</code> does the same thing as <code>==</code>. Classes such as <code>String</code>, <code>Integer</code> and the collections override it to compare contents. Anyone who overrides <code>equals</code> in their own class must also override <code>hashCode</code>. Otherwise two objects that are equal end up in different places inside a <code>HashMap</code>.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#E1E4E8">String s1 </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "java"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">String s2 </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "java"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">String s3 </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> String</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"java"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(s1 </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> s2);        </span><span style="color:#6A737D">// true: both are the same object from the pool</span></span>
+<span class="line"><span style="color:#E1E4E8">System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(s1 </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> s3);        </span><span style="color:#6A737D">// false: new created a separate object</span></span>
+<span class="line"><span style="color:#E1E4E8">System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(s1.</span><span style="color:#B392F0">equals</span><span style="color:#E1E4E8">(s3));   </span><span style="color:#6A737D">// true: same contents</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Integer i1 </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 127</span><span style="color:#E1E4E8">, i2 </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 127</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">Integer i3 </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 128</span><span style="color:#E1E4E8">, i4 </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 128</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(i1 </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> i2);        </span><span style="color:#6A737D">// true</span></span>
+<span class="line"><span style="color:#E1E4E8">System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(i3 </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> i4);        </span><span style="color:#6A737D">// false</span></span>
+<span class="line"><span style="color:#E1E4E8">System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(i3.</span><span style="color:#B392F0">equals</span><span style="color:#E1E4E8">(i4));   </span><span style="color:#6A737D">// true</span></span></code></pre>
+<p>The first <code>true</code> comes from the <strong>String Pool</strong>. String literals written in source code are kept once in a pool on the heap, and every place that writes the same text gets the same object. <code>new String(...)</code> skips the pool and creates a new object.</p>
+<p>The <code>Integer</code> example is trickier. Writing <code>Integer i = 127</code> makes the compiler turn it into a call to <code>Integer.valueOf(127)</code> (<strong>Autoboxing</strong>). <code>valueOf</code> returns a ready-made cached object for values between -128 and 127, and creates a new object for anything outside that range. That is why <code>==</code> happens to give the right answer at 127 and the wrong one at 128. This is the classic cause of code whose tests pass with small numbers and which breaks on real data. Objects are always compared with <code>equals</code>.</p>
+<hr>
+<h2 id="4-stackoverflowerror-and-outofmemoryerror">4. StackOverflowError and OutOfMemoryError</h2>
+<p>Both regions have a limit, and overflowing each one leads to a different error.</p>
+<p>A <strong>StackOverflowError</strong> is thrown when a thread’s stack is full. The cause is almost always recursion that never ends or goes too deep. Each call pushes a new frame, and since none of them returns, none is popped.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">static</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> factorial</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> n) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> n </span><span style="color:#F97583">*</span><span style="color:#B392F0"> factorial</span><span style="color:#E1E4E8">(n </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">);   </span><span style="color:#6A737D">// no base case: every call adds a new frame</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>When I ran a simple method that calls itself unconditionally with default settings, the error came after about 19 thousand calls. The number depends on the frame size and the stack size. Recursion that is correct but very deep can cause the same error. In that case the fix is not a bigger stack but rewriting the algorithm with a loop or an explicit stack data structure.</p>
+<p>An <strong>OutOfMemoryError</strong> is thrown when there is no room on the heap for a new object and the garbage collector cannot free any. The message points to the cause:</p>
+<ul>
+<li><code>Java heap space</code>: the heap is full and the live objects do not fit. Either the heap really is too small or there is a memory leak somewhere.</li>
+<li><code>GC overhead limit exceeded</code>: the program spends almost all its time in garbage collection and recovers very little space.</li>
+<li><code>Metaspace</code>: the area that holds class information is full. This shows up when many classes are generated and loaded at runtime.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">static</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> List&#x3C;</span><span style="color:#F97583">byte</span><span style="color:#E1E4E8">[]> cache </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> ArrayList&#x3C;>();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> static</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> main</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">String</span><span style="color:#E1E4E8">[] args) {</span></span>
+<span class="line"><span style="color:#F97583">    while</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">) cache.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#F97583"> byte</span><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">1024</span><span style="color:#F97583"> *</span><span style="color:#79B8FF"> 1024</span><span style="color:#E1E4E8">]);   </span><span style="color:#6A737D">// 1 MB per iteration</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">// java -Xmx32m ... -> OutOfMemoryError: Java heap space</span></span></code></pre>
+<p>Neither of them extends <code>Exception</code>. Both extend <code>Error</code>, which is for serious problems that the normal flow of a program is not expected to catch and recover from. Technically they can be caught with <code>catch</code>, but a program that catches <code>OutOfMemoryError</code> and carries on usually carries on in an inconsistent state.</p>
+<hr>
+<h2 id="5-the-garbage-collector">5. The garbage collector</h2>
+<p>The <strong>Garbage Collector</strong> is the runtime component that finds objects on the heap that are no longer used and reclaims their space. Java has no command for deleting an object. The programmer creates objects, and the garbage collector decides when they are removed.</p>
+<h3 id="reachability">Reachability</h3>
+<p>The garbage collector decides whether an object is in use through <strong>Reachability</strong>. The starting points are references called <strong>GC Roots</strong>:</p>
+<ul>
+<li>Local variables and parameters in the stack frames of running threads</li>
+<li><code>static</code> fields of loaded classes</li>
+<li>The running thread objects themselves, and references held from native code</li>
+</ul>
+<p>Every object that can be reached by starting at a root and following references is alive. An object that cannot be reached from any root is garbage, even if other objects still refer to it. If two objects point to each other but there is no path to either of them from outside, both are collected together. This is why Java does not use reference counting. Circular references are not a problem for it.</p>
+<h3 id="mark-and-sweep">Mark-and-sweep</h3>
+<p>The most basic implementation of this idea is the <strong>Mark-and-Sweep</strong> algorithm. It has two phases. In the mark phase, every object reached from the roots is marked. In the sweep phase, the heap is scanned from start to end and the space of every unmarked object is recorded as free.</p>
+<p>What is left is a heap full of gaps. Even when the total free space is enough, there may be no single block large enough for a big object. This is called <strong>Fragmentation</strong>. To prevent it, most collectors slide the live objects to one end of the heap (<strong>Compaction</strong>). It is like pushing the remaining books on a shelf to the left after some were taken out, so that the free space on the right is one piece.</p>
+<h3 id="generational-gc">Generational GC</h3>
+<p>Scanning the whole heap every time is expensive. In real programs most objects are short-lived: a temporary string created inside a loop, a list used while building the response to a request. This observation is called the <strong>Weak Generational Hypothesis</strong>, and Java’s collectors split the heap according to it.</p>
+<ul>
+<li><strong>Young Generation</strong>: new objects are placed here, in an area called Eden. When Eden fills up, only this region is scanned (<strong>Minor GC</strong>). Most short-lived objects are already dead by the first scan. The survivors are copied to the survivor spaces.</li>
+<li><strong>Old Generation</strong>: objects that survive several minor GCs are moved here (<strong>Promotion</strong>). This region is cleaned by a rarer and more expensive collection (<strong>Major GC</strong> or <strong>Full GC</strong>).</li>
+</ul>
+<p>Since the share of garbage in the young generation is high, the cost of a scan there depends on the small number of live objects, not on the dead ones. That is why minor GCs run often but finish quickly.</p>
+<h3 id="stop-the-world">Stop-the-world</h3>
+<p>While the collector works, the object graph must not change under it. The simplest way to ensure that is to stop all application threads. This pause is called <strong>Stop-the-World (STW)</strong>. On the user’s side it shows up as a sudden jump in response time.</p>
+<p>Most modern collectors do most of their work concurrently, while the application runs, and keep STW pauses short. Since Java 9 the default collector is G1. For cases where pauses must stay under a millisecond there are low-latency collectors such as ZGC. The choice is a trade-off between total work done (throughput) and pause time.</p>
+<p>Two more details come up often. <code>System.gc()</code> does not force a collection, it is only a hint to the JVM. The <code>finalize()</code> method is not a reliable place for cleanup before an object is removed either. It is not known when, or whether, it will run, and it has been deprecated since Java 9.</p>
+<hr>
+<h2 id="6-memory-leaks-in-java">6. Memory leaks in Java</h2>
+<p>A <strong>Memory Leak</strong> is memory that is no longer used but is never given back. In C this usually happens when a call to <code>free</code> is forgotten. In a language with a garbage collector the definition shifts a little: the program will never use an object again, but there is still a path to it from a root. The garbage collector cannot know the program’s intent. It treats every reachable object as alive.</p>
+<p>A leak is not noticed right away. The heap fills slowly, the garbage collector runs more and more often, and finally an <code>OutOfMemoryError</code> arrives. Often the application has to run for days before this shows.</p>
+<h3 id="a-growing-static-collection">A growing static collection</h3>
+<p>The most common cause is a <code>static</code> collection that keeps getting new elements and never loses any. A <code>static</code> field is a GC root, and everything in it lives until the program ends.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">static</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> Map&#x3C;</span><span style="color:#F97583">String</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">Session</span><span style="color:#E1E4E8">> sessions </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> HashMap&#x3C;>();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">static</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> loggedIn</span><span style="color:#E1E4E8">(String userId) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    sessions.</span><span style="color:#B392F0">put</span><span style="color:#E1E4E8">(userId, </span><span style="color:#F97583">new</span><span style="color:#B392F0"> Session</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">// if remove is forgotten in loggedOut(), every session stays forever</span></span></code></pre>
+<p>Maps used as caches have the same problem. The fix is a cache with a size limit or an expiry time, or removing the element explicitly when its work is done. <code>WeakHashMap</code> helps in some cases. An entry drops out on its own once there is no other strong reference to its key.</p>
+<h3 id="a-resource-that-is-never-closed">A resource that is never closed</h3>
+<p>Resources such as files, database connections and sockets also take up space outside the heap, on the operating system side. The garbage collector only manages the heap. A file that is never closed holds the operating system’s file handle until the Java object representing it is collected, which may be at some unknown time or never. In connection pools, a connection that is not closed never returns to the pool, and the pool runs dry.</p>
+<p>Since Java 7 there is the <strong>try-with-resources</strong> statement for this. Any resource that implements the <code>AutoCloseable</code> interface and is opened inside the parentheses is closed automatically when the block ends. It is closed even if the block ends with an exception.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">static</span><span style="color:#E1E4E8"> String </span><span style="color:#B392F0">firstLine</span><span style="color:#E1E4E8">(Path path) throws IOException {</span></span>
+<span class="line"><span style="color:#F97583">    try</span><span style="color:#E1E4E8"> (BufferedReader r </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Files.</span><span style="color:#B392F0">newBufferedReader</span><span style="color:#E1E4E8">(path)) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> r.</span><span style="color:#B392F0">readLine</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }   </span><span style="color:#6A737D">// r.close() is called here, with or without an error</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>This is shorter and safer than the old <code>try</code>/<code>finally</code> pattern. Several resources can go in the same parentheses, separated by semicolons, and they are closed in the reverse order of opening.</p>
+<h3 id="a-listener-that-stays-registered">A listener that stays registered</h3>
+<p>An object registers itself as a listener on an event source, then its work ends, but the registration is never removed. The event source’s list holds the listener, and the listener usually holds the object that registered it. In this way a screen that was already closed, or a task that already finished, stays in memory with all its fields.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Screen</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#F97583"> byte</span><span style="color:#E1E4E8">[] buffer </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#F97583"> byte</span><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">10_000_000</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">    Screen</span><span style="color:#E1E4E8">(EventSource </span><span style="color:#FFAB70">source</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        source.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(s </span><span style="color:#F97583">-></span><span style="color:#B392F0"> draw</span><span style="color:#E1E4E8">(s));   </span><span style="color:#6A737D">// the lambda captures this, so Screen stays in the source</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> draw</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">s</span><span style="color:#E1E4E8">) { }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>When I tried this, creating 50 of these screens with a 256 MB heap gave an <code>OutOfMemoryError</code>, even though nothing outside held a reference to any screen. Each lambda captures <code>this</code> because it calls the <code>draw</code> method, and the source’s list holds the lambdas. The fix is to remove the registration with <code>source.remove(...)</code> when the object’s life ends. Non-static inner classes carry the same kind of hidden reference to an instance of the outer class.</p>
+<hr>
+<h2 id="7-python-reference-counting-and-the-cycle-collector">7. Python: reference counting and the cycle collector</h2>
+<p>In Python (in CPython, the standard implementation) everything is an object and every object lives on the heap, <code>int</code> included. Local variables are only names bound to these objects.</p>
+<p>CPython’s main mechanism is <strong>Reference Counting</strong>. Every object counts how many references point to it. The count goes up when a name is bound to the object and down when the binding is broken. The moment the count reaches zero the object is freed, with no scan to wait for.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> sys</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">a </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(sys.getrefcount(a))   </span><span style="color:#6A737D"># 2: a, plus the function's own argument</span></span>
+<span class="line"><span style="color:#E1E4E8">b </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> a</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(sys.getrefcount(a))   </span><span style="color:#6A737D"># 3</span></span>
+<span class="line"><span style="color:#F97583">del</span><span style="color:#E1E4E8"> b                       </span><span style="color:#6A737D"># deletes the name b, not the object</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(sys.getrefcount(a))   </span><span style="color:#6A737D"># 2</span></span></code></pre>
+<p>Reference counting has a well-known weakness: cycles. If two objects point to each other, their counts never reach zero even when no path from outside is left. For this, CPython runs a second mechanism, the cycle collector in the <code>gc</code> module. It only looks at objects that can hold other objects (lists, dicts, class instances), works by generations, and finds and frees unreachable cycles.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> gc</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Node</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">    def</span><span style="color:#79B8FF"> __init__</span><span style="color:#E1E4E8">(self):</span></span>
+<span class="line"><span style="color:#79B8FF">        self</span><span style="color:#E1E4E8">.other </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> None</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">x, y </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Node(), Node()</span></span>
+<span class="line"><span style="color:#E1E4E8">x.other, y.other </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> y, x    </span><span style="color:#6A737D"># a cycle</span></span>
+<span class="line"><span style="color:#F97583">del</span><span style="color:#E1E4E8"> x, y                   </span><span style="color:#6A737D"># the counts do not reach zero</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(gc.collect())        </span><span style="color:#6A737D"># number of unreachable objects found, greater than zero</span></span></code></pre>
+<p>The difference from Java: in Python most objects are freed the moment their last reference is gone, so the point of removal is largely predictable. Even so, files are opened with a <code>with</code> block. It is the counterpart of Java’s try-with-resources and does not leave closing to the reference count.</p>
+<hr>
+<h2 id="8-c-and-c-manual-memory-management">8. C and C++: manual memory management</h2>
+<p>C has no garbage collector. Memory is taken from the heap with <code>malloc</code> and given back with <code>free</code>, and the programmer writes both. In C++ the counterparts are <code>new</code> and <code>delete</code>. You wash the plate you used and put it back in the cupboard yourself, because nobody tidies up after you.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="c"><code><span class="line"><span style="color:#F97583">int</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8">arr </span><span style="color:#F97583">=</span><span style="color:#B392F0"> malloc</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">100</span><span style="color:#F97583"> *</span><span style="color:#F97583"> sizeof</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#E1E4E8">));</span><span style="color:#6A737D">   // space from the heap</span></span>
+<span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (arr </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> NULL</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#F97583"> -</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">;</span><span style="color:#6A737D">             // allocation failed</span></span>
+<span class="line"><span style="color:#6A737D">/* ... use it ... */</span></span>
+<span class="line"><span style="color:#B392F0">free</span><span style="color:#E1E4E8">(arr);</span><span style="color:#6A737D">                              // give it back</span></span>
+<span class="line"><span style="color:#E1E4E8">arr </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> NULL</span><span style="color:#E1E4E8">;</span><span style="color:#6A737D">                             // so the old address is not kept around</span></span></code></pre>
+<p>This model is fast and predictable, with no garbage collection pauses. The price is that mistakes are left to the programmer:</p>
+<ul>
+<li>Memory leak: <code>free</code> is forgotten. The memory stays taken until the process ends.</li>
+<li><strong>Dangling Pointer</strong> and <strong>Use-after-free</strong>: memory that was already freed is still accessed. The program can crash or overwrite some other data. Bugs of this kind are a common source of serious security vulnerabilities.</li>
+<li><strong>Double Free</strong>: the same memory is freed twice.</li>
+</ul>
+<p>Modern C++ reduces this burden a lot with <strong>RAII</strong>. A resource is acquired in an object’s constructor and released in its destructor. Since the object lives on the stack, the destructor runs on its own when the object goes out of scope. Smart pointers such as <code>std::unique_ptr</code> and <code>std::shared_ptr</code> manage heap memory this way. <code>shared_ptr</code> counts references, so it has the same cycle problem as Python, solved with <code>weak_ptr</code>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>C / C++</th>
+<th>Java</th>
+<th>Python (CPython)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Getting heap memory</td>
+<td><code>malloc</code> / <code>new</code></td>
+<td><code>new</code></td>
+<td>Whenever an object is created</td>
+</tr>
+<tr>
+<td>Giving it back</td>
+<td>The programmer: <code>free</code> / <code>delete</code> (RAII in C++)</td>
+<td>The garbage collector, by tracing</td>
+<td>When the reference count hits zero, <code>gc</code> for cycles</td>
+</tr>
+<tr>
+<td>Circular references</td>
+<td>The programmer’s problem</td>
+<td>Not a problem</td>
+<td>Handled by the cycle collector</td>
+</tr>
+<tr>
+<td>Closing resources</td>
+<td>Destructor (RAII)</td>
+<td>try-with-resources</td>
+<td><code>with</code> block</td>
+</tr>
+<tr>
+<td>Typical bug</td>
+<td>Leak, use-after-free</td>
+<td>Unneeded object that stays reachable</td>
+<td>Cycles and global caches</td>
+</tr>
+</tbody>
+</table>
+<p>A note on the operating system side: when a process ends, the operating system takes back all of its memory. The damage from a leak shows in long-running programs, such as servers. There memory use grows over time and the process eventually dies from running out of memory.</p>
+<hr>
+<h2 id="interview-questions">Interview questions</h2>
+<p><strong>1. What is the difference between the stack and the heap?</strong>
+The stack belongs to a single thread and holds the frames of method calls, which are removed automatically when the method returns. The heap is shared by all threads and holds the objects created with <code>new</code>. Objects on the heap are cleaned up by the garbage collector once they become unreachable.
+Common mistake: Confusing them with the stack and heap data structures. The names are the same, the jobs are different.</p>
+<p><strong>2. Do primitives always live on the stack?</strong>
+No. A primitive that is a local variable or a parameter is on the stack. A primitive that is a field of an object or an element of an array is on the heap, together with that object.
+Common mistake: Deciding the location by type. What decides it is where the variable is declared.</p>
+<p><strong>3. Is Java pass-by-value or pass-by-reference?</strong>
+Always pass-by-value. For reference types the value passed is a copy of the reference, which is why a method can change an object’s fields. But assigning a new object to the parameter does not change the caller’s variable.
+Common mistake: Seeing a field change and concluding that “objects are passed by reference”.</p>
+<p><strong>4. What is the difference between <code>==</code> and <code>equals</code>?</strong>
+For references, <code>==</code> checks whether two variables point to the same object. <code>equals</code> compares contents, and the class defines what equality means. If <code>equals</code> is overridden, <code>hashCode</code> must be overridden too.
+Common mistake: Comparing <code>Integer</code> values with <code>==</code>. It works between -128 and 127 because of the cache, and breaks at 128.</p>
+<p><strong>5. What is the difference between StackOverflowError and OutOfMemoryError?</strong>
+StackOverflowError comes when a thread’s stack is full, usually from recursion that never ends or goes too deep. OutOfMemoryError comes when there is no room on the heap and the garbage collector cannot free any. Both are <code>Error</code>s and are not meant to be caught and recovered from in the normal flow.
+Common mistake: Explaining StackOverflowError as “memory is full”. What is full is not the heap but one thread’s stack.</p>
+<p><strong>6. How does the garbage collector decide that an object can be removed?</strong>
+It starts from GC roots (local variables on stacks, static fields, running threads) and follows references. Every object that cannot be reached is garbage, including objects that point to each other. The heap is split into a young and an old generation, and short-lived objects are cleaned up by frequent, cheap collections.
+Common mistake: Saying that Java uses reference counting. Circular references do not cause leaks in Java.</p>
+<p><strong>7. Can a memory leak happen in a language with a garbage collector?</strong>
+Yes. If the program keeps a reference to an object it will never use again, the object stays reachable and is not collected. Growing static collections, listener registrations that are never removed and unclosed resources are the most common causes.
+Common mistake: Leaving resource cleanup to the garbage collector. Files and connections are handled with try-with-resources.</p>
+<p><strong>8. How does Python’s memory management differ from Java’s?</strong>
+CPython counts references first and frees an object the moment its count reaches zero. A separate cycle collector handles the cycles that reference counting cannot catch. Java does not count references and uses a tracing collector based on reachability.
+Common mistake: Thinking that <code>del x</code> deletes the object. It only deletes the name, and the object is freed when its last reference is gone.</p>
+<p><img alt="Summary card: the stack vs. the heap, values vs. references, == vs. equals, reachability and generations in the garbage collector, and the three common causes of memory leaks in Java" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/mem-ozet-kart.Aolh_uPo_Z1asdH4.webp" ></p>
+<p><em>In Part 6: the SOLID principles, coupling and cohesion.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

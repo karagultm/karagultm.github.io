@@ -1,0 +1,435 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Race conditions, mutexes and semaphores, deadlock, virtual memory, page replacement algorithms and thrashing: the OS topics interviewers ask about, with worked examples."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Operating Systems 2: Deadlock, Mutex and Paging · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="en" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Operating Systems 2: Deadlock, Mutex and Paging</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 November 2026</time> · operating-systems, interview, programming-101 · Part 9</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/isletim-sistemi-2-deadlock-mutex-paging/" hreflang="tr" lang="tr" data-astro-cid-7jjqptxk>Türkçe oku</a></p> <img src="/_astro/os2-kapak.CJD3MyQr_SQJui.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak"> <section class="ders" aria-labelledby="ders-baslik" data-astro-cid-7jjqptxk> <div class="ders-ust" data-astro-cid-7jjqptxk> <h2 id="ders-baslik" data-astro-cid-7jjqptxk>Try it yourself</h2> <a class="dugme" href="/etkilesim/deadlock.html#lang=en" target="_blank" rel="noopener" data-astro-cid-7jjqptxk>Open full screen</a> </div> <iframe src="/etkilesim/deadlock.html#lang=en" title="Interactive lesson" loading="lazy" data-astro-cid-7jjqptxk></iframe> </section> <article class="yazi" data-astro-cid-7jjqptxk><h1 id="operating-systems-2-deadlock-mutex-and-paging">Operating Systems 2: Deadlock, Mutex and Paging</h1>
+<p><em>Programming 101, Part 9</em></p>
+<p>Part 8 looked at how the operating system shares the CPU between processes and threads. I mentioned there that threads see the same memory and that this comes at a price. This post starts with that price.</p>
+<p>The first half is about concurrency: what breaks when several threads touch shared data, how locks prevent it, and how locks themselves lead to deadlock. The second half is about memory: virtual memory, paging, page replacement algorithms, and why a system acts frozen when memory runs out. At the end there are common interview questions.</p>
+<hr>
+<h2 id="1-race-conditions-and-the-critical-section">1. Race conditions and the critical section</h2>
+<p>A <strong>race condition</strong> happens when several threads access shared data at the same time, at least one of them writes, and the result depends on the order of operations. Threads that only read cause no trouble.</p>
+<p>The classic example is incrementing a counter. <code>balance += 1</code> looks like one line but it is three steps: read, add one, write back. If two threads read the same value, both write the same result and one increment is lost.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> threading, time</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">balance </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> deposit</span><span style="color:#E1E4E8">(n):</span></span>
+<span class="line"><span style="color:#F97583">    global</span><span style="color:#E1E4E8"> balance</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> _ </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(n):</span></span>
+<span class="line"><span style="color:#E1E4E8">        current </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> balance      </span><span style="color:#6A737D"># read</span></span>
+<span class="line"><span style="color:#E1E4E8">        time.sleep(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)          </span><span style="color:#6A737D"># give other threads a chance to run</span></span>
+<span class="line"><span style="color:#E1E4E8">        balance </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> current </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#6A737D">  # write</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">threads </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [threading.Thread(</span><span style="color:#FFAB70">target</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">deposit, </span><span style="color:#FFAB70">args</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">10_000</span><span style="color:#E1E4E8">,)) </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> _ </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">)]</span></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> t </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> threads: t.start()</span></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> t </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> threads: t.join()</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(balance)   </span><span style="color:#6A737D"># expected 40000</span></span></code></pre>
+<p>The expected result is 40,000. On Python 3.13, two runs printed 10,296 and 10,711, different each time. The <code>time.sleep(0)</code> line is there to make the bug visible. Without it the same bug can still happen, just less often.</p>
+<p>The part of the code that touches shared data is called the <strong>critical section</strong>. A correct solution is expected to provide three things:</p>
+<ul>
+<li><strong>Mutual exclusion:</strong> At most one thread is inside the section at any time.</li>
+<li><strong>Progress:</strong> If the section is free and someone wants in, the decision about who enters is made in finite time.</li>
+<li><strong>Bounded waiting:</strong> No thread is kept waiting forever.</li>
+</ul>
+<p>It works like a single fitting room in a shop. While someone is inside the door is locked, and the next person waits outside.</p>
+<hr>
+<h2 id="2-mutexes-semaphores-and-monitors">2. Mutexes, semaphores and monitors</h2>
+<p>Pure software solutions such as Peterson’s algorithm are not reliable on modern processors without extra barriers, because the hardware reorders memory operations. In practice we use tools built on atomic CPU instructions such as <code>test-and-set</code> and <code>compare-and-swap</code>.</p>
+<h3 id="mutex">Mutex</h3>
+<p>A <strong>mutex (mutual exclusion lock)</strong> is a lock acquired before entering the critical section and released on the way out. The earlier example is fixed with one line:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">lock </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> threading.Lock()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> deposit</span><span style="color:#E1E4E8">(n):</span></span>
+<span class="line"><span style="color:#F97583">    global</span><span style="color:#E1E4E8"> balance</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> _ </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(n):</span></span>
+<span class="line"><span style="color:#F97583">        with</span><span style="color:#E1E4E8"> lock:                 </span><span style="color:#6A737D"># critical section</span></span>
+<span class="line"><span style="color:#E1E4E8">            current </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> balance</span></span>
+<span class="line"><span style="color:#E1E4E8">            time.sleep(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">            balance </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> current </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span></span></code></pre>
+<p>This version prints 40,000 on every run.</p>
+<p>The defining property of a mutex is <strong>ownership</strong>: the thread that acquired the lock releases it. If the lock is taken, the waiting thread is usually put to sleep and uses no CPU. A lock that keeps checking “is it free yet?” in a loop is a <strong>spinlock</strong>, and that kind of waiting is busy waiting. When a lock is held very briefly, spinning can be cheaper than sleeping and waking up.</p>
+<h3 id="semaphore">Semaphore</h3>
+<p>A <strong>semaphore</strong> is an integer counter with two operations. <code>wait()</code> (P, acquire) decrements the counter and blocks if it is zero. <code>signal()</code> (V, release) increments it and wakes a waiting thread.</p>
+<ul>
+<li><strong>Counting semaphore:</strong> The counter starts at N, so at most N threads use the resource at once. Like the “spaces free: 3” sign at a car park entrance.</li>
+<li><strong>Binary semaphore:</strong> The counter can only be 0 or 1.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">slots </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> threading.Semaphore(</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">)   </span><span style="color:#6A737D"># at most 3 connections at once</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> use_connection</span><span style="color:#E1E4E8">(i):</span></span>
+<span class="line"><span style="color:#F97583">    with</span><span style="color:#E1E4E8"> slots:</span></span>
+<span class="line"><span style="color:#E1E4E8">        time.sleep(</span><span style="color:#79B8FF">0.1</span><span style="color:#E1E4E8">)          </span><span style="color:#6A737D"># use the connection</span></span></code></pre>
+<p>With ten threads calling this at once, an instrumented version never saw more than 3 threads inside. Connection pools and concurrent request limits are built this way.</p>
+<h3 id="mutex-vs-binary-semaphore">Mutex vs. binary semaphore</h3>
+<p>Both behave like 0 and 1, which is why they are often confused. The difference is in ownership and purpose.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Mutex</th>
+<th>Binary semaphore</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ownership</td>
+<td>Yes, the thread that locks it unlocks it</td>
+<td>No, any thread can call <code>signal()</code></td>
+</tr>
+<tr>
+<td>Typical use</td>
+<td>Protecting shared data</td>
+<td>Telling another thread an event has happened</td>
+</tr>
+</tbody>
+</table>
+<p>A mutex is the lock on a fitting room door, and the person inside opens it. A binary semaphore is the flag that starts a race. The official raises it, the runner runs.</p>
+<p>Java makes the difference visible:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#E1E4E8">ReentrantLock lock </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> ReentrantLock</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">lock.</span><span style="color:#B392F0">lock</span><span style="color:#E1E4E8">();                                  </span><span style="color:#6A737D">// main thread holds the lock</span></span>
+<span class="line"><span style="color:#F97583">new</span><span style="color:#B392F0"> Thread</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">-></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    try</span><span style="color:#E1E4E8"> { lock.</span><span style="color:#B392F0">unlock</span><span style="color:#E1E4E8">(); }                    </span><span style="color:#6A737D">// another thread tries to release it</span></span>
+<span class="line"><span style="color:#F97583">    catch</span><span style="color:#E1E4E8"> (IllegalMonitorStateException </span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) { System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"mutex: not allowed"</span><span style="color:#E1E4E8">); }</span></span>
+<span class="line"><span style="color:#E1E4E8">}).</span><span style="color:#B392F0">start</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Semaphore ready </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Semaphore</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);           </span><span style="color:#6A737D">// starts at 0</span></span>
+<span class="line"><span style="color:#F97583">new</span><span style="color:#B392F0"> Thread</span><span style="color:#E1E4E8">(ready</span><span style="color:#F97583">::</span><span style="color:#E1E4E8">release).</span><span style="color:#B392F0">start</span><span style="color:#E1E4E8">();           </span><span style="color:#6A737D">// signal comes from another thread</span></span>
+<span class="line"><span style="color:#E1E4E8">ready.</span><span style="color:#B392F0">acquire</span><span style="color:#E1E4E8">();                              </span><span style="color:#6A737D">// main waits for the signal</span></span></code></pre>
+<p><code>ReentrantLock</code> rejects an <code>unlock()</code> from a thread that does not own it. <code>Semaphore</code> lets another thread call <code>release()</code>, and the main thread continues.</p>
+<p>How strictly ownership is enforced depends on the library. Python’s <code>threading.Lock</code> can be released by a different thread, and it is <code>threading.RLock</code> that checks ownership. In POSIX, unlocking a default mutex from a non-owning thread is undefined behaviour. Saying “the program always crashes if another thread unlocks it” is not accurate.</p>
+<h3 id="monitor">Monitor</h3>
+<p>A <strong>monitor</strong> is a language-level construct that hides the lock and the waiting conditions inside an object. Only one thread at a time can be inside its methods. To wait for a condition (such as a non-empty queue), a thread uses a <strong>condition variable</strong>: <code>wait()</code> releases the lock and sleeps, and another thread wakes it with <code>notify()</code>. Java’s <code>synchronized</code> with <code>wait()/notify()</code> follows this model. Because the lock is taken on method entry and released on exit, mistakes like a missing <code>signal()</code> become less likely.</p>
+<hr>
+<h2 id="3-deadlock">3. Deadlock</h2>
+<p>A <strong>deadlock</strong> is a situation in which each thread in a group waits for a resource held by another member of the group, so none can make progress. Two cars entering a single-lane bridge from opposite ends end up like this. Each waits for the other to back off.</p>
+<p><img alt="Deadlock: T1 holds lock A and waits for B, T2 holds lock B and waits for A; the wait arrows form a cycle" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/os2-deadlock.uWOpSxOS_Z2iE6qP.webp" ></p>
+<p>The most common form in code is two threads taking two locks in opposite order:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">a, b </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> threading.Lock(), threading.Lock()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> worker</span><span style="color:#E1E4E8">(first, second, name):</span></span>
+<span class="line"><span style="color:#F97583">    with</span><span style="color:#E1E4E8"> first:</span></span>
+<span class="line"><span style="color:#E1E4E8">        time.sleep(</span><span style="color:#79B8FF">0.1</span><span style="color:#E1E4E8">)                  </span><span style="color:#6A737D"># let the other thread take its first lock</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> second.acquire(</span><span style="color:#FFAB70">timeout</span><span style="color:#F97583">=</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#E1E4E8">            second.release()</span></span>
+<span class="line"><span style="color:#79B8FF">            print</span><span style="color:#E1E4E8">(name, </span><span style="color:#9ECBFF">"done"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">        else</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#79B8FF">            print</span><span style="color:#E1E4E8">(name, </span><span style="color:#9ECBFF">"could not get the second lock"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">threading.Thread(</span><span style="color:#FFAB70">target</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">worker, </span><span style="color:#FFAB70">args</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(a, b, </span><span style="color:#9ECBFF">"T1"</span><span style="color:#E1E4E8">)).start()</span></span>
+<span class="line"><span style="color:#E1E4E8">threading.Thread(</span><span style="color:#FFAB70">target</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">worker, </span><span style="color:#FFAB70">args</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(b, a, </span><span style="color:#9ECBFF">"T2"</span><span style="color:#E1E4E8">)).start()  </span><span style="color:#6A737D"># reverse order</span></span></code></pre>
+<p>Both threads print “could not get the second lock”. Without the <code>timeout</code> the program would wait forever. If both threads take <code>a</code> first and then <code>b</code>, the problem disappears.</p>
+<h3 id="the-coffman-conditions">The Coffman conditions</h3>
+<p>A deadlock requires four conditions to hold at the same time:</p>
+<ol>
+<li><strong>Mutual exclusion:</strong> Only one thread can use the resource at a time.</li>
+<li><strong>Hold and wait:</strong> A thread holds one resource while waiting for another.</li>
+<li><strong>No preemption:</strong> A resource cannot be taken away from the thread holding it.</li>
+<li><strong>Circular wait:</strong> T1 waits for T2’s resource and T2 waits for T1’s.</li>
+</ol>
+<p>Break any one and deadlock cannot occur.</p>
+<h3 id="prevention-avoidance-and-detection">Prevention, avoidance and detection</h3>
+<p><strong>Prevention</strong> makes one of the conditions impossible by design. Hold and wait is broken by having a thread request all its resources at once. No preemption is broken by having a thread that cannot get its second lock release what it holds and retry (<code>tryLock</code>, locks with timeouts). Circular wait is broken by numbering the locks and having everyone acquire them in increasing order. The last one is the most widely used in practice. Breaking mutual exclusion is usually impossible.</p>
+<p><strong>Avoidance</strong> checks on every request whether the system will stay safe. The well-known example is the <strong>Banker’s algorithm</strong>. Each process declares up front the maximum resources it may need. When a request comes in, the system checks whether, after granting it, there is still an order in which every process can finish. If there is, the state is a <strong>safe state</strong> and the request is granted. Otherwise the process waits. A bank behaves the same way when it refuses a new loan because its cash could no longer cover every customer’s worst-case demand. Since maximum needs must be known in advance, general-purpose operating systems rarely use it.</p>
+<p><strong>Detection and recovery</strong> lets deadlocks happen and checks for them periodically. The system builds a <strong>wait-for graph</strong> showing who waits for whom and searches it for a cycle. If one is found, a process is terminated or its resources are taken back. Databases work this way: of two transactions waiting for each other, one is rolled back.</p>
+<p>The fourth option is to ignore the problem. Most general-purpose operating systems do this for application-level deadlocks, and getting the lock order right is left to the programmer.</p>
+<hr>
+<h2 id="4-livelock-and-starvation">4. Livelock and starvation</h2>
+<p><strong>Livelock</strong> is a state in which threads are not blocked and keep doing something, yet none makes progress. Two people in a narrow corridor both step right, then both step left, and so on. Two threads that release their lock and retry immediately on failure can fall into the same rhythm. The fix is to wait a random amount of time before retrying.</p>
+<p><strong>Starvation</strong> happens when a thread is able to run but its turn never comes. The scheduling case from Part 8 shows up with locks too. An unfair lock may keep going to the same threads. Fair locks in Java, such as <code>new ReentrantLock(true)</code>, hand the lock to waiters in arrival order.</p>
+<hr>
+<h2 id="5-virtual-memory-and-paging">5. Virtual memory and paging</h2>
+<p><strong>Virtual memory</strong> gives each process the impression of a large address space of its own, starting from zero. The <strong>virtual address</strong> a process sees is translated by the hardware <strong>MMU (memory management unit)</strong> into a <strong>physical address</strong> in RAM. As a result, processes cannot see each other’s memory, and parts of a program not in use can stay on disk.</p>
+<h3 id="pages-frames-and-the-page-table">Pages, frames and the page table</h3>
+<p><strong>Paging</strong> does the translation in fixed-size blocks. The virtual address space is split into equal <strong>pages</strong>, and physical RAM into <strong>frames</strong> of the same size. A typical size is 4 KB. Which page sits in which frame is recorded in each process’s own <strong>page table</strong>. It is like the loose pages of a ring binder: each page can go into any free slot on the shelf, and an index records where it is.</p>
+<p>Translation starts by splitting the address into a page number and an offset within the page. With 4096-byte pages, for virtual address 20000:</p>
+<ul>
+<li>Page number = 20000 / 4096 = 4 (integer division)</li>
+<li>Offset = 20000 − 4 × 4096 = 3616</li>
+</ul>
+<p>If page 4 is in frame 9, the physical address is 9 × 4096 + 3616 = 40480. The offset stays the same, and only the page number is replaced by the frame number.</p>
+<h3 id="tlb">TLB</h3>
+<p>The page table itself lives in memory. If every access had to read it first, memory accesses would be at least twice as slow. The <strong>TLB (translation lookaside buffer)</strong> is a small hardware cache of recently used page-to-frame mappings. On a TLB hit translation is almost free. On a TLB miss the page table is read and the result is stored in the TLB. Programs keep accessing the same regions, so the hit rate is very high. The “cold TLB” mentioned in Part 8 as an indirect cost of context switches comes from here.</p>
+<h3 id="page-fault">Page fault</h3>
+<p>When a process accesses a page that is not in RAM, the MMU raises a <strong>page fault</strong>. Despite the name, it is usually routine work for the operating system:</p>
+<ol>
+<li>The CPU switches to the kernel.</li>
+<li>The kernel finds where the page is on disk.</li>
+<li>It picks a free frame, or evicts a page if there is none.</li>
+<li>It reads the page into the frame and updates the page table.</li>
+<li>The faulting instruction is restarted.</li>
+</ol>
+<p>Loading pages only when they are needed is called <strong>demand paging</strong>. A process touching an address it has no right to access is a different case: the kernel terminates it (a segmentation fault on Linux).</p>
+<hr>
+<h2 id="6-page-replacement-algorithms">6. Page replacement algorithms</h2>
+<p>When RAM is full and a new page is needed, a <strong>page replacement</strong> algorithm decides which page to evict.</p>
+<ul>
+<li><strong>FIFO (first in, first out):</strong> The page that entered RAM first is evicted. It may evict an old page that is still in heavy use.</li>
+<li><strong>LRU (least recently used):</strong> The page unused for the longest time is evicted. Exact LRU is expensive in hardware, so operating systems use approximations such as <strong>Clock (Second Chance)</strong>.</li>
+<li><strong>Optimal (OPT):</strong> The page that will be used furthest in the future is evicted. It gives the fewest faults but needs to know the future, so it serves only as a yardstick.</li>
+</ul>
+<h3 id="worked-example-3-frames-12-accesses">Worked example: 3 frames, 12 accesses</h3>
+<p>The reference string is <code>1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5</code>, there are 3 frames, and all are empty at the start. The “Fault” row shows whether a page fault occurred, with the evicted page in brackets.</p>
+<p>FIFO:</p>
+<table>
+<thead>
+<tr>
+<th>Access</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>1</th>
+<th>2</th>
+<th>5</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+</tr>
+<tr>
+<td>F2</td>
+<td></td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>F3</td>
+<td></td>
+<td></td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Fault</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes (1)</td>
+<td>yes (2)</td>
+<td>yes (3)</td>
+<td>yes (4)</td>
+<td>no</td>
+<td>no</td>
+<td>yes (1)</td>
+<td>yes (2)</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<p>9 page faults in total. When 4 arrives, page 1 is the oldest, so it goes, and right after that 1 is requested and loaded again. FIFO does not look at how often a page is used, which is why it loses pages like this.</p>
+<p>LRU:</p>
+<table>
+<thead>
+<tr>
+<th>Access</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>1</th>
+<th>2</th>
+<th>5</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>F2</td>
+<td></td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>F3</td>
+<td></td>
+<td></td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Fault</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes (1)</td>
+<td>yes (2)</td>
+<td>yes (3)</td>
+<td>yes (4)</td>
+<td>no</td>
+<td>no</td>
+<td>yes (5)</td>
+<td>yes (1)</td>
+<td>yes (2)</td>
+</tr>
+</tbody>
+</table>
+<p>10 page faults in total. The first seven steps match FIFO. When 3 arrives, 1 and 2 were just used, so 5 goes, but 5 is requested again two steps later. LRU usually beats FIFO, but not on this string.</p>
+<p>With Optimal, when 4 arrives, 1 and 2 are needed soon and 3 last, so 3 goes. When 5 arrives, 4 goes for the same reason. When 3 arrives, neither 1 nor 2 is used again, so either can go. 7 page faults in total. With 3 frames, no algorithm can do better on this string.</p>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>3 frames</th>
+<th>4 frames</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FIFO</td>
+<td>9</td>
+<td>10</td>
+</tr>
+<tr>
+<td>LRU</td>
+<td>10</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Optimal</td>
+<td>7</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<p>I checked these numbers with a small Python simulation, and they match the hand calculation.</p>
+<p>The second column holds a surprise. With FIFO, going from 3 frames to 4 raises the faults from 9 to 10, so more memory gives a worse result. This is called <strong>Belady’s anomaly</strong>. LRU and Optimal do not show it, because the pages they keep in k frames are always a subset of what they would keep in k+1 frames.</p>
+<hr>
+<h2 id="7-thrashing">7. Thrashing</h2>
+<p><strong>Thrashing</strong> is the state in which a system spends most of its time moving pages between disk and RAM and gets almost no useful work done. It is like working with four books on a desk that holds two. All the time goes into carrying books between shelf and desk.</p>
+<p>The set of pages a process actively uses over a short window is its <strong>working set</strong>. When the combined working sets of the running processes exceed RAM, each process keeps asking for a page another one has just evicted. The symptom is typical: the disk is constantly busy, CPU usage is low, and the system feels frozen. Some old schedulers saw the low CPU usage, admitted more processes and made it worse.</p>
+<p>The fix is to reduce the number of processes running at once (the <strong>degree of multiprogramming</strong>) or to add RAM. Operating systems try to do this automatically with the <strong>working set model</strong> (run a process only if its working set fits) or with <strong>page fault frequency</strong> (give more frames to a process whose fault rate rises).</p>
+<p>Paging and swapping are often used as if they meant the same thing. Paging is managing memory in pages, and it works even when RAM is plentiful. Writing pages out to disk and reading them back (swapping) happens on top of it. Thrashing is that traffic getting out of control.</p>
+<hr>
+<h2 id="8-fragmentation-and-segmentation">8. Fragmentation and segmentation</h2>
+<p><strong>Fragmentation</strong> means free memory exists but cannot be used.</p>
+<p><strong>Internal fragmentation:</strong> If an allocated block is larger than needed, the unused part inside the block is wasted. With 4 KB pages, 10 KB of data takes three pages and 2 KB of the last page goes unused. It is like shipping a small item in a large box.</p>
+<p><strong>External fragmentation:</strong> The total free memory is enough, but it is not contiguous. With 15 MB free but the largest gap at 5 MB, a 10 MB request cannot be satisfied. It is like a cinema with ten empty seats where a group of four still cannot sit together.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Internal</th>
+<th>External</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Where the waste is</td>
+<td>Inside an allocated block</td>
+<td>Between allocated blocks</td>
+</tr>
+<tr>
+<td>Cause</td>
+<td>Fixed-size blocks</td>
+<td>Variable-size allocation</td>
+</tr>
+<tr>
+<td>Where it appears</td>
+<td>Paging, fixed partitioning</td>
+<td>Segmentation, dynamic partitioning</td>
+</tr>
+<tr>
+<td>Mitigation</td>
+<td>Smaller block size</td>
+<td>Compaction, paging</td>
+</tr>
+</tbody>
+</table>
+<p>“Best fit” is sometimes given as the fix for internal fragmentation, which is wrong. Best fit, first fit and worst fit are strategies for choosing a hole in variable-size allocation, so they address external fragmentation. What reduces internal fragmentation is a smaller block size, at the cost of a larger page table.</p>
+<p><strong>Compaction</strong> slides allocated blocks to one end of memory and merges the gaps. It is expensive, because everything that moves gets a new address. Disk defragmentation is a separate job that deals with file pieces on a disk. Paging solves the problem at the root: every frame is the same size, so any free frame fits any page. What remains is a little internal fragmentation in the last page.</p>
+<p><strong>Segmentation</strong> divides memory into the logical parts of a program (code, data, stack, heap) instead of fixed pages. Each segment has its own size and access permissions. Because segments vary in size, it is prone to external fragmentation. On today’s 64-bit systems segmentation is largely disabled and memory is managed with paging.</p>
+<hr>
+<h2 id="interview-questions">Interview questions</h2>
+<p><strong>1. What is a race condition and how do you prevent it?</strong>
+It is when several threads access shared data concurrently, at least one writes, and the result depends on execution order. The code that touches shared data is treated as a critical section and protected with a lock such as a mutex. Atomic operations or immutable data can also solve it.
+Common mistake: Assuming <code>count += 1</code> is a single operation.</p>
+<p><strong>2. What is the difference between a mutex and a binary semaphore?</strong>
+A mutex has an owner: the thread that locks it unlocks it, and its purpose is to protect shared data. A binary semaphore has no owner, so one thread can call <code>wait()</code> while another calls <code>signal()</code>. That is why it is used for signalling between threads.
+Common mistake: Saying “both take 0 and 1, so they are the same thing”.</p>
+<p><strong>3. What are the four conditions for deadlock, and how is it prevented?</strong>
+Mutual exclusion, hold and wait, no preemption and circular wait. All four must hold at once, and breaking one prevents deadlock. In practice circular wait is the easiest to break, by acquiring all locks in a fixed order. The Banker’s algorithm takes a different route and runs every request through a safe-state check, which is avoidance.
+Common mistake: Listing the conditions without being able to say how each one can be broken.</p>
+<p><strong>4. How do deadlock, livelock and starvation differ?</strong>
+In deadlock the threads are blocked and none progresses. In livelock the threads keep running, yet none progresses. In starvation the system makes progress, but one thread’s turn never comes.
+Common mistake: Calling livelock a kind of deadlock. A livelock burns CPU.</p>
+<p><strong>5. What is a page fault? Is every page fault an error?</strong>
+It is an access to a page that is not in RAM. The operating system loads the page from disk and the instruction runs again. This is normal, and demand paging depends on it.
+Common mistake: Confusing a page fault with a segmentation fault.</p>
+<p><strong>6. What is the TLB and why is it needed?</strong>
+It is a small hardware cache of virtual-to-physical address mappings. Without it, every memory access would first need a page table lookup in memory. After a context switch its contents are largely useless.
+Common mistake: Confusing the TLB with the CPU’s data caches (L1/L2).</p>
+<p><strong>7. The system is very slow, the disk is constantly busy, but CPU usage is low. What could be wrong?</strong>
+Most likely thrashing. The working sets of the running processes do not fit in RAM and the system spends its time servicing page faults. The fix is to run fewer processes at once or add RAM.
+Common mistake: Seeing low CPU usage and starting more work.</p>
+<p><img alt="Summary card: race condition, mutex and semaphore, deadlock conditions, paging, TLB, page replacement, thrashing, fragmentation" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/os2-ozet-kart.rFsjwgKM_Z16VBEX.webp" ></p>
+<p><em>In Part 10: concurrency, multithreading and async.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

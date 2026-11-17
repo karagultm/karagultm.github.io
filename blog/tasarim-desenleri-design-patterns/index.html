@@ -1,0 +1,332 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Creational, structural ve behavioral desenler, her biri için problem, çözüm ve kısa Java kodu. Thread-safe Singleton, desenlerin SOLID ile ilişkisi ve mülakatta sorulanlar."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Tasarım Desenleri (Design Patterns): Singleton, Factory, Builder, Adapter, Decorator, Strategy, Observer · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="tr" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Tasarım Desenleri (Design Patterns): Singleton, Factory, Builder, Adapter, Decorator, Strategy, Observer</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 Kasım 2026</time> · design-pattern, oop, mulakat, programlama-101 · Bölüm 7</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/design-patterns/" hreflang="en" lang="en" data-astro-cid-7jjqptxk>Read in English</a></p> <img src="/_astro/dp-kapak.CD9Xbl-i_1bg5Jc.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak">  <article class="yazi" data-astro-cid-7jjqptxk><h1 id="tasarım-desenleri-design-patterns-singleton-factory-builder-adapter-decorator-strategy-observer">Tasarım Desenleri (Design Patterns): Singleton, Factory, Builder, Adapter, Decorator, Strategy, Observer</h1>
+<p><em>Programlama 101, Bölüm 7</em></p>
+<ol start="6">
+<li>bölümde SOLID ilkelerini anlatmıştık: bir sınıfın tek sorumluluğu olması, kodun değiştirilmeden genişletilebilmesi, somut sınıflara değil soyutlamalara bağlanılması. İlkeler neyin hedeflendiğini söylüyor, ama o hedefe giden yolu tarif etmiyor. Tasarım desenleri bu boşluğu dolduruyor. Sık karşılaşılan tasarım problemlerine verilmiş, adı konmuş ve tekrar tekrar denenmiş çözümler.</li>
+</ol>
+<p>Mülakatta desen soruları genelde iki türlü gelir. Ya bir desenin adı verilip ne işe yaradığı sorulur, ya da bir problem anlatılıp hangi desenin uygun olduğu. İkincisine cevap verebilmek için desenin kodundan çok çözdüğü problemi bilmek gerekiyor.</p>
+<p>Aşağıda önce desenin ne olduğunu ve üç grubu anlatıyorum. Sonra sekiz deseni tek tek ele alıyorum: her biri için problem, çözüm ve kısa bir Java örneği. Ardından desenlerin SOLID ile ilişkisi ve ezberci yaklaşımın tuzağı geliyor. Sonda mülakatta sık gelen sorular var.</p>
+<hr>
+<h2 id="1-tasarım-deseni-nedir">1. Tasarım deseni nedir</h2>
+<p><strong>Design Pattern (Tasarım Deseni)</strong>, nesne yönelimli tasarımda tekrar eden bir probleme verilmiş genel bir çözüm kalıbıdır. Kopyalanıp yapıştırılacak bir kod parçası değildir. Problemin tarifi, çözümün yapısı ve bu çözümün bedeli birlikte anlatılır.</p>
+<p>Mimarlıktaki “merdiven sahanlığı” fikrine benzer. Her binanın merdiveni farklıdır, ama uzun bir merdiveni ortadan bölüp dinlenme yeri koymak bilinen bir çözümdür ve adı vardır. Adın olması, iki mimarın uzun uzun anlatmadan anlaşmasını sağlar. Desenlerin en büyük faydası da bu ortak sözlük. Kod incelemesinde “buraya bir decorator koyalım” demek, beş cümlelik açıklamanın yerini tutar.</p>
+<p>Bugün kullanılan desen listesinin çoğu, 1994’te yayımlanan klasik desen kitabından gelir. Kitap 23 desen tanımlar ve bunları üç gruba ayırır. Örnekler C++ ve Smalltalk ile yazılmıştı, Java’da bazı desenler dilin kendi özellikleriyle daha kısa yazılabiliyor.</p>
+<hr>
+<h2 id="2-üç-grup-creational-structural-behavioral">2. Üç grup: creational, structural, behavioral</h2>
+<p>Desenler hangi soruya cevap verdiklerine göre gruplanır.</p>
+<table>
+<thead>
+<tr>
+<th>Grup</th>
+<th>Sorduğu soru</th>
+<th>Bu yazıdaki örnekler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Creational (Yaratımsal)</td>
+<td>Nesne nasıl ve kim tarafından oluşturulur?</td>
+<td>Singleton, Factory Method, Builder</td>
+</tr>
+<tr>
+<td>Structural (Yapısal)</td>
+<td>Sınıflar ve nesneler nasıl bir araya getirilir?</td>
+<td>Adapter, Decorator</td>
+</tr>
+<tr>
+<td>Behavioral (Davranışsal)</td>
+<td>Nesneler nasıl haberleşir, sorumluluk nasıl paylaşılır?</td>
+<td>Strategy, Observer, Mediator</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Creational</strong> desenler <code>new</code> çağrısını kodun her yerine dağıtmak yerine nesne oluşturmayı tek bir yerde toplar. <strong>Structural</strong> desenler, uyumsuz parçaları birleştirmek ya da bir nesneye yeni özellik eklemek için nesneleri birbirinin içine yerleştirir. <strong>Behavioral</strong> desenler ise nesneler arasındaki iletişimi ve algoritma seçimini düzenler.</p>
+<p><img alt="Tasarım desenlerinin üç grubu: creational desenler nesnenin nasıl oluşturulacağını (Singleton, Factory Method, Builder), structural desenler nesnelerin nasıl birleştirileceğini (Adapter, Decorator), behavioral desenler nesnelerin nasıl haberleşeceğini (Strategy, Observer, Mediator) düzenler" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/dp-gruplar.D1JsgyMS_1XCbU6.webp" ></p>
+<hr>
+<h2 id="3-singleton">3. Singleton</h2>
+<p><strong>Singleton</strong>, bir sınıftan uygulama boyunca yalnızca tek bir nesne oluşturulmasını garanti eder ve o nesneye global bir erişim noktası sağlar. Ayar yöneticisi, bağlantı havuzu ya da log yazıcı gibi tek kopyası olması gereken nesneler için düşünülür.</p>
+<p>Klasik çözümün üç parçası var: constructor <code>private</code> yapılır, tek nesne <code>static</code> bir alanda tutulur ve dışarıya bu nesneyi veren <code>static</code> bir metot açılır. Kaynak notlardaki ve pek çok eğitimdeki ilk sürüm şöyledir:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Ayarlar</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> static</span><span style="color:#E1E4E8"> Ayarlar ornek;</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#B392F0"> Ayarlar</span><span style="color:#E1E4E8">() { }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> static</span><span style="color:#E1E4E8"> Ayarlar </span><span style="color:#B392F0">getir</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (ornek </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">) {          </span><span style="color:#6A737D">// iki thread aynı anda null görebilir</span></span>
+<span class="line"><span style="color:#E1E4E8">            ornek </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Ayarlar</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> ornek;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Bu kod tek thread’de doğru çalışır, çok thread’de çalışmaz. İki thread <code>ornek == null</code> kontrolünü aynı anda geçerse iki ayrı nesne oluşur. Bu bir race condition ve testte nadiren görülür, çünkü zamanlamaya bağlıdır.</p>
+<h3 id="thread-safe-hali">Thread-safe hali</h3>
+<p>En kısa çözüm metodu <code>synchronized</code> yapmaktır, ama o zaman her çağrı kilit alır. Nesne bir kez oluştuktan sonra bu kilit gereksiz bir maliyettir. Java’da önerilen yol <strong>Initialization-on-demand Holder</strong> yaklaşımı:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Ayarlar</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#B392F0"> Ayarlar</span><span style="color:#E1E4E8">() { }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> static</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Tutucu</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        static</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> Ayarlar ORNEK </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Ayarlar</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> static</span><span style="color:#E1E4E8"> Ayarlar </span><span style="color:#B392F0">getir</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> Tutucu.ORNEK;   </span><span style="color:#6A737D">// Tutucu ilk çağrıda yüklenir</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>İç sınıf <code>Tutucu</code>, <code>getir()</code> ilk kez çağrılana kadar yüklenmez. JVM bir sınıfın static alanlarını başlatırken bunu tek bir thread’in yapmasını garanti eder. Böylece hem tembel (lazy) oluşturma hem thread güvenliği kilit yazmadan elde edilir.</p>
+<p>İki alternatif daha var. <strong>Double-Checked Locking</strong>, null kontrolünü kilidin önünde ve içinde iki kez yapar, ama alanın <code>volatile</code> olması şarttır. <code>volatile</code> olmazsa JVM yazma sırasını değiştirebilir ve başka bir thread, constructor’ı bitmemiş bir nesnenin referansını görebilir. İkinci alternatif tek elemanlı bir <code>enum</code>: <code>enum Ayarlar { ORNEK; }</code>. Enum’u reflection ile ikinci kez oluşturmak mümkün değildir ve serileştirmede de tek kalır. Diğer yöntemler bu iki noktada ek önlem ister.</p>
+<h3 id="neden-anti-pattern-sayılıyor">Neden anti-pattern sayılıyor</h3>
+<p>Singleton desen listelerinde olduğu kadar “kaçınılması gerekenler” listelerinde de geçer. Sebepleri şunlar:</p>
+<ul>
+<li>Global durumdur. <code>Ayarlar.getir()</code> kodun herhangi bir yerinden çağrılabildiği için bir sınıfın neye bağlı olduğu imzasından görünmez. Bağımlılık metodun içine gizlenir.</li>
+<li>Test etmeyi zorlaştırır. Singleton’ı kullanan bir sınıfı test ederken yerine sahte bir nesne koymak mümkün olmaz. Testler aynı nesnenin durumunu paylaştığı için birbirini etkiler.</li>
+<li>İki işi birden yapar: hem kendi asıl işini hem de kendi yaşam döngüsünü yönetir. Bu, tek sorumluluk ilkesine ters düşer.</li>
+<li>“Tek” olması göründüğü kadar kesin değildir. Her class loader kendi kopyasını oluşturabilir. Birden fazla süreçte çalışan bir sistemde de her süreçte ayrı bir nesne vardır.</li>
+</ul>
+<p>Bunlar “tek nesne” fikrinin değil, o nesneye global erişim yolunun sorunları. Tek bir ayar nesnesine ihtiyaç varsa, uygulama başlarken bir kez oluşturulup ihtiyaç duyan sınıflara constructor üzerinden verilebilir. Dependency injection çatılarındaki “singleton scope” tam olarak budur: nesne tektir, ama sınıflar onu <code>getir()</code> ile çekmez, dışarıdan alır.</p>
+<hr>
+<h2 id="4-factory-method">4. Factory Method</h2>
+<p>Kod <code>new Kamyon()</code> yazdığı her yerde <code>Kamyon</code> sınıfına bağlanır. Yarın bazı teslimatların gemiyle yapılması gerektiğinde, bu satırların hepsini bulup değiştirmek gerekir.</p>
+<p><strong>Factory Method</strong>, nesne oluşturma işini bir metoda bırakır ve hangi sınıfın oluşturulacağına alt sınıfların karar vermesini sağlar. Üst sınıf iş akışını yazar, akışın içinde ihtiyaç duyduğu nesneyi soyut bir metottan ister.</p>
+<p>Bir lojistik şirketi düşünülebilir. Teslimatı planlama süreci her zaman aynıdır: aracı hazırla, yükle, yola çıkar. Değişen tek şey aracın türü. Kara bölümü kamyon, deniz bölümü gemi kullanır.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> Tasit</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">void</span><span style="color:#B392F0"> tasi</span><span style="color:#E1E4E8">(); }</span></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Kamyon</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> Tasit</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> tasi</span><span style="color:#E1E4E8">() { </span><span style="color:#6A737D">/* karayolu */</span><span style="color:#E1E4E8"> } }</span></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Gemi</span><span style="color:#F97583">   implements</span><span style="color:#B392F0"> Tasit</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> tasi</span><span style="color:#E1E4E8">() { </span><span style="color:#6A737D">/* deniz yolu */</span><span style="color:#E1E4E8"> } }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">abstract</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Lojistik</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    abstract</span><span style="color:#E1E4E8"> Tasit </span><span style="color:#B392F0">tasitOlustur</span><span style="color:#E1E4E8">();          </span><span style="color:#6A737D">// factory method</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> teslimatPlanla</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">        Tasit t </span><span style="color:#F97583">=</span><span style="color:#B392F0"> tasitOlustur</span><span style="color:#E1E4E8">();          </span><span style="color:#6A737D">// hangi sınıf olduğunu bilmiyor</span></span>
+<span class="line"><span style="color:#E1E4E8">        t.</span><span style="color:#B392F0">tasi</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> KaraLojistigi</span><span style="color:#F97583">  extends</span><span style="color:#B392F0"> Lojistik</span><span style="color:#E1E4E8"> { Tasit </span><span style="color:#B392F0">tasitOlustur</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Kamyon</span><span style="color:#E1E4E8">(); } }</span></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> DenizLojistigi</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> Lojistik</span><span style="color:#E1E4E8"> { Tasit </span><span style="color:#B392F0">tasitOlustur</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Gemi</span><span style="color:#E1E4E8">(); } }</span></span></code></pre>
+<p>Hava taşımacılığı eklendiğinde yeni bir <code>Ucak</code> ve yeni bir <code>HavaLojistigi</code> yazılır. <code>Lojistik</code> ve var olan alt sınıflar değişmez.</p>
+<p>Bu desen sık sık başka bir şeyle karıştırılır. <code>if (tip.equals("Kara")) return new Kamyon();</code> gibi bir parametreye bakıp nesne döndüren tek bir sınıf <strong>Simple Factory</strong>’dir. Kullanışlıdır ve <code>new</code> çağrılarını tek yerde toplar, ama klasik kitaptaki desenlerden biri değildir. Yeni bir tür eklendiğinde fabrikanın içindeki <code>if</code> zincirine dokunmak gerekir. Factory Method’da ise genişleme yeni bir alt sınıfla yapılır. <code>List.of(...)</code> ya da <code>Integer.valueOf(...)</code> gibi static metotlar da ayrı bir şeydir. Bunlara <strong>Static Factory Method</strong> denir ve constructor’a isim verilmiş bir alternatif olarak düşünülebilir.</p>
+<hr>
+<h2 id="5-builder">5. Builder</h2>
+<p>Bir sınıfın iki zorunlu, beş isteğe bağlı alanı olduğunda constructor’lar çoğalmaya başlar: iki parametreli, üç parametreli, dört parametreli. Buna <strong>Telescoping Constructor</strong> denir. <code>new Kullanici("admin", null, null, 30, true)</code> satırında hangi <code>null</code>’ın neye karşılık geldiğini okumak zordur, iki <code>String</code> parametrenin yeri karışırsa derleyici de fark etmez.</p>
+<p><strong>Builder</strong>, karmaşık bir nesneyi adım adım kurmayı nesnenin kendisinden ayırır. Java’da en yaygın biçimi, sınıfın içinde zincirlenebilen metotları olan bir yardımcı sınıftır.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Kullanici</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> String ad;      </span><span style="color:#6A737D">// zorunlu</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> String eposta;  </span><span style="color:#6A737D">// isteğe bağlı</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> yas;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#B392F0"> Kullanici</span><span style="color:#E1E4E8">(Builder </span><span style="color:#FFAB70">b</span><span style="color:#E1E4E8">) { ad </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> b.ad; eposta </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> b.eposta; yas </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> b.yas; }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> static</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Builder</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> String ad;</span></span>
+<span class="line"><span style="color:#F97583">        private</span><span style="color:#E1E4E8"> String eposta;</span></span>
+<span class="line"><span style="color:#F97583">        private</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> yas;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#B392F0"> Builder</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">ad</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.ad </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ad; }</span></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#E1E4E8"> Builder </span><span style="color:#B392F0">eposta</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.eposta </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> e; </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#E1E4E8"> Builder </span><span style="color:#B392F0">yas</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> y</span><span style="color:#E1E4E8">)       { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.yas </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> y; </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#E1E4E8"> Kullanici </span><span style="color:#B392F0">build</span><span style="color:#E1E4E8">()        { </span><span style="color:#F97583">return</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Kullanici</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">); }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Kullanici k </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> Kullanici.</span><span style="color:#B392F0">Builder</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"admin"</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">yas</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">30</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">build</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<p>Her değerin adı çağrının içinde okunur. Alanlar <code>final</code> olduğu için nesne oluştuktan sonra değişmez. Doğrulama kuralları, örneğin “yaş negatif olamaz”, <code>build()</code> içinde tek yerde kontrol edilebilir. Java kütüphanesinde <code>java.net.http.HttpRequest.newBuilder()</code> bu biçimin örneği.</p>
+<p>Bir not: klasik kitaptaki Builder, aynı kurma sürecinden farklı temsiller (örneğin aynı belgeden hem HTML hem PDF) üretmeyi amaçlıyordu ve süreci yöneten bir “director” sınıfı içeriyordu. Günlük Java’da Builder denince yukarıdaki akıcı (fluent) biçim kastedilir.</p>
+<hr>
+<h2 id="6-adapter">6. Adapter</h2>
+<p>Kod bir arayüz bekliyor, eldeki sınıf başka bir arayüz sunuyor ve o sınıf değiştirilemiyor. Dışarıdan alınmış bir kütüphane ya da eski bir modül genellikle böyledir.</p>
+<p><strong>Adapter</strong>, uyumsuz bir arayüzü beklenen arayüze çeviren ara sınıftır. Yurt dışında kullanılan priz adaptörü buna benzer. Ne cihazın fişi ne de duvardaki priz değişir, aradaki parça ikisini uyumlu hale getirir.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> OdemeServisi</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> ode</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">long</span><span style="color:#FFAB70"> kurus</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// dış kütüphane, değiştirilemiyor</span></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> EskiOdemeKutuphanesi</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> paraGonder</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> tutar</span><span style="color:#E1E4E8">, String </span><span style="color:#FFAB70">paraBirimi</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* ... */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> EskiOdemeAdapter</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> OdemeServisi</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> EskiOdemeKutuphanesi kutuphane </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> EskiOdemeKutuphanesi</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> ode</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">long</span><span style="color:#FFAB70"> kurus</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        kutuphane.</span><span style="color:#B392F0">paraGonder</span><span style="color:#E1E4E8">(kurus </span><span style="color:#F97583">/</span><span style="color:#79B8FF"> 100.0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"TRY"</span><span style="color:#E1E4E8">);   </span><span style="color:#6A737D">// birim ve imza çevirisi</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Uygulamanın geri kalanı yalnızca <code>OdemeServisi</code>’ni bilir. Kütüphane değiştirildiğinde yalnızca adapter yeniden yazılır. Java’da <code>InputStreamReader</code> bayt akışını karakter okuyucuya çeviren bir adapter’dır, <code>Arrays.asList</code> da bir diziyi <code>List</code> arayüzüyle kullanılabilir hale getirir.</p>
+<p>Burada adapter, kütüphaneyi alan olarak tutuyor. Buna <strong>Object Adapter</strong> denir. Kütüphane sınıfından kalıtım alan <strong>Class Adapter</strong> biçimi de var, ama Java’da tekli kalıtım olduğu için daha az kullanılır.</p>
+<hr>
+<h2 id="7-decorator">7. Decorator</h2>
+<p>Bir veri kaynağına yazarken bazen sıkıştırma, bazen şifreleme, bazen ikisi birden isteniyor. Her birleşim için ayrı alt sınıf yazılırsa <code>SikistirilmisDosya</code>, <code>SifreliDosya</code>, <code>SikistirilmisSifreliDosya</code> diye sınıf sayısı katlanarak artar.</p>
+<p><strong>Decorator</strong>, bir nesneyi aynı arayüzü uygulayan başka bir nesnenin içine sararak ona çalışma zamanında yeni davranış ekler. Sarmalayan nesne işi içteki nesneye iletir, önüne ya da arkasına kendi katkısını koyar. Kışın üst üste giyilen kıyafetler gibi düşünülebilir. Her kat bir özellik ekler, katlar istenen sırayla giyilip çıkarılabilir.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> VeriKaynagi</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">void</span><span style="color:#B392F0"> yaz</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">veri</span><span style="color:#E1E4E8">); }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Dosya</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> VeriKaynagi</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> yaz</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">veri</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* diske yaz */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> SikistirmaDecorator</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> VeriKaynagi</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> VeriKaynagi ic;</span></span>
+<span class="line"><span style="color:#B392F0">    SikistirmaDecorator</span><span style="color:#E1E4E8">(VeriKaynagi </span><span style="color:#FFAB70">ic</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.ic </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ic; }</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> yaz</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">veri</span><span style="color:#E1E4E8">) { ic.</span><span style="color:#B392F0">yaz</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">sikistir</span><span style="color:#E1E4E8">(veri)); }</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#E1E4E8"> String </span><span style="color:#B392F0">sikistir</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">s</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* ... */</span><span style="color:#F97583"> return</span><span style="color:#E1E4E8"> s; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// SifrelemeDecorator aynı şekilde yazılır</span></span>
+<span class="line"><span style="color:#E1E4E8">VeriKaynagi k </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> SikistirmaDecorator</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#B392F0"> SifrelemeDecorator</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#B392F0"> Dosya</span><span style="color:#E1E4E8">()));</span></span>
+<span class="line"><span style="color:#E1E4E8">k.</span><span style="color:#B392F0">yaz</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"rapor"</span><span style="color:#E1E4E8">);   </span><span style="color:#6A737D">// önce sıkıştırılır, sonra şifrelenir, sonra yazılır</span></span></code></pre>
+<p>Her decorator tek bir iş yapar ve istenen sırayla birleştirilebilir. Java’nın I/O sınıfları bu desen üzerine kurulu: <code>new BufferedReader(new InputStreamReader(new FileInputStream("a.txt")))</code> satırında her katman bir öncekini sarar. <code>Collections.unmodifiableList</code> de bir listeyi sarıp değiştiren metotları engelleyen bir decorator’dır.</p>
+<p>Adapter ile karıştırılmaması için fark şu: adapter arayüzü değiştirir, davranışa dokunmaz. Decorator arayüzü aynı bırakır, davranış ekler.</p>
+<hr>
+<h2 id="8-strategy">8. Strategy</h2>
+<p>Bir sipariş hesaplanırken indirim kuralı müşteri tipine göre değişiyor. İlk akla gelen çözüm <code>if (tip == OGRENCI) ... else if (tip == KURUMSAL) ...</code> zinciri. Her yeni kural bu metodu büyütür ve hesaplama kodu bütün kuralları bilmek zorunda kalır.</p>
+<p><strong>Strategy</strong>, birbirinin yerine kullanılabilen algoritmaları ayrı sınıflara koyar ve hangisinin kullanılacağını çalışma zamanında seçtirir. Bir yol tarifi uygulamasında araba, yürüyüş ve toplu taşıma seçeneklerinin her biri ayrı bir rota hesabıdır. Uygulamanın geri kalanı seçilen hesabı çağırır, içinde ne olduğuyla ilgilenmez.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> IndirimStratejisi</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#B392F0"> uygula</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> tutar</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Siparis</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> IndirimStratejisi indirim;</span></span>
+<span class="line"><span style="color:#B392F0">    Siparis</span><span style="color:#E1E4E8">(IndirimStratejisi </span><span style="color:#FFAB70">indirim</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.indirim </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> indirim; }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#B392F0"> toplam</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> araToplam</span><span style="color:#E1E4E8">) { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> indirim.</span><span style="color:#B392F0">uygula</span><span style="color:#E1E4E8">(araToplam); }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Siparis ogrenci  </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Siparis</span><span style="color:#E1E4E8">(t </span><span style="color:#F97583">-></span><span style="color:#E1E4E8"> t </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 0.90</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">Siparis kurumsal </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Siparis</span><span style="color:#E1E4E8">(t </span><span style="color:#F97583">-></span><span style="color:#E1E4E8"> t </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 1000</span><span style="color:#F97583"> ?</span><span style="color:#E1E4E8"> t </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 100</span><span style="color:#F97583"> :</span><span style="color:#E1E4E8"> t);</span></span>
+<span class="line"><span style="color:#E1E4E8">Siparis normal   </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Siparis</span><span style="color:#E1E4E8">(t </span><span style="color:#F97583">-></span><span style="color:#E1E4E8"> t);</span></span></code></pre>
+<p><code>IndirimStratejisi</code> tek metotlu bir interface olduğu için Java 8’den beri her strateji bir lambda ile yazılabilir. Klasik kitapta her strateji ayrı bir sınıftı. Java’daki en tanıdık örnek <code>Comparator</code>: <code>liste.sort(Comparator.comparing(Kisi::getYas))</code> çağrısında sıralama algoritması aynı kalır, karşılaştırma stratejisi dışarıdan verilir.</p>
+<p>Strategy, yapı olarak <strong>State</strong> desenine çok benzer. Fark niyette: strategy’yi dışarıdaki kod seçer. State’te ise nesne kendi durumu değiştikçe davranışını kendisi değiştirir.</p>
+<hr>
+<h2 id="9-observer">9. Observer</h2>
+<p>Bir ürün stoğa girdiğinde, “gelince haber ver” diyen kullanıcılara e-posta, mobil bildirim ve SMS gitmesi gerekiyor. Ürün sınıfı bu üç servisi doğrudan çağırırsa her yeni bildirim kanalı ürün sınıfını değiştirmeyi gerektirir. Diğer seçenek, bildirim servislerinin sürekli “stok geldi mi” diye sorması (polling). Bu da boşuna istek demek.</p>
+<p><strong>Observer</strong>, bir nesnenin (<strong>Subject</strong>) durumu değiştiğinde ona kayıt olmuş nesnelerin (<strong>Observer</strong>) otomatik olarak haberdar edilmesini sağlar. Subject, observer’ların kim olduğunu bilmez, yalnızca ortak arayüzü bilir. Gazete aboneliğine benzer. Okur bir kez abone olur, yayınevi her sayıyı abone listesine gönderir.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> StokDinleyici</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> stogaGirdi</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">urunAdi</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Urun</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> String ad;</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> List&#x3C;</span><span style="color:#F97583">StokDinleyici</span><span style="color:#E1E4E8">> dinleyiciler </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> ArrayList&#x3C;>();</span></span>
+<span class="line"><span style="color:#B392F0">    Urun</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">ad</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.ad </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ad; }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> abone</span><span style="color:#E1E4E8">(StokDinleyici </span><span style="color:#FFAB70">d</span><span style="color:#E1E4E8">)  { dinleyiciler.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(d); }</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> ayril</span><span style="color:#E1E4E8">(StokDinleyici </span><span style="color:#FFAB70">d</span><span style="color:#E1E4E8">)  { dinleyiciler.</span><span style="color:#B392F0">remove</span><span style="color:#E1E4E8">(d); }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> stokEkle</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> adet</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (adet </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) dinleyiciler.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(d </span><span style="color:#F97583">-></span><span style="color:#E1E4E8"> d.</span><span style="color:#B392F0">stogaGirdi</span><span style="color:#E1E4E8">(ad));</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">urun.</span><span style="color:#B392F0">abone</span><span style="color:#E1E4E8">(ad </span><span style="color:#F97583">-></span><span style="color:#B392F0"> epostaGonder</span><span style="color:#E1E4E8">(ad));</span></span>
+<span class="line"><span style="color:#E1E4E8">urun.</span><span style="color:#B392F0">abone</span><span style="color:#E1E4E8">(ad </span><span style="color:#F97583">-></span><span style="color:#B392F0"> bildirimGonder</span><span style="color:#E1E4E8">(ad));</span></span></code></pre>
+<p>Dikkat edilmesi gereken birkaç nokta var. Bir observer işi bittiğinde <code>ayril</code> çağrılmazsa, subject ona referans tutmaya devam eder ve nesne garbage collector tarafından toplanamaz. Buna <strong>Lapsed Listener</strong> sorunu denir ve Java’da bellek sızıntısının bilinen bir sebebidir. Bildirimler bu örnekte senkrondur: yavaş bir observer bütün zinciri bekletir, hata fırlatan bir observer sonrakilerin çalışmasını engelleyebilir. Observer’ların hangi sırayla çağrılacağına da güvenilmemelidir.</p>
+<p>Java’daki <code>java.util.Observer</code> ve <code>Observable</code> sınıfları Java 9’dan beri deprecated. Yerine kendi arayüzünü yazmak ya da <code>PropertyChangeListener</code> kullanmak öneriliyor. Mesaj kuyruklarındaki <strong>Publish-Subscribe</strong> modeli Observer’ın akrabasıdır. Farkı, araya bir broker girmesi: yayıncı abonelerin listesini tutmaz, çoğu zaman haberleşme de asenkrondur.</p>
+<hr>
+<h2 id="10-mediator">10. Mediator</h2>
+<p>Bir havaalanında her uçağın inmeden önce diğer bütün uçaklarla konuşması gerekseydi, n uçak için n·(n−1)/2 bağlantı olurdu. Bunun yerine her uçak yalnızca kuleyle konuşur. Kule pisti kimin kullanacağına karar verir. Uçaklar birbirini tanımaz.</p>
+<p><strong>Mediator</strong>, nesnelerin birbirine doğrudan bağlanmasını engeller ve aralarındaki iletişimi tek bir merkezden yürütür. Her nesne yalnızca mediator’ı bilir.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Kule</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> Queue&#x3C;</span><span style="color:#F97583">Ucak</span><span style="color:#E1E4E8">> sira </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> ArrayDeque&#x3C;>();</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> boolean</span><span style="color:#E1E4E8"> pistBos </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> inisIste</span><span style="color:#E1E4E8">(Ucak </span><span style="color:#FFAB70">u</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (pistBos) { pistBos </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">; u.</span><span style="color:#B392F0">inisIzniAl</span><span style="color:#E1E4E8">(); }</span></span>
+<span class="line"><span style="color:#F97583">        else</span><span style="color:#E1E4E8"> sira.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(u);                  </span><span style="color:#6A737D">// diğer uçaklara sormadan sıraya alır</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> pistBosaldi</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">        Ucak sonraki </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> sira.</span><span style="color:#B392F0">poll</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (sonraki </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">) sonraki.</span><span style="color:#B392F0">inisIzniAl</span><span style="color:#E1E4E8">(); </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> pistBos </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Ucak</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> Kule kule;               </span><span style="color:#6A737D">// yalnızca kuleyi tanıyor</span></span>
+<span class="line"><span style="color:#B392F0">    Ucak</span><span style="color:#E1E4E8">(Kule </span><span style="color:#FFAB70">kule</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.kule </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> kule; }</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> inmekIstiyorum</span><span style="color:#E1E4E8">() { kule.</span><span style="color:#B392F0">inisIste</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">); }</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> inisIzniAl</span><span style="color:#E1E4E8">()     { </span><span style="color:#6A737D">/* iniş */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Arayüz programlamasında da sık görülür. Bir formdaki “ülke” seçimi “şehir” listesini, “şehir” seçimi kargo ücretini değiştiriyorsa, bu kuralları alanların içine dağıtmak yerine formun kendisi mediator olarak tutabilir.</p>
+<p>Bedeli de var. Bağımlılıklar ortadan kalkmaz, merkeze taşınır. Dikkat edilmezse mediator her kuralı bilen, büyüdükçe değiştirilmesi zorlaşan bir sınıfa dönüşür. Observer ile farkı ise ilişkinin yönünde: observer’da bir subject birçok dinleyiciye yayın yapar. Mediator’da birçok nesne birbirini etkiler ve bu etkileşimin kuralları merkezdedir.</p>
+<hr>
+<h2 id="11-desenler-ve-solid">11. Desenler ve SOLID</h2>
+<p>Desenlerin çoğu SOLID ilkelerinden birinin somut bir uygulamasıdır. Bir desenin neden işe yaradığını açıklarken ilgili ilkeyi söylemek mülakatta iyi bir izlenim bırakır.</p>
+<table>
+<thead>
+<tr>
+<th>Desen</th>
+<th>İlgili ilke</th>
+<th>Nasıl</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Strategy</td>
+<td>Open/Closed</td>
+<td>Yeni kural yeni bir sınıf ya da lambda ile eklenir, <code>Siparis</code> değişmez</td>
+</tr>
+<tr>
+<td>Factory Method</td>
+<td>Open/Closed, Dependency Inversion</td>
+<td>Üst sınıf somut sınıfı değil, <code>Tasit</code> arayüzünü bilir</td>
+</tr>
+<tr>
+<td>Decorator</td>
+<td>Single Responsibility, Open/Closed</td>
+<td>Her sarmalayıcı tek iş yapar, var olan sınıfa dokunulmadan özellik eklenir</td>
+</tr>
+<tr>
+<td>Decorator, Adapter</td>
+<td>Liskov Substitution</td>
+<td>Sarmalayan nesne, sarılanın yerine her yerde kullanılabilmelidir</td>
+</tr>
+<tr>
+<td>Adapter</td>
+<td>Dependency Inversion</td>
+<td>Uygulama kendi arayüzüne bağlıdır, dış kütüphaneye değil</td>
+</tr>
+<tr>
+<td>Observer</td>
+<td>Interface Segregation</td>
+<td>Dinleyici arayüzü tek bir metottan oluşur</td>
+</tr>
+<tr>
+<td>Singleton</td>
+<td>Single Responsibility ve Dependency Inversion’a aykırı</td>
+<td>Kendi yaşam döngüsünü de yönetir, kullanan kod somut sınıfa bağlanır</td>
+</tr>
+</tbody>
+</table>
+<p>Tablodaki son satır tablonun geri kalanı kadar önemli. Bir desen kullanmak, ilkelere otomatik olarak uyulduğu anlamına gelmiyor.</p>
+<hr>
+<h2 id="12-desen-ezberlemenin-tuzağı">12. Desen ezberlemenin tuzağı</h2>
+<p>Desenleri öğrendikten sonra her probleme bir desen uydurmaya çalışmak yaygın bir hata. Tek bir indirim kuralı olan koda <code>IndirimStratejisi</code>, <code>IndirimStratejisiFactory</code> ve <code>IndirimYoneticisi</code> eklemek kodu esnek yapmaz, yalnızca okunmasını zorlaştırır. İki satırlık bir <code>if</code> ile çözülen işe dört sınıf yazılmış olur.</p>
+<p>Desen bir hedef değil, bir sorunun bilinen cevabıdır. Sağlıklı sıra şu: önce en basit çözüm yazılır, kod gerçekten değişmesi gereken bir yerde zorlanmaya başladığında (üçüncü <code>else if</code>, aynı <code>new</code> çağrısının on yerde tekrarlanması) uygun desene geçilir. Değişmeyecek bir yer için esneklik eklemek, hiç gelmeyecek bir ihtiyaca peşin ödeme yapmaktır.</p>
+<p>Bir de dil faktörü var. Klasik kitaptaki desenlerin bir kısmı, o dönemin dillerindeki eksikleri kapatmak için vardı. Fonksiyonların değer olarak aktarılabildiği dillerde Strategy ya da Command ayrı bir sınıf hiyerarşisi gerektirmez, bir lambda yeter. Java’da <code>enum</code> Singleton’ı, kayıt sınıfları (record) da bazı Builder kullanımlarını gereksiz kılabiliyor.</p>
+<p>Mülakatta bu yüzden “Observer’ın UML diyagramını çizin” sorusundan çok “bu kodda ne sorun var, nasıl düzeltirdiniz” sorusu gelir. Cevaba desenin adıyla değil, problemle başlamak daha ikna edicidir: “Her yeni kural bu metodu değiştiriyor, kuralları ayrı nesnelere çıkarırsam metot kapalı kalır. Bunun adı Strategy.”</p>
+<hr>
+<h2 id="mülakatta-sorulanlar">Mülakatta sorulanlar</h2>
+<p><strong>1. Tasarım deseni nedir, hangi gruplara ayrılır?</strong>
+Tekrar eden bir tasarım problemine verilmiş, adı konmuş genel bir çözümdür. Creational desenler nesne oluşturmayı, structural desenler nesnelerin birleşimini, behavioral desenler nesneler arası iletişimi düzenler.
+Sık yapılan hata: Deseni hazır bir kütüphane ya da kopyalanacak bir kod parçası gibi anlatmak.</p>
+<p><strong>2. Singleton’ı thread-safe nasıl yazarsınız?</strong>
+Initialization-on-demand holder ile: tek nesne iç bir static sınıfın <code>final</code> alanında tutulur ve JVM sınıf başlatmanın tek thread’de yapılmasını garanti eder. Alternatifler tek elemanlı <code>enum</code> ve <code>volatile</code> alanla double-checked locking.
+Sık yapılan hata: Double-checked locking’i <code>volatile</code> olmadan yazmak. Başka bir thread yarım kurulmuş nesneyi görebilir.</p>
+<p><strong>3. Singleton neden anti-pattern olarak görülür?</strong>
+Global durum oluşturur ve bağımlılığı metot içine gizler, bu yüzden test sırasında yerine sahte nesne konamaz. Ayrıca sınıf hem kendi işini hem kendi yaşam döngüsünü yönetir. Tek nesne gerekiyorsa bir kez oluşturulup constructor üzerinden verilmesi tercih edilir.
+Sık yapılan hata: Sorunun “tek nesne” olmasında olduğunu sanmak. Sorun global erişim yolunda.</p>
+<p><strong>4. Factory Method ile simple factory arasındaki fark nedir?</strong>
+Simple factory, parametreye bakıp <code>if</code> ya da <code>switch</code> ile nesne döndüren tek bir sınıftır ve yeni tür eklendiğinde değişir. Factory Method’da üst sınıf soyut bir oluşturma metodu tanımlar, hangi nesnenin üretileceğine alt sınıflar karar verir ve genişleme yeni bir alt sınıfla yapılır.
+Sık yapılan hata: Her <code>create()</code> metodunu Factory Method saymak.</p>
+<p><strong>5. Builder ne zaman kullanılır?</strong>
+Çok sayıda isteğe bağlı parametresi olan, özellikle değişmez (immutable) olması istenen nesnelerde. Telescoping constructor’ların yerini alır, her değer adıyla verilir ve doğrulama <code>build()</code> içinde tek yerde yapılır.
+Sık yapılan hata: İki alanlı basit bir sınıfa da builder yazmak.</p>
+<p><strong>6. Decorator ile kalıtım arasındaki fark nedir? Adapter’dan farkı nedir?</strong>
+Kalıtım davranışı derleme zamanında ve sınıf seviyesinde sabitler, birleşimler için ayrı alt sınıflar gerekir. Decorator davranışı çalışma zamanında, nesneyi sararak ekler ve katmanlar istenen sırayla birleştirilir. Adapter ise arayüzü değiştirir, decorator arayüzü aynı bırakıp davranış ekler.
+Sık yapılan hata: Java I/O sınıflarının neden iç içe oluşturulduğunu açıklayamamak.</p>
+<p><strong>7. Strategy deseni hangi problemi çözer?</strong>
+Büyüyen <code>if-else</code> ya da <code>switch</code> zincirleriyle seçilen algoritmaları ayrı nesnelere taşır ve çalışma zamanında değiştirilebilir yapar. Yeni algoritma eklendiğinde onu kullanan sınıf değişmez. Java’da <code>Comparator</code> bilinen örneğidir.
+Sık yapılan hata: Strategy ile State’i karıştırmak. Strategy’yi dışarıdaki kod seçer, State’te nesne kendi durumuna göre değişir.</p>
+<p><strong>8. Observer deseninde bellek sızıntısı nasıl oluşur?</strong>
+Subject, kayıtlı observer’lara güçlü referans tutar. Observer artık kullanılmadığı halde listeden çıkarılmazsa garbage collector onu toplayamaz. Buna lapsed listener sorunu denir ve çözümü işi biten observer’ın aboneliği bırakmasıdır.
+Sık yapılan hata: Observer ile publish-subscribe’ı aynı şey saymak. Pub/sub’da araya bir broker girer ve yayıncı aboneleri tanımaz.</p>
+<p><img alt="Özet kart: creational, structural ve behavioral gruplar, sekiz desenin her biri için çözdüğü problem tek satırda, thread-safe Singleton yöntemleri ve desenlerin SOLID ilkeleriyle eşleşmesi" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/dp-ozet-kart.D-yJ8pL8_Z1spCpy.webp" ></p>
+<p><em>8. bölümde: işletim sistemi, process, thread ve zamanlama.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

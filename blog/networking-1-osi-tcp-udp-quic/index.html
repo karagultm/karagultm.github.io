@@ -1,0 +1,377 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="The seven OSI layers, the TCP/IP model, encapsulation, the TCP handshake and its reliability mechanisms, UDP and QUIC: the networking fundamentals interviewers ask about, with examples."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Networking 1: The OSI and TCP/IP Models, TCP vs UDP, QUIC · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="en" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Networking 1: The OSI and TCP/IP Models, TCP vs UDP, QUIC</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 November 2026</time> · networking, tcp, interview, programming-101 · Part 11</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/ag-1-osi-tcp-udp-quic/" hreflang="tr" lang="tr" data-astro-cid-7jjqptxk>Türkçe oku</a></p> <img src="/_astro/net1-kapak.BAPIm6Wb_itSAf.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak"> <section class="ders" aria-labelledby="ders-baslik" data-astro-cid-7jjqptxk> <div class="ders-ust" data-astro-cid-7jjqptxk> <h2 id="ders-baslik" data-astro-cid-7jjqptxk>Try it yourself</h2> <a class="dugme" href="/etkilesim/tcp-el-sikisma.html#lang=en" target="_blank" rel="noopener" data-astro-cid-7jjqptxk>Open full screen</a> </div> <iframe src="/etkilesim/tcp-el-sikisma.html#lang=en" title="Interactive lesson" loading="lazy" data-astro-cid-7jjqptxk></iframe> </section> <article class="yazi" data-astro-cid-7jjqptxk><h1 id="networking-1-the-osi-and-tcpip-models-tcp-vs-udp-quic">Networking 1: The OSI and TCP/IP Models, TCP vs UDP, QUIC</h1>
+<p><em>Programming 101, Part 11</em></p>
+<p>This post is about how data sent by a program on one computer reaches a program on another. In between there are cables, wireless links, routers and packets that can get lost. Most of the time the data still arrives complete and in order.</p>
+<p>The thing that makes this work is a protocol stack split into layers. Each layer deals with one problem and relies on the service of the layer below it.</p>
+<p>Below I first cover the OSI and TCP/IP models and how data is wrapped as it moves through the layers. Then I go over the difference between TCP and UDP, where each one is used, and what QUIC changes. At the end there are common interview questions with short answers.</p>
+<hr>
+<h2 id="1-why-layers">1. Why layers?</h2>
+<p>A browser requesting a page does not know whether the cable is copper or fiber. The Ethernet card does not know that the bytes it sends form an HTTP request. Each part does only its own job.</p>
+<p>The benefit of this split is replaceability. Moving from a wired connection to Wi-Fi does not change the browser’s code. Writing a new application protocol does not require updating routers.</p>
+<p>It works like a parcel service. The sender packs the box, the courier company routes it to a branch by address, the branch puts it on a truck. The sender does not care which truck is used, and the driver does not care what is in the box.</p>
+<hr>
+<h2 id="2-the-osi-model-seven-layers">2. The OSI model: seven layers</h2>
+<p>The <strong>OSI (Open Systems Interconnection) Model</strong> is a conceptual model that describes network communication in seven layers. The internet does not actually run on OSI protocols, but the layers are used as a common vocabulary. Phrases like “an L4 load balancer” or “an L7 firewall” come from this numbering.</p>
+<p>From the bottom up:</p>
+<table>
+<thead>
+<tr>
+<th>No</th>
+<th>Layer</th>
+<th>What it does</th>
+<th>Example protocol / device</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Physical</td>
+<td>Turns bits into electrical, optical or radio signals</td>
+<td>Copper cable, fiber, hub, the radio part of Wi-Fi</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Data Link</td>
+<td>Carries frames between devices on the same local network, uses MAC addresses</td>
+<td>Ethernet, Wi-Fi (802.11), switch</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Network</td>
+<td>Finds a path between different networks, uses IP addresses</td>
+<td>IP, ICMP, router</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Transport</td>
+<td>End-to-end delivery between two programs, port numbers</td>
+<td>TCP, UDP</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Session</td>
+<td>Opens, maintains and closes a communication session</td>
+<td>RPC mechanisms, session management</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Presentation</td>
+<td>The format of the data: encoding, compression, encryption</td>
+<td>UTF-8, JPEG, the encryption part of TLS</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Application</td>
+<td>Protocols the application uses directly</td>
+<td>HTTP, DNS, SMTP, SSH</td>
+</tr>
+</tbody>
+</table>
+<p>A few details are useful in interviews:</p>
+<ul>
+<li>A <strong>switch</strong> works at layer 2 and forwards frames by MAC address. A <strong>router</strong> works at layer 3 and moves packets to other networks by IP address. A hub copies the incoming signal to every port without reading any address, so it is layer 1.</li>
+<li>A <strong>MAC Address</strong> only has meaning on the local network. Every time a packet passes a router, the frame is rebuilt and the MAC addresses change. IP addresses stay the same along the way (unless NAT is involved).</li>
+<li>Layers 5 and 6 have no clean real-world counterpart. Protocols like TLS are open to debate about which layer they belong to. Saying so in an interview is not a wrong answer, it is an accurate one.</li>
+</ul>
+<p>Rather than memorising the layers with a mnemonic, it sticks better to remember which address each layer uses: MAC at 2, IP at 3, port at 4.</p>
+<p><img alt="The seven OSI layers and the four TCP/IP layers side by side, with an example protocol and the name of the data unit at each layer" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/net1-katmanlar.Cy5cMVQ3_2lpvs9.webp" ></p>
+<hr>
+<h2 id="3-the-tcpip-model-and-how-it-maps-to-osi">3. The TCP/IP model and how it maps to OSI</h2>
+<p>The model the internet actually uses is the <strong>TCP/IP Model</strong>. It has four layers:</p>
+<table>
+<thead>
+<tr>
+<th>TCP/IP layer</th>
+<th>Matching OSI layers</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Link</td>
+<td>1 Physical, 2 Data Link</td>
+<td>Ethernet, Wi-Fi</td>
+</tr>
+<tr>
+<td>Internet</td>
+<td>3 Network</td>
+<td>IP, ICMP</td>
+</tr>
+<tr>
+<td>Transport</td>
+<td>4 Transport</td>
+<td>TCP, UDP</td>
+</tr>
+<tr>
+<td>Application</td>
+<td>5 Session, 6 Presentation, 7 Application</td>
+<td>HTTP, DNS, TLS</td>
+</tr>
+</tbody>
+</table>
+<p>The core difference: OSI was designed as a model first, with protocols meant to follow. In TCP/IP the protocols existed first and the model was written to describe them. The top three OSI layers collapse into a single application layer in TCP/IP, because in practice the application or its library does that work.</p>
+<p>Some textbooks split the Link layer in two and teach a five-layer model. In an interview it is enough to say which model you mean.</p>
+<hr>
+<h2 id="4-encapsulation">4. Encapsulation</h2>
+<p>As data moves down the stack, each layer adds its own <strong>header</strong> in front of it. This is called <strong>Encapsulation</strong>. On the receiving side each layer reads and strips its own header and passes the rest up. That is <strong>Decapsulation</strong>.</p>
+<p>It is like putting an envelope inside another envelope. A letter goes into an envelope with the recipient’s name on it. That envelope goes into a bag for intercity transport, and the bag only shows the city. At each stage only the outermost label is read.</p>
+<p>The data has a different name at each layer:</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Name of the data</th>
+<th>What the added header contains</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Application</td>
+<td>Data (message)</td>
+<td>Application information such as HTTP headers</td>
+</tr>
+<tr>
+<td>Transport</td>
+<td>Segment (TCP) / Datagram (UDP)</td>
+<td>Source and destination port, sequence number</td>
+</tr>
+<tr>
+<td>Network</td>
+<td>Packet</td>
+<td>Source and destination IP, TTL</td>
+</tr>
+<tr>
+<td>Data Link</td>
+<td>Frame</td>
+<td>Source and destination MAC, error check at the end (FCS)</td>
+</tr>
+<tr>
+<td>Physical</td>
+<td>Bits</td>
+<td>No header, just signal</td>
+</tr>
+</tbody>
+</table>
+<p>Headers have a cost. On Ethernet the largest payload a frame can carry (the <strong>MTU</strong>) is typically 1500 bytes. Of that, 20 bytes go to the IPv4 header and 20 bytes to the TCP header. Without options, 1460 bytes are left for application data in a TCP segment. This value is called the <strong>MSS (Maximum Segment Size)</strong>.</p>
+<hr>
+<h2 id="5-ip-addresses-and-ports">5. IP addresses and ports</h2>
+<p>An <strong>IP Address</strong> identifies a network interface on the internet. An IPv4 address is 32 bits (<code>192.168.1.10</code>), which allows about 4.3 billion addresses. Because that is not enough, devices on home networks share a single public address through <strong>NAT</strong>. An IPv6 address is 128 bits (<code>2001:db8::1</code>).</p>
+<p>A <strong>Port</strong> identifies which program on that machine receives the data. It is a 16-bit number, from 0 to 65535. Ports 0–1023 are the well-known ports: HTTP 80, HTTPS 443, DNS 53, SSH 22.</p>
+<p>An apartment building is a good fit here. The IP address is the building’s street address, the port is the flat number. The mail carrier finds the building by IP, and the port says which door the letter goes to.</p>
+<p>A TCP connection is identified by four values: source IP, source port, destination IP, destination port. Thousands of clients can connect to port 443 on the same server at once, because each one has a different source IP or source port. On Linux, open connections can be listed with:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">ss</span><span style="color:#79B8FF"> -tn</span></span>
+<span class="line"><span style="color:#6A737D"># State  Local Address:Port    Peer Address:Port</span></span>
+<span class="line"><span style="color:#6A737D"># ESTAB  192.168.1.10:52344    203.0.113.5:443</span></span></code></pre>
+<p><code>52344</code> is a temporary port the operating system assigned on the client side (an <strong>ephemeral port</strong>).</p>
+<hr>
+<h2 id="6-tcp-setting-up-a-connection">6. TCP: setting up a connection</h2>
+<p><strong>TCP (Transmission Control Protocol)</strong> is a transport protocol that provides a reliable, ordered byte stream between two programs. It sets up a connection before sending data. This setup is called the <strong>3-Way Handshake</strong>:</p>
+<ol>
+<li>The client sends <code>SYN</code> with its initial sequence number: <code>seq = x</code>.</li>
+<li>The server replies with <code>SYN-ACK</code>: its own initial number <code>seq = y</code>, and <code>ack = x + 1</code> to confirm it received the client’s SYN.</li>
+<li>The client sends <code>ACK</code>: <code>ack = y + 1</code>. The connection is established.</li>
+</ol>
+<p>It resembles a phone call. “Hello, can you hear me?”, “I can, can you hear me?”, “Yes.” After three messages both sides know the other one can both hear and speak.</p>
+<p>Why three and not two? With two steps, the server cannot be sure that its own number reached the client. The third message proves that both directions work. These steps also synchronise the sequence numbers of both sides.</p>
+<p>Initial sequence numbers are chosen at random. If they were fixed, an outsider could guess the number and inject forged segments into the connection.</p>
+<p>The handshake costs one <strong>RTT (Round-Trip Time)</strong>. If the RTT to a server is around 40 ms, the first HTTP request can leave no earlier than 40 ms after the start. With HTTPS a TLS handshake is added on top. With TLS 1.3 that is one more RTT, so two RTTs in total before the request is sent.</p>
+<hr>
+<h2 id="7-tcp-how-reliability-works">7. TCP: how reliability works</h2>
+<p>IP can lose packets, duplicate them or deliver them out of order. TCP builds a reliable stream on top of that with three mechanisms.</p>
+<h3 id="sequence-numbers">Sequence numbers</h3>
+<p>TCP numbers every <strong>byte</strong> it sends. The common explanation that “TCP numbers packets 1, 2, 3” is wrong. A segment’s sequence number is the position of its first byte in the stream. If a 500-byte segment starts at 1000, the next segment starts at 1500.</p>
+<p>The receiver keeps out-of-order segments in a buffer and hands only the contiguous part to the application.</p>
+<h3 id="acks">ACKs</h3>
+<p>The receiver writes the number of the next byte it expects into the <code>ack</code> field. <code>ack = 1500</code> means “I have everything up to 1499”. This works as a <strong>cumulative ACK</strong>: one ACK confirms everything before it. The sender does not wait for an ACK per segment. It sends several segments back to back and collects the acknowledgements later.</p>
+<h3 id="retransmission">Retransmission</h3>
+<p>Loss is detected in two ways:</p>
+<ul>
+<li><strong>Timeout:</strong> The sender starts a timer for each segment (the <strong>RTO, Retransmission Timeout</strong>). If no ACK arrives before it expires, the segment is sent again. The RTO is not fixed, it is adjusted based on the measured RTT.</li>
+<li><strong>Fast Retransmit:</strong> When the receiver notices a missing segment, it keeps sending the same ACK. After three duplicate ACKs the sender resends the missing segment without waiting for the timeout.</li>
+</ul>
+<p>Every segment also has a <strong>checksum</strong>. A segment corrupted on the way is dropped and treated as lost.</p>
+<p>One limit is worth stating: TCP does not guarantee that data is never lost. If the cable is cut or the other side shuts down, the data does not arrive. What TCP guarantees is that the data that does arrive is complete and in order, and that a failure to deliver is reported as an error.</p>
+<hr>
+<h2 id="8-flow-control-and-congestion-control">8. Flow control and congestion control</h2>
+<p>These two are often confused. Both limit how fast the sender sends, but they protect different things.</p>
+<p><strong>Flow Control</strong> protects the receiver. With every ACK the receiver reports how much free buffer space it has. This value is the <strong>receive window (rwnd)</strong>. The sender keeps the amount of unacknowledged data below this window. If a slow-reading application fills its buffer, the window drops to zero and the sender waits.</p>
+<p><strong>Congestion Control</strong> protects the network. If a router along the path has a full queue and starts dropping packets, the problem is not at the receiver but on the path. For this the sender keeps its own <strong>congestion window (cwnd)</strong>:</p>
+<ul>
+<li><strong>Slow Start:</strong> The connection starts with a small window. It roughly doubles every RTT. The name is misleading, the growth is exponential.</li>
+<li><strong>Congestion Avoidance:</strong> After a threshold, the window grows only a little each RTT.</li>
+<li>When loss is detected, the window shrinks. In the classic algorithms it is halved.</li>
+</ul>
+<p>The amount of data the sender can have in flight is the smaller of the two windows: <code>min(rwnd, cwnd)</code>.</p>
+<p>Think of filling a glass from a tap. Flow control looks at how much room is left in the glass. Congestion control looks at the pressure in the pipes.</p>
+<p>The sentence “TCP doesn’t clog the network thanks to flow control” is common, but it mixes up the two. The mechanism that protects the network is congestion control, not flow control.</p>
+<hr>
+<h2 id="9-tcp-closing-a-connection">9. TCP: closing a connection</h2>
+<p>A TCP connection is two-way, and each direction is closed separately:</p>
+<ol>
+<li>The side that wants to close sends <code>FIN</code>: “I have nothing more to send”.</li>
+<li>The other side confirms with <code>ACK</code>. At this point it can still send data.</li>
+<li>When the other side is done, it sends its own <code>FIN</code>.</li>
+<li>The first side confirms with <code>ACK</code>.</li>
+</ol>
+<p>That is why closing is often called a 4-way handshake. If the other side combines its ACK and FIN in one segment, it can finish in three messages.</p>
+<p>The side that started the close waits in <strong>TIME_WAIT</strong> for a while after the last ACK. The wait is twice the maximum time a segment can live in the network (MSL). It exists so the last ACK can be resent if it is lost, and so delayed segments from the old connection do not leak into a new one. On a server that opens and closes many short connections, thousands of TIME_WAIT entries are normal.</p>
+<p>There is also the abrupt way: an <code>RST</code> segment cuts the connection immediately, without a handshake. Trying to connect to a closed port also gets an RST in return.</p>
+<hr>
+<h2 id="10-udp">10. UDP</h2>
+<p><strong>UDP (User Datagram Protocol)</strong> is a transport protocol that does nothing beyond adding port numbers and a checksum. It does not set up a connection, keep order or resend what is lost. Its header is 8 bytes: source port, destination port, length, checksum.</p>
+<p>UDP also preserves message boundaries. If a 100-byte datagram is sent, the receiver gets a 100-byte datagram or nothing at all. TCP has no concept of messages, only a byte stream. Two <code>send</code> calls of 100 and 200 bytes may be read as a single 300-byte chunk on the other side. On top of TCP, the application itself has to mark where messages begin and end.</p>
+<p>The difference shows up in Python socket code:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> socket</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># TCP: connect first, then a byte stream</span></span>
+<span class="line"><span style="color:#E1E4E8">tcp </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> socket.socket(socket.</span><span style="color:#79B8FF">AF_INET</span><span style="color:#E1E4E8">, socket.</span><span style="color:#79B8FF">SOCK_STREAM</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">tcp.connect((</span><span style="color:#9ECBFF">"example.com"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">80</span><span style="color:#E1E4E8">))       </span><span style="color:#6A737D"># 3-way handshake happens here</span></span>
+<span class="line"><span style="color:#E1E4E8">tcp.sendall(</span><span style="color:#F97583">b</span><span style="color:#9ECBFF">"GET / HTTP/1.1</span><span style="color:#79B8FF">\r\n</span><span style="color:#9ECBFF">Host: example.com</span><span style="color:#79B8FF">\r\n\r\n</span><span style="color:#9ECBFF">"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(tcp.recv(</span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">tcp.close()                            </span><span style="color:#6A737D"># sends FIN</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># UDP: no connection, each sendto is a separate datagram</span></span>
+<span class="line"><span style="color:#E1E4E8">udp </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> socket.socket(socket.</span><span style="color:#79B8FF">AF_INET</span><span style="color:#E1E4E8">, socket.</span><span style="color:#79B8FF">SOCK_DGRAM</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">udp.sendto(</span><span style="color:#F97583">b</span><span style="color:#9ECBFF">"hello"</span><span style="color:#E1E4E8">, (</span><span style="color:#9ECBFF">"127.0.0.1"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">9999</span><span style="color:#E1E4E8">))  </span><span style="color:#6A737D"># no way to know if it arrived</span></span>
+<span class="line"><span style="color:#E1E4E8">udp.close()</span></span></code></pre>
+<p>In TCP, <code>connect()</code> puts three segments on the wire. In UDP, <code>sendto()</code> returns without error even if nobody is listening on the other side.</p>
+<h3 id="tcp-vs-udp">TCP vs UDP</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>TCP</th>
+<th>UDP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connection</td>
+<td>Yes, 3-way handshake</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Reliability</td>
+<td>Loss is detected and resent</td>
+<td>No retransmission</td>
+</tr>
+<tr>
+<td>Ordering</td>
+<td>Yes</td>
+<td>No, in arrival order</td>
+</tr>
+<tr>
+<td>Data model</td>
+<td>Byte stream</td>
+<td>Separate messages (datagrams)</td>
+</tr>
+<tr>
+<td>Header</td>
+<td>20–60 bytes</td>
+<td>8 bytes</td>
+</tr>
+<tr>
+<td>Error checking</td>
+<td>Checksum</td>
+<td>Checksum (optional in IPv4, mandatory in IPv6)</td>
+</tr>
+<tr>
+<td>Flow and congestion control</td>
+<td>Yes</td>
+<td>No, the application does it if needed</td>
+</tr>
+<tr>
+<td>Per-connection state</td>
+<td>Server keeps state per connection</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<p>Two mistakes are common in tables like this. The TCP header is not a fixed 20 bytes, it starts at 20 and grows up to 60 with options. UDP does have error checking, that is what the checksum field is for.</p>
+<p>“UDP is fast” also needs care. UDP packets do not travel faster on the wire than TCP packets. The gain comes from having no handshake, no waiting for acknowledgements, and no stalling of later data because one packet was lost.</p>
+<hr>
+<h2 id="11-when-to-use-which">11. When to use which</h2>
+<p>The deciding question is: is late data still useful?</p>
+<h3 id="video-calls">Video calls</h3>
+<p>In a call, a piece of audio from half a second ago is no longer useful. While TCP waits to resend it, it also holds back everything behind it, and the picture freezes. That is why real-time audio and video go over UDP. A lost frame is skipped, the picture glitches for a moment, but the stream keeps going. <strong>WebRTC</strong>, the real-time communication standard in browsers, also carries media over UDP. On networks where UDP is blocked it can fall back to TCP, but latency goes up.</p>
+<p>Watching recorded video is different. The player buffers a few seconds ahead, so there is time to resend a late packet. Completeness matters here, and the video comes over HTTP. The claim “recorded video uses TCP” is no longer always true, since with HTTP/3 recorded video can also travel over QUIC, which runs on UDP. The real difference is not the transport protocol but whether late data can be tolerated.</p>
+<h3 id="dns">DNS</h3>
+<p>A DNS query and its answer usually fit in one packet each. With UDP the job is done in a single round trip, with no connection to set up. If no answer comes, the client simply repeats the query.</p>
+<p>Describing DNS as UDP-only is incomplete. DNS uses port 53 for both UDP and TCP. If the answer is too large for a UDP packet, the server marks it as truncated (the TC flag) and the client repeats the same query over TCP. Zone transfers between servers also use TCP. Encrypted DNS (DNS over TLS, DNS over HTTPS) runs over TCP or QUIC.</p>
+<h3 id="games">Games</h3>
+<p>In a multiplayer game, player positions are sent dozens of times per second. If a position from 50 ms ago is lost, resending it makes no sense, a newer one is already on the way. So position and movement updates go over UDP.</p>
+<p>Not all game data is like that. An item purchase or a chat message must not be lost. Game engines either build their own acknowledgement and resend layer on top of UDP for such messages, or send them over a separate TCP connection. Choosing UDP does not mean giving up reliability. It means the application decides which data needs to be reliable.</p>
+<hr>
+<h2 id="12-quic-and-http3">12. QUIC and HTTP/3</h2>
+<p><strong>QUIC</strong> is a reliable, encrypted transport protocol that runs over UDP. The IETF standardised it in 2021 as RFC 9000. <strong>HTTP/3</strong> is the version of HTTP that runs over QUIC, published in 2022 as RFC 9114.</p>
+<h3 id="why-on-top-of-udp">Why on top of UDP?</h3>
+<p>QUIC does most of what TCP does: handshake, sequence numbers, ACKs, retransmission, congestion control. There are two reasons it does this on top of UDP instead of as a new transport protocol.</p>
+<p>First, firewalls, NAT devices and other middleboxes on the internet only recognise TCP and UDP. Packets sent with a new transport protocol number are mostly dropped along the way. Second, TCP lives in the operating system kernel, and changing it means updating the OS on every device. QUIC runs in user space, as a library inside the application, and is updated together with the application.</p>
+<h3 id="head-of-line-blocking">Head-of-line blocking</h3>
+<p><strong>Head-of-Line Blocking</strong> is when a delay at the front holds back everything behind it. Like a supermarket checkout where one item’s barcode will not scan and the whole queue stops.</p>
+<p>Each version of HTTP runs into this problem at a different layer:</p>
+<ul>
+<li><strong>HTTP/1.1:</strong> Requests on one connection are answered in order. A slow response holds back the ones behind it. Browsers work around this by opening around six parallel connections to the same server.</li>
+<li><strong>HTTP/2:</strong> Carries many requests as separate <strong>streams</strong> inside one TCP connection. That solves the blocking at the application layer. But TCP sees everything as one byte stream. If one segment is lost, TCP hands nothing behind it to the application until that segment is resent. Even if the loss belongs to a single image, every stream waits.</li>
+<li><strong>HTTP/3:</strong> QUIC knows about streams at the transport layer. If a packet belonging to one stream is lost, only that stream waits and the others keep going.</li>
+</ul>
+<p>The difference shows on networks with high loss rates. Mobile connections and crowded Wi-Fi are the typical cases.</p>
+<h3 id="faster-setup-and-0-rtt">Faster setup and 0-RTT</h3>
+<p>QUIC folds TLS 1.3 into its own handshake. The transport connection and the encryption keys are set up in the same round trip:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Before the first request is sent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TCP + TLS 1.3</td>
+<td>2 RTT</td>
+</tr>
+<tr>
+<td>QUIC, first connection</td>
+<td>1 RTT</td>
+</tr>
+<tr>
+<td>QUIC, server seen before (0-RTT)</td>
+<td>0 RTT</td>
+</tr>
+</tbody>
+</table>
+<p><strong>0-RTT</strong> means the client uses information saved from an earlier connection to send an encrypted request in its very first packet. The price is paid in security. 0-RTT data can be captured and sent to the server again in a <strong>replay attack</strong>. That is why 0-RTT should only be used for requests that are harmless to repeat, such as a GET that reads a page. A POST that transfers money is not sent as 0-RTT. 0-RTT also exists in TLS 1.3 and is not unique to QUIC. What QUIC adds is combining it with the transport setup.</p>
+<h3 id="connection-migration">Connection migration</h3>
+<p>A TCP connection is identified by the IP and port four-tuple, so when a phone moves from Wi-Fi to mobile data the IP changes and the connection breaks. QUIC connections are identified by a <strong>Connection ID</strong>. Even when the IP address changes, the connection continues with the same ID and a download resumes where it left off.</p>
+<h3 id="current-status">Current status</h3>
+<p>QUIC and HTTP/3 are standards, and all major browsers support them. In 2026 measurements, roughly 38–40 percent of websites offer HTTP/3. Its share of actual requests is lower. Depending on the measurement, around one fifth of web requests are carried over HTTP/3. The large remainder still goes over HTTP/2 and HTTP/1.1 on TCP.</p>
+<p>There are several reasons for this. Some corporate networks block or throttle UDP on ports other than 53. A browser usually learns that a server supports HTTP/3 from the <code>Alt-Svc</code> header in a first response or from a DNS record, so the first connection is still made over TCP. Because QUIC runs in user space and encrypts every packet, it can use more server CPU than TCP. For these reasons every HTTP/3 client must be able to fall back to TCP if QUIC fails. TCP is not going away. QUIC is an option added next to it.</p>
+<hr>
+<h2 id="interview-questions">Interview questions</h2>
+<p><strong>1. What are the layers of the OSI model? At which layer do switches and routers work?</strong>
+From the bottom: Physical, Data Link, Network, Transport, Session, Presentation, Application. A switch forwards by MAC address at layer 2, a router by IP address at layer 3. The TCP/IP model groups these into four layers: Link, Internet, Transport and Application.
+Common mistake: Assuming the MAC address stays the same as the packet travels across networks.</p>
+<p><strong>2. How does the TCP 3-way handshake work, and why three steps?</strong>
+The client sends SYN, the server SYN-ACK, the client ACK. Through these steps both sides exchange initial sequence numbers and confirm that both directions work. With two steps the server could not be sure its own SYN arrived.
+Common mistake: Describing the handshake as a mere “connection check” and skipping the sequence number exchange.</p>
+<p><strong>3. How does TCP achieve reliability?</strong>
+Every byte is numbered, and the receiver reports the next byte it expects in an ACK. If the ACK does not arrive in time, or three duplicate ACKs are seen, the segment is resent. A checksum catches corrupted segments, and sequence numbers fix ordering and duplicates.
+Common mistake: Calling the sequence number a packet counter. It is a byte position.</p>
+<p><strong>4. What is the difference between flow control and congestion control?</strong>
+Flow control protects the receiver’s buffer and follows the window the receiver advertises (rwnd). Congestion control protects the network, and the sender adjusts its own window (cwnd) based on loss and delay. The sender can keep the smaller of the two in flight.
+Common mistake: Treating them as the same mechanism.</p>
+<p><strong>5. What is the difference between TCP and UDP, and when do you pick each?</strong>
+TCP offers a connected, ordered, reliable byte stream. UDP carries connectionless datagrams with no ordering and no retransmission. If late data is useless (a live call, player positions in a game) UDP fits. If every byte must arrive (a file, a web page) TCP fits.
+Common mistake: Saying “UDP is unreliable, so no serious application uses it”.</p>
+<p><strong>6. Why does DNS use UDP? Does it always use UDP?</strong>
+A query and its answer usually fit in one packet, and setting up a connection would double the work. If the answer is too large, the server returns a truncated response and the client asks again over TCP. Zone transfers also use TCP.
+Common mistake: Saying “DNS only uses UDP port 53”.</p>
+<p><strong>7. What is TIME_WAIT and why does it exist?</strong>
+It is the state the closing side stays in for 2×MSL after the last ACK. It lets the last ACK be resent if it is lost, and keeps delayed segments from the old connection out of a new connection with the same four-tuple.
+Common mistake: Treating TIME_WAIT as an error or a sign of a leak.</p>
+<p><strong>8. Did HTTP/2 solve head-of-line blocking? What did QUIC change?</strong>
+HTTP/2 solved the application-level blocking with streams, but because it uses a single TCP connection, one lost segment stalls every stream. QUIC separates streams at the transport layer, so a loss only affects the stream it belongs to. It also folds TLS into the handshake and brings connection setup down to one RTT.
+Common mistake: Saying QUIC is unreliable because it runs over UDP.</p>
+<p><img alt="Summary card: OSI and TCP/IP layers, encapsulation, the TCP handshake and close, TCP vs UDP, what QUIC adds" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/net1-ozet-kart.GCTwl1SB_1Iw65.webp" ></p>
+<p><em>In Part 12: HTTP, DNS, REST, JWT, cookies and sessions.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

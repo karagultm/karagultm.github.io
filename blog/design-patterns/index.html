@@ -1,0 +1,330 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Creational, structural and behavioral patterns, each with its problem, its solution and a short Java example. Thread-safe Singleton, how patterns relate to SOLID, and the interview questions that come up."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Design Patterns: Singleton, Factory, Builder, Adapter, Decorator, Strategy, Observer · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="en" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Design Patterns: Singleton, Factory, Builder, Adapter, Decorator, Strategy, Observer</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 November 2026</time> · design-patterns, oop, interview, programming-101 · Part 7</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/tasarim-desenleri-design-patterns/" hreflang="tr" lang="tr" data-astro-cid-7jjqptxk>Türkçe oku</a></p> <img src="/_astro/dp-kapak.CD9Xbl-i_1bg5Jc.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak">  <article class="yazi" data-astro-cid-7jjqptxk><h1 id="design-patterns-singleton-factory-builder-adapter-decorator-strategy-observer">Design Patterns: Singleton, Factory, Builder, Adapter, Decorator, Strategy, Observer</h1>
+<p><em>Programming 101, Part 7</em></p>
+<p>Part 6 covered the SOLID principles: a class should have one responsibility, code should be extendable without being modified, and code should depend on abstractions rather than concrete classes. The principles say what to aim for, but they do not describe how to get there. Design patterns fill that gap. They are named solutions to common design problems, tried many times over.</p>
+<p>Pattern questions in interviews usually come in two forms. Either a pattern is named and the question is what it does, or a problem is described and the question is which pattern fits. Answering the second kind takes knowing the problem a pattern solves more than knowing its code.</p>
+<p>Below I first explain what a pattern is and the three groups. Then I go through eight patterns one by one: the problem, the solution and a short Java example for each. After that come the link between patterns and SOLID, and the trap of memorizing patterns. At the end there are common interview questions.</p>
+<hr>
+<h2 id="1-what-a-design-pattern-is">1. What a design pattern is</h2>
+<p>A <strong>Design Pattern</strong> is a general solution template for a recurring problem in object-oriented design. It is not a piece of code to copy and paste. The description of the problem, the structure of the solution and the cost of that solution come together.</p>
+<p>It is similar to the landing on a staircase in architecture. Every building has a different staircase, but splitting a long flight in the middle with a place to rest is a known solution with a name. The name lets two architects agree without long explanations. That shared vocabulary is the biggest benefit of patterns. Saying “a decorator would fit here” in a code review replaces five sentences of explanation.</p>
+<p>Most of the pattern list in use today comes from the classic patterns book published in 1994. The book defines 23 patterns and splits them into three groups. Its examples were written in C++ and Smalltalk, and in Java some patterns can be written more briefly using the language’s own features.</p>
+<hr>
+<h2 id="2-three-groups-creational-structural-behavioral">2. Three groups: creational, structural, behavioral</h2>
+<p>Patterns are grouped by the question they answer.</p>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>The question it asks</th>
+<th>Examples in this post</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Creational</td>
+<td>How is an object created, and by whom?</td>
+<td>Singleton, Factory Method, Builder</td>
+</tr>
+<tr>
+<td>Structural</td>
+<td>How are classes and objects put together?</td>
+<td>Adapter, Decorator</td>
+</tr>
+<tr>
+<td>Behavioral</td>
+<td>How do objects communicate, and how is responsibility shared?</td>
+<td>Strategy, Observer, Mediator</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Creational</strong> patterns collect object creation in one place instead of scattering <code>new</code> calls throughout the code. <strong>Structural</strong> patterns place objects inside one another to connect incompatible parts or to add features to an object. <strong>Behavioral</strong> patterns organize the communication between objects and the choice of algorithm.</p>
+<p><img alt="The three groups of design patterns: creational patterns deal with how objects are created (Singleton, Factory Method, Builder), structural patterns with how objects are combined (Adapter, Decorator), behavioral patterns with how objects communicate (Strategy, Observer, Mediator)" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/dp-gruplar.D1JsgyMS_1XCbU6.webp" ></p>
+<hr>
+<h2 id="3-singleton">3. Singleton</h2>
+<p><strong>Singleton</strong> guarantees that only one object of a class is created during the lifetime of the application and provides a global access point to it. It is considered for objects that should exist only once, such as a configuration manager, a connection pool or a logger.</p>
+<p>The classic solution has three parts: the constructor is made <code>private</code>, the single object is kept in a <code>static</code> field, and a <code>static</code> method hands that object out. The first version found in the source notes and in many tutorials looks like this:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Config</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> static</span><span style="color:#E1E4E8"> Config instance;</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#B392F0"> Config</span><span style="color:#E1E4E8">() { }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> static</span><span style="color:#E1E4E8"> Config </span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (instance </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">) {         </span><span style="color:#6A737D">// two threads can both see null</span></span>
+<span class="line"><span style="color:#E1E4E8">            instance </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Config</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> instance;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>This code is correct with one thread and wrong with several. If two threads pass the <code>instance == null</code> check at the same time, two separate objects are created. It is a race condition and rarely shows up in tests, because it depends on timing.</p>
+<h3 id="the-thread-safe-version">The thread-safe version</h3>
+<p>The shortest fix is to make the method <code>synchronized</code>, but then every call takes a lock. Once the object exists, that lock is a pointless cost. The approach recommended in Java is the <strong>Initialization-on-demand Holder</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Config</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#B392F0"> Config</span><span style="color:#E1E4E8">() { }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> static</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Holder</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        static</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> Config INSTANCE </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Config</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> static</span><span style="color:#E1E4E8"> Config </span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> Holder.INSTANCE;   </span><span style="color:#6A737D">// Holder is loaded on the first call</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>The inner class <code>Holder</code> is not loaded until <code>get()</code> is called for the first time. When the JVM initializes a class’s static fields, it guarantees that only one thread does so. This gives lazy creation and thread safety without writing a lock.</p>
+<p>There are two other options. <strong>Double-Checked Locking</strong> checks for null twice, once before the lock and once inside it, but the field must be <code>volatile</code>. Without <code>volatile</code> the JVM may reorder the writes, and another thread can see a reference to an object whose constructor has not finished. The second option is a single-element <code>enum</code>: <code>enum Config { INSTANCE; }</code>. An enum cannot be instantiated a second time through reflection and stays single through serialization. The other approaches need extra measures for those two cases.</p>
+<h3 id="why-it-is-called-an-anti-pattern">Why it is called an anti-pattern</h3>
+<p>Singleton appears on “things to avoid” lists as often as on pattern lists. The reasons:</p>
+<ul>
+<li>It is global state. Because <code>Config.get()</code> can be called from anywhere, what a class depends on is not visible in its signature. The dependency is hidden inside a method.</li>
+<li>It makes testing harder. When testing a class that uses the singleton, there is no way to swap in a fake object. Tests share the state of the same object and affect each other.</li>
+<li>It does two jobs: its actual work and the management of its own lifecycle. That goes against the single responsibility principle.</li>
+<li>“Single” is less certain than it looks. Each class loader can create its own copy. In a system running in several processes, each process has its own object.</li>
+</ul>
+<p>These are problems with the global access path, not with the idea of a single object. If one configuration object is needed, it can be created once at startup and passed to the classes that need it through their constructors. The “singleton scope” in dependency injection frameworks is exactly that: the object is single, but classes receive it from outside instead of pulling it with <code>get()</code>.</p>
+<hr>
+<h2 id="4-factory-method">4. Factory Method</h2>
+<p>Every place where code writes <code>new Truck()</code>, it ties itself to the <code>Truck</code> class. When some deliveries later have to go by ship, all of those lines must be found and changed.</p>
+<p><strong>Factory Method</strong> leaves object creation to a method and lets subclasses decide which class to instantiate. The superclass writes the workflow and asks an abstract method for the object it needs along the way.</p>
+<p>A logistics company is a good example. Planning a delivery is always the same process: prepare the vehicle, load it, send it off. Only the vehicle type changes. The road division uses trucks, the sea division uses ships.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> Transport</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">void</span><span style="color:#B392F0"> deliver</span><span style="color:#E1E4E8">(); }</span></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Truck</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> Transport</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> deliver</span><span style="color:#E1E4E8">() { </span><span style="color:#6A737D">/* by road */</span><span style="color:#E1E4E8"> } }</span></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Ship</span><span style="color:#F97583">  implements</span><span style="color:#B392F0"> Transport</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> deliver</span><span style="color:#E1E4E8">() { </span><span style="color:#6A737D">/* by sea */</span><span style="color:#E1E4E8"> } }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">abstract</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Logistics</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    abstract</span><span style="color:#E1E4E8"> Transport </span><span style="color:#B392F0">createTransport</span><span style="color:#E1E4E8">();     </span><span style="color:#6A737D">// factory method</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> planDelivery</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">        Transport t </span><span style="color:#F97583">=</span><span style="color:#B392F0"> createTransport</span><span style="color:#E1E4E8">();      </span><span style="color:#6A737D">// does not know the concrete class</span></span>
+<span class="line"><span style="color:#E1E4E8">        t.</span><span style="color:#B392F0">deliver</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> RoadLogistics</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> Logistics</span><span style="color:#E1E4E8"> { Transport </span><span style="color:#B392F0">createTransport</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Truck</span><span style="color:#E1E4E8">(); } }</span></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> SeaLogistics</span><span style="color:#F97583">  extends</span><span style="color:#B392F0"> Logistics</span><span style="color:#E1E4E8"> { Transport </span><span style="color:#B392F0">createTransport</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Ship</span><span style="color:#E1E4E8">(); } }</span></span></code></pre>
+<p>When air freight is added, a new <code>Plane</code> and a new <code>AirLogistics</code> are written. <code>Logistics</code> and the existing subclasses do not change.</p>
+<p>This pattern is often confused with something else. A single class that looks at a parameter and returns an object, as in <code>if (type.equals("Road")) return new Truck();</code>, is a <strong>Simple Factory</strong>. It is useful and collects <code>new</code> calls in one place, but it is not one of the patterns in the classic book. Adding a new type means touching the <code>if</code> chain inside the factory. With Factory Method, extension happens through a new subclass. Static methods like <code>List.of(...)</code> or <code>Integer.valueOf(...)</code> are a third thing. They are called <strong>Static Factory Methods</strong> and can be thought of as named alternatives to a constructor.</p>
+<hr>
+<h2 id="5-builder">5. Builder</h2>
+<p>When a class has two required fields and five optional ones, constructors start to multiply: one with two parameters, one with three, one with four. This is called a <strong>Telescoping Constructor</strong>. In <code>new User("admin", null, null, 30, true)</code> it is hard to tell which <code>null</code> means what, and if two <code>String</code> parameters are swapped, the compiler will not notice.</p>
+<p><strong>Builder</strong> separates the step-by-step construction of a complex object from the object itself. Its most common form in Java is a helper class inside the class, with methods that can be chained.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> User</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> String name;    </span><span style="color:#6A737D">// required</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> String email;   </span><span style="color:#6A737D">// optional</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> age;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#B392F0"> User</span><span style="color:#E1E4E8">(Builder </span><span style="color:#FFAB70">b</span><span style="color:#E1E4E8">) { name </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> b.name; email </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> b.email; age </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> b.age; }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> static</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Builder</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> String name;</span></span>
+<span class="line"><span style="color:#F97583">        private</span><span style="color:#E1E4E8"> String email;</span></span>
+<span class="line"><span style="color:#F97583">        private</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> age;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#B392F0"> Builder</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">name</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.name </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> name; }</span></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#E1E4E8"> Builder </span><span style="color:#B392F0">email</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.email </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> e; </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#E1E4E8"> Builder </span><span style="color:#B392F0">age</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> a</span><span style="color:#E1E4E8">)      { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.age </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> a; </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#F97583">        public</span><span style="color:#E1E4E8"> User </span><span style="color:#B392F0">build</span><span style="color:#E1E4E8">()            { </span><span style="color:#F97583">return</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> User</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">); }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">User u </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> User.</span><span style="color:#B392F0">Builder</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"admin"</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">age</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">30</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">build</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<p>The name of each value is readable in the call. Since the fields are <code>final</code>, the object does not change once it is built. Validation rules, such as “age cannot be negative”, can be checked in one place inside <code>build()</code>. In the Java library, <code>java.net.http.HttpRequest.newBuilder()</code> is an example of this form.</p>
+<p>One note: the Builder in the classic book aimed to produce different representations from the same construction process (for example both HTML and PDF from the same document) and included a “director” class that ran the process. In everyday Java, Builder means the fluent form above.</p>
+<hr>
+<h2 id="6-adapter">6. Adapter</h2>
+<p>The code expects one interface, the class at hand offers a different one, and that class cannot be changed. A third-party library or an old module is usually like this.</p>
+<p><strong>Adapter</strong> is an intermediate class that translates an incompatible interface into the expected one. A travel plug adapter is similar. Neither the device’s plug nor the wall socket changes, the piece in between makes them fit.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> PaymentService</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> pay</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">long</span><span style="color:#FFAB70"> cents</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// third-party library, cannot be changed</span></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> LegacyPaymentLibrary</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> sendMoney</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">, String </span><span style="color:#FFAB70">currency</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* ... */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> LegacyPaymentAdapter</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> PaymentService</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> LegacyPaymentLibrary library </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> LegacyPaymentLibrary</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> pay</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">long</span><span style="color:#FFAB70"> cents</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        library.</span><span style="color:#B392F0">sendMoney</span><span style="color:#E1E4E8">(cents </span><span style="color:#F97583">/</span><span style="color:#79B8FF"> 100.0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"EUR"</span><span style="color:#E1E4E8">);   </span><span style="color:#6A737D">// unit and signature translation</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>The rest of the application only knows <code>PaymentService</code>. When the library is replaced, only the adapter is rewritten. In Java, <code>InputStreamReader</code> is an adapter that turns a byte stream into a character reader, and <code>Arrays.asList</code> makes an array usable through the <code>List</code> interface.</p>
+<p>Here the adapter holds the library as a field. This is called an <strong>Object Adapter</strong>. There is also a <strong>Class Adapter</strong> form that inherits from the library class, but it is used less in Java because of single inheritance.</p>
+<hr>
+<h2 id="7-decorator">7. Decorator</h2>
+<p>When writing to a data source, sometimes compression is needed, sometimes encryption, sometimes both. If a separate subclass is written for each combination, the number of classes grows quickly: <code>CompressedFile</code>, <code>EncryptedFile</code>, <code>CompressedEncryptedFile</code>.</p>
+<p><strong>Decorator</strong> adds behavior to an object at runtime by wrapping it in another object that implements the same interface. The wrapper forwards the work to the inner object and adds its own contribution before or after. Layers of clothing in winter are a reasonable comparison. Each layer adds something, and layers can be put on and taken off in any order.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> DataSource</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">void</span><span style="color:#B392F0"> write</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">data</span><span style="color:#E1E4E8">); }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> FileDataSource</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> DataSource</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> write</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">data</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* write to disk */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> CompressionDecorator</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> DataSource</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> DataSource inner;</span></span>
+<span class="line"><span style="color:#B392F0">    CompressionDecorator</span><span style="color:#E1E4E8">(DataSource </span><span style="color:#FFAB70">inner</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.inner </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> inner; }</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> write</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">data</span><span style="color:#E1E4E8">) { inner.</span><span style="color:#B392F0">write</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">compress</span><span style="color:#E1E4E8">(data)); }</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#E1E4E8"> String </span><span style="color:#B392F0">compress</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">s</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">/* ... */</span><span style="color:#F97583"> return</span><span style="color:#E1E4E8"> s; }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// EncryptionDecorator is written the same way</span></span>
+<span class="line"><span style="color:#E1E4E8">DataSource ds </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> CompressionDecorator</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#B392F0"> EncryptionDecorator</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#B392F0"> FileDataSource</span><span style="color:#E1E4E8">()));</span></span>
+<span class="line"><span style="color:#E1E4E8">ds.</span><span style="color:#B392F0">write</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"report"</span><span style="color:#E1E4E8">);   </span><span style="color:#6A737D">// compressed first, then encrypted, then written</span></span></code></pre>
+<p>Each decorator does one job and they can be combined in any order. Java’s I/O classes are built on this pattern: in <code>new BufferedReader(new InputStreamReader(new FileInputStream("a.txt")))</code> each layer wraps the previous one. <code>Collections.unmodifiableList</code> is also a decorator that wraps a list and blocks the methods that modify it.</p>
+<p>To keep it apart from Adapter: an adapter changes the interface and leaves behavior alone. A decorator keeps the interface and adds behavior.</p>
+<hr>
+<h2 id="8-strategy">8. Strategy</h2>
+<p>When an order total is calculated, the discount rule depends on the customer type. The first solution that comes to mind is an <code>if (type == STUDENT) ... else if (type == CORPORATE) ...</code> chain. Every new rule makes that method longer, and the calculation code has to know about every rule.</p>
+<p><strong>Strategy</strong> puts interchangeable algorithms into separate classes and lets the choice between them be made at runtime. In a navigation app, the car, walking and public transport options are each a separate route calculation. The rest of the app calls the chosen calculation without caring what is inside it.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> DiscountStrategy</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#B392F0"> apply</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Order</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> DiscountStrategy discount;</span></span>
+<span class="line"><span style="color:#B392F0">    Order</span><span style="color:#E1E4E8">(DiscountStrategy </span><span style="color:#FFAB70">discount</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.discount </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> discount; }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    double</span><span style="color:#B392F0"> total</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">double</span><span style="color:#FFAB70"> subtotal</span><span style="color:#E1E4E8">) { </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> discount.</span><span style="color:#B392F0">apply</span><span style="color:#E1E4E8">(subtotal); }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Order student   </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Order</span><span style="color:#E1E4E8">(t </span><span style="color:#F97583">-></span><span style="color:#E1E4E8"> t </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 0.90</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">Order corporate </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Order</span><span style="color:#E1E4E8">(t </span><span style="color:#F97583">-></span><span style="color:#E1E4E8"> t </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 1000</span><span style="color:#F97583"> ?</span><span style="color:#E1E4E8"> t </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 100</span><span style="color:#F97583"> :</span><span style="color:#E1E4E8"> t);</span></span>
+<span class="line"><span style="color:#E1E4E8">Order regular   </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Order</span><span style="color:#E1E4E8">(t </span><span style="color:#F97583">-></span><span style="color:#E1E4E8"> t);</span></span></code></pre>
+<p>Because <code>DiscountStrategy</code> is an interface with a single method, since Java 8 each strategy can be written as a lambda. In the classic book each strategy was a separate class. The most familiar example in Java is <code>Comparator</code>: in <code>list.sort(Comparator.comparing(Person::getAge))</code> the sorting algorithm stays the same and the comparison strategy is passed in from outside.</p>
+<p>Strategy is structurally very close to the <strong>State</strong> pattern. The difference is intent: a strategy is chosen by the calling code. With State, the object changes its own behavior as its state changes.</p>
+<hr>
+<h2 id="9-observer">9. Observer</h2>
+<p>When a product comes back in stock, the users who asked to be notified should get an email, a push notification and a text message. If the product class calls these three services directly, every new notification channel means changing the product class. The other option is for the notification services to keep asking “is it in stock yet” (polling), which means wasted requests.</p>
+<p><strong>Observer</strong> makes sure that when an object’s (the <strong>Subject</strong>’s) state changes, the objects registered with it (the <strong>Observers</strong>) are notified automatically. The subject does not know who its observers are, only their common interface. It works like a newspaper subscription. A reader subscribes once, and the publisher sends every issue to the subscriber list.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> StockListener</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> backInStock</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">productName</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Product</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> String name;</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> List&#x3C;</span><span style="color:#F97583">StockListener</span><span style="color:#E1E4E8">> listeners </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> ArrayList&#x3C;>();</span></span>
+<span class="line"><span style="color:#B392F0">    Product</span><span style="color:#E1E4E8">(String </span><span style="color:#FFAB70">name</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.name </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> name; }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> subscribe</span><span style="color:#E1E4E8">(StockListener </span><span style="color:#FFAB70">l</span><span style="color:#E1E4E8">)   { listeners.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(l); }</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> unsubscribe</span><span style="color:#E1E4E8">(StockListener </span><span style="color:#FFAB70">l</span><span style="color:#E1E4E8">) { listeners.</span><span style="color:#B392F0">remove</span><span style="color:#E1E4E8">(l); }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> addStock</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> count</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (count </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) listeners.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(l </span><span style="color:#F97583">-></span><span style="color:#E1E4E8"> l.</span><span style="color:#B392F0">backInStock</span><span style="color:#E1E4E8">(name));</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">product.</span><span style="color:#B392F0">subscribe</span><span style="color:#E1E4E8">(name </span><span style="color:#F97583">-></span><span style="color:#B392F0"> sendEmail</span><span style="color:#E1E4E8">(name));</span></span>
+<span class="line"><span style="color:#E1E4E8">product.</span><span style="color:#B392F0">subscribe</span><span style="color:#E1E4E8">(name </span><span style="color:#F97583">-></span><span style="color:#B392F0"> sendPush</span><span style="color:#E1E4E8">(name));</span></span></code></pre>
+<p>A few points need attention. If an observer is done but <code>unsubscribe</code> is never called, the subject keeps a reference to it and the garbage collector cannot reclaim it. This is the <strong>Lapsed Listener</strong> problem and a well-known cause of memory leaks in Java. Notifications in this example are synchronous: a slow observer holds up the whole chain, and an observer that throws can stop the ones after it from running. The order in which observers are called should not be relied on either.</p>
+<p>Java’s <code>java.util.Observer</code> and <code>Observable</code> classes have been deprecated since Java 9. The recommendation is to write your own interface or use <code>PropertyChangeListener</code>. The <strong>Publish-Subscribe</strong> model in message queues is a relative of Observer. The difference is the broker in between: the publisher does not keep the subscriber list, and communication is usually asynchronous.</p>
+<hr>
+<h2 id="10-mediator">10. Mediator</h2>
+<p>If every plane at an airport had to talk to every other plane before landing, n planes would need n·(n−1)/2 connections. Instead, each plane talks only to the tower. The tower decides who uses the runway. The planes do not know each other.</p>
+<p><strong>Mediator</strong> stops objects from connecting to each other directly and runs their communication through a single center. Each object knows only the mediator.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Tower</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> Queue&#x3C;</span><span style="color:#F97583">Plane</span><span style="color:#E1E4E8">> queue </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> ArrayDeque&#x3C;>();</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> boolean</span><span style="color:#E1E4E8"> runwayFree </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> requestLanding</span><span style="color:#E1E4E8">(Plane </span><span style="color:#FFAB70">p</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (runwayFree) { runwayFree </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">; p.</span><span style="color:#B392F0">cleared</span><span style="color:#E1E4E8">(); }</span></span>
+<span class="line"><span style="color:#F97583">        else</span><span style="color:#E1E4E8"> queue.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(p);                 </span><span style="color:#6A737D">// queues it without asking other planes</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> runwayCleared</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">        Plane next </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> queue.</span><span style="color:#B392F0">poll</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (next </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">) next.</span><span style="color:#B392F0">cleared</span><span style="color:#E1E4E8">(); </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> runwayFree </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Plane</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> final</span><span style="color:#E1E4E8"> Tower tower;             </span><span style="color:#6A737D">// knows only the tower</span></span>
+<span class="line"><span style="color:#B392F0">    Plane</span><span style="color:#E1E4E8">(Tower </span><span style="color:#FFAB70">tower</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.tower </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tower; }</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> wantToLand</span><span style="color:#E1E4E8">() { tower.</span><span style="color:#B392F0">requestLanding</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">); }</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> cleared</span><span style="color:#E1E4E8">()    { </span><span style="color:#6A737D">/* land */</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>It is also common in UI programming. If choosing a “country” in a form changes the “city” list, and choosing a city changes the shipping fee, the form itself can act as the mediator instead of spreading these rules across the fields.</p>
+<p>It has a cost. Dependencies do not disappear, they move to the center. Without care, the mediator turns into a class that knows every rule and gets harder to change as it grows. The difference from Observer is the shape of the relationship: in Observer one subject broadcasts to many listeners. In Mediator many objects affect each other, and the rules for that interaction live in the center.</p>
+<hr>
+<h2 id="11-patterns-and-solid">11. Patterns and SOLID</h2>
+<p>Most patterns are a concrete application of one of the SOLID principles. Naming the related principle when explaining why a pattern works leaves a good impression in an interview.</p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Related principle</th>
+<th>How</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Strategy</td>
+<td>Open/Closed</td>
+<td>A new rule is added as a new class or lambda, <code>Order</code> does not change</td>
+</tr>
+<tr>
+<td>Factory Method</td>
+<td>Open/Closed, Dependency Inversion</td>
+<td>The superclass knows the <code>Transport</code> interface, not the concrete class</td>
+</tr>
+<tr>
+<td>Decorator</td>
+<td>Single Responsibility, Open/Closed</td>
+<td>Each wrapper does one job, features are added without touching the existing class</td>
+</tr>
+<tr>
+<td>Decorator, Adapter</td>
+<td>Liskov Substitution</td>
+<td>The wrapper must be usable anywhere the wrapped type is expected</td>
+</tr>
+<tr>
+<td>Adapter</td>
+<td>Dependency Inversion</td>
+<td>The application depends on its own interface, not on the third-party library</td>
+</tr>
+<tr>
+<td>Observer</td>
+<td>Interface Segregation</td>
+<td>The listener interface has a single method</td>
+</tr>
+<tr>
+<td>Singleton</td>
+<td>Goes against Single Responsibility and Dependency Inversion</td>
+<td>It also manages its own lifecycle, and calling code is tied to the concrete class</td>
+</tr>
+</tbody>
+</table>
+<p>The last row matters as much as the rest of the table. Using a pattern does not automatically mean the principles are followed.</p>
+<hr>
+<h2 id="12-the-trap-of-memorizing-patterns">12. The trap of memorizing patterns</h2>
+<p>After learning patterns, trying to fit one to every problem is a common mistake. Adding <code>DiscountStrategy</code>, <code>DiscountStrategyFactory</code> and <code>DiscountManager</code> to code that has a single discount rule does not make it flexible, it only makes it harder to read. Four classes end up doing the work of a two-line <code>if</code>.</p>
+<p>A pattern is not a goal, it is a known answer to a problem. A healthy order is this: write the simplest solution first, and move to a suitable pattern when the code starts to strain at a place that really needs to change (the third <code>else if</code>, the same <code>new</code> call repeated in ten places). Adding flexibility where nothing will change is paying in advance for a need that never arrives.</p>
+<p>The language also plays a part. Some of the patterns in the classic book existed to cover gaps in the languages of the time. In languages where functions can be passed as values, Strategy or Command does not need a class hierarchy, a lambda is enough. In Java, <code>enum</code> can make the classic Singleton code unnecessary, and records can do the same for some uses of Builder.</p>
+<p>That is why interviews tend to ask “what is wrong with this code and how would you fix it” more than “draw the UML diagram for Observer”. Starting the answer with the problem rather than the pattern name is more convincing: “Every new rule changes this method. If I move the rules into separate objects, the method stays closed. That is called Strategy.”</p>
+<hr>
+<h2 id="interview-questions">Interview questions</h2>
+<p><strong>1. What is a design pattern, and what groups are there?</strong>
+It is a named, general solution to a recurring design problem. Creational patterns organize object creation, structural patterns how objects are combined, and behavioral patterns how objects communicate.
+Common mistake: Describing a pattern as a ready-made library or a piece of code to copy.</p>
+<p><strong>2. How do you write a thread-safe Singleton?</strong>
+With the initialization-on-demand holder: the single object lives in a <code>final</code> field of a static inner class, and the JVM guarantees that class initialization happens on one thread. The alternatives are a single-element <code>enum</code> and double-checked locking with a <code>volatile</code> field.
+Common mistake: Writing double-checked locking without <code>volatile</code>. Another thread can see a half-constructed object.</p>
+<p><strong>3. Why is Singleton seen as an anti-pattern?</strong>
+It creates global state and hides the dependency inside a method, so a fake object cannot be swapped in during tests. The class also manages both its own work and its own lifecycle. If a single object is needed, creating it once and passing it through constructors is preferred.
+Common mistake: Thinking the problem is having one object. The problem is the global access path.</p>
+<p><strong>4. What is the difference between Factory Method and a simple factory?</strong>
+A simple factory is a single class that looks at a parameter and returns an object through an <code>if</code> or <code>switch</code>, and it changes when a new type is added. In Factory Method the superclass defines an abstract creation method, subclasses decide which object to create, and extension happens through a new subclass.
+Common mistake: Calling every <code>create()</code> method a Factory Method.</p>
+<p><strong>5. When is Builder used?</strong>
+For objects with many optional parameters, especially ones that should be immutable. It replaces telescoping constructors, every value is passed by name, and validation happens in one place inside <code>build()</code>.
+Common mistake: Writing a builder for a simple class with two fields.</p>
+<p><strong>6. How does Decorator differ from inheritance, and from Adapter?</strong>
+Inheritance fixes behavior at compile time and at the class level, so each combination needs its own subclass. Decorator adds behavior at runtime by wrapping the object, and layers can be combined in any order. Adapter changes the interface, while a decorator keeps the interface and adds behavior.
+Common mistake: Not being able to explain why Java I/O classes are created nested inside each other.</p>
+<p><strong>7. What problem does the Strategy pattern solve?</strong>
+It moves algorithms that are chosen through growing <code>if-else</code> or <code>switch</code> chains into separate objects and makes them swappable at runtime. When a new algorithm is added, the class using it does not change. <code>Comparator</code> is the well-known Java example.
+Common mistake: Mixing up Strategy and State. A strategy is chosen by outside code, while in State the object changes based on its own state.</p>
+<p><strong>8. How does a memory leak happen with the Observer pattern?</strong>
+The subject holds strong references to registered observers. If an observer is no longer used but is never removed from the list, the garbage collector cannot reclaim it. This is the lapsed listener problem, and the fix is for an observer to unsubscribe when it is done.
+Common mistake: Treating Observer and publish-subscribe as the same thing. In pub/sub a broker sits in between and the publisher does not know its subscribers.</p>
+<p><img alt="Summary card: the creational, structural and behavioral groups, one line on the problem each of the eight patterns solves, ways to make Singleton thread-safe, and how the patterns map to SOLID principles" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/dp-ozet-kart.D-yJ8pL8_Z1spCpy.webp" ></p>
+<p><em>In Part 8: operating systems, processes, threads and scheduling.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

@@ -1,0 +1,344 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Concurrency vs. parallelism, thread pools, async/await and the event loop, the GIL in Python, ExecutorService and CompletableFuture in Java: with measurements and interview questions."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Concurrency: Multithreading and Async, CPU-Bound and I/O-Bound · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="en" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Concurrency: Multithreading and Async, CPU-Bound and I/O-Bound</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 November 2026</time> · concurrency, async, interview, programming-101 · Part 10</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/eszamanlilik-multithreading-async/" hreflang="tr" lang="tr" data-astro-cid-7jjqptxk>Türkçe oku</a></p> <img src="/_astro/conc-kapak.B8Pu8eVl_1ntnGN.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak">  <article class="yazi" data-astro-cid-7jjqptxk><h1 id="concurrency-multithreading-and-async-cpu-bound-and-io-bound">Concurrency: Multithreading and Async, CPU-Bound and I/O-Bound</h1>
+<p><em>Programming 101, Part 10</em></p>
+<p>Part 8 covered processes and threads and how the operating system hands out CPU time. Part 9 looked at the problems of shared memory, race conditions and locks. This post is about the application side: when a program needs to run several jobs at once, should it use threads, processes or async?</p>
+<p>The answer depends mostly on what the job is waiting for. A job that computes and a job that waits for a network response do not get faster with the same tool. Below I cover that distinction, thread pools, how an event loop runs on a single thread, the Python and Java equivalents, and the common mistakes in async code. I took the Python measurements by running the code on my own machine. At the end there are interview questions.</p>
+<hr>
+<h2 id="1-concurrency-and-parallelism">1. Concurrency and parallelism</h2>
+<p><strong>Concurrency</strong> is several jobs making progress during the same period of time. The jobs do not have to run at the same instant. They can advance piece by piece, taking turns. <strong>Parallelism</strong> is several jobs actually running at the same instant, on different cores.</p>
+<p>A single cook can manage three pots in a kitchen. Stir one, turn down the heat under the next, salt the third. All three dishes cook within the same hour, but at any moment the cook is doing one thing. That is concurrency. Three cooks standing at three pots and working at the same time is parallelism.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Concurrency</th>
+<th>Parallelism</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Meaning</td>
+<td>Jobs progress in the same period</td>
+<td>Jobs run at the same instant</td>
+</tr>
+<tr>
+<td>On a single core</td>
+<td>Possible</td>
+<td>Not possible</td>
+</tr>
+<tr>
+<td>Goal</td>
+<td>Use waiting time well, structure the program</td>
+<td>Speed up computation</td>
+</tr>
+<tr>
+<td>Typical tool</td>
+<td>Async/await, threads</td>
+<td>Several threads or processes, many cores</td>
+</tr>
+</tbody>
+</table>
+<p>Parallelism can be seen as a special case of concurrency. Jobs that run in parallel are concurrent, but not every concurrent program is parallel. The single-core Round Robin example in Part 8 is concurrency without parallelism.</p>
+<hr>
+<h2 id="2-cpu-bound-and-io-bound">2. CPU-bound and I/O-bound</h2>
+<p>This distinction came up briefly at the end of Part 8. I expand on it here, because the choice of tool rests entirely on it.</p>
+<ul>
+<li><strong>CPU-Bound:</strong> The job spends most of its time computing. Image processing, compression, encryption, sorting a large list. To get faster it needs more cores.</li>
+<li><strong>I/O-Bound:</strong> The job spends most of its time waiting. An HTTP request, a database query, reading a file. The CPU is idle during the wait. To get faster, it is enough to overlap the waits.</li>
+</ul>
+<p>A typical request on a web server is I/O-bound. Most of its time goes to waiting for answers from the database and other services. The code itself runs in under a millisecond, while the waiting takes tens of milliseconds.</p>
+<p>The practical way to tell them apart is to measure. If a job keeps one core at 100% while it runs, it is CPU-bound. If CPU usage is low and the job still takes long, it is waiting for something.</p>
+<p>Different parts of the same program can be of different kinds. A service downloads images from outside (I/O-bound), then shrinks them (CPU-bound). The two parts can use different tools.</p>
+<hr>
+<h2 id="3-threads-and-thread-pools">3. Threads and thread pools</h2>
+<p>In Part 8 I defined a thread as a unit of execution inside a process. Threads managed by the operating system are called <strong>OS Threads</strong> or <strong>Platform Threads</strong>. The scheduler places them on cores, so several threads can really run in parallel.</p>
+<p>They are not free. For each thread the operating system reserves a stack, usually on the order of megabytes. Creating a thread takes a system call, and switching between threads carries the cost of a context switch. A server that opens a new thread for every incoming request starts spending its memory and time on managing threads once there are thousands of concurrent requests.</p>
+<p>A <strong>Thread Pool</strong> solves this. A fixed number of threads is created up front, and they take jobs from a queue. A thread that finishes does not exit, it picks up the next job in the queue. It works like the couriers at a delivery depot: nobody hires a new courier for each parcel, the existing couriers take the parcels from the warehouse in turn.</p>
+<p>The pool size depends on the kind of work:</p>
+<ul>
+<li>For CPU-bound work, around the number of cores. More threads do not help, they only add context switches.</li>
+<li>For I/O-bound work, more than that, because most threads sit waiting. A rough formula: threads = cores × (1 + wait time / compute time).</li>
+</ul>
+<p>For example, on an 8-core machine where each job waits 90 ms and computes for 10 ms, 8 × (1 + 9) = 80 threads is a reasonable starting point. The formula gives an estimate. The final number comes from measurement.</p>
+<p>Threads have a limit for I/O-bound work. Every waiting thread still holds its stack and takes up space. Ten thousand OS threads for ten thousand concurrent connections is expensive. This is where the async model comes in.</p>
+<hr>
+<h2 id="4-asyncawait-and-the-event-loop">4. Async/await and the event loop</h2>
+<p><strong>Async/Await</strong> is a model for writing code that waits without blocking the thread. A function defined with <code>async</code> (a <strong>Coroutine</strong> in Python) pauses when it reaches an <code>await</code> and gives control back. When the awaited work finishes, it continues from where it stopped.</p>
+<p>The structure that takes control back is the <strong>Event Loop</strong>. It runs on a single thread and repeats this cycle:</p>
+<ol>
+<li>Take one of the ready tasks and run it.</li>
+<li>When the task reaches an <code>await</code>, it pauses and control returns to the loop.</li>
+<li>The loop asks the operating system which of the pending I/O operations have finished (<code>epoll</code> on Linux, <code>kqueue</code> on macOS, IOCP on Windows).</li>
+<li>A task whose I/O has finished goes back into the ready queue.</li>
+</ol>
+<p>A waiter in a restaurant fits this well. The waiter passes the order to the kitchen and does not stand at that table until the food is cooked. The waiter takes orders from other tables and carries out plates that are ready. One waiter can keep up with dozens of tables while the kitchen works. The waiter is the event loop, and the kitchen is the operating system and the other end of the network.</p>
+<p>Step 4 is the same as the Waiting -> Ready transition from Part 8. A task whose I/O has finished does not run right away. It enters the ready queue first.</p>
+<p><img alt="Comparison of the thread model and the async model: on the left each request waits in its own thread, on the right an event loop on a single thread switches between tasks at await points" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/conc-thread-async.DRMzsZ2y_Z2i7bNy.webp" ></p>
+<p>Two points matter here. First, the async model uses <strong>Cooperative Multitasking</strong>. Tasks give up control themselves, and the loop never stops anyone by force. It is the same logic as non-preemptive scheduling in Part 8. A task that runs for a long time without an <code>await</code> locks up the whole loop.</p>
+<p>Second, async alone does not give parallelism. Only one task runs at any moment. The gain comes from overlapping the waits. A loop waiting on a thousand connections does the job with one thread and a thousand small coroutine objects instead of a thousand threads.</p>
+<hr>
+<h2 id="5-python-the-gil-threading-multiprocessing-asyncio">5. Python: the GIL, threading, multiprocessing, asyncio</h2>
+<p>The <strong>GIL (Global Interpreter Lock)</strong> is a lock in CPython that allows only one thread at a time to execute Python bytecode. The consequence: Python threads do not run CPU-bound work in parallel.</p>
+<p>The GIL is released during I/O. While one thread waits in <code>time.sleep</code> or a network call, another thread can run Python code. That is why threads are useful for I/O-bound work in Python. Some C extensions (large array operations in NumPy, <code>hashlib</code>) also release the GIL while they compute.</p>
+<p>Python 3.13 offers an experimental free-threaded build without the GIL (PEP 703, <code>python3.13t</code>) as a separate install, while the default build still has the GIL.</p>
+<h3 id="io-bound-measurement">I/O-bound measurement</h3>
+<p>I simulated five network requests with <code>time.sleep(1)</code>. Sequentially, with a thread pool, and with asyncio:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> time, asyncio</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> concurrent.futures </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ThreadPoolExecutor</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> fetch</span><span style="color:#E1E4E8">(i):</span></span>
+<span class="line"><span style="color:#E1E4E8">    time.sleep(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)            </span><span style="color:#6A737D"># 1 s wait standing in for a network request</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> i</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> afetch</span><span style="color:#E1E4E8">(i):</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#E1E4E8"> asyncio.sleep(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> i</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> main</span><span style="color:#E1E4E8">():</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> asyncio.gather(</span><span style="color:#F97583">*</span><span style="color:#E1E4E8">(afetch(i) </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">)))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">start </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> time.perf_counter()</span></span>
+<span class="line"><span style="color:#E1E4E8">[fetch(i) </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">)]                         </span><span style="color:#6A737D"># sequential</span></span>
+<span class="line"><span style="color:#F97583">with</span><span style="color:#E1E4E8"> ThreadPoolExecutor(</span><span style="color:#FFAB70">max_workers</span><span style="color:#F97583">=</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> pool:      </span><span style="color:#6A737D"># threads</span></span>
+<span class="line"><span style="color:#79B8FF">    list</span><span style="color:#E1E4E8">(pool.map(fetch, </span><span style="color:#79B8FF">range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">)))</span></span>
+<span class="line"><span style="color:#E1E4E8">asyncio.run(main())                                  </span><span style="color:#6A737D"># asyncio</span></span></code></pre>
+<p>Each block was timed separately. Result:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sequential</td>
+<td>5.00 s</td>
+</tr>
+<tr>
+<td>ThreadPoolExecutor (5 threads)</td>
+<td>1.00 s</td>
+</tr>
+<tr>
+<td>asyncio.gather</td>
+<td>1.01 s</td>
+</tr>
+</tbody>
+</table>
+<p>Both threads and async overlapped the five waits. With five requests there is no difference between them. The difference shows up in memory and thread management cost once the number of requests reaches the thousands.</p>
+<h3 id="cpu-bound-measurement">CPU-bound measurement</h3>
+<p>I ran a function that computes in a plain Python loop four times:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> concurrent.futures </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ThreadPoolExecutor, ProcessPoolExecutor</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> count</span><span style="color:#E1E4E8">(n):</span></span>
+<span class="line"><span style="color:#E1E4E8">    total </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(n):</span></span>
+<span class="line"><span style="color:#E1E4E8">        total </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> i</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> total</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">N </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 20_000_000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">if</span><span style="color:#79B8FF"> __name__</span><span style="color:#F97583"> ==</span><span style="color:#9ECBFF"> "__main__"</span><span style="color:#E1E4E8">:                       </span><span style="color:#6A737D"># required on Windows and macOS</span></span>
+<span class="line"><span style="color:#E1E4E8">    [count(N) </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> _ </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">)]                 </span><span style="color:#6A737D"># sequential</span></span>
+<span class="line"><span style="color:#F97583">    with</span><span style="color:#E1E4E8"> ThreadPoolExecutor(</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> pool:          </span><span style="color:#6A737D"># threads</span></span>
+<span class="line"><span style="color:#79B8FF">        list</span><span style="color:#E1E4E8">(pool.map(count, [N] </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#F97583">    with</span><span style="color:#E1E4E8"> ProcessPoolExecutor(</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> pool:         </span><span style="color:#6A737D"># processes</span></span>
+<span class="line"><span style="color:#79B8FF">        list</span><span style="color:#E1E4E8">(pool.map(count, [N] </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">))</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Time (several runs)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sequential</td>
+<td>6.5–9.3 s</td>
+</tr>
+<tr>
+<td>ThreadPoolExecutor (4 threads)</td>
+<td>5.4–8.7 s</td>
+</tr>
+<tr>
+<td>ProcessPoolExecutor (4 processes)</td>
+<td>2.2–2.8 s</td>
+</tr>
+</tbody>
+</table>
+<p>The machine was under load, so the times moved between runs. The threaded version stayed in the same band as the sequential one, sometimes a little faster, sometimes a little slower. The process version was about three times faster every time. It is not four times faster because of the cost of starting processes and copying data between them (pickle).</p>
+<h3 id="which-one-when">Which one when?</h3>
+<table>
+<thead>
+<tr>
+<th>Work</th>
+<th>Tool</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A few I/O calls, synchronous library</td>
+<td><code>threading</code> / <code>ThreadPoolExecutor</code></td>
+<td>The GIL is released while waiting, existing code runs unchanged</td>
+</tr>
+<tr>
+<td>Many concurrent I/O calls (thousands of connections)</td>
+<td><code>asyncio</code></td>
+<td>One thread, low memory, needs async libraries</td>
+</tr>
+<tr>
+<td>CPU-bound pure Python</td>
+<td><code>multiprocessing</code> / <code>ProcessPoolExecutor</code></td>
+<td>Each process has its own GIL</td>
+</tr>
+<tr>
+<td>CPU-bound with a library that releases the GIL, such as NumPy</td>
+<td>Threads may be enough</td>
+<td>The computation happens on the C side</td>
+</tr>
+</tbody>
+</table>
+<p><code>multiprocessing</code> has a cost too. Each process starts its own interpreter, and arguments and results are copied with pickle. Splitting small jobs across processes can be slower than running them sequentially because of the transfer cost.</p>
+<hr>
+<h2 id="6-java-executorservice-completablefuture-virtual-threads">6. Java: ExecutorService, CompletableFuture, virtual threads</h2>
+<p>Java has no GIL. Threads run in parallel for CPU-bound work too. Instead of creating threads by hand, Java code uses an <strong>ExecutorService</strong>, which is Java’s thread pool interface.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">try</span><span style="color:#E1E4E8"> (ExecutorService pool </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Executors.</span><span style="color:#B392F0">newFixedThreadPool</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    List&#x3C;Future&#x3C;</span><span style="color:#F97583">String</span><span style="color:#E1E4E8">>> futures </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> ArrayList&#x3C;>();</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        int</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> i;</span></span>
+<span class="line"><span style="color:#E1E4E8">        futures.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(pool.</span><span style="color:#B392F0">submit</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">-></span><span style="color:#B392F0"> fetch</span><span style="color:#E1E4E8">(id)));   </span><span style="color:#6A737D">// fetch: sleeps 1 s</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (Future&#x3C;</span><span style="color:#F97583">String</span><span style="color:#E1E4E8">> f </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> futures) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(f.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">());                 </span><span style="color:#6A737D">// blocks until the result arrives</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}   </span><span style="color:#6A737D">// Java 19 and later: close() waits for the jobs to finish</span></span></code></pre>
+<p>The four jobs finished in 1.02 seconds. <code>submit</code> returns a <strong>Future</strong>. A Future represents a result that is not ready yet. Its weak points are that <code>get()</code> blocks the calling thread and that Futures cannot be chained together.</p>
+<p><strong>CompletableFuture</strong> fills that gap. What to do when the result arrives is written as a chain:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#E1E4E8">CompletableFuture&#x3C;</span><span style="color:#F97583">String</span><span style="color:#E1E4E8">> user  </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> CompletableFuture.</span><span style="color:#B392F0">supplyAsync</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">-></span><span style="color:#B392F0"> fetch</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">CompletableFuture&#x3C;</span><span style="color:#F97583">String</span><span style="color:#E1E4E8">> order </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> CompletableFuture.</span><span style="color:#B392F0">supplyAsync</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">-></span><span style="color:#B392F0"> fetch</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">String page </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> user.</span><span style="color:#B392F0">thenCombine</span><span style="color:#E1E4E8">(order, (u, o) </span><span style="color:#F97583">-></span><span style="color:#E1E4E8"> u </span><span style="color:#F97583">+</span><span style="color:#9ECBFF"> " + "</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> o)  </span><span style="color:#6A737D">// combine when both finish</span></span>
+<span class="line"><span style="color:#E1E4E8">                  .</span><span style="color:#B392F0">thenApply</span><span style="color:#E1E4E8">(String</span><span style="color:#F97583">::</span><span style="color:#E1E4E8">toUpperCase)                </span><span style="color:#6A737D">// transform the result</span></span>
+<span class="line"><span style="color:#E1E4E8">                  .</span><span style="color:#B392F0">exceptionally</span><span style="color:#E1E4E8">(ex </span><span style="color:#F97583">-></span><span style="color:#9ECBFF"> "error: "</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> ex.</span><span style="color:#B392F0">getMessage</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">                  .</span><span style="color:#B392F0">join</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<p>The two calls ran in parallel and the total time was 1.02 seconds. By default <code>supplyAsync</code> uses the common <code>ForkJoinPool</code>. That pool is sized for CPU-bound work. For blocking I/O calls it is better to pass a separate executor as the second argument.</p>
+<h3 id="virtual-threads-java-21">Virtual threads (Java 21)</h3>
+<p>A <strong>Virtual Thread</strong>, introduced in Java 21, is a lightweight thread managed by the JVM. Virtual threads run on a small number of platform threads (carriers). When a virtual thread makes a blocking I/O call, it detaches from its carrier, and the carrier runs another virtual thread.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">try</span><span style="color:#E1E4E8"> (ExecutorService vt </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Executors.</span><span style="color:#B392F0">newVirtualThreadPerTaskExecutor</span><span style="color:#E1E4E8">()) {</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 10_000</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        int</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> i;</span></span>
+<span class="line"><span style="color:#E1E4E8">        vt.</span><span style="color:#B392F0">submit</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">-></span><span style="color:#B392F0"> fetch</span><span style="color:#E1E4E8">(id));   </span><span style="color:#6A737D">// a separate virtual thread per job</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Ten thousand jobs, each sleeping for 1 second, finished in 1.08 seconds in total. Doing the same with ten thousand platform threads would mean gigabytes of stack.</p>
+<p>What virtual threads offer is this: code is written in the ordinary blocking style, and it scales close to async code. No <code>await</code> and no callback chains are needed. They have limits too. They do not speed up CPU-bound work, because the number of cores does not change. They should not be pooled. They are cheap, so one is created per job. In Java 21, a virtual thread that blocks inside a <code>synchronized</code> block is stuck to its carrier (<strong>pinning</strong>). This restriction was largely removed in Java 24.</p>
+<hr>
+<h2 id="7-common-mistakes-in-async-code">7. Common mistakes in async code</h2>
+<h3 id="blocking-the-event-loop">Blocking the event loop</h3>
+<p>If a blocking call is made inside an async function, the loop cannot run any other task for that whole time.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> asyncio, time</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> bad</span><span style="color:#E1E4E8">(i):</span></span>
+<span class="line"><span style="color:#E1E4E8">    time.sleep(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)            </span><span style="color:#6A737D"># blocks the loop</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> i</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> good</span><span style="color:#E1E4E8">(i):</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#E1E4E8"> asyncio.sleep(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)   </span><span style="color:#6A737D"># gives control back to the loop</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> i</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># each run three times with asyncio.gather</span></span>
+<span class="line"><span style="color:#6A737D"># bad:  3.00 s</span></span>
+<span class="line"><span style="color:#6A737D"># good: 1.06 s</span></span></code></pre>
+<p>In the <code>bad</code> version the three tasks ran one after another. <code>time.sleep</code> put the thread to sleep, and since the loop lives on that thread, the loop stopped too. In real code the same mistake is made with a synchronous HTTP library, a synchronous database driver or reading a large file.</p>
+<p>If a library has no async version, the call is moved to a separate thread:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> legacy_call</span><span style="color:#E1E4E8">(i):</span></span>
+<span class="line"><span style="color:#E1E4E8">    time.sleep(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)            </span><span style="color:#6A737D"># library without async support</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> i</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">await</span><span style="color:#E1E4E8"> asyncio.gather(</span><span style="color:#F97583">*</span><span style="color:#E1E4E8">(asyncio.to_thread(legacy_call, i) </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">)))</span></span>
+<span class="line"><span style="color:#6A737D"># 1.01 s</span></span></code></pre>
+<p>CPU-bound work has the same effect. A long computation inside an async function locks the loop until it finishes. For that, <code>loop.run_in_executor</code> is used with a <code>ProcessPoolExecutor</code>.</p>
+<h3 id="leaving-out-await">Leaving out await</h3>
+<p>A coroutine called without <code>await</code> does not run. The call only creates a coroutine object.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> save</span><span style="color:#E1E4E8">():</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#E1E4E8"> asyncio.sleep(</span><span style="color:#79B8FF">0.1</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#79B8FF">    print</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"saved"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> main</span><span style="color:#E1E4E8">():</span></span>
+<span class="line"><span style="color:#E1E4E8">    save()          </span><span style="color:#6A737D"># no await</span></span>
+<span class="line"><span style="color:#79B8FF">    print</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"done"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">asyncio.run(main())</span></span>
+<span class="line"><span style="color:#6A737D"># done</span></span>
+<span class="line"><span style="color:#6A737D"># RuntimeWarning: coroutine 'save' was never awaited</span></span></code></pre>
+<p>“saved” was never printed. Python gives a warning, but the program continues without an error, so this can slip through tests. In C# and JavaScript the same situation starts the work but nobody waits for its result or its error, and an exception can be lost silently.</p>
+<h3 id="sequential-awaits">Sequential awaits</h3>
+<p>Two calls written back to back with <code>await</code> run one after the other:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">a </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> fetch_user()     </span><span style="color:#6A737D"># 1 s</span></span>
+<span class="line"><span style="color:#E1E4E8">b </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> fetch_orders()   </span><span style="color:#6A737D"># 1 more s, 2 s in total</span></span></code></pre>
+<p>Independent calls are started together with <code>asyncio.gather</code>, and the total time is that of the longest one. Writing async code does not mean the waits will overlap on their own.</p>
+<h3 id="not-keeping-a-reference-to-a-task">Not keeping a reference to a task</h3>
+<p>If the reference to a task started with <code>asyncio.create_task</code> is not stored, the garbage collector can clean it up before it finishes. For this reason the Python documentation recommends keeping the reference in a variable or a set.</p>
+<hr>
+<h2 id="8-which-one-in-which-situation">8. Which one in which situation?</h2>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Choice</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU-bound, Python</td>
+<td>Processes (<code>multiprocessing</code>)</td>
+</tr>
+<tr>
+<td>CPU-bound, Java / C#</td>
+<td>As many threads as cores (thread pool, parallel streams)</td>
+</tr>
+<tr>
+<td>I/O-bound, a few concurrent jobs</td>
+<td>A thread pool is enough</td>
+</tr>
+<tr>
+<td>I/O-bound, thousands of concurrent connections</td>
+<td>Async/await, or virtual threads in Java</td>
+</tr>
+<tr>
+<td>UI application</td>
+<td>Keep long work off the UI thread: async for I/O, a background thread for computation</td>
+</tr>
+</tbody>
+</table>
+<p>This topic is often reduced to a single rule: if it is CPU-bound, use multithreading (<code>Task.Run</code> in C#), and if it is I/O-bound, use async/await. The direction is right, but it misses two things. In Python, because of the GIL, CPU-bound work does not get faster with threads and needs processes. And <code>Task.Run</code> alone does not split and parallelize a job. It moves the job to a thread pool thread. To spread a computation across cores, the work has to be split into pieces (<code>Parallel.For</code> or several Tasks). Also, I/O-bound work gets faster with threads too, as the measurement showed. The advantage of async shows up with many concurrent requests, not with a few.</p>
+<hr>
+<h2 id="interview-questions">Interview questions</h2>
+<p><strong>1. What is the difference between concurrency and parallelism?</strong>
+Concurrency is several jobs making progress during the same period, and it happens on a single core too. Parallelism is jobs actually running at the same instant on different cores. Every parallel program is concurrent, but not the other way around.
+Common mistake: Using the two terms as synonyms.</p>
+<p><strong>2. Which tool do you pick for CPU-bound and for I/O-bound work?</strong>
+CPU-bound work has to be spread across several cores, with threads or processes, and in Python with processes. For I/O-bound work it is enough to overlap the waits, with a thread pool or async/await.
+Common mistake: Trying to speed up CPU-bound work with async.</p>
+<p><strong>3. How does async/await run several jobs on one thread?</strong>
+Each task pauses at an <code>await</code> and hands control to the event loop. The loop learns from the operating system which tasks have finished their I/O and runs them in turn. Only one task runs at a time, and the gain comes from overlapping the waits.
+Common mistake: Thinking async opens hidden threads in the background.</p>
+<p><strong>4. What is the GIL? Why are threads still useful in Python?</strong>
+The GIL is a lock in CPython that lets only one thread at a time execute Python bytecode. It is released during I/O and <code>time.sleep</code>, so threads can overlap waits in I/O-bound work. In CPU-bound pure Python code, adding threads does not help.
+Common mistake: Saying “threads are useless in Python”.</p>
+<p><strong>5. Why use a thread pool, and how do you choose its size?</strong>
+Creating threads and giving each one a stack is expensive. A pool reuses a fixed number of threads. For CPU-bound work the size is around the number of cores, for I/O-bound work it is larger depending on the wait ratio, and the result is checked by measuring.
+Common mistake: Saying “the more threads, the faster”.</p>
+<p><strong>6. What happens if you call <code>time.sleep(1)</code> inside an async function?</strong>
+The thread the event loop runs on is blocked, and no other task makes progress for that second. The correct call is <code>await asyncio.sleep(1)</code>. If a synchronous library is unavoidable, the call is moved to a separate thread with <code>asyncio.to_thread</code>.
+Common mistake: Thinking the problem is limited to <code>sleep</code>. Synchronous HTTP and database calls have the same effect.</p>
+<p><strong>7. What is the difference between Future and CompletableFuture in Java?</strong>
+With a Future the result is read with <code>get()</code>, and that call blocks the thread. With a CompletableFuture the steps to run when the result arrives are chained with <code>thenApply</code>, <code>thenCombine</code> and <code>exceptionally</code>. This makes it possible to combine several asynchronous jobs without blocking.
+Common mistake: Piling blocking I/O onto the common ForkJoinPool through <code>supplyAsync</code>.</p>
+<p><strong>8. Do Java 21 virtual threads speed up CPU-bound work?</strong>
+No. Virtual threads release their carrier thread while waiting, which makes large numbers of concurrent I/O jobs cheap. They do not add cores, so they bring no gain for computation-heavy work.
+Common mistake: Pooling virtual threads, or treating them as “faster threads”.</p>
+<p><img alt="Summary card: concurrency and parallelism, CPU-bound and I/O-bound, thread pools, the event loop, the GIL and choosing a tool" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/conc-ozet-kart.LEsgz-MB_Z2nKsB1.webp" ></p>
+<p><em>In Part 11: networking basics, OSI, TCP and UDP.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>

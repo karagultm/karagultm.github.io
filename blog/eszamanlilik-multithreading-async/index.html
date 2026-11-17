@@ -1,0 +1,348 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Concurrency ve parallelism farkı, thread pool, async/await ve event loop, Python'da GIL, Java'da ExecutorService ve CompletableFuture: ölçümler ve mülakat sorularıyla."><meta name="color-scheme" content="dark"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"><title>Eşzamanlılık: Multithreading ve Async, CPU-Bound ve I/O-Bound · Muhammed Talha Karagül</title><link rel="stylesheet" href="/_astro/_slug_.Bytg5H5a.css">
+<style>.geri[data-astro-cid-7jjqptxk]{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;font:700 13px var(--px);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mut);transition:color var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:before{content:"‹";font-size:20px;line-height:.6;color:var(--red);transition:transform var(--t1) var(--ease)}.geri[data-astro-cid-7jjqptxk]:hover{color:#fff}.geri[data-astro-cid-7jjqptxk]:hover:before{transform:translate(-4px)}h1[data-astro-cid-7jjqptxk].f1b{font-size:clamp(28px,4.6vw,44px);text-transform:none;margin-bottom:12px}.meta[data-astro-cid-7jjqptxk]{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 26px}.dil[data-astro-cid-7jjqptxk]{margin:-10px 0 24px}.ders[data-astro-cid-7jjqptxk]{margin:0 0 34px;border-top:var(--cizgi-o) solid var(--red);border-right:var(--cizgi-o) solid var(--red);border-top-right-radius:var(--kose-o);background:var(--panel)}.ders-ust[data-astro-cid-7jjqptxk]{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.ders[data-astro-cid-7jjqptxk] h2[data-astro-cid-7jjqptxk]{margin:0;font:900 22px/1.1 var(--px);text-transform:uppercase}.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{display:block;width:100%;height:900px;border:0;background:#f4efe4}@media(max-width:640px){.ders[data-astro-cid-7jjqptxk] iframe[data-astro-cid-7jjqptxk]{height:1100px}}.kapak[data-astro-cid-7jjqptxk]{width:100%;height:auto;margin-bottom:26px;border-radius:0 var(--kose-o) 0 0}.yazi[data-astro-cid-7jjqptxk]{font-size:18px;line-height:1.7;color:#e6e6ea}.yazi[data-astro-cid-7jjqptxk]>h1:first-child{display:none}.yazi[data-astro-cid-7jjqptxk] h2{font:900 26px/1.15 var(--px);margin:44px 0 12px;padding-left:12px;border-left:var(--cizgi-o) solid var(--red);color:#fff}.yazi[data-astro-cid-7jjqptxk] h3{font:700 20px/1.2 var(--px);margin:30px 0 8px;color:#fff}.yazi[data-astro-cid-7jjqptxk] img{max-width:100%;height:auto;border-radius:0 var(--kose-k) 0 0}.yazi[data-astro-cid-7jjqptxk] code{background:var(--panel);padding:1px 6px;border-radius:var(--r-s);font-size:.88em}.yazi[data-astro-cid-7jjqptxk] pre{background:var(--panel);padding:14px 16px;overflow-x:auto;border-radius:0 var(--kose-k) 0 0;border-top:3px solid var(--red)}.yazi[data-astro-cid-7jjqptxk] pre code{background:none;padding:0}.yazi[data-astro-cid-7jjqptxk] blockquote{border-left:var(--cizgi-o) solid var(--mor);margin:0;padding:4px 16px;color:#c9c9d0}.yazi[data-astro-cid-7jjqptxk] table{border-collapse:collapse;width:100%;font-size:16px}.yazi[data-astro-cid-7jjqptxk] th{font:600 12px var(--px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);text-align:left}.yazi[data-astro-cid-7jjqptxk] th,.yazi[data-astro-cid-7jjqptxk] td{padding:9px 10px;border-bottom:1px solid var(--line)}
+</style></head> <body> <header class="top"> <a class="brand" href="/"><b>karagultm</b><i></i></a> <nav> <a href="/#pist">Pist</a> <a href="/#projeler">Projeler</a> <a href="/#deneyim">Deneyim</a> <a href="/blog/" aria-current="page">Yazılar</a> <button id="ses" class="ses" type="button" aria-pressed="false" aria-label="Sesi kapat">🔊</button> </nav> </header>  <main class="wrap" lang="tr" data-astro-cid-7jjqptxk> <a class="geri" href="/blog/" data-astro-cid-7jjqptxk>Yazılar</a> <h1 class="f1b" data-astro-cid-7jjqptxk>Eşzamanlılık: Multithreading ve Async, CPU-Bound ve I/O-Bound</h1> <p class="meta" data-astro-cid-7jjqptxk><time datetime="2026-11-17T00:00:00.000Z" data-astro-cid-7jjqptxk>17 Kasım 2026</time> · eszamanlilik, async, mulakat, programlama-101 · Bölüm 10</p> <p class="dil" data-astro-cid-7jjqptxk><a class="dugme" href="/blog/concurrency-multithreading-async/" hreflang="en" lang="en" data-astro-cid-7jjqptxk>Read in English</a></p> <img src="/_astro/conc-kapak.B8Pu8eVl_1ntnGN.webp" alt data-astro-cid-7jjqptxk="true" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="630" class="kapak">  <article class="yazi" data-astro-cid-7jjqptxk><h1 id="eşzamanlılık-multithreading-ve-async-cpu-bound-ve-io-bound">Eşzamanlılık: Multithreading ve Async, CPU-Bound ve I/O-Bound</h1>
+<p><em>Programlama 101, Bölüm 10</em></p>
+<ol start="8">
+<li>bölümde process ve thread’i, işletim sisteminin CPU sırasını nasıl dağıttığını anlattım. 9. bölümde ortak belleğin sorunlarına, race condition’a ve kilitlere baktım. Bu yazı işin uygulama tarafında: bir program birden fazla işi aynı anda yürütmek istediğinde thread mi, process mi, yoksa async mi seçilmeli?</li>
+</ol>
+<p>Cevap büyük ölçüde işin neyi beklediğine bağlı. Hesap yapan bir iş ile ağdan cevap bekleyen bir iş aynı araçla hızlanmaz. Aşağıda bu ayrımı, thread pool’u, event loop’un tek thread’de nasıl çalıştığını, Python ve Java’daki karşılıklarını ve async kodda sık yapılan hataları anlatıyorum. Python ölçümlerini kendi makinemde çalıştırarak aldım. Sonda mülakat soruları var.</p>
+<hr>
+<h2 id="1-concurrency-ve-parallelism">1. Concurrency ve parallelism</h2>
+<p><strong>Concurrency (Eşzamanlılık)</strong>, birden fazla işin aynı zaman aralığında ilerlemesidir. İşler aynı anda çalışmak zorunda değildir, sırayla parça parça ilerleyebilir. <strong>Parallelism (Paralellik)</strong> ise birden fazla işin gerçekten aynı anda, farklı çekirdeklerde çalışmasıdır.</p>
+<p>Mutfakta tek bir aşçı üç tencereyi idare edebilir. Birini karıştırır, diğerinin altını kısar, üçüncüye tuz atar. Üç yemek aynı saat içinde pişer ama aşçı her an tek bir şeyle uğraşır. Bu concurrency. Üç aşçı üç tencerenin başında aynı anda çalışıyorsa bu parallelism.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Concurrency</th>
+<th>Parallelism</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ne demek</td>
+<td>İşler aynı zaman aralığında ilerler</td>
+<td>İşler aynı anda çalışır</td>
+</tr>
+<tr>
+<td>Tek çekirdekte</td>
+<td>Mümkün</td>
+<td>Mümkün değil</td>
+</tr>
+<tr>
+<td>Amaç</td>
+<td>Beklemeyi verimli kullanmak, yapıyı düzenlemek</td>
+<td>Hesabı hızlandırmak</td>
+</tr>
+<tr>
+<td>Tipik araç</td>
+<td>Async/await, thread’ler</td>
+<td>Birden fazla thread ya da process, çok çekirdek</td>
+</tr>
+</tbody>
+</table>
+<p>Parallelism, concurrency’nin bir alt durumu sayılabilir. Paralel çalışan işler zaten eşzamanlıdır, ama eşzamanlı her program paralel değildir. 8. bölümdeki tek çekirdekli Round Robin örneği concurrency’dir, parallelism yoktur.</p>
+<hr>
+<h2 id="2-cpu-bound-ve-io-bound">2. CPU-bound ve I/O-bound</h2>
+<p>Bu ayrım 8. bölümün sonunda kısaca geçti. Burada biraz daha açıyorum, çünkü araç seçimi tamamen buna dayanıyor.</p>
+<ul>
+<li><strong>CPU-Bound (İşlemci Yoğun):</strong> İş zamanının çoğunu hesaplamayla geçirir. Görüntü işleme, sıkıştırma, şifreleme, büyük bir listeyi sıralamak. Hızlanması için daha fazla çekirdek gerekir.</li>
+<li><strong>I/O-Bound (Girdi/Çıktı Yoğun):</strong> İş zamanının çoğunu beklemekle geçirir. HTTP isteği, veritabanı sorgusu, dosya okuma. Bekleme sırasında CPU boştadır. Hızlanması için beklemelerin üst üste bindirilmesi yeterlidir.</li>
+</ul>
+<p>Bir web sunucusundaki tipik istek I/O-bound’dur. İsteğin süresinin büyük kısmı veritabanından ve başka servislerden gelen cevapları beklemekle geçer. Kodun kendisi milisaniyenin altında çalışır, bekleme onlarca milisaniye sürer.</p>
+<p>Ayrımı yapmanın pratik yolu ölçmek. Bir iş çalışırken CPU kullanımı bir çekirdeği doldurup %100’de duruyorsa CPU-bound’dur. CPU düşük, süre uzunsa iş bir şey bekliyordur.</p>
+<p>Aynı programın farklı bölümleri farklı türde olabilir. Bir servis dışarıdan görselleri indirir (I/O-bound), sonra küçültür (CPU-bound). İki bölüme farklı araç uygulamak mümkün.</p>
+<hr>
+<h2 id="3-thread-ve-thread-pool">3. Thread ve thread pool</h2>
+<ol start="8">
+<li>bölümde thread’i bir process içindeki yürütme birimi olarak tanımladım. İşletim sisteminin yönettiği bu thread’lere <strong>OS Thread</strong> ya da <strong>Platform Thread</strong> denir. Scheduler onları çekirdeklere dağıtır, dolayısıyla birden fazla thread gerçekten paralel çalışabilir.</li>
+</ol>
+<p>Bedava değiller. Her thread için işletim sistemi bir stack ayırır, genelde megabayt mertebesinde. Thread oluşturmak bir system call gerektirir, aralarındaki geçiş context switch maliyeti taşır. Her gelen istek için yeni bir thread açan bir sunucu, binlerce eşzamanlı istekte belleği ve zamanı bu yönetime harcamaya başlar.</p>
+<p><strong>Thread Pool (İş Parçacığı Havuzu)</strong> bu sorunu çözer. Sabit sayıda thread baştan oluşturulur ve bir iş kuyruğundan iş çeker. Biten thread kapanmaz, kuyruktaki sıradaki işi alır. Kargo şubesindeki kuryeler gibi: her paket için yeni kurye işe alınmaz, mevcut kuryeler depodaki paketleri sırayla götürür.</p>
+<p>Havuz boyutu işin türüne göre seçilir:</p>
+<ul>
+<li>CPU-bound iş için çekirdek sayısı civarı. Daha fazlası hızlandırmaz, sadece context switch ekler.</li>
+<li>I/O-bound iş için daha fazlası, çünkü thread’lerin çoğu beklemede durur. Kaba bir formül: thread sayısı = çekirdek sayısı × (1 + bekleme süresi / hesap süresi).</li>
+</ul>
+<p>Örneğin 8 çekirdekli bir makinede her iş 90 ms bekleyip 10 ms hesap yapıyorsa 8 × (1 + 9) = 80 thread makul bir başlangıç olur. Formül tahmin verir, son karar ölçümle verilir.</p>
+<p>Thread’lerin I/O-bound iş için bir sınırı var. Bekleyen her thread hâlâ stack’ini tutar ve bir yer işgal eder. On bin eşzamanlı bağlantı için on bin OS thread’i pahalıdır. Async modeli bu noktada devreye girer.</p>
+<hr>
+<h2 id="4-asyncawait-ve-event-loop">4. Async/await ve event loop</h2>
+<p><strong>Async/Await</strong>, bekleme gerektiren işleri thread’i bloklamadan yazmaya yarayan bir modeldir. <code>async</code> ile tanımlanan bir fonksiyon (Python’da <strong>Coroutine</strong>) <code>await</code> noktasına geldiğinde durur ve kontrolü geri verir. Beklenen iş bitince kaldığı yerden devam eder.</p>
+<p>Kontrolü geri alan yapı <strong>Event Loop (Olay Döngüsü)</strong>‘dur. Tek bir thread üzerinde çalışır ve şu döngüyü tekrarlar:</p>
+<ol>
+<li>Hazır görevlerden birini alır ve çalıştırır.</li>
+<li>Görev bir <code>await</code>’e gelince durur, kontrol loop’a döner.</li>
+<li>Loop, beklenen I/O’lardan bitenler var mı diye işletim sistemine sorar (Linux’ta <code>epoll</code>, macOS’ta <code>kqueue</code>, Windows’ta IOCP).</li>
+<li>I/O’su biten görev yeniden hazır kuyruğuna girer.</li>
+</ol>
+<p>Restorandaki garson buna iyi oturuyor. Garson siparişi mutfağa iletir ve yemek pişene kadar o masanın başında beklemez. Başka masaların siparişini alır, hazır olan tabakları götürür. Tek garson, mutfak çalışırken onlarca masaya yetişir. Garson event loop, mutfak da işletim sistemi ve ağın öbür ucu.</p>
+<p>Adım 4, 8. bölümdeki Waiting -> Ready geçişinin aynısı. I/O’su biten görev doğrudan çalışmaz, önce hazır kuyruğuna girer.</p>
+<p><img alt="Thread modeli ile async modelinin karşılaştırması: solda her isteğin kendi thread&amp;#x27;inde beklediği yapı, sağda tek thread üzerindeki event loop&amp;#x27;un await noktalarında görevler arasında geçişi" loading="lazy" decoding="async" fetchpriority="auto" width="1200" height="675" src="/_astro/conc-thread-async.DRMzsZ2y_Z2i7bNy.webp" ></p>
+<p>Burada iki önemli nokta var. İlki, async modeli <strong>Cooperative Multitasking (İşbirlikçi Çoklu Görev)</strong> kullanır. Görevler kontrolü kendileri bırakır, loop kimseyi zorla durdurmaz. 8. bölümdeki non-preemptive scheduling ile aynı mantık. <code>await</code> etmeden uzun süre çalışan bir görev bütün loop’u kilitler.</p>
+<p>İkincisi, async tek başına parallelism sağlamaz. Bir anda yalnızca bir görev çalışır. Kazanç, beklemelerin üst üste binmesinden gelir. Bin bağlantıyı bekleyen bir loop, bin thread yerine tek thread ve bin küçük coroutine nesnesiyle iş görür.</p>
+<hr>
+<h2 id="5-python-gil-threading-multiprocessing-asyncio">5. Python: GIL, threading, multiprocessing, asyncio</h2>
+<p><strong>GIL (Global Interpreter Lock)</strong>, CPython’da aynı anda yalnızca bir thread’in Python bytecode’u yürütmesine izin veren kilittir. Sonucu şu: Python thread’leri CPU-bound işte paralel çalışmaz.</p>
+<p>GIL, I/O sırasında serbest bırakılır. Bir thread <code>time.sleep</code> ya da bir ağ çağrısında beklerken başka bir thread Python kodu çalıştırabilir. Bu yüzden Python’da thread’ler I/O-bound işte işe yarar. Bazı C eklentileri (NumPy’nin büyük dizi işlemleri, <code>hashlib</code>) de hesap sırasında GIL’i bırakır.</p>
+<p>Python 3.13’te GIL’siz çalışan deneysel bir free-threaded derleme (PEP 703, <code>python3.13t</code>) ayrıca kurulabiliyor, varsayılan sürüm ise hâlâ GIL’li.</p>
+<h3 id="io-bound-ölçüm">I/O-bound ölçüm</h3>
+<p>Beş ağ isteğini <code>time.sleep(1)</code> ile simüle ettim. Sıralı, thread pool ile ve asyncio ile:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> time, asyncio</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> concurrent.futures </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ThreadPoolExecutor</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> fetch</span><span style="color:#E1E4E8">(i):</span></span>
+<span class="line"><span style="color:#E1E4E8">    time.sleep(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)            </span><span style="color:#6A737D"># ağ isteği yerine 1 sn bekleme</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> i</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> afetch</span><span style="color:#E1E4E8">(i):</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#E1E4E8"> asyncio.sleep(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> i</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> main</span><span style="color:#E1E4E8">():</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> asyncio.gather(</span><span style="color:#F97583">*</span><span style="color:#E1E4E8">(afetch(i) </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">)))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">start </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> time.perf_counter()</span></span>
+<span class="line"><span style="color:#E1E4E8">[fetch(i) </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">)]                         </span><span style="color:#6A737D"># sıralı</span></span>
+<span class="line"><span style="color:#F97583">with</span><span style="color:#E1E4E8"> ThreadPoolExecutor(</span><span style="color:#FFAB70">max_workers</span><span style="color:#F97583">=</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> pool:      </span><span style="color:#6A737D"># thread</span></span>
+<span class="line"><span style="color:#79B8FF">    list</span><span style="color:#E1E4E8">(pool.map(fetch, </span><span style="color:#79B8FF">range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">)))</span></span>
+<span class="line"><span style="color:#E1E4E8">asyncio.run(main())                                  </span><span style="color:#6A737D"># asyncio</span></span></code></pre>
+<p>Her blok ayrı ölçüldü. Sonuç:</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Süre</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sıralı</td>
+<td>5,00 sn</td>
+</tr>
+<tr>
+<td>ThreadPoolExecutor (5 thread)</td>
+<td>1,00 sn</td>
+</tr>
+<tr>
+<td>asyncio.gather</td>
+<td>1,01 sn</td>
+</tr>
+</tbody>
+</table>
+<p>Thread’ler de async de beş beklemeyi üst üste bindirdi. Beş istekte ikisi arasında fark yok. Fark, istek sayısı binlere çıktığında bellek ve thread yönetimi maliyetinde ortaya çıkar.</p>
+<h3 id="cpu-bound-ölçüm">CPU-bound ölçüm</h3>
+<p>Saf Python döngüsüyle hesap yapan bir fonksiyonu dört kez çalıştırdım:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> concurrent.futures </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ThreadPoolExecutor, ProcessPoolExecutor</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> count</span><span style="color:#E1E4E8">(n):</span></span>
+<span class="line"><span style="color:#E1E4E8">    total </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(n):</span></span>
+<span class="line"><span style="color:#E1E4E8">        total </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> i</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> total</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">N </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 20_000_000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">if</span><span style="color:#79B8FF"> __name__</span><span style="color:#F97583"> ==</span><span style="color:#9ECBFF"> "__main__"</span><span style="color:#E1E4E8">:                       </span><span style="color:#6A737D"># Windows ve macOS'ta gerekli</span></span>
+<span class="line"><span style="color:#E1E4E8">    [count(N) </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> _ </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">)]                 </span><span style="color:#6A737D"># sıralı</span></span>
+<span class="line"><span style="color:#F97583">    with</span><span style="color:#E1E4E8"> ThreadPoolExecutor(</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> pool:          </span><span style="color:#6A737D"># thread</span></span>
+<span class="line"><span style="color:#79B8FF">        list</span><span style="color:#E1E4E8">(pool.map(count, [N] </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#F97583">    with</span><span style="color:#E1E4E8"> ProcessPoolExecutor(</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> pool:         </span><span style="color:#6A737D"># process</span></span>
+<span class="line"><span style="color:#79B8FF">        list</span><span style="color:#E1E4E8">(pool.map(count, [N] </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">))</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Süre (birkaç çalıştırma)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sıralı</td>
+<td>6,5–9,3 sn</td>
+</tr>
+<tr>
+<td>ThreadPoolExecutor (4 thread)</td>
+<td>5,4–8,7 sn</td>
+</tr>
+<tr>
+<td>ProcessPoolExecutor (4 process)</td>
+<td>2,2–2,8 sn</td>
+</tr>
+</tbody>
+</table>
+<p>Makine yüklü olduğu için süreler çalıştırmadan çalıştırmaya oynadı. Thread’li sürüm sıralı ile aynı bantta kaldı, bazen biraz hızlı, bazen biraz yavaş. Process’li sürüm her seferinde üç kat civarı hızlıydı. Dört kat olmamasının sebebi process başlatma ve verilerin process’ler arasında aktarılma (pickle) maliyeti.</p>
+<h3 id="ne-zaman-hangisi">Ne zaman hangisi?</h3>
+<table>
+<thead>
+<tr>
+<th>İş</th>
+<th>Araç</th>
+<th>Neden</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Az sayıda I/O, senkron kütüphane</td>
+<td><code>threading</code> / <code>ThreadPoolExecutor</code></td>
+<td>GIL beklerken bırakılır, mevcut kod değişmeden çalışır</td>
+</tr>
+<tr>
+<td>Çok sayıda eşzamanlı I/O (binlerce bağlantı)</td>
+<td><code>asyncio</code></td>
+<td>Tek thread, düşük bellek, async kütüphane gerekir</td>
+</tr>
+<tr>
+<td>CPU-bound saf Python</td>
+<td><code>multiprocessing</code> / <code>ProcessPoolExecutor</code></td>
+<td>Her process’in kendi GIL’i var</td>
+</tr>
+<tr>
+<td>CPU-bound ama NumPy gibi GIL’i bırakan kütüphane</td>
+<td>Thread de yeterli olabilir</td>
+<td>Hesap C tarafında yapılır</td>
+</tr>
+</tbody>
+</table>
+<p><code>multiprocessing</code>’in bedeli de var. Her process kendi yorumlayıcısını başlatır, argümanlar ve sonuçlar pickle ile kopyalanır. Küçük işleri process’lere dağıtmak, aktarım maliyeti yüzünden sıralı çalışmadan yavaş olabilir.</p>
+<hr>
+<h2 id="6-java-executorservice-completablefuture-virtual-thread">6. Java: ExecutorService, CompletableFuture, virtual thread</h2>
+<p>Java’da GIL yoktur. Thread’ler CPU-bound işte de paralel çalışır. Thread’leri elle oluşturmak yerine <strong>ExecutorService</strong> kullanılır, bu Java’nın thread pool arayüzüdür.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">try</span><span style="color:#E1E4E8"> (ExecutorService pool </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Executors.</span><span style="color:#B392F0">newFixedThreadPool</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    List&#x3C;Future&#x3C;</span><span style="color:#F97583">String</span><span style="color:#E1E4E8">>> futures </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> ArrayList&#x3C;>();</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        int</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> i;</span></span>
+<span class="line"><span style="color:#E1E4E8">        futures.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(pool.</span><span style="color:#B392F0">submit</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">-></span><span style="color:#B392F0"> fetch</span><span style="color:#E1E4E8">(id)));   </span><span style="color:#6A737D">// fetch: 1 sn uyuyor</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (Future&#x3C;</span><span style="color:#F97583">String</span><span style="color:#E1E4E8">> f </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> futures) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(f.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">());                 </span><span style="color:#6A737D">// sonuç gelene kadar bloklar</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}   </span><span style="color:#6A737D">// Java 19 ve sonrası: close() işlerin bitmesini bekler</span></span></code></pre>
+<p>Dört iş 1,02 saniyede bitti. <code>submit</code> bir <strong>Future</strong> döndürür. Future, henüz hazır olmayan bir sonucu temsil eder. Zayıf noktası <code>get()</code>’in çağıran thread’i bloklaması ve Future’ların birbirine bağlanamamasıdır.</p>
+<p><strong>CompletableFuture</strong> bu eksiği kapatır. Sonuç geldiğinde ne yapılacağı zincir halinde yazılır:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#E1E4E8">CompletableFuture&#x3C;</span><span style="color:#F97583">String</span><span style="color:#E1E4E8">> user  </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> CompletableFuture.</span><span style="color:#B392F0">supplyAsync</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">-></span><span style="color:#B392F0"> fetch</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">CompletableFuture&#x3C;</span><span style="color:#F97583">String</span><span style="color:#E1E4E8">> order </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> CompletableFuture.</span><span style="color:#B392F0">supplyAsync</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">-></span><span style="color:#B392F0"> fetch</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">String page </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> user.</span><span style="color:#B392F0">thenCombine</span><span style="color:#E1E4E8">(order, (u, o) </span><span style="color:#F97583">-></span><span style="color:#E1E4E8"> u </span><span style="color:#F97583">+</span><span style="color:#9ECBFF"> " + "</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> o)  </span><span style="color:#6A737D">// ikisi bitince birleştir</span></span>
+<span class="line"><span style="color:#E1E4E8">                  .</span><span style="color:#B392F0">thenApply</span><span style="color:#E1E4E8">(String</span><span style="color:#F97583">::</span><span style="color:#E1E4E8">toUpperCase)                </span><span style="color:#6A737D">// sonucu dönüştür</span></span>
+<span class="line"><span style="color:#E1E4E8">                  .</span><span style="color:#B392F0">exceptionally</span><span style="color:#E1E4E8">(ex </span><span style="color:#F97583">-></span><span style="color:#9ECBFF"> "hata: "</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> ex.</span><span style="color:#B392F0">getMessage</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">                  .</span><span style="color:#B392F0">join</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<p>İki çağrı paralel çalıştı, toplam süre 1,02 saniye oldu. <code>supplyAsync</code> varsayılan olarak ortak <code>ForkJoinPool</code>’u kullanır. Bu havuz CPU-bound iş için boyutlandırılmıştır. Bloklayan I/O çağrıları için ikinci parametre olarak ayrı bir executor vermek daha doğru.</p>
+<h3 id="virtual-thread-java-21">Virtual thread (Java 21)</h3>
+<p>Java 21 ile gelen <strong>Virtual Thread</strong>, JVM’in yönettiği hafif bir thread’dir. Az sayıda platform thread’i (carrier) üzerinde çalışır. Bloklayan bir I/O çağrısında carrier’dan ayrılır ve carrier başka bir virtual thread’i çalıştırır.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">try</span><span style="color:#E1E4E8"> (ExecutorService vt </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Executors.</span><span style="color:#B392F0">newVirtualThreadPerTaskExecutor</span><span style="color:#E1E4E8">()) {</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">int</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 10_000</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        int</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> i;</span></span>
+<span class="line"><span style="color:#E1E4E8">        vt.</span><span style="color:#B392F0">submit</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">-></span><span style="color:#B392F0"> fetch</span><span style="color:#E1E4E8">(id));   </span><span style="color:#6A737D">// her iş için ayrı virtual thread</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>On bin iş, her biri 1 saniye uyuyarak, toplam 1,08 saniyede bitti. Aynı işi on bin platform thread’iyle yapmak gigabaytlarca stack demektir.</p>
+<p>Virtual thread’lerin getirdiği şey şu: kod sıradan, bloklayan tarzda yazılır, ölçeklenme async koda yakın olur. <code>await</code> ya da callback zinciri gerekmez. Sınırları da var. CPU-bound işi hızlandırmazlar, çünkü çekirdek sayısı değişmez. Havuza alınmamaları gerekir, ucuz oldukları için iş başına bir tane açılır. Java 21’de <code>synchronized</code> blok içinde bloklanan virtual thread carrier’ına sabitlenir (<strong>pinning</strong>). Bu kısıt Java 24’te büyük ölçüde kaldırıldı.</p>
+<hr>
+<h2 id="7-async-kodda-sık-hatalar">7. Async kodda sık hatalar</h2>
+<h3 id="event-loopu-bloklamak">Event loop’u bloklamak</h3>
+<p>Async fonksiyonun içinde bloklayan bir çağrı yapılırsa loop o süre boyunca başka hiçbir görevi çalıştıramaz.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> asyncio, time</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> bad</span><span style="color:#E1E4E8">(i):</span></span>
+<span class="line"><span style="color:#E1E4E8">    time.sleep(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)            </span><span style="color:#6A737D"># loop'u bloklar</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> i</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> good</span><span style="color:#E1E4E8">(i):</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#E1E4E8"> asyncio.sleep(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)   </span><span style="color:#6A737D"># kontrolü loop'a geri verir</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> i</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># asyncio.gather ile üçer kez çalıştırıldı</span></span>
+<span class="line"><span style="color:#6A737D"># bad:  3,00 sn</span></span>
+<span class="line"><span style="color:#6A737D"># good: 1,06 sn</span></span></code></pre>
+<p><code>bad</code> sürümünde üç görev sırayla çalıştı. <code>time.sleep</code> thread’i uyuttu, loop da o thread üzerinde olduğu için durdu. Gerçek kodda aynı hata senkron bir HTTP kütüphanesiyle, senkron veritabanı sürücüsüyle ya da büyük bir dosyayı okumakla yapılır.</p>
+<p>Async sürümü olmayan bir kütüphane kullanmak gerekiyorsa çağrı ayrı bir thread’e taşınır:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> legacy_call</span><span style="color:#E1E4E8">(i):</span></span>
+<span class="line"><span style="color:#E1E4E8">    time.sleep(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)            </span><span style="color:#6A737D"># async olmayan kütüphane</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> i</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">await</span><span style="color:#E1E4E8"> asyncio.gather(</span><span style="color:#F97583">*</span><span style="color:#E1E4E8">(asyncio.to_thread(legacy_call, i) </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">in</span><span style="color:#79B8FF"> range</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">)))</span></span>
+<span class="line"><span style="color:#6A737D"># 1,01 sn</span></span></code></pre>
+<p>CPU-bound iş de aynı etkiyi yapar. Async fonksiyon içinde uzun bir hesap, loop’u hesap bitene kadar kilitler. Bunun için <code>loop.run_in_executor</code> ile bir <code>ProcessPoolExecutor</code> kullanılır.</p>
+<h3 id="awaitin-atlanması">await’in atlanması</h3>
+<p>Bir coroutine <code>await</code> edilmeden çağrılırsa çalışmaz. Çağrı yalnızca bir coroutine nesnesi oluşturur.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> save</span><span style="color:#E1E4E8">():</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#E1E4E8"> asyncio.sleep(</span><span style="color:#79B8FF">0.1</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#79B8FF">    print</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"kaydedildi"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> def</span><span style="color:#B392F0"> main</span><span style="color:#E1E4E8">():</span></span>
+<span class="line"><span style="color:#E1E4E8">    save()          </span><span style="color:#6A737D"># await yok</span></span>
+<span class="line"><span style="color:#79B8FF">    print</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"bitti"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">asyncio.run(main())</span></span>
+<span class="line"><span style="color:#6A737D"># bitti</span></span>
+<span class="line"><span style="color:#6A737D"># RuntimeWarning: coroutine 'save' was never awaited</span></span></code></pre>
+<p>“kaydedildi” hiç yazılmadı. Python bir uyarı verir ama program hata vermeden devam eder. Bu yüzden testte fark edilmeyebilir. C# ve JavaScript’te benzer durumda iş başlar ama sonucu ve hatası beklenmez, istisna sessizce kaybolabilir.</p>
+<h3 id="sıralı-await">Sıralı await</h3>
+<p><code>await</code> ile arka arkaya yazılan iki çağrı sırayla çalışır:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#E1E4E8">a </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> fetch_user()     </span><span style="color:#6A737D"># 1 sn</span></span>
+<span class="line"><span style="color:#E1E4E8">b </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> fetch_orders()   </span><span style="color:#6A737D"># 1 sn daha, toplam 2 sn</span></span></code></pre>
+<p>Birbirinden bağımsız çağrılar <code>asyncio.gather</code> ile birlikte başlatılır, toplam süre en uzun olanınki kadar olur. Async kod yazmak, beklemelerin kendiliğinden üst üste bineceği anlamına gelmez.</p>
+<h3 id="görev-referansını-tutmamak">Görev referansını tutmamak</h3>
+<p><code>asyncio.create_task</code> ile başlatılan bir görevin referansı saklanmazsa garbage collector onu iş bitmeden temizleyebilir. Python belgeleri bu yüzden referansın bir değişkende ya da kümede tutulmasını önerir.</p>
+<hr>
+<h2 id="8-hangi-durumda-hangisi">8. Hangi durumda hangisi?</h2>
+<table>
+<thead>
+<tr>
+<th>Durum</th>
+<th>Seçim</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU-bound, Python</td>
+<td>Process (<code>multiprocessing</code>)</td>
+</tr>
+<tr>
+<td>CPU-bound, Java / C#</td>
+<td>Çekirdek sayısı kadar thread (thread pool, paralel stream)</td>
+</tr>
+<tr>
+<td>I/O-bound, az sayıda eşzamanlı iş</td>
+<td>Thread pool yeterli</td>
+</tr>
+<tr>
+<td>I/O-bound, binlerce eşzamanlı bağlantı</td>
+<td>Async/await ya da Java’da virtual thread</td>
+</tr>
+<tr>
+<td>Arayüz (UI) uygulaması</td>
+<td>Uzun işi UI thread’inden çıkar, I/O için async, hesap için arka plan thread’i</td>
+</tr>
+</tbody>
+</table>
+<p>Bu konu çoğu zaman tek kurala indirgenir: CPU-bound ise multithreading (C#‘ta <code>Task.Run</code>), I/O-bound ise async/await. Yön doğru ama iki eksiği var. Python’da GIL yüzünden CPU-bound iş thread ile hızlanmaz, process gerekir. <code>Task.Run</code> da tek başına bir işi bölüp paralelleştirmez. İşi bir thread pool thread’ine taşır. Hesabı çekirdeklere bölmek için iş parçalara ayrılır (<code>Parallel.For</code> ya da birden fazla Task). Ayrıca I/O-bound iş thread ile de hızlanır, ölçümde de görüldü. Async’in üstünlüğü az sayıda istekte değil, çok sayıda eşzamanlı istekte ortaya çıkar.</p>
+<hr>
+<h2 id="mülakatta-sorulanlar">Mülakatta sorulanlar</h2>
+<p><strong>1. Concurrency ile parallelism arasındaki fark nedir?</strong>
+Concurrency, birden fazla işin aynı zaman aralığında ilerlemesidir ve tek çekirdekte de olur. Parallelism, işlerin farklı çekirdeklerde gerçekten aynı anda çalışmasıdır. Paralel her program eşzamanlıdır, tersi doğru değildir.
+Sık yapılan hata: İki terimi eş anlamlı kullanmak.</p>
+<p><strong>2. CPU-bound ve I/O-bound iş için hangi aracı seçersin?</strong>
+CPU-bound iş birden fazla çekirdeğe dağıtılmalı. Bunun için thread ya da process kullanılır, Python’da process. I/O-bound işte beklemeleri üst üste bindirmek yeterli, thread pool ya da async/await kullanılır.
+Sık yapılan hata: CPU-bound işi async ile hızlandırmaya çalışmak.</p>
+<p><strong>3. Async/await tek thread’de birden fazla işi nasıl yürütür?</strong>
+Her görev <code>await</code> noktasında durur ve kontrolü event loop’a bırakır. Loop, I/O’su biten görevleri işletim sisteminden öğrenir ve onları sırayla çalıştırır. Bir anda tek görev çalışır, kazanç bekleme sürelerinin üst üste binmesinden gelir.
+Sık yapılan hata: Async’in arka planda gizli thread’ler açtığını sanmak.</p>
+<p><strong>4. GIL nedir? Python’da thread’ler neden hâlâ işe yarar?</strong>
+GIL, CPython’da aynı anda tek bir thread’in Python bytecode’u çalıştırmasına izin veren kilittir. I/O ve <code>time.sleep</code> sırasında bırakılır, bu yüzden I/O-bound işte thread’ler beklemeleri üst üste bindirir. CPU-bound saf Python kodunda ise thread eklemek hızlandırmaz.
+Sık yapılan hata: “Python’da thread’ler hiçbir işe yaramaz” demek.</p>
+<p><strong>5. Thread pool neden kullanılır, boyutu nasıl seçilir?</strong>
+Thread oluşturmak ve her birine stack ayırmak pahalıdır. Pool, sabit sayıda thread’i tekrar tekrar kullanır. CPU-bound işte çekirdek sayısı civarı, I/O-bound işte bekleme oranına göre daha fazla thread seçilir ve sonuç ölçümle doğrulanır.
+Sık yapılan hata: “Ne kadar çok thread o kadar hızlı” demek.</p>
+<p><strong>6. Async bir fonksiyonun içinde <code>time.sleep(1)</code> çağrılırsa ne olur?</strong>
+Event loop’un çalıştığı thread bloklanır ve o saniye boyunca başka hiçbir görev ilerlemez. Doğrusu <code>await asyncio.sleep(1)</code>. Senkron bir kütüphane zorunluysa çağrı <code>asyncio.to_thread</code> ile ayrı bir thread’e taşınır.
+Sık yapılan hata: Sorunun yalnızca <code>sleep</code> ile sınırlı olduğunu sanmak. Senkron HTTP ve veritabanı çağrıları da aynı etkiyi yapar.</p>
+<p><strong>7. Java’da Future ile CompletableFuture farkı nedir?</strong>
+Future’dan sonuç <code>get()</code> ile alınır ve bu çağrı thread’i bloklar. CompletableFuture’da sonuç geldiğinde yapılacak işler <code>thenApply</code>, <code>thenCombine</code> ve <code>exceptionally</code> ile zincirlenir. Birden fazla asenkron işi bloklamadan birleştirmek mümkün olur.
+Sık yapılan hata: Bloklayan I/O’yu <code>supplyAsync</code> ile ortak ForkJoinPool’a yığmak.</p>
+<p><strong>8. Java 21 virtual thread’leri CPU-bound işi hızlandırır mı?</strong>
+Hayır. Virtual thread’ler bekleme sırasında carrier thread’i serbest bıraktığı için çok sayıda eşzamanlı I/O işini ucuzlatır. Çekirdek sayısını artırmadıkları için hesap ağırlıklı işte kazanç sağlamazlar.
+Sık yapılan hata: Virtual thread’leri bir havuza almak ya da onları “daha hızlı thread” sanmak.</p>
+<p><img alt="Özet kart: concurrency ve parallelism, CPU-bound ve I/O-bound, thread pool, event loop, GIL ve araç seçimi" loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="1080" src="/_astro/conc-ozet-kart.LEsgz-MB_Z2nKsB1.webp" ></p>
+<p><em>11. bölümde: ağ temelleri, OSI, TCP ve UDP.</em></p></article> </main>  <footer class="foot"> <form class="bulten" onsubmit="event.preventDefault(); this.querySelector('p').hidden=false;"> <label for="eposta">Yeni yazılar e-postana gelsin</label> <div class="row"><input id="eposta" type="email" placeholder="ornek@posta.com" required><button type="submit">Abone ol</button></div> <p hidden>Bülten henüz bağlı değil: yer tutucu.</p> </form> <small>3D sahne, animasyonlar ve sesler kodla üretildi. Resmî bir takım ya da markayla bağlantısı yoktur.</small> </footer> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BSGKwkxn.js"></script> </body> </html>   <script type="module">const e=document.querySelector(".ders iframe");if(e){const t=()=>{try{const o=e.contentDocument;o?.body&&(e.style.height=Math.ceil(o.body.getBoundingClientRect().bottom+o.defaultView.scrollY+parseFloat(getComputedStyle(o.body).marginBottom||"0"))+"px")}catch{}};if(e.addEventListener("load",()=>{t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}),addEventListener("resize",t),e.contentDocument?.readyState==="complete"&&e.contentDocument.body?.childElementCount){t();try{new ResizeObserver(t).observe(e.contentDocument.body)}catch{}}}</script>
