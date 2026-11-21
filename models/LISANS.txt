@@ -1,2 +1,3 @@
 Modeller: Kenney Racing Kit 2.0 ve Car Kit (kenney.nl), Creative Commons Zero (CC0).
 Sesler ve duman görseli (public/sfx): Kenney Starter Kit Racing (github.com/KenneyNL/Starter-Kit-Racing), CC0.
+F1 aracı (public/models/f1.glb): "Oracle Red Bull F1 Car RB19 2023" by Redgrund (https://sketchfab.com/3d-models/oracle-red-bull-f1-car-rb19-2023-e4afe46f3aab4b23a418da06fc163821), CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Değişiklik: tekerlekler ayrı parçalara bölündü, geometri sadeleştirildi, meshopt + KTX2 ile sıkıştırıldı.
